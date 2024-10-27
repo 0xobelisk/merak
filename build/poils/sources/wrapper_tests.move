@@ -1,15 +1,13 @@
 #[test_only]
-module obelisk::wrapper_tests {
+module poils::wrapper_tests {
     use std::ascii;
     use std::ascii::String;
     use obelisk::dapps_schema::Dapps;
     use poils::deploy_hook::deploy_hook_for_testing;
-    use obelisk::wrapper_schema;
-    use obelisk::assets_system;
-    use obelisk::assets_schema::Assets;
-    use obelisk::assets_schema;
-    use obelisk::wrapper_system;
-    use obelisk::wrapper_schema::Wrapper;
+    use poils::assets_system;
+    use poils::assets_schema::Assets;
+    use poils::wrapper_system;
+    use poils::wrapper_schema::Wrapper;
     use sui::test_scenario;
     use sui::test_scenario::Scenario;
     use sui::coin;

@@ -1,14 +1,14 @@
-module obelisk::wrapper_system {
+module poils::wrapper_system {
     use std::ascii::String;
-    use obelisk::assets_functions;
+    use poils::assets_functions;
     use sui::balance;
     use sui::balance::Balance;
     use sui::coin;
     use sui::coin::Coin;
-    use obelisk::wrapper_coin;
-    use obelisk::wrapper_coin::WrapperCoin;
-    use obelisk::assets_schema::Assets;
-    use obelisk::wrapper_schema::Wrapper;
+    use poils::wrapper_coin;
+    use poils::wrapper_coin::WrapperCoin;
+    use poils::assets_schema::Assets;
+    use poils::wrapper_schema::Wrapper;
 
     public entry fun register<T>(wrapper: &mut Wrapper, assets: &mut Assets, name: String, symbol: String, description: String, decimals: u8, url: String, info: String, ctx: &mut TxContext) {
         let asset_id = assets.borrow_mut_next_asset_id().get();

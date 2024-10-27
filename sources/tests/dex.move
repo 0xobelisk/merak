@@ -1,17 +1,15 @@
 #[test_only]
-module obelisk::dex_tests {
+module poils::dex_tests {
     use std::debug;
     use std::ascii;
     use obelisk::dapps_schema::Dapps;
     use poils::deploy_hook::deploy_hook_for_testing;
-    use obelisk::dex_pool;
-    use obelisk::dex_system;
-    use obelisk::dex_schema::Dex;
-    use obelisk::assets_tests;
-    use obelisk::dex_schema;
-    use obelisk::assets_system;
-    use obelisk::assets_schema::Assets;
-    use obelisk::assets_schema;
+    use poils::dex_pool;
+    use poils::dex_system;
+    use poils::dex_schema::Dex;
+    use poils::assets_tests;
+    use poils::assets_system;
+    use poils::assets_schema::Assets;
     use sui::test_scenario;
     use sui::test_scenario::Scenario;
 

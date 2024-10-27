@@ -1,12 +1,12 @@
-module obelisk::dex_functions {
+module poils::dex_functions {
     use std::debug;
     use std::debug::print;
     use std::ascii;
     use std::ascii::String;
-    use obelisk::assets_functions;
-    use obelisk::assets_schema::Assets;
-    use obelisk::dex_schema::Dex;
-    use obelisk::assets_metadata::Metadata;
+    use poils::assets_functions;
+    use poils::assets_schema::Assets;
+    use poils::dex_schema::Dex;
+    use poils::assets_metadata::Metadata;
 
     public struct BalancePathElement has drop, copy, store {
         asset_id: u32,

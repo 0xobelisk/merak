@@ -1,13 +1,13 @@
 #[test_only]
-module obelisk::assets_tests {
+module poils::assets_tests {
     use std::debug;
     use std::ascii;
     use std::ascii::String;
     use poils::deploy_hook::deploy_hook_for_testing;
     use obelisk::dapps_schema::Dapps;
-    use obelisk::assets_system;
-    use obelisk::assets_metadata;
-    use obelisk::assets_schema::Assets;
+    use poils::assets_system;
+    use poils::assets_metadata;
+    use poils::assets_schema::Assets;
     use sui::test_scenario;
     use sui::test_scenario::Scenario;
 

@@ -1,10 +1,10 @@
-module obelisk::assets_system {
+module poils::assets_system {
     use std::ascii;
     use std::ascii::String;
+    use poils::assets_schema::Assets;
     use poils::assets_account_status;
     use poils::assets_status;
-    use obelisk::assets_functions;
-    use obelisk::assets_schema::Assets;
+    use poils::assets_functions;
 
     public entry fun create(
         assets: &mut Assets,

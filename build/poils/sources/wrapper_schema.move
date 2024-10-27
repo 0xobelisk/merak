@@ -1,4 +1,4 @@
-module obelisk::wrapper_schema {
+module poils::wrapper_schema {
     use std::type_name;
     use obelisk::dapps_schema::Dapps;
     use poils::dapp_key::DappKey;

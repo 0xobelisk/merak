@@ -1,12 +1,12 @@
-module obelisk::dex_system {
+module poils::dex_system {
     use std::ascii;
-    use obelisk::dex_functions::{sort_assets, get_pool_id};
+    use poils::dex_functions::{sort_assets, get_pool_id};
     use sui::address;
-    use obelisk::dex_pool;
-    use obelisk::assets_functions;
-    use obelisk::dex_functions;
-    use obelisk::assets_schema::Assets;
-    use obelisk::dex_schema::Dex;
+    use poils::dex_pool;
+    use poils::assets_functions;
+    use poils::dex_functions;
+    use poils::assets_schema::Assets;
+    use poils::dex_schema::Dex;
 
     const LP_ASSET_DESCRIPTION: vector<u8> = b"Obelisk LP Asset";
 

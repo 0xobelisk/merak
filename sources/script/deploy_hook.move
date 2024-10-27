@@ -12,8 +12,6 @@
   use poils::dapp_key::DappKey;
 
   use std::ascii;
-      use obelisk::wrapper_schema;
-      use poils::assets_schema::Assets;
 
       use sui::clock::Clock;
       #[test_only]
@@ -26,18 +24,21 @@
       use sui::test_scenario::Scenario;
 
       public entry fun run(dapps: &mut Dapps, clock: &Clock, ctx: &mut TxContext) {
-    // Register the dapp to obelisk.
-    dapps_system::register<DappKey>(
+        // Register the dapp to obelisk.
+        dapps_system::register<DappKey>(
             dapps,
-            ascii::string(b"example"),
-            ascii::string(b"example"),
+            ascii::string(b"Poils"),
+            ascii::string(b"Poils Dapp"),
             clock,
             ctx
         );
       poils::assets_schema::register(dapps, ctx);
       poils::dex_schema::register(dapps, ctx);
+
+      // Custom schemas
       poils::wrapper_schema::register(dapps, ctx);
-    // Logic that needs to be automated once the contract is deployed
+
+      // Logic that needs to be automated once the contract is deployed
 
 
   }
