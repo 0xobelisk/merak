@@ -39,10 +39,38 @@
             clock,
             ctx
         );
-    let assets = merak::assets_schema::register(dapps, ctx);
+    let mut assets = merak::assets_schema::register(dapps, ctx);
     let dex = merak::dex_schema::register(dapps, ctx);
     let wrapper = merak::wrapper_schema::register(dapps, ctx);
     // Logic that needs to be automated once the contract is deployed
+
+    assets.borrow_mut_metadata().set(0, merak::assets_metadata::new(
+        ascii::string(b"Merak"),
+        ascii::string(b"Merak"),
+        ascii::string(b"Merak"),
+        9,
+        ascii::string(b""),
+        ascii::string(b"Merak"),
+    ));
+    assets.borrow_mut_metadata().set(1, merak::assets_metadata::new(
+      ascii::string(b"Merak"),
+      ascii::string(b"Merak"),
+      ascii::string(b"Merak"),
+      9,
+      ascii::string(b""),
+      ascii::string(b"Merak"),
+    ));
+
+    assets.borrow_mut_account().set(0, @0x0, merak::assets_account::new(100, merak::assets_account_status::new_liquid()));
+    assets.borrow_mut_account().set(0, @0x1, merak::assets_account::new(100, merak::assets_account_status::new_liquid()));
+    assets.borrow_mut_account().set(0, @0x2, merak::assets_account::new(100, merak::assets_account_status::new_liquid()));
+    assets.borrow_mut_account().set(1, @0x0, merak::assets_account::new(100, merak::assets_account_status::new_liquid()));
+    assets.borrow_mut_account().set(1, @0x1, merak::assets_account::new(100, merak::assets_account_status::new_liquid()));
+    assets.borrow_mut_account().set(1, @0x2, merak::assets_account::new(100, merak::assets_account_status::new_liquid()));
+
+      assets.borrow_mut_next_asset_id().set(99);
+
+
     // Share the dapp object with the public
     public_share_object(assets);
     public_share_object(dex);
