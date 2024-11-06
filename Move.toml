@@ -1,13 +1,13 @@
 [package]
-name = "poils"
+name = "merak"
 version = "0.0.1"
 edition = "2024.beta"
 
 [dependencies]
-Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "mainnet-v1.31.1" }
-Obelisk = { git = "https://github.com/0xobelisk/obelisk-engine.git", subdir = "packages/obelisk-framework", rev = "main" }
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "mainnet-v1.36.2" }
+Dubhe = { git = "https://github.com/0xobelisk/dubhe.git", subdir = "packages/dubhe-framework", rev = "main" }
 
 [addresses]
-sui =  "0x2"
-obelisk =  "0x3dc2d6239eed38c9798444afbf4bada0998ec98edc365713864405fe64203256"
-poils = "0x0"
+sui = "0x2"
+dubhe = "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28"
+merak = "0x0"
