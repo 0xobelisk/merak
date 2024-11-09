@@ -177,6 +177,8 @@ module merak::dex_tests {
 
         debug::print(&dex_schema::get_pools_values(&dex));
 
+        debug::print(&dex_system::get_pair_list(&dex));
+
         test_scenario::return_shared<Assets>(assets);
         test_scenario::return_shared<Dex>(dex);
         test_scenario::return_shared<Dapps>(dapps);

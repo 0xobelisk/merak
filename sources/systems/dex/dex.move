@@ -1,5 +1,6 @@
 module merak::dex_system {
     use std::ascii;
+    use merak::dex_pool::Pool;
     use merak::dex_functions::{sort_assets, get_pool_id};
     use sui::address;
     use merak::dex_pool;
@@ -158,5 +159,21 @@ module merak::dex_system {
         dex_functions::validate_swap_path(dex, path);
         let (_, amount_in) = dex_functions::balance_path_from_amount_out(amount_out, path, dex, assets);
         amount_in
+    }
+
+    public fun get_pool_list(dex: &Dex): vector<Pool> {
+        dex.borrow_pools().values()
+    }
+
+    public fun get_pair_list(dex: &Dex): vector<vector<u32>> {
+        let mut assets_list = vector[];
+        let (assets1, assets2) = dex.borrow_pool_id().keys();
+        let len = assets1.length();
+        let mut i = 0;
+        while (i < len) {
+            assets_list.push_back(vector[assets1[i], assets2[i]]);
+            i = i + 1;
+        };
+        assets_list
     }
 }
