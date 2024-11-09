@@ -47,7 +47,7 @@ module merak::dex_system {
         );
 
         dex.borrow_mut_pool_id().set(asset1, asset2, pool_id);
-        dex.borrow_mut_pools().set(pool_id, dex_pool::new(pool_address, lp_asset_id));
+        dex.borrow_mut_pools().set(pool_id, dex_pool::new(pool_id, pool_address, lp_asset_id, asset1, asset2));
         dex.borrow_mut_next_pool_id().set(pool_id + 1);
 
         dex_pool_created_event::emit(sender, pool_id, pool_address, asset1, asset2, lp_asset_id, lp_asset_symbol);

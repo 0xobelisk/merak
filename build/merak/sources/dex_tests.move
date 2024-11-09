@@ -2,6 +2,7 @@
 module merak::dex_tests {
     use std::debug;
     use std::ascii;
+    use merak::dex_schema;
     use dubhe::dapps_schema::Dapps;
     use merak::deploy_hook::deploy_hook_for_testing;
     use merak::dex_pool;
@@ -45,13 +46,13 @@ module merak::dex_tests {
         assert!(dex.borrow_mut_pool_id().contains_key(0, 1), 0);
         assert!(dex.borrow_mut_next_pool_id().get() == 1, 0);
         let pool_id = dex.borrow_mut_pool_id().get(0, 1);
-        assert!(dex.borrow_mut_pools().get(pool_id) == dex_pool::new(@0x0, 3), 0);
+        assert!(dex.borrow_mut_pools().get(pool_id) == dex_pool::new(pool_id, @0x0, 3, 0, 1), 0);
 
         dex_system::create_pool(&mut dex, &mut assets, 1, 2, ctx);
         assert!(dex.borrow_mut_pool_id().contains_key(1, 2), 0);
         assert!(dex.borrow_mut_next_pool_id().get() == 2, 0);
         let pool_id = dex.borrow_mut_pool_id().get(1, 2);
-        assert!(dex.borrow_mut_pools().get(pool_id) == dex_pool::new(@0x1, 4), 0);
+        assert!(dex.borrow_mut_pools().get(pool_id) == dex_pool::new(pool_id, @0x1, 4, 1, 2), 0);
 
         test_scenario::return_shared<Assets>(assets);
         test_scenario::return_shared<Dex>(dex);
@@ -169,6 +170,13 @@ module merak::dex_tests {
 
         assert!(dex_system::get_amount_in(&dex, &assets, vector[1, 0, 1, 2], 10000) == 18322, 0);
         dex_system::swap_tokens_for_exact_tokens(&dex, &mut assets, vector[1, 0, 1, 2], 10000, 20000, ctx.sender(), ctx);
+
+        let (assets1, assets2) = dex_schema::get_pool_id_keys(&dex);
+        debug::print(&assets1);
+        debug::print(&assets2);
+
+        debug::print(&dex_schema::get_pools_values(&dex));
+
 
         test_scenario::return_shared<Assets>(assets);
         test_scenario::return_shared<Dex>(dex);
