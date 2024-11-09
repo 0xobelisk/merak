@@ -1,1 +1,19 @@
 # merak-contracts
+
+## Testnet
+
+```txt
+PackageID: 0xe85d956821d3e0c28a53b8fd42531e1e876af81759ede825259cecb511e96146
+
+ObjectID: 0x2e62fb8d833b13ea8e750dc2c3a7ee3b6d2172bc528b59cb946e0eb1176bf2fd
+ObjectType: 0x2::package::UpgradeCap
+
+ObjectID: 0x32c596659ff7a7af24e9bbdaf2eca480514e4feb199189a8aebadd2c3479ab5a
+ObjectType: 0xe85d956821d3e0c28a53b8fd42531e1e876af81759ede825259cecb511e96146::assets_schema::Assets
+
+ObjectID: 0x7ed77fdf4c2b12f6628051a5edea8cc45f90a6d2be8aecfa24c6cc087af381c2
+ObjectType: 0xe85d956821d3e0c28a53b8fd42531e1e876af81759ede825259cecb511e96146::dex_schema::Dex
+
+ObjectID: 0xc948c8ad585dc8fdefdeb171df869a671ad31bb4f7f505233bc860dd1631784a
+ObjectType: 0xe85d956821d3e0c28a53b8fd42531e1e876af81759ede825259cecb511e96146::wrapper_schema::Wrapper
+```
