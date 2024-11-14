@@ -13,21 +13,21 @@
   use merak::assets_status::Status;
 
   public struct Account has copy, drop, store {
-    balance: u64,
+    balance: u256,
     status: AccountStatus,
   }
 
-  public fun new(balance: u64, status: AccountStatus): Account {
+  public fun new(balance: u256, status: AccountStatus): Account {
     Account {
                                    balance,status
                                }
   }
 
-  public fun get(self: &Account): (u64,AccountStatus) {
+  public fun get(self: &Account): (u256,AccountStatus) {
     (self.balance,self.status)
   }
 
-  public fun get_balance(self: &Account): u64 {
+  public fun get_balance(self: &Account): u256 {
     self.balance
   }
 
@@ -35,7 +35,7 @@
     self.status
   }
 
-  public(package) fun set_balance(self: &mut Account, balance: u64) {
+  public(package) fun set_balance(self: &mut Account, balance: u256) {
     self.balance = balance;
   }
 
@@ -43,7 +43,7 @@
     self.status = status;
   }
 
-  public(package) fun set(self: &mut Account, balance: u64, status: AccountStatus) {
+  public(package) fun set(self: &mut Account, balance: u256, status: AccountStatus) {
     self.balance = balance;
     self.status = status;
   }

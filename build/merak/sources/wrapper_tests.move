@@ -37,9 +37,9 @@ module merak::wrapper_tests {
         wrapper_register<USDT>(&mut wrapper, &mut assets, name, symbol, description, decimals, url, info, &mut scenario);
 
         let ctx = test_scenario::ctx(&mut scenario);
-        let amount = 1000000;
+        let amount: u256 = 1000000;
 
-        let usdt = coin::mint_for_testing<USDT>(amount, ctx);
+        let usdt = coin::mint_for_testing<USDT>(amount as u64, ctx);
         let beneficiary = ctx.sender();
         wrapper_system::wrap(&mut wrapper, &mut assets, usdt, beneficiary, ctx);
         assert!(assets_system::balance_of(&assets,0, beneficiary) == amount, 0);
@@ -49,19 +49,19 @@ module merak::wrapper_tests {
         wrapper_system::unwrap<USDT>(&mut wrapper, &mut assets, amount, beneficiary, ctx);
         assert!(assets_system::balance_of(&assets, 0, beneficiary) == 0, 1);
 
-        let usdt = coin::mint_for_testing<USDT>(amount, ctx);
+        let usdt = coin::mint_for_testing<USDT>(amount as u64, ctx);
         wrapper_system::wrap(&mut wrapper, &mut assets, usdt, beneficiary, ctx);
         assert!(assets_system::balance_of(&assets,0, beneficiary) == amount, 0);
         assert!(assets_system::supply_of(&assets,0) == amount, 1);
         assert!(wrapper_system::wrapped_assets(&wrapper, &assets) == vector[0], 2);
 
-        let usdt = coin::mint_for_testing<USDT>(amount, ctx);
+        let usdt = coin::mint_for_testing<USDT>(amount as u64, ctx);
         wrapper_system::wrap(&mut wrapper, &mut assets, usdt, beneficiary, ctx);
         assert!(assets_system::balance_of(&assets,0, beneficiary) == amount * 2, 0);
         assert!(assets_system::supply_of(&assets,0) == amount * 2, 1);
         assert!(wrapper_system::wrapped_assets(&wrapper, &assets) == vector[0], 2);
 
-        let usdt = coin::mint_for_testing<USDT>(amount, ctx);
+        let usdt = coin::mint_for_testing<USDT>(amount as u64, ctx);
         wrapper_system::wrap(&mut wrapper, &mut assets, usdt, beneficiary, ctx);
         assert!(assets_system::balance_of(&assets,0, beneficiary) == amount * 3, 0);
         assert!(assets_system::supply_of(&assets,0) == amount * 3, 1);

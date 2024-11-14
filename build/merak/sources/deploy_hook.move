@@ -46,6 +46,13 @@
 
     assets.borrow_mut_next_asset_id().set(0);
     dex.borrow_mut_next_pool_id().set(0);
+    // 0.03% swap fee
+    dex.borrow_mut_swap_fee().set(3);
+    // 0.01% lp fee
+    dex.borrow_mut_lp_fee().set(1);
+    dex.borrow_mut_fee_to().set(ctx.sender());
+    dex.borrow_mut_max_swap_path_len().set(6);
+    dex.borrow_mut_min_liquidity().set(100);
 
     // Share the dapp object with the public
     public_share_object(assets);

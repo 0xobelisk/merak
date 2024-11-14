@@ -14,16 +14,16 @@
     asset_id: u32,
     from: address,
     to: address,
-    amount: u64,
+    amount: u256,
   }
 
-  public fun new(asset_id: u32, from: address, to: address, amount: u64): TransferredEvent {
+  public fun new(asset_id: u32, from: address, to: address, amount: u256): TransferredEvent {
     TransferredEvent {
                                    asset_id,from,to,amount
                                }
   }
 
-  public fun emit(asset_id: u32, from: address, to: address, amount: u64) {
+  public fun emit(asset_id: u32, from: address, to: address, amount: u256) {
     event::emit(TransferredEvent {
                                    asset_id,from,to,amount
                                });

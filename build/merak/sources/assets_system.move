@@ -20,7 +20,7 @@ module merak::assets_system {
         decimals: u8,
         icon_url: String,
         info: String,
-        initial_supply: u64,
+        initial_supply: u256,
         send_to: address,
         owner: address,
         is_mintable: bool,
@@ -41,7 +41,7 @@ module merak::assets_system {
     }
 
     /// Mint `amount` of asset `id` to `who`.
-    public entry fun mint(assets: &mut Assets, asset_id: u32, to: address, amount: u64, ctx: &mut TxContext) {
+    public entry fun mint(assets: &mut Assets, asset_id: u32, to: address, amount: u256, ctx: &mut TxContext) {
         let issuer = ctx.sender();
         let assets_details = assets.borrow_mut_details().get(asset_id);
         assert!(assets_details.get_owner() == issuer, 5);
@@ -51,7 +51,7 @@ module merak::assets_system {
     }
 
     /// Reduce the balance of `who` by as much as possible up to `amount` assets of `id`.
-    public entry fun burn(assets: &mut Assets, asset_id: u32, who: address, amount: u64, ctx: &mut TxContext) {
+    public entry fun burn(assets: &mut Assets, asset_id: u32, who: address, amount: u256, ctx: &mut TxContext) {
         let burner = ctx.sender();
         let assets_details = assets.borrow_mut_details().get(asset_id);
         assert!(assets_details.get_owner() == burner, 5);
@@ -61,7 +61,7 @@ module merak::assets_system {
     }
 
     /// Move some assets from the sender account to another.
-    public entry fun transfer(assets: &mut Assets, asset_id: u32, to: address, amount: u64, ctx: &mut TxContext) {
+    public entry fun transfer(assets: &mut Assets, asset_id: u32, to: address, amount: u256, ctx: &mut TxContext) {
         let from = ctx.sender();
         assets_functions::do_transfer(asset_id, from, to, amount, assets);
     }
@@ -157,11 +157,11 @@ module merak::assets_system {
         assets_ownership_transferred_event::emit(asset_id, owner, to);
     }
 
-    public fun balance_of(assets: &Assets, asset_id: u32, who: address): u64 {
+    public fun balance_of(assets: &Assets, asset_id: u32, who: address): u256 {
         assets_functions::balance_of(assets, asset_id, who)
     }
 
-    public fun supply_of(assets: &Assets, asset_id: u32): u64 {
+    public fun supply_of(assets: &Assets, asset_id: u32): u256 {
         assets_functions::supply_of(assets, asset_id)
     }
 

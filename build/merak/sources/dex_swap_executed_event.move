@@ -13,16 +13,16 @@
   public struct SwapExecutedEvent has copy, drop {
     who: address,
     send_to: address,
-    amount_in: u64,
-    amount_out: u64,
+    amount_in: u256,
+    amount_out: u256,
     path: vector<u32>,
   }
 
   public fun new(
     who: address,
     send_to: address,
-    amount_in: u64,
-    amount_out: u64,
+    amount_in: u256,
+    amount_out: u256,
     path: vector<u32>,
   ): SwapExecutedEvent {
     SwapExecutedEvent {
@@ -30,7 +30,7 @@
                                }
   }
 
-  public fun emit(who: address, send_to: address, amount_in: u64, amount_out: u64, path: vector<u32>) {
+  public fun emit(who: address, send_to: address, amount_in: u256, amount_out: u256, path: vector<u32>) {
     event::emit(SwapExecutedEvent {
                                    who,send_to,amount_in,amount_out,path
                                });

@@ -14,7 +14,7 @@
 
   public struct Details has copy, drop, store {
     owner: address,
-    supply: u64,
+    supply: u256,
     accounts: u32,
     approvals: u32,
     status: Status,
@@ -25,7 +25,7 @@
 
   public fun new(
     owner: address,
-    supply: u64,
+    supply: u256,
     accounts: u32,
     approvals: u32,
     status: Status,
@@ -38,7 +38,7 @@
                                }
   }
 
-  public fun get(self: &Details): (address,u64,u32,u32,Status,bool,bool,bool) {
+  public fun get(self: &Details): (address,u256,u32,u32,Status,bool,bool,bool) {
     (self.owner,self.supply,self.accounts,self.approvals,self.status,self.is_mintable,self.is_burnable,self.is_freezable)
   }
 
@@ -46,7 +46,7 @@
     self.owner
   }
 
-  public fun get_supply(self: &Details): u64 {
+  public fun get_supply(self: &Details): u256 {
     self.supply
   }
 
@@ -78,7 +78,7 @@
     self.owner = owner;
   }
 
-  public(package) fun set_supply(self: &mut Details, supply: u64) {
+  public(package) fun set_supply(self: &mut Details, supply: u256) {
     self.supply = supply;
   }
 
@@ -109,7 +109,7 @@
   public(package) fun set(
     self: &mut Details,
     owner: address,
-    supply: u64,
+    supply: u256,
     accounts: u32,
     approvals: u32,
     status: Status,

@@ -30,18 +30,18 @@ module merak::wrapper_system {
         let pool_balance = wrapper.borrow_mut_pools().borrow_mut<u32, Balance<T>>(asset_id);
         pool_balance.join(coin.into_balance());
 
-        assets_functions::do_mint(asset_id, beneficiary, amount, assets);
-        wrapper_wrapped_event::emit(ctx.sender(), asset_id, amount, beneficiary);
+        assets_functions::do_mint(asset_id, beneficiary, amount as u256, assets);
+        wrapper_wrapped_event::emit(ctx.sender(), asset_id, amount as u256, beneficiary);
     }
 
-    public entry fun unwrap<T>(wrapper: &mut Wrapper, assets: &mut Assets, amount: u64, beneficiary: address, ctx: &mut TxContext) {
+    public entry fun unwrap<T>(wrapper: &mut Wrapper, assets: &mut Assets, amount: u256, beneficiary: address, ctx: &mut TxContext) {
         let wrapper_coin = wrapper_coin::new<T>();
         assert!(wrapper.borrow_mut_asset_ids().contains(wrapper_coin), 0);
         let asset_id = *wrapper.borrow_mut_asset_ids().borrow<WrapperCoin<T>, u32>(wrapper_coin);
         assets_functions::do_burn(asset_id, ctx.sender(), amount, assets);
 
         let pool_balance = wrapper.borrow_mut_pools().borrow_mut<u32, Balance<T>>(asset_id);
-        let coin =  coin::from_balance<T>(pool_balance.split(amount), ctx);
+        let coin =  coin::from_balance<T>(pool_balance.split(amount as u64), ctx);
         transfer::public_transfer(coin, beneficiary);
         wrapper_unwrapped_event::emit(ctx.sender(), asset_id, amount, beneficiary);
     }

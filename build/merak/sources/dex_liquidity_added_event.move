@@ -13,19 +13,19 @@
   public struct LiquidityAddedEvent has copy, drop {
     who: address,
     pool_id: u32,
-    asset1_amount: u64,
-    asset2_amount: u64,
+    asset1_amount: u256,
+    asset2_amount: u256,
     lp_asset_id: u32,
-    lp_asset_minted: u64,
+    lp_asset_minted: u256,
   }
 
   public fun new(
     who: address,
     pool_id: u32,
-    asset1_amount: u64,
-    asset2_amount: u64,
+    asset1_amount: u256,
+    asset2_amount: u256,
     lp_asset_id: u32,
-    lp_asset_minted: u64,
+    lp_asset_minted: u256,
   ): LiquidityAddedEvent {
     LiquidityAddedEvent {
                                    who,pool_id,asset1_amount,asset2_amount,lp_asset_id,lp_asset_minted
@@ -35,10 +35,10 @@
   public fun emit(
     who: address,
     pool_id: u32,
-    asset1_amount: u64,
-    asset2_amount: u64,
+    asset1_amount: u256,
+    asset2_amount: u256,
     lp_asset_id: u32,
-    lp_asset_minted: u64,
+    lp_asset_minted: u256,
   ) {
     event::emit(LiquidityAddedEvent {
                                    who,pool_id,asset1_amount,asset2_amount,lp_asset_id,lp_asset_minted

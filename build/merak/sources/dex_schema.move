@@ -24,9 +24,16 @@
 
   use merak::dex_pool::Pool;
 
+  use merak::dex_path_element::PathElement;
+
   public struct Dex has key, store {
     id: UID,
     next_pool_id: StorageValue<u32>,
+    swap_fee: StorageValue<u256>,
+    lp_fee: StorageValue<u256>,
+    fee_to: StorageValue<address>,
+    max_swap_path_len: StorageValue<u8>,
+    min_liquidity: StorageValue<u256>,
     pool_id: StorageDoubleMap<u32, u32, u32>,
     pools: StorageMap<u32, Pool>,
   }
@@ -37,6 +44,46 @@
 
   public(package) fun borrow_mut_next_pool_id(self: &mut Dex): &mut StorageValue<u32> {
     &mut self.next_pool_id
+  }
+
+  public fun borrow_swap_fee(self: &Dex): &StorageValue<u256> {
+    &self.swap_fee
+  }
+
+  public(package) fun borrow_mut_swap_fee(self: &mut Dex): &mut StorageValue<u256> {
+    &mut self.swap_fee
+  }
+
+  public fun borrow_lp_fee(self: &Dex): &StorageValue<u256> {
+    &self.lp_fee
+  }
+
+  public(package) fun borrow_mut_lp_fee(self: &mut Dex): &mut StorageValue<u256> {
+    &mut self.lp_fee
+  }
+
+  public fun borrow_fee_to(self: &Dex): &StorageValue<address> {
+    &self.fee_to
+  }
+
+  public(package) fun borrow_mut_fee_to(self: &mut Dex): &mut StorageValue<address> {
+    &mut self.fee_to
+  }
+
+  public fun borrow_max_swap_path_len(self: &Dex): &StorageValue<u8> {
+    &self.max_swap_path_len
+  }
+
+  public(package) fun borrow_mut_max_swap_path_len(self: &mut Dex): &mut StorageValue<u8> {
+    &mut self.max_swap_path_len
+  }
+
+  public fun borrow_min_liquidity(self: &Dex): &StorageValue<u256> {
+    &self.min_liquidity
+  }
+
+  public(package) fun borrow_mut_min_liquidity(self: &mut Dex): &mut StorageValue<u256> {
+    &mut self.min_liquidity
   }
 
   public fun borrow_pool_id(self: &Dex): &StorageDoubleMap<u32, u32, u32> {
@@ -64,7 +111,7 @@
     dapps_system::add_schema<Dex>(dapps, package_id, ctx);
     Dex {
                           id: object::new(ctx),
-                          next_pool_id: storage_value::new(), pool_id: storage_double_map::new(), pools: storage_map::new(),
+                          next_pool_id: storage_value::new(), swap_fee: storage_value::new(), lp_fee: storage_value::new(), fee_to: storage_value::new(), max_swap_path_len: storage_value::new(), min_liquidity: storage_value::new(), pool_id: storage_double_map::new(), pools: storage_map::new(),
                         }
   }
 
@@ -72,6 +119,26 @@
 
   public fun get_next_pool_id(self: &Dex): Option<u32> {
     self.next_pool_id.try_get()
+  }
+
+  public fun get_swap_fee(self: &Dex): Option<u256> {
+    self.swap_fee.try_get()
+  }
+
+  public fun get_lp_fee(self: &Dex): Option<u256> {
+    self.lp_fee.try_get()
+  }
+
+  public fun get_fee_to(self: &Dex): Option<address> {
+    self.fee_to.try_get()
+  }
+
+  public fun get_max_swap_path_len(self: &Dex): Option<u8> {
+    self.max_swap_path_len.try_get()
+  }
+
+  public fun get_min_liquidity(self: &Dex): Option<u256> {
+    self.min_liquidity.try_get()
   }
 
   public fun get_pool_id(self: &Dex, key1: u32, key2: u32): Option<u32> {

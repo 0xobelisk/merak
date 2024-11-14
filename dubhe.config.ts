@@ -15,7 +15,7 @@ export const dubheConfig = {
                 },
                 {
                     name: 'Account',
-                    fields: { balance: 'u64', status: 'AccountStatus' },
+                    fields: { balance: 'u128', status: 'AccountStatus' },
                 },
                 {
                     name: 'Metadata',
@@ -40,7 +40,7 @@ export const dubheConfig = {
                         // Can change `owner`, `issuer`, `freezer` and `admin` accounts.
                         owner: 'address',
                         // The total supply across all accounts.
-                        supply: 'u64',
+                        supply: 'u128',
                         // The total number of accounts.
                         accounts: 'u32',
                         // The total number of approvals.

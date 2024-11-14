@@ -13,17 +13,17 @@
   public struct WrappedEvent has copy, drop {
     from: address,
     asset_id: u32,
-    amount: u64,
+    amount: u256,
     beneficiary: address,
   }
 
-  public fun new(from: address, asset_id: u32, amount: u64, beneficiary: address): WrappedEvent {
+  public fun new(from: address, asset_id: u32, amount: u256, beneficiary: address): WrappedEvent {
     WrappedEvent {
                                    from,asset_id,amount,beneficiary
                                }
   }
 
-  public fun emit(from: address, asset_id: u32, amount: u64, beneficiary: address) {
+  public fun emit(from: address, asset_id: u32, amount: u256, beneficiary: address) {
     event::emit(WrappedEvent {
                                    from,asset_id,amount,beneficiary
                                });

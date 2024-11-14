@@ -13,16 +13,16 @@
   public struct BurnedEvent has copy, drop {
     asset_id: u32,
     from: address,
-    amount: u64,
+    amount: u256,
   }
 
-  public fun new(asset_id: u32, from: address, amount: u64): BurnedEvent {
+  public fun new(asset_id: u32, from: address, amount: u256): BurnedEvent {
     BurnedEvent {
                                    asset_id,from,amount
                                }
   }
 
-  public fun emit(asset_id: u32, from: address, amount: u64) {
+  public fun emit(asset_id: u32, from: address, amount: u256) {
     event::emit(BurnedEvent {
                                    asset_id,from,amount
                                });
