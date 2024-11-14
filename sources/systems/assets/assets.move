@@ -12,6 +12,12 @@ module merak::assets_system {
     use merak::assets_status;
     use merak::assets_functions;
 
+    const ENoPermission: u64 = 0;
+    const ENotMintable: u64 = 1;
+    const EAssetNotFound: u64 = 2;
+    const ENotBurnable: u64 = 3;
+    const EAccountNotFound: u64 = 4;
+
     public entry fun create(
         assets: &mut Assets,
         name: String,
@@ -43,9 +49,10 @@ module merak::assets_system {
     /// Mint `amount` of asset `id` to `who`.
     public entry fun mint(assets: &mut Assets, asset_id: u32, to: address, amount: u256, ctx: &mut TxContext) {
         let issuer = ctx.sender();
+        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
         let assets_details = assets.borrow_mut_details().get(asset_id);
-        assert!(assets_details.get_owner() == issuer, 5);
-        assert!(assets_details.get_is_mintable(), 6);
+        assert!(assets_details.get_owner() == issuer, ENoPermission);
+        assert!(assets_details.get_is_mintable(), ENotMintable);
 
         assets_functions::do_mint(asset_id, to, amount, assets);
     }
@@ -53,9 +60,10 @@ module merak::assets_system {
     /// Reduce the balance of `who` by as much as possible up to `amount` assets of `id`.
     public entry fun burn(assets: &mut Assets, asset_id: u32, who: address, amount: u256, ctx: &mut TxContext) {
         let burner = ctx.sender();
+        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
         let assets_details = assets.borrow_mut_details().get(asset_id);
-        assert!(assets_details.get_owner() == burner, 5);
-        assert!(assets_details.get_is_burnable(), 6);
+        assert!(assets_details.get_owner() == burner, ENoPermission);
+        assert!(assets_details.get_is_burnable(), ENotBurnable);
 
         assets_functions::do_burn(asset_id, who, amount, assets);
     }
@@ -79,12 +87,12 @@ module merak::assets_system {
     public entry fun freeze_address(assets: &mut Assets, asset_id: u32, who: address, ctx: &mut TxContext) {
         let freezer = ctx.sender();
 
-        assert!(assets.borrow_mut_details().contains_key(asset_id), 5);
+        assert!(assets.borrow_mut_details().contains_key(asset_id), EAssetNotFound);
         let assets_details = assets.borrow_mut_details().get(asset_id);
         assert!(assets_details.get_status() != assets_status::new_destroying(), 5);
-        assert!(assets_details.get_owner() == freezer, 6);
+        assert!(assets_details.get_owner() == freezer, ENoPermission);
 
-        assert!(assets.borrow_mut_account().contains_key(asset_id, who), 5);
+        assert!(assets.borrow_account().contains_key(asset_id, who), EAccountNotFound);
         let account = assets.borrow_mut_account().borrow_mut(asset_id, who);
         account.set_status(assets_account_status::new_frozen());
         assets_frozen_address_event::emit(asset_id, who);
@@ -94,11 +102,11 @@ module merak::assets_system {
     public entry fun block_address(assets: &mut Assets, asset_id: u32, who: address, ctx: &mut TxContext) {
         let blocker = ctx.sender();
 
-        assert!(assets.borrow_mut_details().contains_key(asset_id), 5);
+        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
         let assets_details = assets.borrow_mut_details().get(asset_id);
-        assert!(assets_details.get_owner() == blocker, 6);
+        assert!(assets_details.get_owner() == blocker, ENoPermission);
 
-        assert!(assets.borrow_mut_account().contains_key(asset_id, who), 5);
+        assert!(assets.borrow_account().contains_key(asset_id, who), EAccountNotFound);
         let account = assets.borrow_mut_account().borrow_mut(asset_id, who);
         account.set_status(assets_account_status::new_blocked());
         assets_blocked_address_event::emit(asset_id, who);
@@ -108,12 +116,12 @@ module merak::assets_system {
     public entry fun thaw_address(assets: &mut Assets, asset_id: u32, who: address, ctx: &mut TxContext) {
         let unfreezer = ctx.sender();
 
-        assert!(assets.borrow_mut_details().contains_key(asset_id), 5);
+        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
         let assets_details = assets.borrow_mut_details().get(asset_id);
         assert!(assets_details.get_status() != assets_status::new_destroying(), 5);
-        assert!(assets_details.get_owner() == unfreezer, 6);
+        assert!(assets_details.get_owner() == unfreezer, ENoPermission);
 
-        assert!(assets.borrow_mut_account().contains_key(asset_id, who), 5);
+        assert!(assets.borrow_account().contains_key(asset_id, who), EAccountNotFound);
         let account = assets.borrow_mut_account().borrow_mut(asset_id, who);
         account.set_status(assets_account_status::new_liquid());
         assets_thawed_address_event::emit(asset_id, who);
@@ -123,10 +131,10 @@ module merak::assets_system {
     public entry fun freeze_asset(assets: &mut Assets, asset_id: u32, ctx: &mut TxContext) {
         let freezer = ctx.sender();
 
-        assert!(assets.borrow_mut_details().contains_key(asset_id), 5);
+        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
         let assets_details = assets.borrow_mut_details().borrow_mut(asset_id);
         assert!(assets_details.get_status() == assets_status::new_live(), 5);
-        assert!(assets_details.get_owner() == freezer, 6);
+        assert!(assets_details.get_owner() == freezer, ENoPermission);
 
         assets_details.set_status(assets_status::new_frozen());
         assets_frozen_asset_event::emit(asset_id);
@@ -136,10 +144,10 @@ module merak::assets_system {
     public entry fun thaw_asset(assets: &mut Assets, asset_id: u32, ctx: &mut TxContext) {
         let unfreezer = ctx.sender();
 
-        assert!(assets.borrow_mut_details().contains_key(asset_id), 5);
+        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
         let assets_details = assets.borrow_mut_details().borrow_mut(asset_id);
         assert!(assets_details.get_status() == assets_status::new_frozen(), 5);
-        assert!(assets_details.get_owner() == unfreezer, 6);
+        assert!(assets_details.get_owner() == unfreezer, ENoPermission);
 
         assets_details.set_status(assets_status::new_live());
         assets_thawed_asset_event::emit(asset_id);
@@ -149,9 +157,9 @@ module merak::assets_system {
     public entry fun transfer_ownership(assets: &mut Assets, asset_id: u32, to: address, ctx: &mut TxContext) {
         let owner = ctx.sender();
 
-        assert!(assets.borrow_mut_details().contains_key(asset_id), 5);
+        assert!(assets.borrow_details().contains_key(asset_id), 5);
         let assets_details = assets.borrow_mut_details().borrow_mut(asset_id);
-        assert!(assets_details.get_owner() == owner, 6);
+        assert!(assets_details.get_owner() == owner, EAssetNotFound);
 
         assets_details.set_owner(to);
         assets_ownership_transferred_event::emit(asset_id, owner, to);

@@ -80,7 +80,7 @@ module merak::dex_tests {
     }
 
     #[test]
-    #[expected_failure(abort_code = 0, location = merak::dex_system)]
+    #[expected_failure(abort_code = merak::dex_system::EPoolAlreadyExists, location = merak::dex_system)]
     public fun create_same_pool_twice_should_fail() {
         let (mut assets, dapps, mut scenario) = init_test();
         let mut dex = test_scenario::take_shared<Dex>(&scenario);

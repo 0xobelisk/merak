@@ -12,6 +12,12 @@ module merak::assets_functions {
     use merak::assets_minted_event;
     use merak::assets_created_event;
 
+    const EAssetNotFound: u64 = 0;
+    const EAccountNotFound: u64 = 1;
+    const EAccountBlocked: u64 = 2;
+    const EOverflows: u64 = 3;
+    const EAccountFrozen: u64 = 4;
+
     public(package) fun do_create(
         assets: &mut Assets,
         is_mintable: bool,
@@ -54,35 +60,35 @@ module merak::assets_functions {
     }
 
     public(package) fun can_increase(asset_id: u32, beneficiary: address, amount: u256, assets: &Assets) {
-        assert!(assets.borrow_details().contains_key(asset_id), 0);
+        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
         let details = assets.borrow_details().get(asset_id);
         let (_, supply,_,_, status,_, _,_) = details.get();
 
-        assert!(amount < u256::max_value!() - supply, 2);
+        assert!(amount < u256::max_value!() - supply, EOverflows);
         assert!(status != assets_status::new_destroying(), 3);
 
         let maybe_account = assets.borrow_account().try_get(asset_id, beneficiary);
         if (maybe_account.is_some()) {
             let account = maybe_account.borrow();
             let (_, status) = account.get();
-            assert!(status != assets_account_status::new_blocked(), 4);
+            assert!(status != assets_account_status::new_blocked(), EAccountBlocked);
         };
     }
 
     public fun can_decrease(asset_id: u32, who: address, amount: u256, assets: &Assets) {
-        assert!(assets.borrow_details().contains_key(asset_id), 0);
+        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
         let details = assets.borrow_details().get(asset_id);
         let (_, supply,_,_, status,_, _,_) = details.get();
 
-        assert!(supply >= amount, 2);
+        assert!(supply >= amount, EOverflows);
         assert!(status == assets_status::new_live(), 5);
 
-        assert!(assets.borrow_account().contains_key(asset_id, who), 6);
+        assert!(assets.borrow_account().contains_key(asset_id, who), EAccountNotFound);
         let account = assets.borrow_account().get(asset_id, who);
         let (balance, status) = account.get();
         assert!(balance >= amount, 4);
-        assert!(status != assets_account_status::new_frozen(), 5);
-        assert!(status != assets_account_status::new_blocked(), 5);
+        assert!(status != assets_account_status::new_frozen(), EAccountFrozen);
+        assert!(status != assets_account_status::new_blocked(), EAccountBlocked);
     }
 
     public (package) fun increase_balance(asset_id: u32, beneficiary: address, amount: u256, assets: &mut Assets) {

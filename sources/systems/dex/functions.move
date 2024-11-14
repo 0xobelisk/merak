@@ -14,6 +14,10 @@ module merak::dex_functions {
     use merak::dex_path_element::PathElement;
     use merak::dex_path_element;
 
+    const EPoolNotFound: u64 = 0;
+    const EBelowMinLiquidity: u64 = 1;
+    const EMoreThanMaxSwapPathLen: u64 = 2;
+
     public(package) fun sort_assets(asset1: u32, asset2: u32): (u32, u32) {
         assert!(asset1 != asset2, 0);
         if (asset1 < asset2) {
@@ -25,15 +29,15 @@ module merak::dex_functions {
 
     public(package) fun get_pool_id(dex: &Dex, asset1: u32, asset2: u32): u32 {
         let (asset1, asset2) = sort_assets(asset1, asset2);
-        assert!(dex.borrow_pool_id().contains_key(asset1, asset2), 0);
+        assert!(dex.borrow_pool_id().contains_key(asset1, asset2), EPoolNotFound);
         dex.borrow_pool_id().get(asset1, asset2)
     }
 
     public(package) fun get_pool(dex: &Dex, asset1: u32, asset2: u32): Pool {
         let (asset1, asset2) = sort_assets(asset1, asset2);
-        assert!(dex.borrow_pool_id().contains_key(asset1, asset2), 0);
+        assert!(dex.borrow_pool_id().contains_key(asset1, asset2), EPoolNotFound);
         let pool_id = dex.borrow_pool_id().get(asset1, asset2);
-        assert!(dex.borrow_pools().contains_key(pool_id), 0);
+        assert!(dex.borrow_pools().contains_key(pool_id), EPoolNotFound);
         dex.borrow_pools().get(pool_id)
     }
 
@@ -54,7 +58,7 @@ module merak::dex_functions {
     public(package) fun calc_lp_amount_for_zero_supply(dex: &Dex, amount1: u256, amount2: u256): u256 {
         let result  = math_system::safe_mul_sqrt(amount1 , amount2 );
         let min_liquidity = dex.borrow_min_liquidity().get();
-        assert!(result >= min_liquidity, 0);
+        assert!(result >= min_liquidity, EBelowMinLiquidity);
         result - min_liquidity
     }
 
@@ -64,7 +68,7 @@ module merak::dex_functions {
     public(package) fun validate_swap_path(dex: &Dex, path: vector<u32>) {
         let len = path.length();
         assert!(len >= 2, 0);
-        assert!(len <= (dex.borrow_max_swap_path_len().get() as u64), 0);
+        assert!(len <= (dex.borrow_max_swap_path_len().get() as u64), EMoreThanMaxSwapPathLen);
 
         let mut pools = vec_set::empty<u32>();
 

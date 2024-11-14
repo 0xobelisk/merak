@@ -15,17 +15,22 @@ module merak::dex_system {
 
     const LP_ASSET_DESCRIPTION: vector<u8> = b"Poils LP Asset";
 
+    const EAssetNotFound: u64 = 0;
+    const EOverflows: u64 = 1;
+    const EPoolAlreadyExists: u64 = 2;
+    const EBelowMinAmount: u64 = 3;
+
     public entry fun create_pool(dex: &mut Dex, assets: &mut Assets, asset1: u32, asset2: u32, ctx: &mut TxContext) {
         let sender = ctx.sender();
 
         let (asset1, asset2) = sort_assets(asset1, asset2);
 
-        assert!(assets.borrow_mut_metadata().contains_key(asset1), 0);
-        assert!(assets.borrow_mut_metadata().contains_key(asset2), 0);
-        assert!(!dex.borrow_mut_pool_id().contains_key(asset1, asset2), 0);
+        assert!(assets.borrow_metadata().contains_key(asset1), EAssetNotFound);
+        assert!(assets.borrow_metadata().contains_key(asset2), EAssetNotFound);
+        assert!(!dex.borrow_pool_id().contains_key(asset1, asset2), EPoolAlreadyExists);
 
         let pool_id = dex.borrow_mut_next_pool_id().get();
-        assert!(!dex.borrow_mut_pools().contains_key(pool_id), 0);
+        assert!(!dex.borrow_pools().contains_key(pool_id), EPoolAlreadyExists);
 
         let asset1_metadata = assets.borrow_mut_metadata().get(asset1);
         let asset2_metadata = assets.borrow_mut_metadata().get(asset2);
@@ -125,7 +130,7 @@ module merak::dex_system {
         let reserve2 = assets_functions::balance_of(assets, asset2, pool.get_pool_address());
 
         let total_supply = assets_functions::supply_of(assets, pool.get_lp_asset_id());
-        assert!(total_supply >= lp_token_burn, 0);
+        assert!(total_supply >= lp_token_burn, EOverflows);
 
         if(dex.borrow_fee_to().get() != @0x0) {
             let lp_fee = dex.borrow_lp_fee().get();
@@ -137,8 +142,8 @@ module merak::dex_system {
         let amount1 = math_system::safe_mul_div(lp_token_burn, reserve1, total_supply);
         let amount2 = math_system::safe_mul_div(lp_token_burn, reserve2, total_supply);
 
-        assert!(amount1 > 0 && amount1 >= amount1_min_receive, 0);
-        assert!(amount2 > 0 && amount2 >= amount2_min_receive, 0);
+        assert!(amount1 > 0 && amount1 >= amount1_min_receive, EBelowMinAmount);
+        assert!(amount2 > 0 && amount2 >= amount2_min_receive, EBelowMinAmount);
 
         // burn the provided lp token amount that includes the fee
         assets_functions::do_burn(pool.get_lp_asset_id(), sender, lp_token_burn, assets);
