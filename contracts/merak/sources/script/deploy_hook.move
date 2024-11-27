@@ -57,7 +57,7 @@ module merak::deploy_hook {
     // Create schemas
     let mut assets = merak::assets_schema::create(ctx);
     let mut dex = merak::dex_schema::create(ctx);
-    let mut wrapper = merak::wrapper_schema::create(ctx);
+    let wrapper = merak::wrapper_schema::create(ctx);
     // Logic that needs to be automated once the contract is deployed
 
     assets.borrow_mut_next_asset_id().set(0);
