@@ -61,6 +61,7 @@ export const dubheConfig = {
                 metadata: 'StorageMap<u32, Metadata>',
                 details: 'StorageMap<u32, Details>',
                 account: 'StorageDoubleMap<u32, address, Account>',
+                account2: 'StorageDoubleMap<u32, address, Account>',
             },
         },
         dex: {
