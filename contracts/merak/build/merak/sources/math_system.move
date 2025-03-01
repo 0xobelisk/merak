@@ -95,16 +95,16 @@ module merak::math_system {
         }
     }
 
-    public(package) fun windows(x: &vector<u32>, size: u64): vector<vector<u32>> {
+    public(package) fun windows(x: &vector<u128>, size: u64): vector<vector<u128>> {
         assert!(size > 0, 0);
 
         let length = vector::length(x);
-        let mut result = vector::empty<vector<u32>>();
+        let mut result = vector::empty<vector<u128>>();
 
         let num_windows = length - size + 1;
 
         u64::range_do!(0, num_windows, |i| {
-            let mut window = vector::empty<u32>();
+            let mut window = vector::empty<u128>();
             u64::range_do!(0, size, |j| {
                 window.push_back(x[i + j]);
             });

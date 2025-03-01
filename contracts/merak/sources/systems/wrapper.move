@@ -1,61 +1,63 @@
 module merak::wrapper_system {
     use std::ascii::String;
+    use std::ascii::string;
     use merak::assets_functions;
     use sui::balance;
     use sui::balance::Balance;
     use sui::coin;
-    use sui::coin::Coin;
-    use merak::wrapper_coin;
-    use merak::wrapper_coin::WrapperCoin;
-    use merak::assets_schema::Assets;
-    use merak::wrapper_schema::Wrapper;
-    use merak::wrapper_wrapped_event;
-    use merak::wrapper_unwrapped_event;
-    use merak::wrapper_registered_event;
+    use sui::coin::{Coin, CoinMetadata};
+    use merak::wrapper_schema::WrapperCoin;
+    use merak::wrapper_schema;
+    use merak::schema::Schema;
+    use std::type_name;
 
-    public entry fun register<T>(wrapper: &mut Wrapper, assets: &mut Assets, name: String, symbol: String, description: String, decimals: u8, url: String, info: String, ctx: &mut TxContext) {
-        let asset_id = assets.borrow_mut_next_asset_id().get();
-        wrapper.borrow_mut_asset_ids().add<WrapperCoin<T>, u32>(wrapper_coin::new(), asset_id);
-        wrapper.borrow_mut_coins().add<u32, WrapperCoin<T>>(asset_id , wrapper_coin::new());
-        wrapper.borrow_mut_pools().add<u32, Balance<T>>(asset_id, balance::zero<T>());
-        assets_functions::do_create(assets, false, false, true, ctx.sender(), name, symbol, description, decimals, url, info);
-        wrapper_registered_event::emit(ctx.sender(), asset_id);
+    public entry fun force_register<T>(schema: &mut Schema, name: String, symbol: String, description: String, decimals: u8, url: String, info: String, ctx: &mut TxContext) {
+        let asset_id = assets_functions::do_create(schema, false, false, true, ctx.sender(), name, symbol, description, decimals, url, info);
+        wrapper_schema::wrapper_assets(schema).add<WrapperCoin<T>, u128>(wrapper_schema::new(), asset_id);
+        let coin_type = type_name::get<T>().into_string();
+        dubhe::storage_event::emit_set_record<String, String, u128>(string(b"wrapper_assets"), option::some(coin_type), option::none(), option::some(asset_id));
+        wrapper_schema::wrapper_pools(schema).add<u128, Balance<T>>(asset_id, balance::zero<T>());
+        dubhe::storage_event::emit_set_record<u128, u128, u64>(string(b"wrapper_pools"), option::some(asset_id), option::none(), option::some(0));
     }
 
-    public entry fun wrap<T>(wrapper: &mut Wrapper, assets: &mut Assets, coin: Coin<T>, beneficiary: address, ctx: &mut TxContext) {
-        let wrapper_coin = wrapper_coin::new<T>();
-        assert!(wrapper.borrow_asset_ids().contains(wrapper_coin), 0);
-        let asset_id = *wrapper.borrow_asset_ids().borrow<WrapperCoin<T>, u32>(wrapper_coin);
+    public entry fun register<T>(schema: &mut Schema, metadata: &CoinMetadata<T>, ctx: &mut TxContext) {
+        let name = metadata.get_name().to_ascii();
+        let decimals = metadata.get_decimals();
+        let symbol = metadata.get_symbol();
+        let description = metadata.get_description().to_ascii();
+        let icon_url = if (metadata.get_icon_url().is_some()) {
+            metadata.get_icon_url().borrow().inner_url()
+        } else {
+            string(b"")
+        };
+        let asset_id = assets_functions::do_create(schema, false, false, true, ctx.sender(), name, symbol, description, decimals, icon_url, string(b""));
+        wrapper_schema::wrapper_assets(schema).add<WrapperCoin<T>, u128>(wrapper_schema::new(), asset_id);
+        let coin_type = type_name::get<T>().into_string();
+        dubhe::storage_event::emit_set_record<String, String, u128>(string(b"wrapper_assets"), option::some(coin_type), option::none(), option::some(asset_id));
+        wrapper_schema::wrapper_pools(schema).add<u128, Balance<T>>(asset_id, balance::zero<T>());
+        dubhe::storage_event::emit_set_record<u128, u128, u64>(string(b"wrapper_pools"), option::some(asset_id), option::none(), option::some(0));
+    }
+
+    public entry fun wrap<T>(schema: &mut Schema, coin: Coin<T>, beneficiary: address) {
+        let wrapper_coin = wrapper_schema::new<T>();
+        assert!(wrapper_schema::wrapper_assets(schema).contains(wrapper_coin), 0);
+        let asset_id = *wrapper_schema::wrapper_assets(schema).borrow<WrapperCoin<T>, u128>(wrapper_coin);
         let amount = coin.value();
-        let pool_balance = wrapper.borrow_mut_pools().borrow_mut<u32, Balance<T>>(asset_id);
+        let pool_balance = wrapper_schema::wrapper_pools(schema).borrow_mut<u128, Balance<T>>(asset_id);
         pool_balance.join(coin.into_balance());
-
-        assets_functions::do_mint(asset_id, beneficiary, amount as u256, assets);
-        wrapper_wrapped_event::emit(ctx.sender(), asset_id, amount as u256, beneficiary);
+        dubhe::storage_event::emit_set_record<u128, u128, u64>(string(b"wrapper_pools"), option::some(asset_id), option::none(), option::some(pool_balance.value()));
+        assets_functions::do_mint(schema, asset_id, beneficiary, amount as u256);
     }
 
-    public entry fun unwrap<T>(wrapper: &mut Wrapper, assets: &mut Assets, amount: u256, beneficiary: address, ctx: &mut TxContext) {
-        let wrapper_coin = wrapper_coin::new<T>();
-        assert!(wrapper.borrow_mut_asset_ids().contains(wrapper_coin), 0);
-        let asset_id = *wrapper.borrow_mut_asset_ids().borrow<WrapperCoin<T>, u32>(wrapper_coin);
-        assets_functions::do_burn(asset_id, ctx.sender(), amount, assets);
+    public entry fun unwrap<T>(schema: &mut Schema, amount: u256, beneficiary: address, ctx: &mut TxContext) {
+        let wrapper_coin = wrapper_schema::new<T>();
+        assert!(wrapper_schema::wrapper_assets(schema).contains(wrapper_coin), 0);
+        let asset_id = *wrapper_schema::wrapper_assets(schema).borrow<WrapperCoin<T>, u128>(wrapper_coin);
+        assets_functions::do_burn(schema, asset_id, ctx.sender(), amount);
 
-        let pool_balance = wrapper.borrow_mut_pools().borrow_mut<u32, Balance<T>>(asset_id);
+        let pool_balance = wrapper_schema::wrapper_pools(schema).borrow_mut<u128, Balance<T>>(asset_id);
         let coin =  coin::from_balance<T>(pool_balance.split(amount as u64), ctx);
         transfer::public_transfer(coin, beneficiary);
-        wrapper_unwrapped_event::emit(ctx.sender(), asset_id, amount, beneficiary);
-    }
-
-    public fun wrapped_assets(wrapper: &Wrapper, assets: &Assets): vector<u32> {
-        let mut wrapped_assets = vector[];
-        let asset_ids = assets.borrow_details().keys();
-        let mut i = 0;
-        while (i  < (asset_ids.length() as u32)) {
-            if (wrapper.borrow_coins().contains(i)) {
-                wrapped_assets.push_back(i);
-            };
-            i = i + 1;
-        };
-        wrapped_assets
+        dubhe::storage_event::emit_set_record<u128, u128, u64>(string(b"wrapper_pools"), option::some(asset_id), option::none(), option::some(pool_balance.value()));
     }
 }

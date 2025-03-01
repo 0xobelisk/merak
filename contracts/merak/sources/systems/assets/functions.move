@@ -1,25 +1,21 @@
 module merak::assets_functions {
     use std::u256;
     use std::ascii::String;
-    use merak::assets_transferred_event;
-    use merak::assets_account_status;
-    use merak::assets_status;
-    use merak::assets_details;
-    use merak::assets_metadata;
-    use merak::assets_schema::Assets;
-    use merak::assets_account;
-    use merak::assets_burned_event;
-    use merak::assets_minted_event;
-    use merak::assets_created_event;
-
-    const EAssetNotFound: u64 = 0;
-    const EAccountNotFound: u64 = 1;
-    const EAccountBlocked: u64 = 2;
-    const EOverflows: u64 = 3;
-    const EAccountFrozen: u64 = 4;
+    use merak::account_status;
+    use merak::asset_status;
+    use merak::asset_details;
+    use merak::asset_metadata;
+    use merak::account;
+    use merak::schema::Schema;
+    use merak::events::{asset_burned_event, asset_minted_event, asset_created_event, asset_transferred_event};
+    use merak::errors::{
+        account_blocked_error, overflows_error, 
+        asset_already_destroyed_error, asset_not_found_error, 
+        account_not_found_error, account_frozen_error, asset_not_live_error, balance_too_low_error
+        };
 
     public(package) fun do_create(
-        assets: &mut Assets,
+        schema: &mut Schema,
         is_mintable: bool,
         is_burnable: bool,
         is_freezable: bool,
@@ -30,155 +26,132 @@ module merak::assets_functions {
         decimals: u8,
         url: String,
         info: String,
-
-    ): u32 {
-        let asset_id = assets.borrow_next_asset_id().get();
+    ): u128 {
+        let asset_id = schema.next_asset_id()[];
 
         // set the assets details
-        let assets_details = assets_details::new(
+        let asset_details = asset_details::new(
             owner,
             0,
             0,
             0,
-            assets_status::new_live(),
+            asset_status::new_live(),
             is_mintable,
             is_burnable,
             is_freezable
         );
-        assets.borrow_mut_details().insert(asset_id, assets_details);
+        schema.asset_details().set(asset_id, asset_details);
 
         // set the metadata
-        let assets_metadata = assets_metadata::new(name, symbol, description, decimals, url, info);
-        assets.borrow_mut_metadata().insert(asset_id, assets_metadata);
+        let asset_metadata = asset_metadata::new(name, symbol, description, decimals, url, info);
+        schema.asset_metadata().set(asset_id, asset_metadata);
 
         // Increment the asset ID
-        assets.borrow_mut_next_asset_id().set(asset_id + 1);
+        schema.next_asset_id().set(asset_id + 1);
 
-        assets_created_event::emit(asset_id, name, symbol, owner, is_mintable, is_burnable, is_freezable);
+        asset_created_event(asset_id, name, symbol, owner, is_mintable, is_burnable, is_freezable);
 
         asset_id
     }
 
-    public(package) fun can_increase(asset_id: u32, beneficiary: address, amount: u256, assets: &Assets) {
-        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
-        let details = assets.borrow_details().get(asset_id);
-        let (_, supply,_,_, status,_, _,_) = details.get();
+    public fun ensure_can_increase(schema: &mut Schema, asset_id: u128, beneficiary: address, amount: u256) {
+        asset_not_found_error(schema.asset_details().contains(asset_id));
+        let details = schema.asset_details().get(asset_id);
+        let supply = details.get_supply();
+        let status = details.get_status();
 
-        assert!(amount < u256::max_value!() - supply, EOverflows);
-        assert!(status != assets_status::new_destroying(), 3);
+        overflows_error(amount < u256::max_value!() - supply);
+        asset_already_destroyed_error(status != asset_status::new_destroying());
 
-        let maybe_account = assets.borrow_account().try_get(asset_id, beneficiary);
+        let maybe_account = schema.account().try_get(asset_id, beneficiary);
         if (maybe_account.is_some()) {
             let account = maybe_account.borrow();
             let (_, status) = account.get();
-            assert!(status != assets_account_status::new_blocked(), EAccountBlocked);
+            account_blocked_error(status != account_status::new_blocked())
         };
     }
 
-    public fun can_decrease(asset_id: u32, who: address, amount: u256, assets: &Assets) {
-        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
-        let details = assets.borrow_details().get(asset_id);
-        let (_, supply,_,_, status,_, _,_) = details.get();
+    public fun ensure_can_decrease(schema: &mut Schema, asset_id: u128, who: address, amount: u256) {
+        asset_not_found_error(schema.asset_details().contains(asset_id));
+        let details = schema.asset_details().get(asset_id);
+        let supply = details.get_supply();
+        let status = details.get_status();
 
-        assert!(supply >= amount, EOverflows);
-        assert!(status == assets_status::new_live(), 5);
+        overflows_error(supply >= amount);
+        asset_not_live_error(status == asset_status::new_live());
 
-        assert!(assets.borrow_account().contains_key(asset_id, who), EAccountNotFound);
-        let account = assets.borrow_account().get(asset_id, who);
-        let (balance, status) = account.get();
-        assert!(balance >= amount, 4);
-        assert!(status != assets_account_status::new_frozen(), EAccountFrozen);
-        assert!(status != assets_account_status::new_blocked(), EAccountBlocked);
+        account_not_found_error(schema.account().contains(asset_id, who));
+        let (balance, status) = schema.account().get(asset_id, who).get();
+        balance_too_low_error(balance >= amount);
+        account_frozen_error(status != account_status::new_frozen());
+        account_blocked_error(status != account_status::new_blocked());
     }
 
-    public (package) fun increase_balance(asset_id: u32, beneficiary: address, amount: u256, assets: &mut Assets) {
+    public (package) fun increase_balance(schema: &mut Schema, asset_id: u128, beneficiary: address, amount: u256) {
         // Ensure that the asset can be increased
-        can_increase(asset_id, beneficiary, amount, assets);
+        ensure_can_increase(schema, asset_id, beneficiary, amount);
 
-        if (assets.borrow_account().contains_key(asset_id, beneficiary)) {
-            // Increase the balance
-            assets.borrow_mut_account().mutate!(asset_id, beneficiary, |account| {
-                let balance = account.get_balance();
-                account.set_balance(balance + amount);
-            });
+        let mut account = schema.account().try_get(asset_id, beneficiary);
+        if(account.is_some()) {
+            let (balance, status) = account.extract().get();
+            schema.account().set(asset_id, beneficiary, account::new(balance + amount, status))
         } else {
-            // If the account does not exist, increment the number of accounts
-            assets.borrow_mut_details().mutate!(asset_id, |assets_details| {
-                let accounts = assets_details.get_accounts() + 1;
-                assets_details.set_accounts(accounts);
-            });
-
-            let account = assets_account::new(amount, assets_account_status::new_liquid());
-            assets.borrow_mut_account().set(asset_id, beneficiary, account);
-        };
+            let mut asset_details = schema.asset_details()[asset_id];
+            let accounts = asset_details.get_accounts();
+            asset_details.set_accounts(accounts + 1);
+            schema.asset_details().set(asset_id, asset_details);
+            schema.account().set(asset_id, beneficiary, account::new(amount, account_status::new_liquid()));
+        }
     }
 
 
-    public(package) fun decrease_balance(asset_id: u32, who: address, amount: u256, assets: &mut Assets) {
-        can_decrease(asset_id, who, amount, assets);
+    public(package) fun decrease_balance(schema: &mut Schema, asset_id: u128, who: address, amount: u256) {
+        ensure_can_decrease(schema, asset_id, who, amount);
 
-        assets.borrow_mut_account().mutate!(asset_id, who, |account| {
-            let balance = account.get_balance();
-
-            // Decrease the balance
-            if (balance == amount) {
-                assets.borrow_mut_details().mutate!(asset_id, |assets_details| {
-                    let accounts = assets_details.get_accounts() - 1;
-                    assets_details.set_accounts(accounts);
-                });
-                assets.borrow_mut_account().remove(asset_id, who);
-            } else {
-                account.set_balance(balance - amount);
-            };
-        });
+        let account = schema.account().get(asset_id, who);
+        let balance = account.get_balance();
+        let status = account.get_status();
+        if (balance == amount) { 
+            let mut asset_details = schema.asset_details()[asset_id];
+            let accounts = asset_details.get_accounts();
+            asset_details.set_accounts(accounts -  1);
+            schema.asset_details().set(asset_id, asset_details);
+            schema.account().remove(asset_id, who);
+        } else {
+            schema.account().set(asset_id, who, account::new(balance - amount, status));
+        }
     }
 
-    public(package) fun do_mint(asset_id: u32, to: address, amount: u256, assets: &mut Assets) {
-        increase_balance(asset_id, to, amount, assets);
+    public(package) fun do_mint(schema: &mut Schema, asset_id: u128, to: address, amount: u256) {
+        increase_balance(schema, asset_id, to, amount);
 
-        assets.borrow_mut_details().mutate!(asset_id, |assets_details| {
-            let supply = assets_details.get_supply() + amount;
-            assets_details.set_supply(supply);
-        });
-        assets_minted_event::emit(asset_id, to, amount);
+        let mut asset_details = schema.asset_details()[asset_id];
+        let supply = asset_details.get_supply();
+        asset_details.set_supply(supply + amount);
+        schema.asset_details().set(asset_id, asset_details);
+
+        asset_minted_event(asset_id, to, amount);
     }
 
-    public(package) fun do_burn(asset_id: u32, from: address, amount: u256, assets: &mut Assets) {
-        decrease_balance(asset_id, from, amount, assets);
+    public(package) fun do_burn(schema: &mut Schema, asset_id: u128, from: address, amount: u256) {
+        decrease_balance(schema, asset_id, from, amount);
 
-        assets.borrow_mut_details().mutate!(asset_id, |assets_details| {
-            let supply = assets_details.get_supply() - amount;
-            assets_details.set_supply(supply);
-        });
-        assets_burned_event::emit(asset_id, from, amount);
+        let mut asset_details = schema.asset_details()[asset_id];
+        let supply = asset_details.get_supply();
+        asset_details.set_supply(supply - amount);
+        schema.asset_details().set(asset_id, asset_details);
+
+        asset_burned_event(asset_id, from, amount);
     }
 
-    public(package) fun do_transfer(asset_id: u32, from: address, to: address, amount: u256, assets: &mut Assets): u256 {
+    public(package) fun do_transfer(schema: &mut Schema, asset_id: u128, from: address, to: address, amount: u256): u256 {
         if (from == to || amount == 0) {
             return amount
         };
-        decrease_balance(asset_id, from, amount, assets);
-        increase_balance(asset_id, to, amount, assets);
-        assets_transferred_event::emit(asset_id, from, to, amount);
+        decrease_balance(schema, asset_id, from, amount);
+        increase_balance(schema, asset_id, to, amount);
+        asset_transferred_event(asset_id, from, to, amount);
         amount
-    }
-
-    public fun balance_of(assets: &Assets, asset_id: u32, who: address): u256 {
-        let maybe_account = assets.borrow_account().try_get(asset_id, who);
-        if (maybe_account.is_none()) {
-            return 0
-        };
-        let account = maybe_account.borrow();
-        account.get_balance()
-    }
-
-    public fun supply_of(assets: &Assets, asset_id: u32): u256 {
-        let maybe_assets_details = assets.borrow_details().try_get(asset_id);
-        if (maybe_assets_details.is_none()) {
-            return 0
-        };
-        let assets_details = maybe_assets_details.borrow();
-        assets_details.get_supply()
     }
 
 }

@@ -1,26 +1,19 @@
 module merak::assets_system {
     use std::ascii;
     use std::ascii::String;
-    use merak::schema_hub::{ensure_schema_authorized, SchemaHub};
-    use merak::assets_frozen_address_event;
-    use merak::assets_frozen_asset_event;
-    use merak::assets_blocked_address_event;
-    use merak::assets_thawed_address_event;
-    use merak::assets_thawed_asset_event;
-    use merak::assets_ownership_transferred_event;
-    use merak::assets_schema::Assets;
-    use merak::assets_account_status;
-    use merak::assets_status;
+    use merak::events::{
+        asset_frozen_event, address_frozen_event, address_blocked_event, address_thawed_event, ownership_transferred_event, asset_thawed_event
+    };
+    use merak::errors::{
+        asset_not_found_error, no_permission_error, not_mintable_error, not_burnable_error, asset_already_destroyed_error, account_not_found_error, asset_not_live_error, asset_not_frozen_error
+    };
+    use merak::schema::Schema;
+    use merak::account_status;
+    use merak::asset_status;
     use merak::assets_functions;
 
-    const ENoPermission: u64 = 0;
-    const ENotMintable: u64 = 1;
-    const EAssetNotFound: u64 = 2;
-    const ENotBurnable: u64 = 3;
-    const EAccountNotFound: u64 = 4;
-
     public entry fun create(
-        assets: &mut Assets,
+        schema: &mut Schema,
         name: String,
         symbol: String,
         description: String,
@@ -39,170 +32,165 @@ module merak::assets_system {
         // dapps_system::ensure_no_safe_mode<DappKey>(dapp);
 
         // Create a new asset
-        let asset_id = assets_functions::do_create(assets, is_mintable, is_burnable, is_freezable, owner, name, symbol, description, decimals, icon_url, info);
+        let asset_id = assets_functions::do_create(schema, is_mintable, is_burnable, is_freezable, owner, name, symbol, description, decimals, icon_url, info);
 
         if (initial_supply > 0) {
             // Mint the initial supply
-            assets_functions::do_mint(asset_id, send_to, initial_supply, assets);
-            assets_functions::do_mint(asset_id, send_to, initial_supply, assets);
+            assets_functions::do_mint(schema, asset_id, send_to, initial_supply);
         };
     }
 
-    public entry fun test(schema_hub: &SchemaHub) {
-        schema_hub.ensure_schema_authorized<Assets>();
-        // assets.borrow_mut_test().set(1);
-    }
-
-    public entry fun test1() { }
-
     /// Mint `amount` of asset `id` to `who`.
-    public entry fun mint(assets: &mut Assets, asset_id: u32, to: address, amount: u256, ctx: &mut TxContext) {
+    public entry fun mint(schema: &mut Schema, asset_id: u128, to: address, amount: u256, ctx: &mut TxContext) {
         let issuer = ctx.sender();
-        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
-        let assets_details = assets.borrow_mut_details().get(asset_id);
-        assert!(assets_details.get_owner() == issuer, ENoPermission);
-        assert!(assets_details.get_is_mintable(), ENotMintable);
+        asset_not_found_error(schema.asset_details().contains(asset_id));
+        let assets_details = schema.asset_details().get(asset_id);
+        no_permission_error(assets_details.get_owner() == issuer);
+        not_mintable_error(assets_details.get_is_mintable());
 
-        assets_functions::do_mint(asset_id, to, amount, assets);
+        assets_functions::do_mint(schema, asset_id, to, amount);
     }
 
     /// Reduce the balance of `who` by as much as possible up to `amount` assets of `id`.
-    public entry fun burn(assets: &mut Assets, asset_id: u32, who: address, amount: u256, ctx: &mut TxContext) {
+    public entry fun burn(schema: &mut Schema, asset_id: u128, who: address, amount: u256, ctx: &mut TxContext) {
         let burner = ctx.sender();
-        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
-        let assets_details = assets.borrow_mut_details().get(asset_id);
-        assert!(assets_details.get_owner() == burner, ENoPermission);
-        assert!(assets_details.get_is_burnable(), ENotBurnable);
+        asset_not_found_error(schema.asset_details().contains(asset_id));
+        let assets_details = schema.asset_details().get(asset_id);
+        no_permission_error(assets_details.get_owner() == burner);
+        not_burnable_error(assets_details.get_is_burnable());
 
-        assets_functions::do_burn(asset_id, who, amount, assets);
+        assets_functions::do_burn(schema, asset_id, who, amount);
     }
 
     /// Move some assets from the sender account to another.
-    public entry fun transfer(assets: &mut Assets, asset_id: u32, to: address, amount: u256, ctx: &mut TxContext) {
+    public entry fun transfer(schema: &mut Schema, asset_id: u128, to: address, amount: u256, ctx: &mut TxContext) {
         let from = ctx.sender();
-        assets_functions::do_transfer(asset_id, from, to, amount, assets);
+        assets_functions::do_transfer(schema, asset_id, from, to, amount);
     }
 
     /// Transfer the entire transferable balance from the caller asset account.
-    public entry fun transfer_all(assets: &mut Assets, asset_id: u32, to: address, ctx: &mut TxContext) {
+    public entry fun transfer_all(schema: &mut Schema, asset_id: u128, to: address, ctx: &mut TxContext) {
         let from = ctx.sender();
-        let balance = balance_of(assets, asset_id, from);
+        let balance = balance_of(schema, asset_id, from);
 
-        assets_functions::do_transfer(asset_id, from, to, balance, assets);
+        assets_functions::do_transfer(schema, asset_id, from, to, balance);
     }
 
     /// Disallow further unprivileged transfers of an asset `id` from an account `who`.
     /// `who` must already exist as an entry in `Account`s of the asset.
-    public entry fun freeze_address(assets: &mut Assets, asset_id: u32, who: address, ctx: &mut TxContext) {
+    public entry fun freeze_address(schema: &mut Schema, asset_id: u128, who: address, ctx: &mut TxContext) {
         let freezer = ctx.sender();
 
-        assert!(assets.borrow_mut_details().contains_key(asset_id), EAssetNotFound);
-        let assets_details = assets.borrow_mut_details().get(asset_id);
-        assert!(assets_details.get_status() != assets_status::new_destroying(), 5);
-        assert!(assets_details.get_owner() == freezer, ENoPermission);
+        asset_not_found_error(schema.asset_details().contains(asset_id));
+        let assets_details = schema.asset_details().get(asset_id);
 
-        assert!(assets.borrow_account().contains_key(asset_id, who), EAccountNotFound);
-        let account = assets.borrow_mut_account().borrow_mut(asset_id, who);
-        account.set_status(assets_account_status::new_frozen());
-        assets_frozen_address_event::emit(asset_id, who);
+        asset_already_destroyed_error(assets_details.get_status() != asset_status::new_destroying());
+        no_permission_error(assets_details.get_owner() == freezer);
+        account_not_found_error(schema.account().contains(asset_id, who));
+
+        let mut account = schema.account()[asset_id, who];
+        account.set_status(account_status::new_frozen());
+        schema.account().set(asset_id, who, account);
+        address_frozen_event(asset_id, who);
     }
 
     /// Disallow further unprivileged transfers of an asset `id` to and from an account `who`.
-    public entry fun block_address(assets: &mut Assets, asset_id: u32, who: address, ctx: &mut TxContext) {
+    public entry fun block_address(schema: &mut Schema, asset_id: u128, who: address, ctx: &mut TxContext) {
         let blocker = ctx.sender();
 
-        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
-        let assets_details = assets.borrow_mut_details().get(asset_id);
-        assert!(assets_details.get_owner() == blocker, ENoPermission);
+        asset_not_found_error(schema.asset_details().contains(asset_id));
+        let assets_details = schema.asset_details().get(asset_id);
+        no_permission_error(assets_details.get_owner() == blocker);
+        account_not_found_error(schema.account().contains(asset_id, who));
 
-        assert!(assets.borrow_account().contains_key(asset_id, who), EAccountNotFound);
-        let account = assets.borrow_mut_account().borrow_mut(asset_id, who);
-        account.set_status(assets_account_status::new_blocked());
-        assets_blocked_address_event::emit(asset_id, who);
+        let mut account = schema.account()[asset_id, who];
+        account.set_status(account_status::new_blocked());
+        schema.account().set(asset_id, who, account);
+        address_blocked_event(asset_id, who);
     }
 
     /// Allow unprivileged transfers to and from an account again.
-    public entry fun thaw_address(assets: &mut Assets, asset_id: u32, who: address, ctx: &mut TxContext) {
+    public entry fun thaw_address(schema: &mut Schema, asset_id: u128, who: address, ctx: &mut TxContext) {
         let unfreezer = ctx.sender();
 
-        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
-        let assets_details = assets.borrow_mut_details().get(asset_id);
-        assert!(assets_details.get_status() != assets_status::new_destroying(), 5);
-        assert!(assets_details.get_owner() == unfreezer, ENoPermission);
+        asset_not_found_error(schema.asset_details().contains(asset_id));
+        let assets_details = schema.asset_details().get(asset_id);
+        asset_already_destroyed_error(assets_details.get_status() != asset_status::new_destroying());
+        no_permission_error(assets_details.get_owner() == unfreezer);
+        account_not_found_error(schema.account().contains(asset_id, who));
 
-        assert!(assets.borrow_account().contains_key(asset_id, who), EAccountNotFound);
-        let account = assets.borrow_mut_account().borrow_mut(asset_id, who);
-        account.set_status(assets_account_status::new_liquid());
-        assets_thawed_address_event::emit(asset_id, who);
+        let mut account = schema.account()[asset_id, who];
+        account.set_status(account_status::new_liquid());
+        schema.account().set(asset_id, who, account);
+        address_thawed_event(asset_id, who);
     }
 
     /// Disallow further unprivileged transfers for the asset class.
-    public entry fun freeze_asset(assets: &mut Assets, asset_id: u32, ctx: &mut TxContext) {
+    public entry fun freeze_asset(schema: &mut Schema, asset_id: u128, ctx: &mut TxContext) {
         let freezer = ctx.sender();
 
-        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
-        let assets_details = assets.borrow_mut_details().borrow_mut(asset_id);
-        assert!(assets_details.get_status() == assets_status::new_live(), 5);
-        assert!(assets_details.get_owner() == freezer, ENoPermission);
+        asset_not_found_error(schema.asset_details().contains(asset_id));
+        let mut asset_details = schema.asset_details()[asset_id];
+        asset_not_live_error(asset_details.get_status() == asset_status::new_live());
+        no_permission_error(asset_details.get_owner() == freezer);
 
-        assets_details.set_status(assets_status::new_frozen());
-        assets_frozen_asset_event::emit(asset_id);
+        asset_details.set_status(asset_status::new_frozen());
+        schema.asset_details().set(asset_id, asset_details);
+        asset_frozen_event(asset_id);
     }
 
     /// Allow unprivileged transfers for the asset again.
-    public entry fun thaw_asset(assets: &mut Assets, asset_id: u32, ctx: &mut TxContext) {
+    public entry fun thaw_asset(schema: &mut Schema, asset_id: u128, ctx: &mut TxContext) {
         let unfreezer = ctx.sender();
 
-        assert!(assets.borrow_details().contains_key(asset_id), EAssetNotFound);
-        let assets_details = assets.borrow_mut_details().borrow_mut(asset_id);
-        assert!(assets_details.get_status() == assets_status::new_frozen(), 5);
-        assert!(assets_details.get_owner() == unfreezer, ENoPermission);
-
-        assets_details.set_status(assets_status::new_live());
-        assets_thawed_asset_event::emit(asset_id);
+         asset_not_found_error(schema.asset_details().contains(asset_id));
+        let mut asset_details = schema.asset_details()[asset_id];
+        asset_not_frozen_error(asset_details.get_status() == asset_status::new_frozen());
+        no_permission_error(asset_details.get_owner() == unfreezer);
+        
+        asset_details.set_status(asset_status::new_live());
+        schema.asset_details().set(asset_id, asset_details);
+        asset_thawed_event(asset_id);
     }
 
     /// Change the Owner of an asset.
-    public entry fun transfer_ownership(assets: &mut Assets, asset_id: u32, to: address, ctx: &mut TxContext) {
+    public entry fun transfer_ownership(schema: &mut Schema, asset_id: u128, to: address, ctx: &mut TxContext) {
         let owner = ctx.sender();
 
-        assert!(assets.borrow_details().contains_key(asset_id), 5);
-        let assets_details = assets.borrow_mut_details().borrow_mut(asset_id);
-        assert!(assets_details.get_owner() == owner, EAssetNotFound);
+        asset_not_found_error(schema.asset_details().contains(asset_id));
+        let mut asset_details = schema.asset_details()[asset_id];
+        no_permission_error(asset_details.get_owner() == owner);
 
-        assets_details.set_owner(to);
-        assets_ownership_transferred_event::emit(asset_id, owner, to);
+        asset_details.set_owner(to);
+        schema.asset_details().set(asset_id, asset_details);
+        ownership_transferred_event(asset_id, owner, to);
     }
 
-    public fun balance_of(assets: &Assets, asset_id: u32, who: address): u256 {
-        assets_functions::balance_of(assets, asset_id, who)
+    public fun balance_of(schema: &mut Schema, asset_id: u128, who: address): u256 {
+        let maybe_account = schema.account().try_get(asset_id, who);
+        if (maybe_account.is_none()) {
+            return 0
+        };
+        let account = maybe_account.borrow();
+        account.get_balance()
     }
 
-    public fun supply_of(assets: &Assets, asset_id: u32): u256 {
-        assets_functions::supply_of(assets, asset_id)
+    public fun supply_of(schema: &mut Schema, asset_id: u128): u256 {
+        let maybe_assets_details = schema.asset_details().try_get(asset_id);
+        if (maybe_assets_details.is_none()) {
+            return 0
+        };
+        let asset_details = maybe_assets_details.borrow();
+        asset_details.get_supply()
     }
 
-    public fun metadata_of(assets: &Assets, asset_id: u32): (String, String, String, u8, String) {
-        let maybe_metadata = assets.borrow_metadata().try_get(asset_id);
+    public fun metadata_of(schema: &mut Schema, asset_id: u128): (String, String, String, u8, String) {
+        let maybe_metadata = schema.asset_metadata().try_get(asset_id);
         if (maybe_metadata.is_none()) {
             return (ascii::string(b""), ascii::string(b""), ascii::string(b""), 0, ascii::string(b""))
         };
         let metadata = maybe_metadata.borrow();
         let (name, symbol, description, decimals, url, _) = metadata.get();
         (name, symbol, description, decimals, url)
-    }
-
-    public fun owned_assets(assets: &Assets, owner: address): vector<u32> {
-        let mut owned_assets = vector[];
-        let asset_ids = assets.borrow_details().keys();
-
-        let mut i = 0;
-        while (i  < (asset_ids.length() as u32)) {
-            if (assets.borrow_account().contains_key(i, owner)) {
-                owned_assets.push_back(i);
-            };
-            i = i + 1;
-        };
-        owned_assets
     }
 }

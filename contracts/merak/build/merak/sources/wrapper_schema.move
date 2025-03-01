@@ -1,40 +1,37 @@
 module merak::wrapper_schema {
+    use dubhe::storage;
+    use merak::schema::Schema;
     use sui::bag;
     use sui::bag::Bag;
-    use dubhe::storage_migrate;
+    use std::type_name;
+    use std::ascii::string;
+    use std::ascii::String;
+    use sui::balance::Balance;
 
-    public struct Wrapper has key, store { id: UID }
+    public struct WrapperCoin<phantom T> has drop, copy, store { }
 
-    public(package) fun borrow_mut_asset_ids(self: &mut Wrapper): &mut Bag {
-        storage_migrate::borrow_mut_field(&mut self.id, b"asset_ids")
+    public fun new<T>(): WrapperCoin<T> {
+        WrapperCoin {}
     }
 
-    public(package) fun borrow_mut_pools(self: &mut Wrapper): &mut Bag {
-        storage_migrate::borrow_mut_field(&mut self.id, b"pools")
+    public(package) fun add_to_schema(schema: &mut Schema, ctx: &mut TxContext) {
+        storage::add_field(schema.id(), b"wrapper_pools", bag::new(ctx));
+        storage::add_field(schema.id(), b"wrapper_assets", bag::new(ctx));
     }
 
-    public(package) fun borrow_mut_coins(self: &mut Wrapper): &mut Bag {
-        storage_migrate::borrow_mut_field(&mut self.id, b"coins")
+    public(package) fun wrapper_pools(schema: &mut Schema): &mut Bag {
+        storage::borrow_mut_field(schema.id(), b"wrapper_pools")
     }
 
-    public(package) fun borrow_asset_ids(self: &Wrapper): &Bag {
-        storage_migrate::borrow_field(&self.id, b"asset_ids")
+    public(package) fun wrapper_assets(schema: &mut Schema): &mut Bag {
+        storage::borrow_mut_field(schema.id(), b"wrapper_assets")
     }
 
-    public(package) fun borrow_pools(self: &Wrapper): &Bag {
-        storage_migrate::borrow_field(&self.id, b"pools")
+    public(package) fun borrow_wrapper_pools(schema: &Schema): &Bag {
+        storage::borrow_field(schema.borrow_id(), b"wrapper_pools")
     }
 
-    public(package) fun borrow_coins(self: &Wrapper): &Bag {
-        storage_migrate::borrow_field(&self.id, b"coins")
+    public(package) fun borrow_wrapper_assets(schema: &Schema): &Bag {
+        storage::borrow_field(schema.borrow_id(), b"wrapper_assets")
     }
-
-    public fun create(ctx: &mut TxContext): Wrapper {
-        let mut id = object::new(ctx);
-        storage_migrate::add_field<Bag>(&mut id, b"asset_ids", bag::new(ctx));
-        storage_migrate::add_field<Bag>(&mut id, b"pools", bag::new(ctx));
-        storage_migrate::add_field<Bag>(&mut id, b"coins", bag::new(ctx));
-        Wrapper { id }
-    }
-
 }
