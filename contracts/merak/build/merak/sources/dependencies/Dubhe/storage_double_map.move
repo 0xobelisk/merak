@@ -63,12 +63,13 @@ public fun get<K1: copy + drop + store, K2: copy + drop + store, V: copy + drop 
 /// Removes the key-value pair in the table `table: &mut Table<K, V>` and returns the value.
 /// Aborts with `sui::dynamic_field::EFieldDoesNotExist` if the table does not have an entry with
 /// that key `k: K`.
-public fun remove<K1: copy + drop + store, K2: copy + drop + store, V: copy + drop + store>(table: &mut StorageDoubleMap<K1, K2, V>, k1: K1, k2: K2): V {
-    let k = Entry { key1: k1, key2: k2 };
-    let v = field::remove<Entry<K1, K2>, V>(&mut table.id, k);
-    table.size = table.size - 1;
-    storage_event::emit_remove_record<K1, K2>(table.name, some(k1), some(k2));
-    v
+public fun remove<K1: copy + drop + store, K2: copy + drop + store, V: copy + drop + store>(table: &mut StorageDoubleMap<K1, K2, V>, k1: K1, k2: K2) {
+    if (table.contains(k1, k2)) {
+        let k = Entry { key1: k1, key2: k2 };
+        field::remove<Entry<K1, K2>, V>(&mut table.id, k);
+        table.size = table.size - 1;
+        storage_event::emit_remove_record<K1, K2>(table.name, some(k1), some(k2));
+    }
 }
 
 /// Removes the key-value pair in the table `table: &mut Table<K, V>` and returns the value.
@@ -76,7 +77,10 @@ public fun remove<K1: copy + drop + store, K2: copy + drop + store, V: copy + dr
 /// that key `k: K`.
 public fun try_remove<K1: copy + drop + store, K2: copy + drop + store, V: copy + drop + store>(table: &mut StorageDoubleMap<K1, K2, V>, k1: K1, k2: K2): Option<V> {
     if (table.contains(k1, k2)) {
-       let v = table.remove<K1, K2, V>(k1, k2);
+        let k = Entry { key1: k1, key2: k2 };
+        let v = field::remove<Entry<K1, K2>, V>(&mut table.id, k);
+        table.size = table.size - 1;
+        storage_event::emit_remove_record<K1, K2>(table.name, some(k1), some(k2));
         option::some(v)
     } else {
         option::none()

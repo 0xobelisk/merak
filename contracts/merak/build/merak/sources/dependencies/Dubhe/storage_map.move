@@ -57,11 +57,12 @@ public fun get<K: copy + drop + store, V: copy + drop + store>(table: &StorageMa
 /// Removes the key-value pair in the table `table: &mut Table<K, V>` and returns the value.
 /// Aborts with `sui::dynamic_field::EFieldDoesNotExist` if the table does not have an entry with
 /// that key `k: K`.
-public fun remove<K: copy + drop + store, V: copy + drop + store>(table: &mut StorageMap<K, V>, k: K): V {
-    let v = field::remove(&mut table.id, k);
-    table.size = table.size - 1;
-    storage_event::emit_remove_record<K, K>(table.name, some(k), none());
-    v
+public fun remove<K: copy + drop + store, V: copy + drop + store>(table: &mut StorageMap<K, V>, k: K) {
+    if (table.contains(k)) {
+        field::remove<K, V>(&mut table.id, k);
+        table.size = table.size - 1;
+        storage_event::emit_remove_record<K, K>(table.name, some(k), none());
+    }
 }
 
 /// Removes the key-value pair in the table `table: &mut Table<K, V>` and returns the value.

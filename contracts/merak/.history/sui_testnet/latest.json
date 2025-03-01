@@ -1,0 +1,20 @@
+{
+  "projectName": "merak",
+  "network": "testnet",
+  "packageId": "0x47b93567a3802b1546496a322b4c9475d7184b8c703659754b05c6e682fb05c9",
+  "schemaId": "0xdbb93c915a66ff423464cc15257155017b1c8401e5f09df0a8a5bc164ca70cfe",
+  "schemas": {
+    "next_asset_id": "StorageValue<u128>",
+    "asset_metadata": "StorageMap<u128, AssetMetadata>",
+    "asset_details": "StorageMap<u128, AssetDetails>",
+    "account": "StorageDoubleMap<u128, address, Account>",
+    "swap_fee": "StorageValue<u256>",
+    "lp_fee": "StorageValue<u256>",
+    "fee_to": "StorageValue<address>",
+    "max_swap_path_len": "StorageValue<u64>",
+    "min_liquidity": "StorageValue<u256>",
+    "pools": "StorageDoubleMap<u128, u128, Pool>"
+  },
+  "upgradeCap": "0x59f9cf6b9c5c1cffdc9cd3761ce056131ff28589672b5a2b106cc1eb047e4b97",
+  "version": 1
+}

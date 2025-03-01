@@ -2,18 +2,18 @@
 compiled_package_info:
   package_name: merak
   address_alias_instantiation:
-    dubhe: "0000000000000000000000000000000000000000000000000000000000000000"
+    dubhe: 11443e7ad938acfa34b698984af569ec206d9e41b60168db316a00b3b2a5f901
     merak: "0000000000000000000000000000000000000000000000000000000000000000"
     std: "0000000000000000000000000000000000000000000000000000000000000001"
     sui: "0000000000000000000000000000000000000000000000000000000000000002"
-  source_digest: 7997005A19B27B35574FA7B583A73C32EDEC460B6FBC6A3FA8AAB219DE07F3C4
+  source_digest: 2E739C77863E4F434024805FDA98EB836AE6CC1B07CDF24503EAA83D7ACB326A
   build_flags:
-    dev_mode: true
-    test_mode: true
+    dev_mode: false
+    test_mode: false
     generate_docs: false
     install_dir: ~
     force_recompilation: false
-    lock_file: ~
+    lock_file: "./Move.lock"
     fetch_deps_only: false
     skip_fetch_latest_git_deps: false
     default_flavor: sui
