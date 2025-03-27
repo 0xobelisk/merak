@@ -28,9 +28,9 @@
 
     // bridge
     // to Dubhe_OS_Network => 1 DUBHE
-    schema.bridge().set(string(b"Dubhe OS"), merak_bridge_config::new(10000000, true));
+    schema.bridge().set(string(b"Dubhe OS"), merak_bridge_config::new(50000000, 2000000, true));
     // to Aptos_Network => 1 DUBHE
-    schema.bridge().set(string(b"Aptos"), merak_bridge_config::new(10000000, true));
+    schema.bridge().set(string(b"Aptos"), merak_bridge_config::new(50000000, 2000000, true));
 
     merak_wrapper_system::do_register<SUI>(
       schema,

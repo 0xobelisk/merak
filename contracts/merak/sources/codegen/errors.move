@@ -221,4 +221,12 @@
   public fun bridge_not_opened_error(condition: bool) {
     assert!(condition, BRIDGE_NOT_OPENED)
   }
+
+  #[error]
+
+  const BELOW_MIN_BRIDGE_AMOUNT: vector<u8> = b"Amount is below minimum";
+
+  public fun below_min_bridge_amount_error(condition: bool) {
+    assert!(condition, BELOW_MIN_BRIDGE_AMOUNT)
+  }
 }

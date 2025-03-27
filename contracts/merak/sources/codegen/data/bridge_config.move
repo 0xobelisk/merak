@@ -9,18 +9,23 @@
   use std::ascii::String;
 
   public struct BridgeConfig has copy, drop, store {
+    min_amount: u256,
     fee: u256,
     opened: bool,
   }
 
-  public fun new(fee: u256, opened: bool): BridgeConfig {
+  public fun new(min_amount: u256, fee: u256, opened: bool): BridgeConfig {
     BridgeConfig {
-                                   fee,opened
+                                   min_amount,fee,opened
                                }
   }
 
-  public fun get(self: &BridgeConfig): (u256,bool) {
-    (self.fee,self.opened)
+  public fun get(self: &BridgeConfig): (u256,u256,bool) {
+    (self.min_amount,self.fee,self.opened)
+  }
+
+  public fun get_min_amount(self: &BridgeConfig): u256 {
+    self.min_amount
   }
 
   public fun get_fee(self: &BridgeConfig): u256 {
@@ -31,6 +36,10 @@
     self.opened
   }
 
+  public(package) fun set_min_amount(self: &mut BridgeConfig, min_amount: u256) {
+    self.min_amount = min_amount;
+  }
+
   public(package) fun set_fee(self: &mut BridgeConfig, fee: u256) {
     self.fee = fee;
   }
@@ -39,7 +48,8 @@
     self.opened = opened;
   }
 
-  public(package) fun set(self: &mut BridgeConfig, fee: u256, opened: bool) {
+  public(package) fun set(self: &mut BridgeConfig, min_amount: u256, fee: u256, opened: bool) {
+    self.min_amount = min_amount;
     self.fee = fee;
     self.opened = opened;
   }

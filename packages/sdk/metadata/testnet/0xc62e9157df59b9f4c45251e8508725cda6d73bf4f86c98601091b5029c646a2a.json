@@ -1,15 +1,15 @@
 {
   "custom_schema": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "custom_schema",
     "friends": [
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_deploy_hook"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_wrapper_system"
       }
     ],
@@ -47,7 +47,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -75,7 +75,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -104,7 +104,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -133,7 +133,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -162,7 +162,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -195,7 +195,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "custom_schema",
               "name": "WrapperCoin",
               "typeArguments": [
@@ -215,7 +215,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -244,7 +244,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -269,7 +269,7 @@
   },
   "dubhe": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "dubhe",
     "friends": [],
     "structs": {
@@ -303,7 +303,7 @@
                 "typeArguments": [
                   {
                     "Struct": {
-                      "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                      "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                       "module": "dubhe",
                       "name": "DUBHE",
                       "typeArguments": []
@@ -332,11 +332,11 @@
   },
   "merak_account": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_account",
     "friends": [
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_assets_system"
       }
     ],
@@ -359,7 +359,7 @@
             "name": "status",
             "type": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_account_status",
                 "name": "AccountStatus",
                 "typeArguments": []
@@ -378,7 +378,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_account",
                 "name": "Account",
                 "typeArguments": []
@@ -390,7 +390,7 @@
           "U256",
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -406,7 +406,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_account",
                 "name": "Account",
                 "typeArguments": []
@@ -426,7 +426,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_account",
                 "name": "Account",
                 "typeArguments": []
@@ -437,7 +437,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -453,7 +453,7 @@
           "U256",
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -463,7 +463,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_account",
               "name": "Account",
               "typeArguments": []
@@ -479,7 +479,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_account",
                 "name": "Account",
                 "typeArguments": []
@@ -489,7 +489,7 @@
           "U256",
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -506,7 +506,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_account",
                 "name": "Account",
                 "typeArguments": []
@@ -525,7 +525,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_account",
                 "name": "Account",
                 "typeArguments": []
@@ -534,7 +534,7 @@
           },
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -547,7 +547,7 @@
   },
   "merak_account_status": {
     "fileFormatVersion": 7,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_account_status",
     "friends": [],
     "structs": {},
@@ -577,7 +577,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -593,7 +593,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -609,7 +609,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -621,7 +621,7 @@
   },
   "merak_asset_created_event": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_asset_created_event",
     "friends": [],
     "structs": {
@@ -710,7 +710,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_created_event",
               "name": "AssetCreatedEvent",
               "typeArguments": []
@@ -722,15 +722,15 @@
   },
   "merak_asset_metadata": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_asset_metadata",
     "friends": [
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_assets_functions"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_assets_system"
       }
     ],
@@ -820,7 +820,7 @@
             "name": "status",
             "type": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_status",
                 "name": "AssetStatus",
                 "typeArguments": []
@@ -855,7 +855,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -910,7 +910,7 @@
           "U256",
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -930,7 +930,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -950,7 +950,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -970,7 +970,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -997,7 +997,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1024,7 +1024,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1051,7 +1051,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1071,7 +1071,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1091,7 +1091,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1111,7 +1111,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1138,7 +1138,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1158,7 +1158,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1169,7 +1169,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -1185,7 +1185,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1205,7 +1205,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1232,7 +1232,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1295,7 +1295,7 @@
           "U256",
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -1309,7 +1309,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_metadata",
               "name": "AssetMetadata",
               "typeArguments": []
@@ -1325,7 +1325,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1378,7 +1378,7 @@
           "U256",
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -1399,7 +1399,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1418,7 +1418,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1437,7 +1437,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1463,7 +1463,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1489,7 +1489,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1515,7 +1515,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1534,7 +1534,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1553,7 +1553,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1572,7 +1572,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1598,7 +1598,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1617,7 +1617,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1626,7 +1626,7 @@
           },
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -1643,7 +1643,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1662,7 +1662,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1688,7 +1688,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1703,7 +1703,7 @@
   },
   "merak_asset_status": {
     "fileFormatVersion": 7,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_asset_status",
     "friends": [],
     "structs": {},
@@ -1732,7 +1732,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -1748,7 +1748,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -1760,7 +1760,7 @@
   },
   "merak_asset_transferred_event": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_asset_transferred_event",
     "friends": [],
     "structs": {
@@ -1806,7 +1806,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_transferred_event",
               "name": "AssetTransferredEvent",
               "typeArguments": []
@@ -1818,7 +1818,7 @@
   },
   "merak_asset_unwrapped_event": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_asset_unwrapped_event",
     "friends": [],
     "structs": {
@@ -1864,7 +1864,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_unwrapped_event",
               "name": "AssetUnwrappedEvent",
               "typeArguments": []
@@ -1876,7 +1876,7 @@
   },
   "merak_asset_wrapped_event": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_asset_wrapped_event",
     "friends": [],
     "structs": {
@@ -1922,7 +1922,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_wrapped_event",
               "name": "AssetWrappedEvent",
               "typeArguments": []
@@ -1934,27 +1934,27 @@
   },
   "merak_assets_functions": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_assets_functions",
     "friends": [
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_assets_system"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_bridge_system"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_dex_functions"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_dex_system"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_wrapper_system"
       }
     ],
@@ -1968,7 +1968,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -1989,7 +1989,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2055,7 +2055,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2076,7 +2076,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2098,7 +2098,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2116,7 +2116,7 @@
   },
   "merak_assets_system": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_assets_system",
     "friends": [],
     "structs": {},
@@ -2129,7 +2129,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2151,7 +2151,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2181,7 +2181,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2212,7 +2212,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2277,7 +2277,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2307,7 +2307,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2336,7 +2336,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2367,7 +2367,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2388,7 +2388,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2418,7 +2418,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2447,7 +2447,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2478,7 +2478,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2508,7 +2508,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2534,7 +2534,7 @@
   },
   "merak_bridge_config": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_bridge_config",
     "friends": [],
     "structs": {
@@ -2548,10 +2548,6 @@
         },
         "typeParameters": [],
         "fields": [
-          {
-            "name": "min_amount",
-            "type": "U256"
-          },
           {
             "name": "fee",
             "type": "U256"
@@ -2572,7 +2568,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -2581,7 +2577,6 @@
           }
         ],
         "return": [
-          "U256",
           "U256",
           "Bool"
         ]
@@ -2594,27 +2589,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
-                "module": "merak_bridge_config",
-                "name": "BridgeConfig",
-                "typeArguments": []
-              }
-            }
-          }
-        ],
-        "return": [
-          "U256"
-        ]
-      },
-      "get_min_amount": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -2634,7 +2609,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -2652,13 +2627,12 @@
         "typeParameters": [],
         "parameters": [
           "U256",
-          "U256",
           "Bool"
         ],
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_bridge_config",
               "name": "BridgeConfig",
               "typeArguments": []
@@ -2674,14 +2648,13 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
               }
             }
           },
-          "U256",
           "U256",
           "Bool"
         ],
@@ -2695,26 +2668,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
-                "module": "merak_bridge_config",
-                "name": "BridgeConfig",
-                "typeArguments": []
-              }
-            }
-          },
-          "U256"
-        ],
-        "return": []
-      },
-      "set_min_amount": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -2733,7 +2687,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -2748,7 +2702,7 @@
   },
   "merak_bridge_deposit_event": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_bridge_deposit_event",
     "friends": [],
     "structs": {
@@ -2813,7 +2767,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_bridge_deposit_event",
               "name": "BridgeDepositEvent",
               "typeArguments": []
@@ -2825,7 +2779,7 @@
   },
   "merak_bridge_system": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_bridge_system",
     "friends": [],
     "structs": {},
@@ -2838,7 +2792,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2854,7 +2808,7 @@
                 "typeArguments": [
                   {
                     "Struct": {
-                      "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                      "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                       "module": "dubhe",
                       "name": "DUBHE",
                       "typeArguments": []
@@ -2897,7 +2851,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2907,7 +2861,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -2922,7 +2876,6 @@
               "typeArguments": []
             }
           },
-          "U256",
           "U256",
           "Bool",
           {
@@ -2946,7 +2899,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2981,7 +2934,7 @@
   },
   "merak_bridge_withdraw_event": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_bridge_withdraw_event",
     "friends": [],
     "structs": {
@@ -3051,7 +3004,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_bridge_withdraw_event",
               "name": "BridgeWithdrawEvent",
               "typeArguments": []
@@ -3063,7 +3016,7 @@
   },
   "merak_dapp_metadata": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_dapp_metadata",
     "friends": [],
     "structs": {
@@ -3150,7 +3103,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3170,7 +3123,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3197,7 +3150,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3224,7 +3177,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3251,7 +3204,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3280,7 +3233,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3351,7 +3304,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_dapp_metadata",
               "name": "DappMetadata",
               "typeArguments": []
@@ -3367,7 +3320,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3428,7 +3381,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3447,7 +3400,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3473,7 +3426,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3499,7 +3452,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3525,7 +3478,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3553,7 +3506,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3575,15 +3528,15 @@
   },
   "merak_dapp_schema": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_dapp_schema",
     "friends": [
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_dapp_system"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_genesis"
       }
     ],
@@ -3627,7 +3580,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -3648,7 +3601,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -3679,7 +3632,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -3710,7 +3663,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -3728,7 +3681,7 @@
                 "typeArguments": [
                   {
                     "Struct": {
-                      "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                      "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                       "module": "merak_dapp_metadata",
                       "name": "DappMetadata",
                       "typeArguments": []
@@ -3748,7 +3701,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -3779,7 +3732,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -3810,7 +3763,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -3843,7 +3796,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -3885,7 +3838,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_dapp_schema",
               "name": "Dapp",
               "typeArguments": []
@@ -3901,7 +3854,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -3919,7 +3872,7 @@
                 "typeArguments": [
                   {
                     "Struct": {
-                      "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                      "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                       "module": "merak_dapp_metadata",
                       "name": "DappMetadata",
                       "typeArguments": []
@@ -3939,7 +3892,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -3970,7 +3923,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -4001,7 +3954,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -4040,7 +3993,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -4068,7 +4021,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -4095,11 +4048,11 @@
   },
   "merak_dapp_system": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_dapp_system",
     "friends": [
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_genesis"
       }
     ],
@@ -4165,7 +4118,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_dapp_schema",
               "name": "Dapp",
               "typeArguments": []
@@ -4181,7 +4134,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -4216,7 +4169,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -4239,7 +4192,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -4257,7 +4210,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_dapp_system",
               "name": "DappKey",
               "typeArguments": []
@@ -4273,7 +4226,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -4343,7 +4296,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -4372,7 +4325,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_dapp_schema",
                 "name": "Dapp",
                 "typeArguments": []
@@ -4397,11 +4350,11 @@
   },
   "merak_deploy_hook": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_deploy_hook",
     "friends": [
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_genesis"
       }
     ],
@@ -4415,7 +4368,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4439,11 +4392,11 @@
   },
   "merak_dex_functions": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_dex_functions",
     "friends": [
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_dex_system"
       }
     ],
@@ -4457,7 +4410,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4473,7 +4426,7 @@
           {
             "Vector": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -4490,7 +4443,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4506,7 +4459,7 @@
           {
             "Vector": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -4523,7 +4476,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4545,7 +4498,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4556,7 +4509,7 @@
           {
             "Vector": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -4577,7 +4530,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4602,7 +4555,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4639,7 +4592,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4662,7 +4615,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4685,7 +4638,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4698,7 +4651,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_pool",
               "name": "Pool",
               "typeArguments": []
@@ -4714,7 +4667,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4736,7 +4689,7 @@
         "parameters": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_metadata",
               "name": "AssetMetadata",
               "typeArguments": []
@@ -4744,7 +4697,7 @@
           },
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_asset_metadata",
               "name": "AssetMetadata",
               "typeArguments": []
@@ -4796,7 +4749,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4807,7 +4760,7 @@
           {
             "Vector": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -4826,7 +4779,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4843,7 +4796,7 @@
   },
   "merak_dex_system": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_dex_system",
     "friends": [],
     "structs": {},
@@ -4856,7 +4809,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4890,7 +4843,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4920,7 +4873,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4944,7 +4897,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4968,7 +4921,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5005,7 +4958,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5050,7 +5003,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5084,7 +5037,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5114,7 +5067,7 @@
   },
   "merak_errors": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_errors",
     "friends": [],
     "structs": {},
@@ -5201,15 +5154,6 @@
         "return": []
       },
       "below_min_amount_error": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          "Bool"
-        ],
-        "return": []
-      },
-      "below_min_bridge_amount_error": {
         "visibility": "Public",
         "isEntry": false,
         "typeParameters": [],
@@ -5375,7 +5319,7 @@
   },
   "merak_events": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_events",
     "friends": [],
     "structs": {},
@@ -5567,7 +5511,7 @@
   },
   "merak_genesis": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_genesis",
     "friends": [],
     "structs": {},
@@ -5604,7 +5548,7 @@
   },
   "merak_liquidity_added_event": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_liquidity_added_event",
     "friends": [],
     "structs": {
@@ -5665,7 +5609,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_liquidity_added_event",
               "name": "LiquidityAddedEvent",
               "typeArguments": []
@@ -5677,7 +5621,7 @@
   },
   "merak_liquidity_removed_event": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_liquidity_removed_event",
     "friends": [],
     "structs": {
@@ -5738,7 +5682,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_liquidity_removed_event",
               "name": "LiquidityRemovedEvent",
               "typeArguments": []
@@ -5750,11 +5694,11 @@
   },
   "merak_math_system": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_math_system",
     "friends": [
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_dex_functions"
       }
     ],
@@ -5843,7 +5787,7 @@
   },
   "merak_migrate": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_migrate",
     "friends": [],
     "structs": {},
@@ -5861,7 +5805,7 @@
   },
   "merak_ownership_transferred_event": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_ownership_transferred_event",
     "friends": [],
     "structs": {
@@ -5902,7 +5846,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_ownership_transferred_event",
               "name": "OwnershipTransferredEvent",
               "typeArguments": []
@@ -5914,7 +5858,7 @@
   },
   "merak_path_element": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_path_element",
     "friends": [],
     "structs": {
@@ -5948,7 +5892,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -5969,7 +5913,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -5989,7 +5933,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -6012,7 +5956,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_path_element",
               "name": "PathElement",
               "typeArguments": []
@@ -6028,7 +5972,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -6048,7 +5992,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -6067,7 +6011,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -6082,7 +6026,7 @@
   },
   "merak_pool": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_pool",
     "friends": [],
     "structs": {
@@ -6116,7 +6060,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -6137,7 +6081,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -6157,7 +6101,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -6180,7 +6124,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_pool",
               "name": "Pool",
               "typeArguments": []
@@ -6196,7 +6140,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -6216,7 +6160,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -6235,7 +6179,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -6250,7 +6194,7 @@
   },
   "merak_pool_created_event": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_pool_created_event",
     "friends": [],
     "structs": {
@@ -6320,7 +6264,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_pool_created_event",
               "name": "PoolCreatedEvent",
               "typeArguments": []
@@ -6332,39 +6276,39 @@
   },
   "merak_schema": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_schema",
     "friends": [
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "custom_schema"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_assets_functions"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_assets_system"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_bridge_system"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_deploy_hook"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_dex_functions"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_dex_system"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_genesis"
       }
     ],
@@ -6401,7 +6345,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6421,7 +6365,7 @@
                   "Address",
                   {
                     "Struct": {
-                      "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                      "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                       "module": "merak_account",
                       "name": "Account",
                       "typeArguments": []
@@ -6441,7 +6385,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6460,7 +6404,7 @@
                   "U256",
                   {
                     "Struct": {
-                      "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                      "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                       "module": "merak_asset_metadata",
                       "name": "AssetMetadata",
                       "typeArguments": []
@@ -6480,7 +6424,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6500,7 +6444,7 @@
                   "Address",
                   {
                     "Struct": {
-                      "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                      "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                       "module": "merak_account",
                       "name": "Account",
                       "typeArguments": []
@@ -6520,7 +6464,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6539,7 +6483,7 @@
                   "U256",
                   {
                     "Struct": {
-                      "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                      "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                       "module": "merak_asset_metadata",
                       "name": "AssetMetadata",
                       "typeArguments": []
@@ -6559,7 +6503,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6585,7 +6529,7 @@
                   },
                   {
                     "Struct": {
-                      "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                      "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                       "module": "merak_bridge_config",
                       "name": "BridgeConfig",
                       "typeArguments": []
@@ -6605,7 +6549,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6636,7 +6580,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6665,7 +6609,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6696,7 +6640,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6727,7 +6671,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6758,7 +6702,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6789,7 +6733,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6809,7 +6753,7 @@
                   "U256",
                   {
                     "Struct": {
-                      "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                      "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                       "module": "merak_pool",
                       "name": "Pool",
                       "typeArguments": []
@@ -6829,7 +6773,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6860,7 +6804,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6886,7 +6830,7 @@
                   },
                   {
                     "Struct": {
-                      "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                      "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                       "module": "merak_bridge_config",
                       "name": "BridgeConfig",
                       "typeArguments": []
@@ -6917,7 +6861,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_schema",
               "name": "Schema",
               "typeArguments": []
@@ -6933,7 +6877,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6964,7 +6908,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6978,7 +6922,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_account",
                 "name": "Account",
                 "typeArguments": []
@@ -6995,7 +6939,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7008,7 +6952,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -7025,7 +6969,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7045,7 +6989,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -7062,7 +7006,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7084,7 +7028,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7106,7 +7050,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7128,7 +7072,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7150,7 +7094,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7172,7 +7116,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7186,7 +7130,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -7203,7 +7147,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7225,7 +7169,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7254,7 +7198,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7285,7 +7229,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7316,7 +7260,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7354,7 +7298,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7385,7 +7329,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7416,7 +7360,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7436,7 +7380,7 @@
                   "U256",
                   {
                     "Struct": {
-                      "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                      "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                       "module": "merak_pool",
                       "name": "Pool",
                       "typeArguments": []
@@ -7456,7 +7400,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7483,7 +7427,7 @@
   },
   "merak_swap_executed_event": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_swap_executed_event",
     "friends": [],
     "structs": {
@@ -7538,7 +7482,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+              "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
               "module": "merak_swap_executed_event",
               "name": "SwapExecutedEvent",
               "typeArguments": []
@@ -7550,15 +7494,15 @@
   },
   "merak_wrapper_system": {
     "fileFormatVersion": 6,
-    "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+    "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
     "name": "merak_wrapper_system",
     "friends": [
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_bridge_system"
       },
       {
-        "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+        "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
         "name": "merak_deploy_hook"
       }
     ],
@@ -7576,7 +7520,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7641,7 +7585,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7687,7 +7631,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7760,7 +7704,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7808,7 +7752,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7842,7 +7786,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac",
+                "address": "0xc62e9157df59b9f4c45251e8508725cda6d73bf4f86c98601091b5029c646a2a",
                 "module": "merak_schema",
                 "name": "Schema",
                 "typeArguments": []

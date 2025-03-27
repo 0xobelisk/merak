@@ -19,6 +19,7 @@ module merak::bridge_tests {
         let (mut scenario, dapp) = deploy_dapp_for_testing(@0xA);
 
         let mut schema = test_scenario::take_shared<Schema>(&scenario);
+        schema.fee_to().set(@0xB);
 
         let ctx = test_scenario::ctx(&mut scenario);
         let amount = 100 * 10000000;
