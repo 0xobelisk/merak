@@ -20,7 +20,7 @@ export default function Header() {
         <Link href="/wrap" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Wrap
         </Link>
-        <Link href="/" className="text-sm font-medium text-gray-600 hover:text-blue-500">
+        <Link href="/swap/0/1" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Swap
         </Link>
         <Link href="/pool" className="text-sm font-medium text-gray-600 hover:text-blue-500">
