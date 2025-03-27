@@ -11,8 +11,8 @@ async function main() {
   const merak = new Merak({
     networkType: network as NetworkType,
     secretKey: privateKey,
-    // indexerUrl: 'https://merak-indexer-testnet-api.obelisk.build',
-    // indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build',
+    indexerUrl: 'https://merak-indexer-testnet-api.obelisk.build',
+    indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build',
   });
 
   // const account = await merak.storage.getAccount({
@@ -78,6 +78,14 @@ async function main() {
   console.log('bridgeConfig', bridgeConfig);
   const allBridgeConfig = await merak.listBridgeConfig();
   console.log('allBridgeConfig', allBridgeConfig);
+
+  const data = await merak.querySwapPaths(2, 1);
+  console.log('data', data);
+
+  const getAllSwappableTokens = await merak.getAllSwappableTokens({
+    startTokenId: 2,
+  });
+  console.log('getAllSwappableTokens', getAllSwappableTokens);
   // const connectedTokens = await merak.getConnectedTokens(4);
   // console.log('connectedTokens', connectedTokens);
 
