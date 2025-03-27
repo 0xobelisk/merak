@@ -14,7 +14,7 @@
     "validate": "pnpm format:check && pnpm type-check"
   },
   "dependencies": {
-    "@0xobelisk/merak-sdk": "0.0.30",
+    "@0xobelisk/merak-sdk": "0.0.31",
     "@0xobelisk/sui-cli": "^1.1.6",
     "@0xobelisk/sui-client": "^1.1.10",
     "@0xobelisk/sui-common": "^1.1.7",

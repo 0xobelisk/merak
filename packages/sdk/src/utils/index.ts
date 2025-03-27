@@ -9,11 +9,10 @@ export function getMerakConfig(network: string): MerakConfig {
       config = {
         metadata: testnetMetadata,
         packageId:
-          '0x2aa4eb95a5c1f67f2149c7f0265796bbcf3726094da7f27c7015a83857773aac',
+          '0x28c16d08172efed632d7e146bbb837c0868dbed3c998cc57b237a3d1bd721787',
         schemaId:
-          '0x8ec2c1e28f17dc5d6fe1795cbd9a1a9d6ca6092a53f9d316caed59de8c166bde',
-        treasuryCap:
-          '0x6855b3fdaff0d2b20e7283f2e7b7054b225b55930c76627e590b034857457381',
+          '0x644b2830d76026e8313e31b63a79b72b4621bbbc764a1201fd4fbc66c7c67bc5',
+        treasuryCap: '',
       };
 
       break;
