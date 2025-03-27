@@ -47,7 +47,7 @@
       string(b"wDUBHE"),
       string(b"Wrapped DUBHE"),
       7,
-      string(b"https://pbs.twimg.com/profile_images/1903775085225480192/wO-0ktDP_400x400.jpg"),
+      string(b"https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg"),
       string(b"")
     );
   }

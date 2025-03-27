@@ -796,7 +796,7 @@ export class Merak {
             parseFloat(poolAsset2Amount?.value.balance ?? '0') /
             10 ** asset2Metadata.value.decimals;
           const poolInfo = {
-            name: `${asset1Metadata.value.name} / ${asset2Metadata.value.name}`,
+            name: `${asset1Metadata.value.symbol} / ${asset2Metadata.value.symbol}`,
             asset1Id: item.key1,
             asset2Id: item.key2,
             apr: '10%',

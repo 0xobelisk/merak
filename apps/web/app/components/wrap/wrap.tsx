@@ -49,10 +49,31 @@ interface AssetInfo {
   name: string;
 }
 
+const formatCoinType = (coinType: string): string => {
+  if (coinType.startsWith('0x')) {
+    coinType = coinType.substring(2);
+  }
+
+  if (coinType === '2::sui::SUI') {
+    return '0000000000000000000000000000000000000000000000000000000000000002::sui::SUI';
+  }
+
+  const parts = coinType.split('::');
+  if (parts.length === 3) {
+    const [module, pkg, type] = parts;
+    if (module.length < 64) {
+      return `${module.padStart(64, '0')}::${pkg}::${type}`;
+    }
+  }
+
+  return coinType;
+};
+
 export default function TokenWrapper() {
   const account = useCurrentAccount();
   const [balances, setBalances] = useState<(CoinBalance & { metadata: CoinMetadata })[]>([]);
   const [assetMetadata, setAssetMetadata] = useState<AssetInfo[]>([]);
+  const [wrapperAssetsMap, setWrapperAssetsMap] = useState<Map<string, any>>(new Map());
 
   const [isLoading, setIsLoading] = useState(false);
   const [isTokensLoading, setIsTokensLoading] = useState(false);
@@ -71,7 +92,6 @@ export default function TokenWrapper() {
       const allBalances = await dubhe.suiInteractor.currentClient.getAllBalances({
         owner: account.address
       });
-
       const updatedBalances = await Promise.all(
         allBalances.map(async (coinBalance) => ({
           ...coinBalance,
@@ -100,7 +120,6 @@ export default function TokenWrapper() {
       const ownedAssets = await merak.listOwnedWrapperAssets({
         address: account.address
       });
-      console.log('User owned assets:', ownedAssets);
 
       if (ownedAssets && ownedAssets.data && Array.isArray(ownedAssets.data)) {
         const userWrappedAssets = await Promise.all(
@@ -201,11 +220,42 @@ export default function TokenWrapper() {
     }
   }, [sourceToken, fetchWrappedTokens]);
 
+  // Query wrapperAssets for each token
+  useEffect(() => {
+    const merak = initMerakClient();
+    const queryWrapperAssets = async () => {
+      const newWrapperAssetsMap = new Map<string, any>();
+      for (const coinBalance of balances) {
+        try {
+          const formattedCoinType = formatCoinType(coinBalance.coinType);
+          const wrapperAssets = await merak.storage.get.wrapperAssets({
+            coinType: formattedCoinType
+          });
+
+          if (wrapperAssets && wrapperAssets.data) {
+            newWrapperAssetsMap.set(coinBalance.coinType, wrapperAssets.data);
+          }
+        } catch (err) {
+          console.error('Failed to fetch wrapperAssets:', err);
+        }
+      }
+      setWrapperAssetsMap(newWrapperAssetsMap);
+    };
+
+    queryWrapperAssets();
+  }, [balances]);
+
   // Calculate token list
   const sourceTokens = useMemo(() => {
     const tokenMap = new Map<string, TokenInfo>();
 
     balances.forEach((coinBalance) => {
+      // 只处理在 wrapperAssets 中的代币
+      if (!wrapperAssetsMap.has(coinBalance.coinType)) {
+        return;
+      }
+
+      console.log('coinType', coinBalance.coinType);
       const symbol =
         coinBalance.metadata.symbol || coinBalance.coinType.split('::').pop() || 'Unknown';
       const currentBalance = BigInt(coinBalance.totalBalance);
@@ -237,13 +287,14 @@ export default function TokenWrapper() {
     });
 
     return Array.from(tokenMap.values());
-  }, [balances]);
+  }, [balances, wrapperAssetsMap]);
 
   // Source token list for wrap/unwrap
-  const currentSourceTokens = useMemo(
+  const currentSourceTokens = useMemo<TokenInfo[]>(
     () => (isWrap ? sourceTokens : targetTokens),
     [isWrap, sourceTokens, targetTokens]
   );
+  console.log('currentSourceTokens', currentSourceTokens);
 
   // Handle amount change
   const handleAmountChange = useCallback(
@@ -374,6 +425,7 @@ export default function TokenWrapper() {
       const merak = initMerakClient();
 
       // Get selected asset details
+      console.log('assetMetadata', assetMetadata);
       const selectedAsset = assetMetadata.find((asset) => asset.id.toString() === sourceToken);
       if (!selectedAsset) {
         throw new Error('Unable to get selected token information');
