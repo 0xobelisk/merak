@@ -73,12 +73,12 @@ function TokenSelectionModalOpen({
   // 获取可用的代币列表
   const getAvailableAssets = useCallback(() => {
     console.log('⭐ getAvailableAssets called with selectionType:', selectionType);
-    
+
     if (selectionType === 'from') {
       console.log('📋 FROM selection - returning all assets:', assetsState.assetInfos.length);
       return assetsState.assetInfos;
     }
-    
+
     if (availableToTokens) {
       console.log('📋 TO selection with availableToTokens:', availableToTokens);
       return availableToTokens;
@@ -134,7 +134,11 @@ function TokenSelectionModalOpen({
   const handleSelectToken = (asset: any) => {
     console.log('🎯 Token selected:', asset);
     console.log('- Type:', asset.coinType ? 'Native' : 'Merak');
-    console.log('- Details:', asset.coinType || asset.assetId, asset.symbol || asset.metadata?.symbol);
+    console.log(
+      '- Details:',
+      asset.coinType || asset.assetId,
+      asset.symbol || asset.metadata?.symbol
+    );
 
     // 处理 Native 代币的选择
     if (asset.coinType) {
@@ -208,74 +212,133 @@ function TokenSelectionModalOpen({
       console.log('- selectionType:', selectionType);
       console.log('- availableTokenIds:', availableTokenIds);
       console.log('- availableToTokens:', availableToTokens);
-      
+
       const merak = initMerakClient();
 
-      // 获取用户拥有的资产信息
-      const ownedAssetsResults = await merak.listOwnedAssetsInfo({
-        address: account.address
-      });
+      let allAssets = [];
 
-      console.log('🔍 Owned Merak assets (total):', ownedAssetsResults.data.length);
-      console.log('- First few assets:', ownedAssetsResults.data.slice(0, 2));
-      console.log('- All asset IDs:', ownedAssetsResults.data.map(asset => Number(asset.assetId)));
+      if (selectionType === 'from') {
+        // 对于 fromToken，只获取用户拥有的资产
+        const ownedAssetsResults = await merak.listOwnedAssetsInfo({
+          address: account.address
+        });
+        allAssets = ownedAssetsResults.data;
+      } else {
+        // 对于 toToken，获取所有可用资产
+        const allAssetsResults = await merak.listAssetsInfo({
+          first: 9999,
+          orderBy: ['KEY1_ASC']
+        });
+        allAssets = allAssetsResults.data;
+      }
+
+      console.log('🔍 Assets (total):', allAssets.length);
+      console.log('- First few assets:', allAssets.slice(0, 2));
+      console.log(
+        '- All asset IDs:',
+        allAssets.map((asset) => Number(asset.assetId))
+      );
 
       // 如果是to token，需要检查是否有availableTokenIds或availableToTokens限制
-      let filteredOwnedAssets = ownedAssetsResults.data;
-      
+      let filteredAssets = allAssets;
+
       if (selectionType === 'to' && availableTokenIds) {
-        console.log('⚙️ Filtering Merak tokens by availableTokenIds');
-        const beforeCount = filteredOwnedAssets.length;
-        
+        console.log('⚙️ Filtering tokens by availableTokenIds');
+        const beforeCount = filteredAssets.length;
+
         // 重要修复：确保类型匹配 - 将两边都转换为Number进行比较
-        filteredOwnedAssets = ownedAssetsResults.data.filter(asset => {
+        filteredAssets = allAssets.filter((asset) => {
           const assetIdNum = Number(asset.assetId);
           const isIncluded = availableTokenIds.includes(assetIdNum);
           console.log(`Asset ID ${assetIdNum} included: ${isIncluded}`);
           return isIncluded;
         });
-        
-        console.log(`- Filtered from ${beforeCount} to ${filteredOwnedAssets.length} tokens`);
+
+        console.log(`- Filtered from ${beforeCount} to ${filteredAssets.length} tokens`);
         console.log('- Available IDs:', availableTokenIds);
-        console.log('- Asset IDs after filtering:', filteredOwnedAssets.map(a => Number(a.assetId)));
+        console.log(
+          '- Asset IDs after filtering:',
+          filteredAssets.map((a) => Number(a.assetId))
+        );
       } else if (selectionType === 'to' && availableToTokens) {
-        console.log('⚙️ Filtering Merak tokens by availableToTokens');
-        const beforeCount = filteredOwnedAssets.length;
-        
+        console.log('⚙️ Filtering tokens by availableToTokens');
+        const beforeCount = filteredAssets.length;
+
         // 获取可用的ID列表
-        const availableIds = availableToTokens.map(t => t.assetId);
+        const availableIds = availableToTokens.map((t) => t.assetId);
         console.log('- Available IDs from tokens:', availableIds);
-        
+
         // 重要修复：确保比较时两边的类型一致，都使用字符串
-        filteredOwnedAssets = ownedAssetsResults.data.filter(asset => {
+        filteredAssets = allAssets.filter((asset) => {
           const isIncluded = availableIds.includes(asset.assetId);
-          console.log(`Asset ID ${asset.assetId} included: ${isIncluded}, symbol: ${asset.metadata?.symbol}`);
+          console.log(
+            `Asset ID ${asset.assetId} included: ${isIncluded}, symbol: ${asset.metadata?.symbol}`
+          );
           return isIncluded;
         });
-        
-        console.log(`- Filtered from ${beforeCount} to ${filteredOwnedAssets.length} tokens`);
-        console.log('- Asset IDs after filtering:', filteredOwnedAssets.map(a => a.assetId));
-        console.log('- Token symbols after filtering:', filteredOwnedAssets.map(a => a.metadata?.symbol));
+
+        console.log(`- Filtered from ${beforeCount} to ${filteredAssets.length} tokens`);
+        console.log(
+          '- Asset IDs after filtering:',
+          filteredAssets.map((a) => a.assetId)
+        );
+        console.log(
+          '- Token symbols after filtering:',
+          filteredAssets.map((a) => a.metadata?.symbol)
+        );
       } else {
-        console.log('⚙️ No filtering applied to Merak tokens (from selection or no criteria)');
+        console.log('⚙️ No filtering applied to tokens (from selection or no criteria)');
       }
 
       // 如果过滤后为空，检查是否有错误
-      if (filteredOwnedAssets.length === 0 && (availableTokenIds?.length || availableToTokens?.length)) {
-        console.warn('⚠️ WARNING: Filtered token list is empty but available tokens were provided!');
+      if (filteredAssets.length === 0 && (availableTokenIds?.length || availableToTokens?.length)) {
+        console.warn(
+          '⚠️ WARNING: Filtered token list is empty but available tokens were provided!'
+        );
         console.warn('- This might indicate a type mismatch in ID comparison');
         // 调试详细信息
         if (availableTokenIds) {
-          console.log('Available IDs types:', availableTokenIds.map(id => typeof id));
+          console.log(
+            'Available IDs types:',
+            availableTokenIds.map((id) => typeof id)
+          );
         }
         if (availableToTokens) {
-          console.log('Available Token IDs types:', availableToTokens.map(t => typeof t.assetId));
+          console.log(
+            'Available Token IDs types:',
+            availableToTokens.map((t) => typeof t.assetId)
+          );
         }
-        console.log('Asset IDs types:', ownedAssetsResults.data.map(a => typeof a.assetId));
+        console.log(
+          'Asset IDs types:',
+          allAssets.map((a) => typeof a.assetId)
+        );
       }
 
+      // 获取用户余额信息
+      const userBalances =
+        selectionType === 'from'
+          ? filteredAssets // fromToken 已经有余额信息
+          : await Promise.all(
+              filteredAssets.map(async (asset) => {
+                try {
+                  const balance = await merak.balanceOf(asset.assetId, account.address);
+                  return {
+                    ...asset,
+                    balance: balance || '0'
+                  };
+                } catch (error) {
+                  console.error(`Error fetching balance for asset ${asset.assetId}:`, error);
+                  return {
+                    ...asset,
+                    balance: '0'
+                  };
+                }
+              })
+            );
+
       // 直接处理返回的数据，余额信息已经包含在里面
-      const formattedTokens = filteredOwnedAssets.map((asset) => {
+      const formattedTokens = userBalances.map((asset) => {
         // 计算格式化的余额，考虑精度
         const decimals = asset.metadata?.decimals || 18;
         const rawBalance = asset.balance || '0';
@@ -306,10 +369,13 @@ function TokenSelectionModalOpen({
       });
 
       setMerakTokens(sortedTokens);
-      console.log('✅ Final Merak tokens count:', sortedTokens.length);
-      console.log('- Tokens to display:', sortedTokens.map(t => `${t.symbol} (ID: ${t.assetId})`));
+      console.log('✅ Final tokens count:', sortedTokens.length);
+      console.log(
+        '- Tokens to display:',
+        sortedTokens.map((t) => `${t.symbol} (ID: ${t.assetId})`)
+      );
     } catch (error) {
-      console.error('❌ Error fetching Merak tokens:', error);
+      console.error('❌ Error fetching tokens:', error);
     } finally {
       setIsLoading(false);
     }
@@ -325,7 +391,7 @@ function TokenSelectionModalOpen({
       console.log('- selectionType:', selectionType);
       console.log('- availableTokenIds:', availableTokenIds);
       console.log('- availableToTokens:', availableToTokens);
-      
+
       const dubhe = initDubheClient();
       const allBalances = await dubhe.suiInteractor.currentClient.getAllBalances({
         owner: account.address
@@ -399,8 +465,8 @@ function TokenSelectionModalOpen({
             (supportedCoin?.symbol === 'SUI'
               ? 'https://hop.ag/tokens/SUI.svg'
               : supportedCoin?.symbol === 'DUBHE'
-                ? 'https://pbs.twimg.com/profile_images/1904156933516668928/W9y4Vor__400x400.jpg'
-                : DEFAULT_ICON),
+              ? 'https://pbs.twimg.com/profile_images/1904156933516668928/W9y4Vor__400x400.jpg'
+              : DEFAULT_ICON),
           balance: balance.totalBalance,
           balanceFormatted: !isNaN(balanceValue)
             ? balanceValue.toLocaleString(undefined, {
@@ -411,18 +477,24 @@ function TokenSelectionModalOpen({
           metadata: balance.metadata
         };
       });
-      
+
       // Native tokens don't have the same IDs as Merak tokens
       console.log('⚙️ Native tokens before any filtering:', formattedTokens.length);
-      console.log('- Symbols:', formattedTokens.map(t => t.symbol));
-      
+      console.log(
+        '- Symbols:',
+        formattedTokens.map((t) => t.symbol)
+      );
+
       // Apply filtering only for "to" selection if needed
       let filteredTokens = formattedTokens;
-      
+
       // For now, we don't filter native tokens based on IDs
       console.log('✅ Final Native tokens count:', filteredTokens.length);
-      console.log('- Symbols after potential filtering:', filteredTokens.map(t => t.symbol));
-      
+      console.log(
+        '- Symbols after potential filtering:',
+        filteredTokens.map((t) => t.symbol)
+      );
+
       setNativeTokens(filteredTokens);
     } catch (error) {
       console.error('❌ Error fetching native tokens:', error);
@@ -437,25 +509,36 @@ function TokenSelectionModalOpen({
       console.log('🔄 TOKEN SELECTION MODAL REFRESH 🔄');
       console.log('- selectionType:', selectionType);
       console.log('- availableTokenIds:', availableTokenIds);
-      console.log('- availableToTokens:', availableToTokens ? 'provided (length: ' + availableToTokens.length + ')' : 'not provided');
-      
+      console.log(
+        '- availableToTokens:',
+        availableToTokens ? 'provided (length: ' + availableToTokens.length + ')' : 'not provided'
+      );
+
       fetchNativeTokens();
       fetchMerakTokens();
     }
   }, [
-    fetchNativeTokens, 
-    fetchMerakTokens, 
-    account?.address, 
-    selectionType, 
-    availableTokenIds, 
+    fetchNativeTokens,
+    fetchMerakTokens,
+    account?.address,
+    selectionType,
+    availableTokenIds,
     availableToTokens
   ]);
 
   // Add debug console for when tokens render
   useEffect(() => {
     console.log('💰 TOKENS READY FOR DISPLAY:');
-    console.log('- Native tokens:', nativeTokens.length, nativeTokens.map(t => t.symbol));
-    console.log('- Merak tokens:', merakTokens.length, merakTokens.map(t => t.symbol));
+    console.log(
+      '- Native tokens:',
+      nativeTokens.length,
+      nativeTokens.map((t) => t.symbol)
+    );
+    console.log(
+      '- Merak tokens:',
+      merakTokens.length,
+      merakTokens.map((t) => t.symbol)
+    );
   }, [nativeTokens, merakTokens]);
 
   return (
@@ -518,13 +601,17 @@ function TokenSelectionModalOpen({
                 <TabsList className="mt-1 bg-gray-100 p-0.5 rounded-lg">
                   <TabsTrigger
                     value="native"
-                    className={`rounded-md px-4 py-1 text-sm ${activeTab === 'native' ? 'bg-white shadow-sm' : ''}`}
+                    className={`rounded-md px-4 py-1 text-sm ${
+                      activeTab === 'native' ? 'bg-white shadow-sm' : ''
+                    }`}
                   >
                     Native
                   </TabsTrigger>
                   <TabsTrigger
                     value="merak"
-                    className={`rounded-md px-4 py-1 text-sm ${activeTab === 'merak' ? 'bg-white shadow-sm' : ''}`}
+                    className={`rounded-md px-4 py-1 text-sm ${
+                      activeTab === 'merak' ? 'bg-white shadow-sm' : ''
+                    }`}
                   >
                     Merak
                   </TabsTrigger>
