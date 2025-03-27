@@ -12,7 +12,8 @@ export function getMerakConfig(network: string): MerakConfig {
           '0x28c16d08172efed632d7e146bbb837c0868dbed3c998cc57b237a3d1bd721787',
         schemaId:
           '0x644b2830d76026e8313e31b63a79b72b4621bbbc764a1201fd4fbc66c7c67bc5',
-        treasuryCap: '',
+        treasuryCap:
+          '0x4e445eebf2deb401e4e0ccb4760d63f4bfdb520b608551b57c15b02e90569c09',
       };
 
       break;
