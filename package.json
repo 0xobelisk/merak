@@ -1,24 +1,25 @@
 {
-	"name": "merak",
-	"version": "0.0.1",
-	"private": true,
-	"license": "MIT",
-	"scripts": {
-		"build": "turbo build",
-		"dev": "turbo dev",
-		"ui:add": "pnpm --filter @repo/ui ui:add",
-		"lint": "eslint . --max-warnings 0"
-	},
-	"dependencies": {
-		"@0xobelisk/sui-cli": "^1.1.6",
-		"@0xobelisk/sui-common": "^1.1.7",
-		"@0xobelisk/sui-indexer": "^1.1.13",
-		"chalk": "^4.1.2",
-		"dotenv": "^16.4.5"
-	},
-	"devDependencies": {
-		"@repo/eslint-config": "workspace:*",
-		"@repo/typescript-config": "workspace:*",
-		"turbo": "^2.1.2"
-	},
+  "name": "merak",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "ui:add": "pnpm --filter @repo/ui ui:add",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "@0xobelisk/sui-cli": "^1.1.6",
+    "@0xobelisk/sui-common": "^1.1.7",
+    "@0xobelisk/sui-indexer": "^1.1.13",
+    "chalk": "^4.1.2",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "turbo": "^2.1.2"
+  },
+  "packageManager": "pnpm@9.9.0"
 }
