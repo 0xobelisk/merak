@@ -1,0 +1,6871 @@
+{
+  "assets_account": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_account",
+    "friends": [
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "assets_functions"
+      },
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "assets_system"
+      }
+    ],
+    "structs": {
+      "Account": {
+        "abilities": {
+          "abilities": ["Copy", "Drop", "Store"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "balance",
+            "type": "U256"
+          },
+          {
+            "name": "status",
+            "type": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_account_status",
+                "name": "AccountStatus",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "get": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_account",
+                "name": "Account",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          "U256",
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_account_status",
+              "name": "AccountStatus",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "get_balance": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_account",
+                "name": "Account",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U256"]
+      },
+      "get_status": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_account",
+                "name": "Account",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_account_status",
+              "name": "AccountStatus",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "U256",
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_account_status",
+              "name": "AccountStatus",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_account",
+              "name": "Account",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "set": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_account",
+                "name": "Account",
+                "typeArguments": []
+              }
+            }
+          },
+          "U256",
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_account_status",
+              "name": "AccountStatus",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": []
+      },
+      "set_balance": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_account",
+                "name": "Account",
+                "typeArguments": []
+              }
+            }
+          },
+          "U256"
+        ],
+        "return": []
+      },
+      "set_status": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_account",
+                "name": "Account",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_account_status",
+              "name": "AccountStatus",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": []
+      }
+    }
+  },
+  "assets_account_status": {
+    "fileFormatVersion": 7,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_account_status",
+    "friends": [],
+    "structs": {},
+    "exposedFunctions": {
+      "new_blocked": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_account_status",
+              "name": "AccountStatus",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "new_frozen": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_account_status",
+              "name": "AccountStatus",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "new_liquid": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_account_status",
+              "name": "AccountStatus",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assets_blocked_address_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_blocked_address_event",
+    "friends": [],
+    "structs": {
+      "BlockedAddressEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "owner",
+            "type": "Address"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_blocked_address_event",
+              "name": "BlockedAddressEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assets_burned_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_burned_event",
+    "friends": [],
+    "structs": {
+      "BurnedEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "from",
+            "type": "Address"
+          },
+          {
+            "name": "amount",
+            "type": "U256"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address", "U256"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address", "U256"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_burned_event",
+              "name": "BurnedEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assets_created_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_created_event",
+    "friends": [],
+    "structs": {
+      "CreatedEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "name",
+            "type": {
+              "Struct": {
+                "address": "0x1",
+                "module": "ascii",
+                "name": "String",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "symbol",
+            "type": {
+              "Struct": {
+                "address": "0x1",
+                "module": "ascii",
+                "name": "String",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "owner",
+            "type": "Address"
+          },
+          {
+            "name": "is_mintable",
+            "type": "Bool"
+          },
+          {
+            "name": "is_burnable",
+            "type": "Bool"
+          },
+          {
+            "name": "is_freezable",
+            "type": "Bool"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "U32",
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          "Address",
+          "Bool",
+          "Bool",
+          "Bool"
+        ],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "U32",
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          "Address",
+          "Bool",
+          "Bool",
+          "Bool"
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_created_event",
+              "name": "CreatedEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assets_details": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_details",
+    "friends": [
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "assets_functions"
+      },
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "assets_system"
+      }
+    ],
+    "structs": {
+      "Details": {
+        "abilities": {
+          "abilities": ["Copy", "Drop", "Store"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "owner",
+            "type": "Address"
+          },
+          {
+            "name": "supply",
+            "type": "U256"
+          },
+          {
+            "name": "accounts",
+            "type": "U32"
+          },
+          {
+            "name": "approvals",
+            "type": "U32"
+          },
+          {
+            "name": "status",
+            "type": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_status",
+                "name": "Status",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "is_mintable",
+            "type": "Bool"
+          },
+          {
+            "name": "is_burnable",
+            "type": "Bool"
+          },
+          {
+            "name": "is_freezable",
+            "type": "Bool"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "get": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          "Address",
+          "U256",
+          "U32",
+          "U32",
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_status",
+              "name": "Status",
+              "typeArguments": []
+            }
+          },
+          "Bool",
+          "Bool",
+          "Bool"
+        ]
+      },
+      "get_accounts": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U32"]
+      },
+      "get_approvals": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U32"]
+      },
+      "get_is_burnable": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["Bool"]
+      },
+      "get_is_freezable": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["Bool"]
+      },
+      "get_is_mintable": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["Bool"]
+      },
+      "get_owner": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["Address"]
+      },
+      "get_status": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_status",
+              "name": "Status",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "get_supply": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U256"]
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "Address",
+          "U256",
+          "U32",
+          "U32",
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_status",
+              "name": "Status",
+              "typeArguments": []
+            }
+          },
+          "Bool",
+          "Bool",
+          "Bool"
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_details",
+              "name": "Details",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "set": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          },
+          "Address",
+          "U256",
+          "U32",
+          "U32",
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_status",
+              "name": "Status",
+              "typeArguments": []
+            }
+          },
+          "Bool",
+          "Bool",
+          "Bool"
+        ],
+        "return": []
+      },
+      "set_accounts": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32"
+        ],
+        "return": []
+      },
+      "set_approvals": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32"
+        ],
+        "return": []
+      },
+      "set_is_burnable": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          },
+          "Bool"
+        ],
+        "return": []
+      },
+      "set_is_freezable": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          },
+          "Bool"
+        ],
+        "return": []
+      },
+      "set_is_mintable": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          },
+          "Bool"
+        ],
+        "return": []
+      },
+      "set_owner": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          },
+          "Address"
+        ],
+        "return": []
+      },
+      "set_status": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_status",
+              "name": "Status",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": []
+      },
+      "set_supply": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          },
+          "U256"
+        ],
+        "return": []
+      }
+    }
+  },
+  "assets_frozen_address_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_frozen_address_event",
+    "friends": [],
+    "structs": {
+      "FrozenAddressEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "owner",
+            "type": "Address"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_frozen_address_event",
+              "name": "FrozenAddressEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assets_frozen_asset_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_frozen_asset_event",
+    "friends": [],
+    "structs": {
+      "FrozenAssetEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "asset_id",
+            "type": "U32"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_frozen_asset_event",
+              "name": "FrozenAssetEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assets_functions": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_functions",
+    "friends": [
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "assets_system"
+      },
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "dex_functions"
+      },
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "dex_system"
+      },
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "wrapper_system"
+      }
+    ],
+    "structs": {},
+    "exposedFunctions": {
+      "balance_of": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "Address"
+        ],
+        "return": ["U256"]
+      },
+      "can_decrease": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "U32",
+          "Address",
+          "U256",
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "can_increase": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "U32",
+          "Address",
+          "U256",
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "decrease_balance": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "U32",
+          "Address",
+          "U256",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "do_burn": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "U32",
+          "Address",
+          "U256",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "do_create": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "Bool",
+          "Bool",
+          "Bool",
+          "Address",
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          "U8",
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": ["U32"]
+      },
+      "do_mint": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "U32",
+          "Address",
+          "U256",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "do_transfer": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "U32",
+          "Address",
+          "Address",
+          "U256",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U256"]
+      },
+      "increase_balance": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "U32",
+          "Address",
+          "U256",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "supply_of": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32"
+        ],
+        "return": ["U256"]
+      }
+    }
+  },
+  "assets_metadata": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_metadata",
+    "friends": [],
+    "structs": {
+      "Metadata": {
+        "abilities": {
+          "abilities": ["Copy", "Drop", "Store"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "name",
+            "type": {
+              "Struct": {
+                "address": "0x1",
+                "module": "ascii",
+                "name": "String",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "symbol",
+            "type": {
+              "Struct": {
+                "address": "0x1",
+                "module": "ascii",
+                "name": "String",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "description",
+            "type": {
+              "Struct": {
+                "address": "0x1",
+                "module": "ascii",
+                "name": "String",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "decimals",
+            "type": "U8"
+          },
+          {
+            "name": "url",
+            "type": {
+              "Struct": {
+                "address": "0x1",
+                "module": "ascii",
+                "name": "String",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "info",
+            "type": {
+              "Struct": {
+                "address": "0x1",
+                "module": "ascii",
+                "name": "String",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "get": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          "U8",
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "get_decimals": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U8"]
+      },
+      "get_description": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "get_info": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "get_name": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "get_symbol": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "get_url": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          "U8",
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_metadata",
+              "name": "Metadata",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "set": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          "U8",
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": []
+      },
+      "set_decimals": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          },
+          "U8"
+        ],
+        "return": []
+      },
+      "set_description": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": []
+      },
+      "set_info": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": []
+      },
+      "set_name": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": []
+      },
+      "set_symbol": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": []
+      },
+      "set_url": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": []
+      }
+    }
+  },
+  "assets_minted_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_minted_event",
+    "friends": [],
+    "structs": {
+      "MintedEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "to",
+            "type": "Address"
+          },
+          {
+            "name": "amount",
+            "type": "U256"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address", "U256"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address", "U256"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_minted_event",
+              "name": "MintedEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assets_ownership_transferred_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_ownership_transferred_event",
+    "friends": [],
+    "structs": {
+      "OwnershipTransferredEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "from",
+            "type": "Address"
+          },
+          {
+            "name": "to",
+            "type": "Address"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address", "Address"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address", "Address"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_ownership_transferred_event",
+              "name": "OwnershipTransferredEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assets_schema": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_schema",
+    "friends": [
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "assets_functions"
+      },
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "assets_system"
+      },
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "deploy_hook"
+      },
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "dex_system"
+      },
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "wrapper_system"
+      }
+    ],
+    "structs": {
+      "Assets": {
+        "abilities": {
+          "abilities": ["Store", "Key"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "next_asset_id",
+            "type": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U32"]
+              }
+            }
+          },
+          {
+            "name": "metadata",
+            "type": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_map",
+                "name": "StorageMap",
+                "typeArguments": [
+                  "U32",
+                  {
+                    "Struct": {
+                      "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                      "module": "assets_metadata",
+                      "name": "Metadata",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "details",
+            "type": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_map",
+                "name": "StorageMap",
+                "typeArguments": [
+                  "U32",
+                  {
+                    "Struct": {
+                      "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                      "module": "assets_details",
+                      "name": "Details",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "account",
+            "type": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_double_map",
+                "name": "StorageDoubleMap",
+                "typeArguments": [
+                  "U32",
+                  "Address",
+                  {
+                    "Struct": {
+                      "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                      "module": "assets_account",
+                      "name": "Account",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "borrow_account": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_double_map",
+                "name": "StorageDoubleMap",
+                "typeArguments": [
+                  "U32",
+                  "Address",
+                  {
+                    "Struct": {
+                      "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                      "module": "assets_account",
+                      "name": "Account",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_details": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_map",
+                "name": "StorageMap",
+                "typeArguments": [
+                  "U32",
+                  {
+                    "Struct": {
+                      "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                      "module": "assets_details",
+                      "name": "Details",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_metadata": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_map",
+                "name": "StorageMap",
+                "typeArguments": [
+                  "U32",
+                  {
+                    "Struct": {
+                      "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                      "module": "assets_metadata",
+                      "name": "Metadata",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_account": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_double_map",
+                "name": "StorageDoubleMap",
+                "typeArguments": [
+                  "U32",
+                  "Address",
+                  {
+                    "Struct": {
+                      "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                      "module": "assets_account",
+                      "name": "Account",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_details": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_map",
+                "name": "StorageMap",
+                "typeArguments": [
+                  "U32",
+                  {
+                    "Struct": {
+                      "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                      "module": "assets_details",
+                      "name": "Details",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_metadata": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_map",
+                "name": "StorageMap",
+                "typeArguments": [
+                  "U32",
+                  {
+                    "Struct": {
+                      "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                      "module": "assets_metadata",
+                      "name": "Metadata",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_next_asset_id": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U32"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_next_asset_id": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U32"]
+              }
+            }
+          }
+        ]
+      },
+      "get_account": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "Address"
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                    "module": "assets_account",
+                    "name": "Account",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "get_account_keys": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": "U32"
+          },
+          {
+            "Vector": "Address"
+          }
+        ]
+      },
+      "get_account_values": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_account",
+                "name": "Account",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "get_details": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32"
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                    "module": "assets_details",
+                    "name": "Details",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "get_details_keys": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": "U32"
+          }
+        ]
+      },
+      "get_details_values": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_details",
+                "name": "Details",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "get_metadata": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32"
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                    "module": "assets_metadata",
+                    "name": "Metadata",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "get_metadata_keys": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": "U32"
+          }
+        ]
+      },
+      "get_metadata_values": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_metadata",
+                "name": "Metadata",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "get_next_asset_id": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": ["U32"]
+            }
+          }
+        ]
+      },
+      "register": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "dapps_schema",
+                "name": "Dapps",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_schema",
+              "name": "Assets",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assets_status": {
+    "fileFormatVersion": 7,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_status",
+    "friends": [],
+    "structs": {},
+    "exposedFunctions": {
+      "new_destroying": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_status",
+              "name": "Status",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "new_frozen": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_status",
+              "name": "Status",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "new_live": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_status",
+              "name": "Status",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assets_system": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_system",
+    "friends": [],
+    "structs": {},
+    "exposedFunctions": {
+      "balance_of": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "Address"
+        ],
+        "return": ["U256"]
+      },
+      "block_address": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "Address",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "burn": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "Address",
+          "U256",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "create": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          "U8",
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          "U256",
+          "Address",
+          "Address",
+          "Bool",
+          "Bool",
+          "Bool",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "freeze_address": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "Address",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "freeze_asset": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "metadata_of": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32"
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          "U8",
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "mint": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "Address",
+          "U256",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "owned_assets": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "Address"
+        ],
+        "return": [
+          {
+            "Vector": "U32"
+          }
+        ]
+      },
+      "supply_of": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32"
+        ],
+        "return": ["U256"]
+      },
+      "thaw_address": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "Address",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "thaw_asset": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "transfer": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "Address",
+          "U256",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "transfer_all": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "Address",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "transfer_ownership": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "Address",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      }
+    }
+  },
+  "assets_thawed_address_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_thawed_address_event",
+    "friends": [],
+    "structs": {
+      "ThawedAddressEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "owner",
+            "type": "Address"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_thawed_address_event",
+              "name": "ThawedAddressEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assets_thawed_asset_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_thawed_asset_event",
+    "friends": [],
+    "structs": {
+      "ThawedAssetEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "asset_id",
+            "type": "U32"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_thawed_asset_event",
+              "name": "ThawedAssetEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "assets_transferred_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "assets_transferred_event",
+    "friends": [],
+    "structs": {
+      "TransferredEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "from",
+            "type": "Address"
+          },
+          {
+            "name": "to",
+            "type": "Address"
+          },
+          {
+            "name": "amount",
+            "type": "U256"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address", "Address", "U256"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address", "Address", "U256"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_transferred_event",
+              "name": "TransferredEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "dapp_key": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "dapp_key",
+    "friends": [],
+    "structs": {
+      "DappKey": {
+        "abilities": {
+          "abilities": ["Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "dummy_field",
+            "type": "Bool"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "new": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "dapp_key",
+              "name": "DappKey",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "deploy_hook": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "deploy_hook",
+    "friends": [],
+    "structs": {},
+    "exposedFunctions": {
+      "run": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "dapps_schema",
+                "name": "Dapps",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "clock",
+                "name": "Clock",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      }
+    }
+  },
+  "dex_functions": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "dex_functions",
+    "friends": [
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "dex_system"
+      }
+    ],
+    "structs": {},
+    "exposedFunctions": {
+      "balance_path_from_amount_in": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U256",
+          {
+            "Vector": "U32"
+          }
+        ],
+        "return": [
+          {
+            "Vector": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_path_element",
+                "name": "PathElement",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "balance_path_from_amount_out": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U256",
+          {
+            "Vector": "U32"
+          }
+        ],
+        "return": [
+          {
+            "Vector": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_path_element",
+                "name": "PathElement",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "calc_lp_amount_for_zero_supply": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          "U256",
+          "U256"
+        ],
+        "return": ["U256"]
+      },
+      "credit_swap": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U256",
+          {
+            "Vector": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_path_element",
+                "name": "PathElement",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U32", "U256"]
+      },
+      "do_swap_exact_tokens_for_tokens": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "Address",
+          {
+            "Vector": "U32"
+          },
+          "U256",
+          "U256",
+          "Address"
+        ],
+        "return": []
+      },
+      "do_swap_tokens_for_exact_tokens": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "Address",
+          {
+            "Vector": "U32"
+          },
+          "U256",
+          "U256",
+          "Address"
+        ],
+        "return": []
+      },
+      "get_amount_in": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          "U256",
+          "U256",
+          "U256"
+        ],
+        "return": ["U256"]
+      },
+      "get_amount_out": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          "U256",
+          "U256",
+          "U256"
+        ],
+        "return": ["U256"]
+      },
+      "get_pool": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "U32"
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "dex_pool",
+              "name": "Pool",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "get_pool_id": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "U32"
+        ],
+        "return": ["U32"]
+      },
+      "get_reserves": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "U32"
+        ],
+        "return": ["U256", "U256"]
+      },
+      "pool_asset_symbol": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_metadata",
+              "name": "Metadata",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "assets_metadata",
+              "name": "Metadata",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "quote": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U256", "U256", "U256"],
+        "return": ["U256"]
+      },
+      "sort_assets": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "U32"],
+        "return": ["U32", "U32"]
+      },
+      "swap": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "Address",
+          {
+            "Vector": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_path_element",
+                "name": "PathElement",
+                "typeArguments": []
+              }
+            }
+          },
+          "Address"
+        ],
+        "return": []
+      },
+      "validate_swap_path": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Vector": "U32"
+          }
+        ],
+        "return": []
+      }
+    }
+  },
+  "dex_liquidity_added_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "dex_liquidity_added_event",
+    "friends": [],
+    "structs": {
+      "LiquidityAddedEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "who",
+            "type": "Address"
+          },
+          {
+            "name": "pool_id",
+            "type": "U32"
+          },
+          {
+            "name": "asset1_amount",
+            "type": "U256"
+          },
+          {
+            "name": "asset2_amount",
+            "type": "U256"
+          },
+          {
+            "name": "lp_asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "lp_asset_minted",
+            "type": "U256"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["Address", "U32", "U256", "U256", "U32", "U256"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["Address", "U32", "U256", "U256", "U32", "U256"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "dex_liquidity_added_event",
+              "name": "LiquidityAddedEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "dex_liquidity_removed_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "dex_liquidity_removed_event",
+    "friends": [],
+    "structs": {
+      "LiquidityRemovedEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "who",
+            "type": "Address"
+          },
+          {
+            "name": "pool_id",
+            "type": "U32"
+          },
+          {
+            "name": "asset1_amount",
+            "type": "U256"
+          },
+          {
+            "name": "asset2_amount",
+            "type": "U256"
+          },
+          {
+            "name": "lp_asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "lp_asset_burned",
+            "type": "U256"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["Address", "U32", "U256", "U256", "U32", "U256"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["Address", "U32", "U256", "U256", "U32", "U256"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "dex_liquidity_removed_event",
+              "name": "LiquidityRemovedEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "dex_path_element": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "dex_path_element",
+    "friends": [],
+    "structs": {
+      "PathElement": {
+        "abilities": {
+          "abilities": ["Copy", "Drop", "Store"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "balance",
+            "type": "U256"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "get": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_path_element",
+                "name": "PathElement",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U32", "U256"]
+      },
+      "get_asset_id": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_path_element",
+                "name": "PathElement",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U32"]
+      },
+      "get_balance": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_path_element",
+                "name": "PathElement",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U256"]
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "U256"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "dex_path_element",
+              "name": "PathElement",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "set": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_path_element",
+                "name": "PathElement",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "U256"
+        ],
+        "return": []
+      },
+      "set_asset_id": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_path_element",
+                "name": "PathElement",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32"
+        ],
+        "return": []
+      },
+      "set_balance": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_path_element",
+                "name": "PathElement",
+                "typeArguments": []
+              }
+            }
+          },
+          "U256"
+        ],
+        "return": []
+      }
+    }
+  },
+  "dex_pool": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "dex_pool",
+    "friends": [],
+    "structs": {
+      "Pool": {
+        "abilities": {
+          "abilities": ["Copy", "Drop", "Store"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "pool_id",
+            "type": "U32"
+          },
+          {
+            "name": "pool_address",
+            "type": "Address"
+          },
+          {
+            "name": "lp_asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "asset1_id",
+            "type": "U32"
+          },
+          {
+            "name": "asset2_id",
+            "type": "U32"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "get": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U32", "Address", "U32", "U32", "U32"]
+      },
+      "get_asset1_id": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U32"]
+      },
+      "get_asset2_id": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U32"]
+      },
+      "get_lp_asset_id": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U32"]
+      },
+      "get_pool_address": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["Address"]
+      },
+      "get_pool_id": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U32"]
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U32", "Address", "U32", "U32", "U32"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "dex_pool",
+              "name": "Pool",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "set": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "Address",
+          "U32",
+          "U32",
+          "U32"
+        ],
+        "return": []
+      },
+      "set_asset1_id": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32"
+        ],
+        "return": []
+      },
+      "set_asset2_id": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32"
+        ],
+        "return": []
+      },
+      "set_lp_asset_id": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32"
+        ],
+        "return": []
+      },
+      "set_pool_address": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          },
+          "Address"
+        ],
+        "return": []
+      },
+      "set_pool_id": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32"
+        ],
+        "return": []
+      }
+    }
+  },
+  "dex_pool_created_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "dex_pool_created_event",
+    "friends": [],
+    "structs": {
+      "PoolCreatedEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "creator",
+            "type": "Address"
+          },
+          {
+            "name": "pool_id",
+            "type": "U32"
+          },
+          {
+            "name": "pool_address",
+            "type": "Address"
+          },
+          {
+            "name": "asset1_id",
+            "type": "U32"
+          },
+          {
+            "name": "asset2_id",
+            "type": "U32"
+          },
+          {
+            "name": "lp_asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "lp_asset_symbol",
+            "type": {
+              "Struct": {
+                "address": "0x1",
+                "module": "ascii",
+                "name": "String",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "Address",
+          "U32",
+          "Address",
+          "U32",
+          "U32",
+          "U32",
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "Address",
+          "U32",
+          "Address",
+          "U32",
+          "U32",
+          "U32",
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "dex_pool_created_event",
+              "name": "PoolCreatedEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "dex_schema": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "dex_schema",
+    "friends": [
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "deploy_hook"
+      },
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "dex_system"
+      }
+    ],
+    "structs": {
+      "Dex": {
+        "abilities": {
+          "abilities": ["Store", "Key"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "next_pool_id",
+            "type": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U32"]
+              }
+            }
+          },
+          {
+            "name": "swap_fee",
+            "type": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U256"]
+              }
+            }
+          },
+          {
+            "name": "lp_fee",
+            "type": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U256"]
+              }
+            }
+          },
+          {
+            "name": "fee_to",
+            "type": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["Address"]
+              }
+            }
+          },
+          {
+            "name": "max_swap_path_len",
+            "type": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U8"]
+              }
+            }
+          },
+          {
+            "name": "min_liquidity",
+            "type": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U256"]
+              }
+            }
+          },
+          {
+            "name": "pool_id",
+            "type": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_double_map",
+                "name": "StorageDoubleMap",
+                "typeArguments": ["U32", "U32", "U32"]
+              }
+            }
+          },
+          {
+            "name": "pools",
+            "type": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_map",
+                "name": "StorageMap",
+                "typeArguments": [
+                  "U32",
+                  {
+                    "Struct": {
+                      "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                      "module": "dex_pool",
+                      "name": "Pool",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "borrow_fee_to": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["Address"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_lp_fee": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U256"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_max_swap_path_len": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U8"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_min_liquidity": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U256"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_fee_to": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["Address"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_lp_fee": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U256"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_max_swap_path_len": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U8"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_min_liquidity": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U256"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_next_pool_id": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U32"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_pool_id": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_double_map",
+                "name": "StorageDoubleMap",
+                "typeArguments": ["U32", "U32", "U32"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_pools": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_map",
+                "name": "StorageMap",
+                "typeArguments": [
+                  "U32",
+                  {
+                    "Struct": {
+                      "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                      "module": "dex_pool",
+                      "name": "Pool",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_swap_fee": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U256"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_next_pool_id": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U32"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_pool_id": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_double_map",
+                "name": "StorageDoubleMap",
+                "typeArguments": ["U32", "U32", "U32"]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_pools": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_map",
+                "name": "StorageMap",
+                "typeArguments": [
+                  "U32",
+                  {
+                    "Struct": {
+                      "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                      "module": "dex_pool",
+                      "name": "Pool",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "borrow_swap_fee": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "storage_value",
+                "name": "StorageValue",
+                "typeArguments": ["U256"]
+              }
+            }
+          }
+        ]
+      },
+      "get_fee_to": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": ["Address"]
+            }
+          }
+        ]
+      },
+      "get_lp_fee": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": ["U256"]
+            }
+          }
+        ]
+      },
+      "get_max_swap_path_len": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": ["U8"]
+            }
+          }
+        ]
+      },
+      "get_min_liquidity": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": ["U256"]
+            }
+          }
+        ]
+      },
+      "get_next_pool_id": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": ["U32"]
+            }
+          }
+        ]
+      },
+      "get_pool_id": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "U32"
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": ["U32"]
+            }
+          }
+        ]
+      },
+      "get_pool_id_keys": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": "U32"
+          },
+          {
+            "Vector": "U32"
+          }
+        ]
+      },
+      "get_pool_id_values": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": "U32"
+          }
+        ]
+      },
+      "get_pools": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32"
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                    "module": "dex_pool",
+                    "name": "Pool",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "get_pools_keys": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": "U32"
+          }
+        ]
+      },
+      "get_pools_values": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "get_swap_fee": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": ["U256"]
+            }
+          }
+        ]
+      },
+      "register": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "dapps_schema",
+                "name": "Dapps",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "dex_schema",
+              "name": "Dex",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "dex_swap_executed_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "dex_swap_executed_event",
+    "friends": [],
+    "structs": {
+      "SwapExecutedEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "who",
+            "type": "Address"
+          },
+          {
+            "name": "send_to",
+            "type": "Address"
+          },
+          {
+            "name": "amount_in",
+            "type": "U256"
+          },
+          {
+            "name": "amount_out",
+            "type": "U256"
+          },
+          {
+            "name": "path",
+            "type": {
+              "Vector": "U32"
+            }
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "Address",
+          "Address",
+          "U256",
+          "U256",
+          {
+            "Vector": "U32"
+          }
+        ],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "Address",
+          "Address",
+          "U256",
+          "U256",
+          {
+            "Vector": "U32"
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "dex_swap_executed_event",
+              "name": "SwapExecutedEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "dex_system": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "dex_system",
+    "friends": [],
+    "structs": {},
+    "exposedFunctions": {
+      "add_liquidity": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "U32",
+          "U256",
+          "U256",
+          "U256",
+          "U256",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "create_pool": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "U32",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "get_amount_in": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Vector": "U32"
+          },
+          "U256"
+        ],
+        "return": ["U256"]
+      },
+      "get_amount_out": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Vector": "U32"
+          },
+          "U256"
+        ],
+        "return": ["U256"]
+      },
+      "get_pair_list": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": {
+              "Vector": "U32"
+            }
+          }
+        ]
+      },
+      "get_pool_list": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_pool",
+                "name": "Pool",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "remove_liquidity": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "U32",
+          "U256",
+          "U256",
+          "U256",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "swap_exact_tokens_for_tokens": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Vector": "U32"
+          },
+          "U256",
+          "U256",
+          "Address",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "swap_tokens_for_exact_tokens": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "dex_schema",
+                "name": "Dex",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Vector": "U32"
+          },
+          "U256",
+          "U256",
+          "Address",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      }
+    }
+  },
+  "math_system": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "math_system",
+    "friends": [
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "dex_functions"
+      }
+    ],
+    "structs": {},
+    "exposedFunctions": {
+      "log2_down": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U256"],
+        "return": ["U8"]
+      },
+      "min": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U256", "U256"],
+        "return": ["U256"]
+      },
+      "safe_mul_div": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U256", "U256", "U256"],
+        "return": ["U256"]
+      },
+      "safe_mul_sqrt": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U256", "U256"],
+        "return": ["U256"]
+      },
+      "sqrt_down": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["U256"],
+        "return": ["U256"]
+      },
+      "windows": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Vector": "U32"
+            }
+          },
+          "U64"
+        ],
+        "return": [
+          {
+            "Vector": {
+              "Vector": "U32"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "wrapper_coin": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "wrapper_coin",
+    "friends": [],
+    "structs": {
+      "WrapperCoin": {
+        "abilities": {
+          "abilities": ["Copy", "Drop", "Store"]
+        },
+        "typeParameters": [
+          {
+            "constraints": {
+              "abilities": []
+            },
+            "isPhantom": true
+          }
+        ],
+        "fields": [
+          {
+            "name": "dummy_field",
+            "type": "Bool"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "wrapper_coin",
+              "name": "WrapperCoin",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "wrapper_registered_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "wrapper_registered_event",
+    "friends": [],
+    "structs": {
+      "RegisteredEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "who",
+            "type": "Address"
+          },
+          {
+            "name": "asset_id",
+            "type": "U32"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["Address", "U32"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["Address", "U32"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "wrapper_registered_event",
+              "name": "RegisteredEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "wrapper_schema": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "wrapper_schema",
+    "friends": [
+      {
+        "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+        "name": "wrapper_system"
+      }
+    ],
+    "structs": {
+      "Wrapper": {
+        "abilities": {
+          "abilities": ["Store", "Key"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "asset_ids",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "bag",
+                "name": "Bag",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "pools",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "bag",
+                "name": "Bag",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "coins",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "bag",
+                "name": "Bag",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "borrow_asset_ids": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "wrapper_schema",
+                "name": "Wrapper",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "bag",
+                "name": "Bag",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "borrow_coins": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "wrapper_schema",
+                "name": "Wrapper",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "bag",
+                "name": "Bag",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_asset_ids": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "wrapper_schema",
+                "name": "Wrapper",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "bag",
+                "name": "Bag",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_coins": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "wrapper_schema",
+                "name": "Wrapper",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "bag",
+                "name": "Bag",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "borrow_mut_pools": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "wrapper_schema",
+                "name": "Wrapper",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "bag",
+                "name": "Bag",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "borrow_pools": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "wrapper_schema",
+                "name": "Wrapper",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "bag",
+                "name": "Bag",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "register": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x1736475f476c5dec96f33c03c778843f572239d3a887d795eef66d2836484c28",
+                "module": "dapps_schema",
+                "name": "Dapps",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "wrapper_schema",
+              "name": "Wrapper",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "wrapper_system": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "wrapper_system",
+    "friends": [],
+    "structs": {},
+    "exposedFunctions": {
+      "register": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "wrapper_schema",
+                "name": "Wrapper",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          "U8",
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "ascii",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "unwrap": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "wrapper_schema",
+                "name": "Wrapper",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          "U256",
+          "Address",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "wrap": {
+        "visibility": "Public",
+        "isEntry": true,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "wrapper_schema",
+                "name": "Wrapper",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "coin",
+              "name": "Coin",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          },
+          "Address",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "wrapped_assets": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "wrapper_schema",
+                "name": "Wrapper",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+                "module": "assets_schema",
+                "name": "Assets",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": "U32"
+          }
+        ]
+      }
+    }
+  },
+  "wrapper_unwrapped_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "wrapper_unwrapped_event",
+    "friends": [],
+    "structs": {
+      "UnwrappedEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "from",
+            "type": "Address"
+          },
+          {
+            "name": "asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "amount",
+            "type": "U256"
+          },
+          {
+            "name": "beneficiary",
+            "type": "Address"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["Address", "U32", "U256", "Address"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["Address", "U32", "U256", "Address"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "wrapper_unwrapped_event",
+              "name": "UnwrappedEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "wrapper_wrapped_event": {
+    "fileFormatVersion": 6,
+    "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+    "name": "wrapper_wrapped_event",
+    "friends": [],
+    "structs": {
+      "WrappedEvent": {
+        "abilities": {
+          "abilities": ["Copy", "Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "from",
+            "type": "Address"
+          },
+          {
+            "name": "asset_id",
+            "type": "U32"
+          },
+          {
+            "name": "amount",
+            "type": "U256"
+          },
+          {
+            "name": "beneficiary",
+            "type": "Address"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "emit": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["Address", "U32", "U256", "Address"],
+        "return": []
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": ["Address", "U32", "U256", "Address"],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x241f5696abebf5898fb045f5e0a78df974bd9c3c49f99ad9d1639b164b3cf203",
+              "module": "wrapper_wrapped_event",
+              "name": "WrappedEvent",
+              "typeArguments": []
+            }
+          }
+        ]
+      }
+    }
+  }
+}
