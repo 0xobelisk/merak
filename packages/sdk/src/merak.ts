@@ -517,7 +517,10 @@ export class Merak {
     start: bigint | number | string,
     end: bigint | number | string
   ): Promise<number[][]> {
-    const pairListResult = await this.allPoolListWithId(start);
+    const pairListResult1 = await this.allPoolListWithId(start);
+    const pairListResult2 = await this.allPoolListWithId(end);
+    const pairListResult = [...pairListResult1, ...pairListResult2];
+
     if (!pairListResult) throw new Error('Failed to fetch pair list');
     const pairList = pairListResult;
     // Build adjacency list
@@ -605,12 +608,13 @@ export class Merak {
   }: {
     startTokenId: bigint | number | string;
   }): Promise<number[]> {
-    const pairListResult = await this.allPoolListWithId(startTokenId);
-    if (!pairListResult) throw new Error('Failed to fetch pair list');
+    // Get all trading pairs
+    const allPools = await this.allPoolList();
+    if (!allPools) throw new Error('Failed to fetch pool list');
 
     // Build adjacency list
     const graph = new Map<number, number[]>();
-    pairListResult.forEach((item) => {
+    allPools.forEach((item) => {
       const token0 = item.key1;
       const token1 = item.key2;
       if (!graph.has(token0)) graph.set(token0, []);
@@ -628,13 +632,14 @@ export class Merak {
     ];
     visited.add(Number(startTokenId));
 
-    // BFS to find all reachable tokens with depth limit
+    // Use BFS to find all reachable tokens
     while (queue.length > 0) {
       const { token: currentToken, depth } = queue.shift()!;
 
-      // Skip if depth exceeds the limit
+      // Skip if depth exceeds limit
       if (depth >= maxLength) continue;
 
+      // Get all neighbors of current token
       const neighbors = graph.get(currentToken) || [];
       for (const neighbor of neighbors) {
         if (!visited.has(neighbor)) {
