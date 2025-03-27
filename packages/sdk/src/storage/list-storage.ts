@@ -92,6 +92,27 @@ export class ListStorage {
     return item;
   }
 
+  async bridge({
+    chainName,
+    first,
+    after,
+    orderBy,
+  }: {
+    chainName?: string;
+    first?: number;
+    after?: string;
+    orderBy?: string[];
+  } = {}) {
+    const item = await this.dubhe.getStorage({
+      name: 'bridge',
+      key1: chainName,
+      first,
+      after,
+      orderBy,
+    });
+    return item;
+  }
+
   // StorageDoubleMap queries
   async account({
     assetId,

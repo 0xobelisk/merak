@@ -10,7 +10,6 @@ import {
 } from '@repo/ui/components/ui/select';
 import { Input } from '@repo/ui/components/ui/input';
 import React, { useEffect, useState } from 'react';
-import { getFullnodeUrl, SuiClient } from '@mysten/sui/client';
 import { useSignAndExecuteTransaction } from '@mysten/dapp-kit';
 import { Dubhe, Transaction, SubscriptionKind } from '@0xobelisk/sui-client';
 import { toast } from 'sonner';
@@ -112,7 +111,10 @@ export default function Page() {
               console.log('Cross-chain transaction successful with exact amount match!');
               setBridgeStatus('success');
               toast('Cross-chain transaction successful', {
-                description: `Block height: ${block_height}, Amount: ${(eventAmount / 10 ** 7).toFixed(7)}DUBHE`,
+                description: `Block height: ${block_height}, Amount: ${(
+                  eventAmount /
+                  10 ** 7
+                ).toFixed(7)}DUBHE`,
                 action: {
                   label: 'View Details',
                   onClick: () =>

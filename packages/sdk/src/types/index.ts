@@ -31,6 +31,7 @@ export type AssetMetadataType = {
   is_mintable: boolean;
   is_burnable: boolean;
   is_freezable: boolean;
+  wrapped: boolean;
 };
 
 export type AssetInfo = {
@@ -86,3 +87,5 @@ export type EventInfoResponse = {
   pageInfo: PageInfo;
   totalCount: number;
 };
+
+export type BridgeChainName = 'Dubhe OS' | 'Aptos';

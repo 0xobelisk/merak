@@ -99,6 +99,14 @@ export class GetStorage {
     }
   }
 
+  async bridge({ chainName }: { chainName: string }) {
+    const item = await this.dubhe.getStorageItem({
+      name: 'bridge',
+      key1: chainName,
+    });
+    return item;
+  }
+
   // StorageDoubleMap queries
   async account({
     assetId,

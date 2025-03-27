@@ -7,6 +7,7 @@ import {
   PoolInfo,
   EventInfoResponse,
   EventInfo,
+  BridgeChainName,
 } from 'src/types';
 import { Assets, Dex, Wrapper, Bridge } from './system';
 import { Storage } from './storage';
@@ -900,5 +901,23 @@ export class Merak {
       pageInfo: events.pageInfo,
       totalCount: events.totalCount,
     };
+  }
+
+  async getBridgeConfig({ chainName }: { chainName: BridgeChainName }) {
+    return this.storage.get.bridge({ chainName });
+  }
+
+  async listBridgeConfig({
+    chainName,
+    first,
+    after,
+    orderBy,
+  }: {
+    chainName?: BridgeChainName;
+    first?: number;
+    after?: string;
+    orderBy?: string[];
+  } = {}) {
+    return this.storage.list.bridge({ chainName, first, after, orderBy });
   }
 }

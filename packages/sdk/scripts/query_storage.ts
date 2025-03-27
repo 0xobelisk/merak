@@ -11,8 +11,8 @@ async function main() {
   const merak = new Merak({
     networkType: network as NetworkType,
     secretKey: privateKey,
-    indexerUrl: 'https://merak-indexer-testnet-api.obelisk.build',
-    indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build',
+    // indexerUrl: 'https://merak-indexer-testnet-api.obelisk.build',
+    // indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build',
   });
 
   // const account = await merak.storage.getAccount({
@@ -67,11 +67,17 @@ async function main() {
   //   JSON.stringify(ownedWrapperAssets, null, 2)
   // );
 
-  const events = await merak.listEvents({
-    sender:
-      '0x1fe342c436eff7ed90988fbe3a85aea7d922517ab6d9bc86e800025f8afcba7a',
+  // const events = await merak.listEvents({
+  //   sender:
+  //     '0x1fe342c436eff7ed90988fbe3a85aea7d922517ab6d9bc86e800025f8afcba7a',
+  // });
+  // console.log('events', JSON.stringify(events, null, 2));
+  const bridgeConfig = await merak.getBridgeConfig({
+    chainName: 'Dubhe OS',
   });
-  console.log('events', JSON.stringify(events, null, 2));
+  console.log('bridgeConfig', bridgeConfig);
+  const allBridgeConfig = await merak.listBridgeConfig();
+  console.log('allBridgeConfig', allBridgeConfig);
   // const connectedTokens = await merak.getConnectedTokens(4);
   // console.log('connectedTokens', connectedTokens);
 
