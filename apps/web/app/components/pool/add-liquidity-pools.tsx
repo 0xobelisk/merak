@@ -39,68 +39,68 @@ export default function AddLiquidity() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  useEffect(() => {
-    const asset1 = searchParams.get('asset1');
-    const asset2 = searchParams.get('asset2');
+  // useEffect(() => {
+  //   const asset1 = searchParams.get('asset1');
+  //   const asset2 = searchParams.get('asset2');
 
-    if (asset1 && asset2) {
-      const findAndSetTokens = async () => {
-        const merak = initMerakClient();
-        const asset1Metadata = await merak.metadataOf(Number(asset1));
-        const asset2Metadata = await merak.metadataOf(Number(asset2));
+  //   if (asset1 && asset2) {
+  //     const findAndSetTokens = async () => {
+  //       const merak = initMerakClient();
+  //       const asset1Metadata = await merak.metadataOf(Number(asset1));
+  //       const asset2Metadata = await merak.metadataOf(Number(asset2));
 
-        let asset1Balance = '0.0';
-        let asset2Balance = '0.0';
+  //       let asset1Balance = '0.0';
+  //       let asset2Balance = '0.0';
 
-        if (account?.address) {
-          const balance1 = await merak.balanceOf(Number(asset1), account.address);
-          const balance2 = await merak.balanceOf(Number(asset2), account.address);
+  //       if (account?.address) {
+  //         const balance1 = await merak.balanceOf(Number(asset1), account.address);
+  //         const balance2 = await merak.balanceOf(Number(asset2), account.address);
 
-          asset1Balance = balance1
-            ? (Number(balance1[0]) / Math.pow(10, asset1Metadata[3])).toFixed(4)
-            : '0.0';
+  //         asset1Balance = balance1
+  //           ? (Number(balance1[0]) / Math.pow(10, asset1Metadata[3])).toFixed(4)
+  //           : '0.0';
 
-          asset2Balance = balance2
-            ? (Number(balance2[0]) / Math.pow(10, asset2Metadata[3])).toFixed(4)
-            : '0.0';
-        }
+  //         asset2Balance = balance2
+  //           ? (Number(balance2[0]) / Math.pow(10, asset2Metadata[3])).toFixed(4)
+  //           : '0.0';
+  //       }
 
-        const asset1Data = {
-          id: Number(asset1),
-          name: asset1Metadata[0],
-          symbol: asset1Metadata[1],
-          decimals: asset1Metadata[3],
-          icon: asset1Metadata[4],
-          balance: asset1Balance
-        };
+  //       const asset1Data = {
+  //         id: Number(asset1),
+  //         name: asset1Metadata[0],
+  //         symbol: asset1Metadata[1],
+  //         decimals: asset1Metadata[3],
+  //         icon: asset1Metadata[4],
+  //         balance: asset1Balance
+  //       };
 
-        const asset2Data = {
-          id: Number(asset2),
-          name: asset2Metadata[0],
-          symbol: asset2Metadata[1],
-          decimals: asset2Metadata[3],
-          icon: asset2Metadata[4],
-          balance: asset2Balance
-        };
+  //       const asset2Data = {
+  //         id: Number(asset2),
+  //         name: asset2Metadata[0],
+  //         symbol: asset2Metadata[1],
+  //         decimals: asset2Metadata[3],
+  //         icon: asset2Metadata[4],
+  //         balance: asset2Balance
+  //       };
 
-        console.log('asset1', asset1);
-        console.log('asset2', asset2);
+  //       console.log('asset1', asset1);
+  //       console.log('asset2', asset2);
 
-        console.log('asset1Metadata', asset1Metadata);
-        console.log('asset1Data', asset1Data);
-        console.log('asset2Metadata', asset2Metadata);
-        console.log('asset2Data', asset2Data);
-        if (asset1Data) {
-          setTokenPay(asset1Data);
-        }
-        if (asset2Data) {
-          setTokenReceive(asset2Data);
-        }
-      };
+  //       console.log('asset1Metadata', asset1Metadata);
+  //       console.log('asset1Data', asset1Data);
+  //       console.log('asset2Metadata', asset2Metadata);
+  //       console.log('asset2Data', asset2Data);
+  //       if (asset1Data) {
+  //         setTokenPay(asset1Data);
+  //       }
+  //       if (asset2Data) {
+  //         setTokenReceive(asset2Data);
+  //       }
+  //     };
 
-      findAndSetTokens();
-    }
-  }, [searchParams]);
+  //     findAndSetTokens();
+  //   }
+  // }, [searchParams]);
 
   const handleSelectTokenPay = async (token: TokenData) => {
     setTokenPay(token);

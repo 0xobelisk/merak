@@ -1,17 +1,14 @@
 'use client';
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import { X, Search, Info, Loader2 } from 'lucide-react';
+import { X, Search, Info } from 'lucide-react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@repo/ui/components/ui/tabs';
 import { useAtom } from 'jotai';
 import debounce from 'lodash.debounce';
 import { AssetsStateAtom } from '@/app/jotai/assets';
 import { AssetInfo } from '@0xobelisk/merak-sdk';
 import { useCurrentAccount } from '@mysten/dapp-kit';
-import { initDubheClient } from '@/app/jotai/dubhe';
-import { initMerakClient } from '@/app/jotai/merak';
 
 // Set default icon to SUI icon
 const DEFAULT_ICON = 'https://hop.ag/tokens/SUI.svg';
@@ -25,22 +22,25 @@ const POPULAR_TOKENS = [
   }
 ];
 
-// 支持的 Native Token 列表 - 更新为完整的代币类型
-const SUPPORTED_NATIVE_COINS = [
-  {
-    symbol: 'SUI',
-    type: '0x2::sui::SUI'
-  },
-  {
-    symbol: 'DUBHE',
-    type: '0x2300e4f190870ae8cee2f648f745e96c06fa4ce9c3bd5439d3ee4287df0d9887::dubhe::DUBHE'
+// Helper function to safely format token balances
+const formatTokenBalance = (balance: string | undefined, decimals: number = 18): string => {
+  if (!balance) return '0';
+  
+  try {
+    const numBalance = Number(balance);
+    if (isNaN(numBalance)) return '0';
+    
+    const formattedBalance = numBalance / Math.pow(10, decimals);
+    if (isNaN(formattedBalance)) return '0';
+    
+    return formattedBalance.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 4
+    });
+  } catch (e) {
+    console.error('Error formatting balance:', e);
+    return '0';
   }
-];
-
-// Trending tokens examples - 保留示例用于显示，实际数据会动态加载
-const TRENDING_TOKENS = {
-  native: [], // 空数组，将动态填充
-  merak: [] // 空数组，将在组件内动态填充
 };
 
 function TokenSelectionModalOpen({
@@ -65,35 +65,24 @@ function TokenSelectionModalOpen({
   const [isLoading, setIsLoading] = useState(true);
   const [assetsState] = useAtom(AssetsStateAtom);
   const [filteredAssets, setFilteredAssets] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<'native' | 'merak'>('native');
-  const [merakTokens, setMerakTokens] = useState<any[]>([]);
-  const [nativeTokens, setNativeTokens] = useState<any[]>([]);
-  const [isNativeLoading, setIsNativeLoading] = useState(true);
 
-  // 获取可用的代币列表
+  // Get available token list
   const getAvailableAssets = useCallback(() => {
-    console.log('⭐ getAvailableAssets called with selectionType:', selectionType);
-
     if (selectionType === 'from') {
-      console.log('📋 FROM selection - returning all assets:', assetsState.assetInfos.length);
       return assetsState.assetInfos;
     }
-
     if (availableToTokens) {
-      console.log('📋 TO selection with availableToTokens:', availableToTokens);
+      console.log('Available to tokens:', availableToTokens);
       return availableToTokens;
     }
 
     if (availableTokenIds) {
-      console.log('📋 TO selection with availableTokenIds:', availableTokenIds);
-      const filtered = assetsState.assetInfos.filter((asset) =>
+      console.log('Available token IDs:', availableTokenIds);
+      return assetsState.assetInfos.filter((asset) =>
         availableTokenIds.includes(Number(asset.assetId))
       );
-      console.log('➡️ Filtered by IDs result:', filtered.length, 'tokens');
-      return filtered;
     }
 
-    console.log('📋 Default case - returning all assets:', assetsState.assetInfos.length);
     return assetsState.assetInfos;
   }, [assetsState.assetInfos, availableToTokens, availableTokenIds, selectionType]);
 
@@ -112,8 +101,8 @@ function TokenSelectionModalOpen({
       // Filter base token list
       const filtered = getAvailableAssets().filter(
         (asset) =>
-          asset.metadata?.name.toLowerCase().includes(lowercasedTerm) || // name
-          asset.metadata?.symbol.toLowerCase().includes(lowercasedTerm) // symbol
+          asset.metadata?.name?.toLowerCase().includes(lowercasedTerm) || // name
+          asset.metadata?.symbol?.toLowerCase().includes(lowercasedTerm) // symbol
       );
 
       setFilteredAssets(filtered);
@@ -132,414 +121,33 @@ function TokenSelectionModalOpen({
   }, [searchTerm, debouncedFilterTokens]);
 
   const handleSelectToken = (asset: any) => {
-    console.log('🎯 Token selected:', asset);
-    console.log('- Type:', asset.coinType ? 'Native' : 'Merak');
-    console.log(
-      '- Details:',
-      asset.coinType || asset.assetId,
-      asset.symbol || asset.metadata?.symbol
-    );
-
-    // 处理 Native 代币的选择
-    if (asset.coinType) {
-      onSelectToken({
-        symbol: asset.symbol,
-        name: asset.name,
-        icon: asset.icon,
-        balance: asset.balanceFormatted,
-        coinType: asset.coinType,
-        decimals: asset.decimals
-      });
-      onClose();
-      return;
-    }
-
-    // 处理 Merak 代币的选择
-    const decimals = asset.metadata?.decimals || 18;
-    const balanceValue = Number(asset.balance) / Math.pow(10, decimals);
-    const formattedBalance = !isNaN(balanceValue)
-      ? balanceValue.toLocaleString(undefined, { maximumFractionDigits: 4 })
-      : '0';
-
+    console.log('Selected asset:', asset);
+    
+    // Use the safe format function to get balance
+    const formattedBalance = formatTokenBalance(asset.balance, asset.metadata?.decimals);
+    
     onSelectToken({
-      symbol: asset.metadata?.symbol || asset.symbol,
-      name: asset.metadata?.name || asset.name,
-      icon: asset.metadata?.icon_url || asset.icon || DEFAULT_ICON,
+      symbol: asset.metadata?.symbol || 'Unknown',
+      name: asset.metadata?.name || 'Unknown Token',
+      icon: asset.metadata?.icon_url || DEFAULT_ICON,
       balance: formattedBalance,
-      id: asset.assetId || '',
-      decimals: decimals
+      id: asset.assetId,
+      decimals: asset.metadata?.decimals || 18
     });
     onClose();
   };
-
+  
   // Handle popular token selection
   const handlePopularTokenSelect = (token: any) => {
-    // 查找匹配的 Native Token
-    const matchedNative = nativeTokens.find((nativeToken) => nativeToken.symbol === token.symbol);
-
-    if (matchedNative) {
-      handleSelectToken(matchedNative);
-      return;
-    }
-
-    // 如果在 Native 中未找到，检查 Merak 资产
+    // Find matching asset by symbol
     const matchedAsset = assetsState.assetInfos.find(
       (asset) => asset.metadata?.symbol === token.symbol
     );
 
     if (matchedAsset) {
       handleSelectToken(matchedAsset);
-    } else {
-      // 如果都未找到，使用默认值
-      handleSelectToken({
-        symbol: token.symbol,
-        name: token.symbol,
-        icon: token.icon,
-        balance: '0',
-        id: '',
-        decimals: 18
-      });
     }
   };
-
-  // 修改获取 Merak 代币的逻辑，确保考虑可用的代币过滤条件
-  const fetchMerakTokens = useCallback(async () => {
-    if (!account?.address) return;
-
-    try {
-      setIsLoading(true);
-      console.log('🌟 fetchMerakTokens called with:');
-      console.log('- selectionType:', selectionType);
-      console.log('- availableTokenIds:', availableTokenIds);
-      console.log('- availableToTokens:', availableToTokens);
-
-      const merak = initMerakClient();
-
-      let allAssets = [];
-
-      if (selectionType === 'from') {
-        // 对于 fromToken，只获取用户拥有的资产
-        const ownedAssetsResults = await merak.listOwnedAssetsInfo({
-          address: account.address
-        });
-        allAssets = ownedAssetsResults.data;
-      } else {
-        // 对于 toToken，获取所有可用资产
-        const allAssetsResults = await merak.listAssetsInfo({
-          first: 9999,
-          orderBy: ['KEY1_ASC']
-        });
-        allAssets = allAssetsResults.data;
-      }
-
-      console.log('🔍 Assets (total):', allAssets.length);
-      console.log('- First few assets:', allAssets.slice(0, 2));
-      console.log(
-        '- All asset IDs:',
-        allAssets.map((asset) => Number(asset.assetId))
-      );
-
-      // 如果是to token，需要检查是否有availableTokenIds或availableToTokens限制
-      let filteredAssets = allAssets;
-
-      if (selectionType === 'to' && availableTokenIds) {
-        console.log('⚙️ Filtering tokens by availableTokenIds');
-        const beforeCount = filteredAssets.length;
-
-        // 重要修复：确保类型匹配 - 将两边都转换为Number进行比较
-        filteredAssets = allAssets.filter((asset) => {
-          const assetIdNum = Number(asset.assetId);
-          const isIncluded = availableTokenIds.includes(assetIdNum);
-          console.log(`Asset ID ${assetIdNum} included: ${isIncluded}`);
-          return isIncluded;
-        });
-
-        console.log(`- Filtered from ${beforeCount} to ${filteredAssets.length} tokens`);
-        console.log('- Available IDs:', availableTokenIds);
-        console.log(
-          '- Asset IDs after filtering:',
-          filteredAssets.map((a) => Number(a.assetId))
-        );
-      } else if (selectionType === 'to' && availableToTokens) {
-        console.log('⚙️ Filtering tokens by availableToTokens');
-        const beforeCount = filteredAssets.length;
-
-        // 获取可用的ID列表
-        const availableIds = availableToTokens.map((t) => t.assetId);
-        console.log('- Available IDs from tokens:', availableIds);
-
-        // 重要修复：确保比较时两边的类型一致，都使用字符串
-        filteredAssets = allAssets.filter((asset) => {
-          const isIncluded = availableIds.includes(asset.assetId);
-          console.log(
-            `Asset ID ${asset.assetId} included: ${isIncluded}, symbol: ${asset.metadata?.symbol}`
-          );
-          return isIncluded;
-        });
-
-        console.log(`- Filtered from ${beforeCount} to ${filteredAssets.length} tokens`);
-        console.log(
-          '- Asset IDs after filtering:',
-          filteredAssets.map((a) => a.assetId)
-        );
-        console.log(
-          '- Token symbols after filtering:',
-          filteredAssets.map((a) => a.metadata?.symbol)
-        );
-      } else {
-        console.log('⚙️ No filtering applied to tokens (from selection or no criteria)');
-      }
-
-      // 如果过滤后为空，检查是否有错误
-      if (filteredAssets.length === 0 && (availableTokenIds?.length || availableToTokens?.length)) {
-        console.warn(
-          '⚠️ WARNING: Filtered token list is empty but available tokens were provided!'
-        );
-        console.warn('- This might indicate a type mismatch in ID comparison');
-        // 调试详细信息
-        if (availableTokenIds) {
-          console.log(
-            'Available IDs types:',
-            availableTokenIds.map((id) => typeof id)
-          );
-        }
-        if (availableToTokens) {
-          console.log(
-            'Available Token IDs types:',
-            availableToTokens.map((t) => typeof t.assetId)
-          );
-        }
-        console.log(
-          'Asset IDs types:',
-          allAssets.map((a) => typeof a.assetId)
-        );
-      }
-
-      // 获取用户余额信息
-      const userBalances =
-        selectionType === 'from'
-          ? filteredAssets // fromToken 已经有余额信息
-          : await Promise.all(
-              filteredAssets.map(async (asset) => {
-                try {
-                  const balance = await merak.balanceOf(asset.assetId, account.address);
-                  return {
-                    ...asset,
-                    balance: balance || '0'
-                  };
-                } catch (error) {
-                  console.error(`Error fetching balance for asset ${asset.assetId}:`, error);
-                  return {
-                    ...asset,
-                    balance: '0'
-                  };
-                }
-              })
-            );
-
-      // 直接处理返回的数据，余额信息已经包含在里面
-      const formattedTokens = userBalances.map((asset) => {
-        // 计算格式化的余额，考虑精度
-        const decimals = asset.metadata?.decimals || 18;
-        const rawBalance = asset.balance || '0';
-        const balanceValue = Number(rawBalance) / Math.pow(10, decimals);
-
-        // 格式化余额，保留 4 位小数
-        const formattedBalance = !isNaN(balanceValue)
-          ? balanceValue.toLocaleString(undefined, { maximumFractionDigits: 4 })
-          : '0';
-
-        return {
-          symbol: asset.metadata?.symbol || '',
-          name: asset.metadata?.name || '',
-          icon: asset.metadata?.icon_url || DEFAULT_ICON,
-          assetId: asset.assetId,
-          balance: asset.balance || '0',
-          balanceFormatted: formattedBalance,
-          metadata: asset.metadata,
-          originalAsset: asset // 保存原始资产数据
-        };
-      });
-
-      // 按余额降序排列
-      const sortedTokens = formattedTokens.sort((a, b) => {
-        const balanceA = Number(a.balance) / Math.pow(10, a.metadata?.decimals || 18);
-        const balanceB = Number(b.balance) / Math.pow(10, b.metadata?.decimals || 18);
-        return balanceB - balanceA;
-      });
-
-      setMerakTokens(sortedTokens);
-      console.log('✅ Final tokens count:', sortedTokens.length);
-      console.log(
-        '- Tokens to display:',
-        sortedTokens.map((t) => `${t.symbol} (ID: ${t.assetId})`)
-      );
-    } catch (error) {
-      console.error('❌ Error fetching tokens:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [account?.address, selectionType, availableTokenIds, availableToTokens]);
-
-  // 获取 Native Tokens with debugging
-  const fetchNativeTokens = useCallback(async () => {
-    if (!account?.address) return;
-    setIsNativeLoading(true);
-
-    try {
-      console.log('🌟 fetchNativeTokens called with:');
-      console.log('- selectionType:', selectionType);
-      console.log('- availableTokenIds:', availableTokenIds);
-      console.log('- availableToTokens:', availableToTokens);
-
-      const dubhe = initDubheClient();
-      const allBalances = await dubhe.suiInteractor.currentClient.getAllBalances({
-        owner: account.address
-      });
-
-      // 使用类似 Portfolio 页面的方式获取代币元数据
-      const updatedBalances = await Promise.all(
-        allBalances.map(async (coinBalance) => {
-          try {
-            const metadata = await dubhe.suiInteractor.currentClient.getCoinMetadata({
-              coinType: coinBalance.coinType
-            });
-
-            // 按照 Portfolio 页面类似的方式计算余额
-            const decimals = metadata?.decimals || 9;
-            const balanceValue = Number(coinBalance.totalBalance) / Math.pow(10, decimals);
-
-            return {
-              ...coinBalance,
-              metadata,
-              balanceFormatted: !isNaN(balanceValue)
-                ? balanceValue.toLocaleString(undefined, {
-                    maximumFractionDigits: 4
-                  })
-                : '0'
-            };
-          } catch (error) {
-            console.error(`Error fetching metadata for ${coinBalance.coinType}:`, error);
-            return {
-              ...coinBalance,
-              metadata: null,
-              balanceFormatted: '0'
-            };
-          }
-        })
-      );
-
-      // 过滤出仅支持的币种
-      const supportedBalances = updatedBalances.filter((balance) =>
-        SUPPORTED_NATIVE_COINS.some(
-          (supportedCoin) =>
-            supportedCoin.type === balance.coinType ||
-            balance.coinType.includes(supportedCoin.type) ||
-            supportedCoin.type.includes(balance.coinType)
-        )
-      );
-
-      // 转换为必要的格式
-      const formattedTokens = supportedBalances.map((balance) => {
-        const decimals = balance.metadata?.decimals || 9;
-        const balanceValue = Number(balance.totalBalance) / Math.pow(10, decimals);
-
-        // 查找对应的支持币种以确保图标正确
-        const supportedCoin = SUPPORTED_NATIVE_COINS.find(
-          (coin) =>
-            coin.type === balance.coinType ||
-            balance.coinType.includes(coin.type) ||
-            coin.type.includes(balance.coinType)
-        );
-
-        return {
-          coinType: balance.coinType,
-          symbol: balance.metadata?.symbol || supportedCoin?.symbol || 'Unknown',
-          name:
-            balance.metadata?.name ||
-            balance.metadata?.symbol ||
-            supportedCoin?.symbol ||
-            'Unknown',
-          icon:
-            balance.metadata?.iconUrl ||
-            (supportedCoin?.symbol === 'SUI'
-              ? 'https://hop.ag/tokens/SUI.svg'
-              : supportedCoin?.symbol === 'DUBHE'
-              ? 'https://pbs.twimg.com/profile_images/1904156933516668928/W9y4Vor__400x400.jpg'
-              : DEFAULT_ICON),
-          balance: balance.totalBalance,
-          balanceFormatted: !isNaN(balanceValue)
-            ? balanceValue.toLocaleString(undefined, {
-                maximumFractionDigits: 4
-              })
-            : '0',
-          decimals: decimals,
-          metadata: balance.metadata
-        };
-      });
-
-      // Native tokens don't have the same IDs as Merak tokens
-      console.log('⚙️ Native tokens before any filtering:', formattedTokens.length);
-      console.log(
-        '- Symbols:',
-        formattedTokens.map((t) => t.symbol)
-      );
-
-      // Apply filtering only for "to" selection if needed
-      let filteredTokens = formattedTokens;
-
-      // For now, we don't filter native tokens based on IDs
-      console.log('✅ Final Native tokens count:', filteredTokens.length);
-      console.log(
-        '- Symbols after potential filtering:',
-        filteredTokens.map((t) => t.symbol)
-      );
-
-      setNativeTokens(filteredTokens);
-    } catch (error) {
-      console.error('❌ Error fetching native tokens:', error);
-    } finally {
-      setIsNativeLoading(false);
-    }
-  }, [account?.address, selectionType]);
-
-  // Keep only ONE combined effect that handles all data fetching
-  useEffect(() => {
-    if (account?.address) {
-      console.log('🔄 TOKEN SELECTION MODAL REFRESH 🔄');
-      console.log('- selectionType:', selectionType);
-      console.log('- availableTokenIds:', availableTokenIds);
-      console.log(
-        '- availableToTokens:',
-        availableToTokens ? 'provided (length: ' + availableToTokens.length + ')' : 'not provided'
-      );
-
-      fetchNativeTokens();
-      fetchMerakTokens();
-    }
-  }, [
-    fetchNativeTokens,
-    fetchMerakTokens,
-    account?.address,
-    selectionType,
-    availableTokenIds,
-    availableToTokens
-  ]);
-
-  // Add debug console for when tokens render
-  useEffect(() => {
-    console.log('💰 TOKENS READY FOR DISPLAY:');
-    console.log(
-      '- Native tokens:',
-      nativeTokens.length,
-      nativeTokens.map((t) => t.symbol)
-    );
-    console.log(
-      '- Merak tokens:',
-      merakTokens.length,
-      merakTokens.map((t) => t.symbol)
-    );
-  }, [nativeTokens, merakTokens]);
 
   return (
     <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4 z-[1000]">
@@ -589,137 +197,57 @@ function TokenSelectionModalOpen({
             ))}
           </div>
 
-          {/* Trending Tokens Section */}
+          {/* Tokens List */}
           <div className="mb-4">
-            <Tabs
-              defaultValue="native"
-              value={activeTab}
-              onValueChange={(val) => setActiveTab(val as 'native' | 'merak')}
-            >
-              <div className="mb-2">
-                <h3 className="text-md font-medium text-gray-900">Trending Tokens</h3>
-                <TabsList className="mt-1 bg-gray-100 p-0.5 rounded-lg">
-                  <TabsTrigger
-                    value="native"
-                    className={`rounded-md px-4 py-1 text-sm ${
-                      activeTab === 'native' ? 'bg-white shadow-sm' : ''
-                    }`}
+            <h3 className="text-md font-medium text-gray-900 mb-2">Trending Tokens</h3>
+            <ScrollArea className="h-[360px] pr-4">
+              {isLoading || externalLoading ? (
+                <div className="flex justify-center items-center h-32">
+                  <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
+                </div>
+              ) : filteredAssets.length === 0 ? (
+                <div className="flex justify-center items-center h-32 text-gray-500">
+                  No tokens available
+                </div>
+              ) : (
+                filteredAssets.map((asset) => (
+                  <div
+                    key={asset.assetId}
+                    className="flex items-center justify-between py-3 border-b border-gray-100 cursor-pointer hover:bg-gray-50 rounded-lg px-2"
+                    onClick={() => handleSelectToken(asset)}
                   >
-                    Native
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="merak"
-                    className={`rounded-md px-4 py-1 text-sm ${
-                      activeTab === 'merak' ? 'bg-white shadow-sm' : ''
-                    }`}
-                  >
-                    Merak
-                  </TabsTrigger>
-                </TabsList>
-              </div>
-
-              <TabsContent value="native" className="mt-0">
-                <ScrollArea className="h-[360px] pr-4">
-                  {isNativeLoading ? (
-                    <div className="flex justify-center items-center h-32">
-                      <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
-                    </div>
-                  ) : nativeTokens.length === 0 ? (
-                    <div className="flex justify-center items-center h-32 text-gray-500">
-                      No native tokens available
-                    </div>
-                  ) : (
-                    nativeTokens.map((token) => (
-                      <div
-                        key={token.coinType}
-                        className="flex items-center justify-between py-3 border-b border-gray-100 cursor-pointer hover:bg-gray-50 rounded-lg px-2"
-                        onClick={() => handleSelectToken(token)}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 flex-shrink-0">
-                            <img
-                              src={token.icon}
-                              alt={token.symbol}
-                              className="w-full h-full rounded-full"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src = DEFAULT_ICON;
-                              }}
-                            />
-                          </div>
-                          <div>
-                            <div className="font-semibold text-gray-900">{token.symbol}</div>
-                            <div className="text-sm text-gray-500">{token.name}</div>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-sm text-gray-900 font-medium">
-                            {token.balanceFormatted !== 'NaN' ? token.balanceFormatted : '0'}
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 rounded-full opacity-60 hover:opacity-100 inline-flex"
-                          >
-                            <Info className="h-4 w-4" />
-                          </Button>
-                        </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 flex-shrink-0">
+                        <img
+                          src={asset.metadata?.icon_url || DEFAULT_ICON}
+                          alt={asset.metadata?.symbol}
+                          className="w-full h-full rounded-full"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = DEFAULT_ICON;
+                          }}
+                        />
                       </div>
-                    ))
-                  )}
-                </ScrollArea>
-              </TabsContent>
-
-              <TabsContent value="merak" className="mt-0">
-                <ScrollArea className="h-[360px] pr-4">
-                  {isLoading ? (
-                    <div className="flex justify-center items-center h-32">
-                      <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
-                    </div>
-                  ) : merakTokens.length === 0 ? (
-                    <div className="flex justify-center items-center h-32 text-gray-500">
-                      No Merak tokens available
-                    </div>
-                  ) : (
-                    merakTokens.map((token) => (
-                      <div
-                        key={token.assetId}
-                        className="flex items-center justify-between py-3 border-b border-gray-100 cursor-pointer hover:bg-gray-50 rounded-lg px-2"
-                        onClick={() => handleSelectToken(token.originalAsset)}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 flex-shrink-0">
-                            <img
-                              src={token.icon}
-                              alt={token.symbol}
-                              className="w-full h-full rounded-full"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src = DEFAULT_ICON;
-                              }}
-                            />
-                          </div>
-                          <div>
-                            <div className="font-semibold text-gray-900">{token.symbol}</div>
-                            <div className="text-sm text-gray-500">{token.name}</div>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-sm text-gray-900 font-medium">
-                            {token.balanceFormatted}
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 rounded-full opacity-60 hover:opacity-100 inline-flex"
-                          >
-                            <Info className="h-4 w-4" />
-                          </Button>
-                        </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">{asset.metadata?.symbol || 'Unknown'}</div>
+                        <div className="text-sm text-gray-500">{asset.metadata?.name || 'Unknown Token'}</div>
                       </div>
-                    ))
-                  )}
-                </ScrollArea>
-              </TabsContent>
-            </Tabs>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm text-gray-900 font-medium">
+                        {formatTokenBalance(asset.balance, asset.metadata?.decimals)}
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 rounded-full opacity-60 hover:opacity-100 inline-flex"
+                      >
+                        <Info className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </ScrollArea>
           </div>
         </div>
       </div>
