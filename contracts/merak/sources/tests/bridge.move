@@ -16,7 +16,7 @@ module merak::bridge_tests {
 
     #[test]
     public fun bridge() {
-        let (mut scenario, dapp) = deploy_dapp_for_testing(@0xA);
+        let mut scenario = deploy_dapp_for_testing(@0xA);
 
         let mut schema = test_scenario::take_shared<Schema>(&scenario);
         schema.fee_to().set(@0xB);
@@ -40,7 +40,6 @@ module merak::bridge_tests {
 
         public_share_object(treasury_cap);
         test_scenario::return_shared<Schema>(schema);
-        dapp.distroy_dapp_for_testing();
         scenario.end();
     }
 }

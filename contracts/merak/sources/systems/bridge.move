@@ -1,7 +1,6 @@
 module merak::merak_bridge_system {
     use std::ascii::String;
     use std::u64;
-    use merak::merak_dapp_schema::Dapp;
     use merak::dubhe::DUBHE;
     use sui::coin::TreasuryCap;
     use sui::coin;
@@ -15,8 +14,8 @@ module merak::merak_bridge_system {
     use merak::merak_events::{ bridge_deposit_event, bridge_withdraw_event };
     use merak::merak_dapp_system::ensure_has_authority;
 
-    public entry fun set_bridge(schema: &mut Schema, dapp: &Dapp, chain: String, min_amount: u256,  fee: u256, opened: bool, ctx: &TxContext) {
-        ensure_has_authority(dapp, ctx);
+    public entry fun set_bridge(schema: &mut Schema, chain: String, min_amount: u256,  fee: u256, opened: bool, ctx: &TxContext) {
+        ensure_has_authority(schema, ctx);
         schema.bridge().set(chain, merak_bridge_config::new(min_amount, fee, opened));
     }
 

@@ -15,12 +15,11 @@ module merak::dex_tests {
     use sui::test_scenario;
     use sui::coin;
     use sui::test_scenario::Scenario;
-    use merak::merak_dapp_schema::Dapp;
 
     public struct USDT has store, drop {  }
 
-    public fun init_test(): (Schema, Dapp, Scenario) {
-        let (mut scenario,  dapp) = deploy_dapp_for_testing(@0xA);
+    public fun init_test(): (Schema, Scenario) {
+        let mut scenario = deploy_dapp_for_testing(@0xA);
 
         let mut schema = test_scenario::take_shared<Schema>(&scenario);
         schema.next_asset_id().set(0);
@@ -35,12 +34,12 @@ module merak::dex_tests {
         assets_tests::create_assets(&mut schema, name, symbol, description, decimals, url, info, &mut scenario);
         assets_tests::create_assets(&mut schema, name, symbol, description, decimals, url, info, &mut scenario);
 
-        (schema, dapp, scenario)
+        (schema, scenario)
     }
 
     #[test]
     public fun check_max_number() {
-        let (mut schema, dapp, scenario) = init_test();
+        let (mut schema, mut scenario) = init_test();
         let u128_max = u128::max_value!() as u256;
 
         assert!(merak_dex_functions::quote(3, u128_max, u128_max) ==  3);
@@ -54,13 +53,12 @@ module merak::dex_tests {
         assert!(merak_dex_functions::get_amount_in(&mut schema, 100, u128_max, u128_max) == 101);
 
         test_scenario::return_shared<Schema>(schema);
-        dapp.distroy_dapp_for_testing();
         scenario.end();
     }
 
     #[test]
     public fun create_pool() {
-        let (mut schema, dapp, mut scenario) = init_test();
+        let (mut schema, mut scenario) = init_test();
         let ctx =  test_scenario::ctx(&mut scenario);
         merak_dex_system::create_pool(&mut schema, 0, 1, ctx);
 
@@ -72,14 +70,14 @@ module merak::dex_tests {
         assert!(schema.pools().get(1, 2) == merak_pool::new(pool_address, 4));
 
         test_scenario::return_shared<Schema>(schema);
-        dapp.distroy_dapp_for_testing();
+    
         scenario.end();
     }
 
     #[test]
     #[expected_failure(abort_code = merak::merak_errors::POOL_ALREADY_EXISTS)]
     public fun create_same_pool_twice_should_fail() {
-        let (mut schema, dapp, mut scenario) = init_test();
+        let (mut schema, mut scenario) = init_test();
 
         let ctx =  test_scenario::ctx(&mut scenario);
         merak_dex_system::create_pool(&mut schema, 0, 1, ctx);
@@ -88,13 +86,13 @@ module merak::dex_tests {
         // merak_dex_system::create_pool(&mut schema, 0, 1, ctx);
 
         test_scenario::return_shared<Schema>(schema);
-        dapp.distroy_dapp_for_testing();
+    
         scenario.end();
     }
 
     #[test]
     public fun can_add_liquidity() {
-        let (mut schema, dapp, mut scenario) = init_test();
+        let (mut schema, mut scenario) = init_test();
         schema.swap_fee().set(0);
         schema.lp_fee().set(0);
 
@@ -125,13 +123,13 @@ module merak::dex_tests {
         assert!(merak_assets_system::balance_of(&mut schema, 2, pool_address) == 10, 0);
 
         test_scenario::return_shared<Schema>(schema);
-        dapp.distroy_dapp_for_testing();
+    
         scenario.end();
     }
 
     #[test]
     public fun can_remove_liquidity() {
-        let (mut schema, dapp, mut scenario) = init_test();
+        let (mut schema, mut scenario) = init_test();
         schema.swap_fee().set(0);
         schema.lp_fee().set(0);
 
@@ -164,13 +162,13 @@ module merak::dex_tests {
         assert!(merak_assets_system::balance_of(&mut schema, lp_asset_id, @0xB) == 999990, 0);
 
         test_scenario::return_shared<Schema>(schema);
-        dapp.distroy_dapp_for_testing();
+    
         scenario.end();
     }
 
     #[test]
     public fun can_swap() {
-        let (mut schema, dapp, mut scenario) = init_test();
+        let (mut schema, mut scenario) = init_test();
         schema.swap_fee().set(0);
         schema.lp_fee().set(0);
 
@@ -202,13 +200,13 @@ module merak::dex_tests {
         assert!(merak_assets_system::balance_of(&mut schema, 1, pool_address) == liquidity2 + input_amount, 0);
 
         test_scenario::return_shared<Schema>(schema);
-        dapp.distroy_dapp_for_testing();
+    
         scenario.end();
     }
 
     #[test]
     public fun can_swap_coin() {
-        let (mut schema, dapp, mut scenario) = init_test();
+        let (mut schema, mut scenario) = init_test();
         schema.swap_fee().set(0);
         schema.lp_fee().set(0);
 
@@ -251,13 +249,13 @@ module merak::dex_tests {
         assert!(merak_assets_system::balance_of(&mut schema, usdt_asset_id, pool_address) == liquidity2 + input_amount, 0);
 
         test_scenario::return_shared<Schema>(schema);
-        dapp.distroy_dapp_for_testing();
+    
         scenario.end();
     }
 
     #[test]
     public fun can_swap_with_realistic_values() {
-        let (mut schema, dapp, mut scenario) = init_test();
+        let (mut schema, mut scenario) = init_test();
         schema.swap_fee().set(0);
         schema.lp_fee().set(0);
 
@@ -280,13 +278,13 @@ module merak::dex_tests {
         merak_dex_system::swap_exact_tokens_for_tokens(&mut schema, vector[1, 0], input_amount, 1, ctx.sender(), ctx);
 
         test_scenario::return_shared<Schema>(schema);
-        dapp.distroy_dapp_for_testing();
+    
         scenario.end();
     }
 
     #[test]
     public fun can_swap_tokens_for_exact_tokens() {
-        let (mut schema, dapp, mut scenario) = init_test();
+        let (mut schema, mut scenario) = init_test();
         schema.swap_fee().set(0);
         schema.lp_fee().set(0);
 
@@ -316,7 +314,7 @@ module merak::dex_tests {
         assert!(merak_assets_system::balance_of(&mut schema, 1, pool_address) == liquidity2 - exchange_out, 0);
 
         test_scenario::return_shared<Schema>(schema);
-        dapp.distroy_dapp_for_testing();
+    
         scenario.end();
     }
 }

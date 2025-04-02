@@ -18,7 +18,7 @@ module merak::assets_tests {
 
     #[test]
     public fun assets_create() {
-        let (mut scenario, dapp) = deploy_dapp_for_testing(@0xA);
+        let mut scenario = deploy_dapp_for_testing(@0xA);
 
         let mut schema = test_scenario::take_shared<Schema>(&scenario);
 
@@ -50,7 +50,6 @@ module merak::assets_tests {
         assert!(merak_assets_system::supply_of(&mut schema, asset1) == 50, 0);
 
         test_scenario::return_shared<Schema>(schema);
-        dapp.distroy_dapp_for_testing();
         scenario.end();
     }
 }

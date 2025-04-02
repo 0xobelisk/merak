@@ -10,7 +10,7 @@ module merak::wrapper_tests {
 
     #[test]
     public fun wrapper_tests() {
-        let (mut scenario, dapp) = deploy_dapp_for_testing(@0xA);
+        let mut scenario = deploy_dapp_for_testing(@0xA);
         let mut schema = test_scenario::take_shared<Schema>(&scenario);
         
         let ctx = test_scenario::ctx(&mut scenario);
@@ -41,7 +41,6 @@ module merak::wrapper_tests {
         assert!(merak_assets_system::supply_of(&mut schema,0) == amount * 3, 1);
 
         test_scenario::return_shared<Schema>(schema);
-        dapp.distroy_dapp_for_testing();
         scenario.end();
     }
 }
