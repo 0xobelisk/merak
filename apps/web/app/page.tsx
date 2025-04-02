@@ -7,7 +7,7 @@ export default function Page() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/swap/2/3');
+    router.push('/portfolio');
   }, [router]);
 
   return <main></main>;

@@ -272,12 +272,20 @@ export default function TokenWrapper() {
           logo: (
             <img
               src={
-                symbol === 'SUI' ? 'https://hop.ag/tokens/SUI.svg' : coinBalance.metadata?.iconUrl
+                symbol === 'SUI' 
+                  ? 'https://hop.ag/tokens/SUI.svg' 
+                  : symbol === 'DUBHE'
+                    ? 'https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg'
+                    : coinBalance.metadata?.iconUrl || 'https://hop.ag/tokens/SUI.svg'
               }
               alt={symbol}
               width="20"
               height="20"
               style={{ marginRight: '8px' }}
+              onError={(e) => {
+                // Fallback if image fails to load
+                e.currentTarget.src = 'https://hop.ag/tokens/SUI.svg';
+              }}
             />
           ),
           rawBalance: coinBalance.totalBalance,

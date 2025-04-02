@@ -16,7 +16,7 @@ import { toast } from 'sonner';
 import { useCurrentAccount } from '@mysten/dapp-kit';
 import { fromTokenAtom, toTokenAtom, type Token } from '@/app/jotai/swap/tokens';
 import { WALLETCHAIN } from '@/app/constants';
-import { AssetsStateAtom } from '@/app/jotai/assets';
+import { AssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
 import { AssetInfo } from '@0xobelisk/merak-sdk';
 
 // Function to format balance
@@ -45,7 +45,8 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   const [slippage, setSlippage] = useState('1.00');
 
   // Data states
-  const [assetsState] = useAtom(AssetsStateAtom);
+  const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
+  const [isAssetsLoading, setIsAssetsLoading] = useAtom(AssetsLoadingAtom);
   const [filteredAssets, setFilteredAssets] = useState(assetsState.assetInfos);
   const [availableToTokens, setAvailableToTokens] = useState<AssetInfo[]>([]);
   const [availableFromTokens, setAvailableFromTokens] = useState<AssetInfo[]>([]);
@@ -173,6 +174,8 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
           startTokenId: fromTokenId,
           address: account?.address
         });
+        console.log(availableToTokens,"availableToTokens");
+
         setAvailableToTokens(availableToTokens);
         setAvailableFromTokens(filteredAssets);
       } catch (error) {
@@ -228,16 +231,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
 
       setTokenSelectionOpen(false);
     },
-    [
-      currentSelection,
-      toToken,
-      fromToken,
-      params.fromToken,
-      params.toToken,
-      router,
-      payAmount,
-      calculateReceiveAmount
-    ]
+    [currentSelection, toToken, fromToken, params.fromToken, params.toToken, router, payAmount, calculateReceiveAmount]
   );
 
   // Optimize Token swap processing
@@ -260,16 +254,57 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
     }
   }, [fromToken, toToken, payAmount, router, setFromToken, setToToken]);
 
+  // Add this function - Similar to the portfolio page
+  const loadUserAssets = useCallback(async () => {
+    if (!account?.address) return;
+
+    try {
+      setIsAssetsLoading(true);
+      const merak = initMerakClient();
+
+      const metadataResults = await merak.listOwnedAssetsInfo({
+        address: account.address
+      });
+
+      // Update state with user's assets
+      setAssetsState({
+        assetInfos: metadataResults.data
+      });
+
+      console.log('Loaded user assets:', metadataResults.data);
+    } catch (error) {
+      console.error('Error querying assets:', error);
+      toast.error('Failed to fetch assets');
+    } finally {
+      setIsAssetsLoading(false);
+    }
+  }, [account?.address, setAssetsState, setIsAssetsLoading]);
+
+  // Add this effect - Load assets when the page loads
+  useEffect(() => {
+    if (account?.address) {
+      loadUserAssets();
+    } else {
+      router.push('/'); // Redirect to home if no wallet connected
+    }
+  }, [account, router, loadUserAssets]);
+
   // Initialize Tokens
   useEffect(() => {
     const initializeTokens = async () => {
       setTokensState({ loading: true, error: null });
       try {
+        // Make sure we have assets loaded before continuing
+        if (assetsState.assetInfos.length === 0) {
+          console.log('Waiting for assets to load...');
+          return;
+        }
+
         const fromTokenId = Number(params.fromToken);
         const toTokenId = Number(params.toToken);
 
-        const fromTokenInfo = filteredAssets.find((asset) => asset.assetId === fromTokenId);
-        const toTokenInfo = filteredAssets.find((asset) => asset.assetId === toTokenId);
+        const fromTokenInfo = assetsState.assetInfos.find((asset) => asset.assetId === fromTokenId);
+        const toTokenInfo = assetsState.assetInfos.find((asset) => asset.assetId === toTokenId);
 
         if (fromTokenInfo) {
           const decimals = fromTokenInfo.metadata.decimals;
@@ -315,7 +350,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
     };
 
     initializeTokens();
-  }, [params.fromToken, params.toToken, filteredAssets, setFromToken, setToToken]);
+  }, [params.fromToken, params.toToken, assetsState.assetInfos, setFromToken, setToToken]);
 
   // Monitor token status
   useEffect(() => {
@@ -351,7 +386,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
       }
 
       const amountInWithDecimals = BigInt(Math.floor(amountIn * 10 ** fromToken.decimals));
-
+      
       // 在执行交易前再次检查输出金额
       const amountOutCheck = await merak.getAmountOut(path, Number(amountInWithDecimals));
       if (!amountOutCheck || BigInt(amountOutCheck[0]) <= BigInt(0)) {
@@ -409,12 +444,12 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   }, [fromToken, toToken, account, payAmount, slippage, signAndExecuteTransaction]);
 
   // Loading state
-  if (tokensState.loading) {
+  if (isAssetsLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#F5F7FA]">
         <div className="flex flex-col items-center">
           <Loader2 className="h-12 w-12 animate-spin text-blue-500 mb-4" />
-          <p className="text-gray-500 font-medium">Loading...</p>
+          <p className="text-gray-500 font-medium">Loading assets...</p>
         </div>
       </div>
     );
@@ -616,9 +651,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                   <div className="ml-1 group relative">
                     <Info className="h-4 w-4 text-gray-400 cursor-help" />
                     <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 p-2 bg-gray-800 text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                      Slippage tolerance is the maximum percentage of price movement allowed during
-                      trade execution. Higher tolerance increases success rate but may result in
-                      less favorable prices.
+                      Slippage tolerance is the maximum percentage of price movement allowed during trade execution. Higher tolerance increases success rate but may result in less favorable prices.
                     </div>
                   </div>
                 </div>
