@@ -372,7 +372,7 @@ export default function Page() {
                             alt="DUB logo"
                             className="w-5 h-5 mr-2"
                           />
-                          Dubhe (DUBHE)
+                          WDubhe (WDUBHE)
                         </div>
                       </SelectValue>
                     </SelectTrigger>
