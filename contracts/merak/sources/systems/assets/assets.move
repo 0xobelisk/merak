@@ -1,5 +1,6 @@
 module merak::merak_assets_system {
     use std::ascii::String;
+    use std::ascii::string;
     use merak::merak_errors::{
         asset_not_found_error, no_permission_error, not_mintable_error, not_burnable_error, account_not_found_error, asset_not_liquid_error, asset_not_frozen_error
     };
@@ -8,7 +9,7 @@ module merak::merak_assets_system {
     use merak::merak_asset_status;
     use merak::merak_assets_functions;
 
-    public entry fun create(
+    public entry fun create(    
         schema: &mut Schema,
         name: String,
         symbol: String,
@@ -181,5 +182,70 @@ module merak::merak_assets_system {
         };
         let asset_metadata = maybe_asset_metadata.borrow();
         asset_metadata.get_supply()
+    }
+
+    public fun create_asset<DappKey: drop>(
+        schema: &mut Schema, 
+        _: DappKey,
+        name: String,
+        symbol: String, 
+        description: String, 
+        decimals: u8,
+        icon_url: String, 
+        owner: address, 
+        is_mintable: bool, 
+        is_burnable: bool, 
+        is_freezable: bool
+    ): u256 {
+        let asset_id = merak_assets_functions::do_create(
+            schema,
+            is_mintable,
+            is_burnable,
+            is_freezable,
+            false,
+            owner,
+            name,
+            symbol,
+            description,
+            decimals,
+            icon_url,
+            string(b"")
+        );
+        merak_assets_functions::add_package_asset<DappKey>(schema, asset_id);
+        asset_id
+    }
+
+    public fun mint_asset<DappKey: drop>(
+        schema: &mut Schema,
+        _: DappKey,
+        asset_id: u256,
+        to: address,
+        amount: u256
+    ) {
+        merak_assets_functions::assert_asset_is_package_asset<DappKey>(schema, asset_id);
+        merak_assets_functions::do_mint(schema, asset_id, to, amount);
+    }
+
+    public fun burn_asset<DappKey: drop>(
+        schema: &mut Schema,
+        _: DappKey,
+        asset_id: u256,
+        from: address,
+        amount: u256
+    ) {
+        merak_assets_functions::assert_asset_is_package_asset<DappKey>(schema, asset_id);
+        merak_assets_functions::do_burn(schema, asset_id, from, amount);
+    }       
+
+    public fun transfer_asset<DappKey: drop>(
+        schema: &mut Schema,
+        _: DappKey,
+        asset_id: u256,
+        from: address,
+        to: address,
+        amount: u256
+    ) {
+        merak_assets_functions::assert_asset_is_package_asset<DappKey>(schema, asset_id);
+        merak_assets_functions::do_transfer(schema, asset_id, from, to, amount);
     }
 }

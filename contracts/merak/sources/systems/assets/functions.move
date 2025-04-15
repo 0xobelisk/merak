@@ -1,9 +1,12 @@
 module merak::merak_assets_functions {
     use std::u256;
     use std::ascii::String;
+    use std::ascii::string;
+    use std::type_name;
     use merak::merak_account_status;
     use merak::merak_asset_status;
     use merak::merak_asset_metadata;
+    use merak::custom_schema;
     use merak::merak_account;
     use merak::merak_schema::Schema;
     use merak::merak_events::{asset_transferred_event};
@@ -13,6 +16,11 @@ module merak::merak_assets_functions {
         account_not_found_error, account_frozen_error, balance_too_low_error,
         invalid_receiver_error, invalid_sender_error
     };
+
+    /// Authorization Key for secondary apps.
+    public struct AssetsDappKey<phantom A: drop> has copy, drop, store {
+        asset_id: u256,
+    }
 
     public(package) fun do_create(
         schema: &mut Schema,
@@ -118,5 +126,28 @@ module merak::merak_assets_functions {
             }
         };
         asset_transferred_event(asset_id, from, to, amount);
+    }
+
+    public(package) fun add_package_asset<DappKey: drop>(schema: &mut Schema, asset_id: u256) {
+        let package_assets = custom_schema::package_assets(schema);
+        package_assets.add(AssetsDappKey<DappKey>{ asset_id }, true);
+        let dapp_key = type_name::get<DappKey>().into_string();
+        dubhe::storage_event::emit_set_record<String, u256, bool>(
+            string(b"package_assets"), 
+            option::some(dapp_key), 
+            option::some(asset_id), 
+            option::some(true)
+        );
+    }
+
+    public(package) fun is_package_asset<DappKey: drop>(schema: &mut Schema, asset_id: u256): bool {
+        let package_assets = custom_schema::package_assets(schema);
+        package_assets.contains(AssetsDappKey<DappKey>{ asset_id })
+    }
+
+    public(package) fun assert_asset_is_package_asset<DappKey: drop>(schema: &mut Schema, asset_id: u256) {
+        if(!is_package_asset<DappKey>(schema, asset_id)) {
+            asset_not_found_error(true);
+        }
     }
 }
