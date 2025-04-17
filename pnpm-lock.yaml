@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@0xobelisk/sui-cli':
-        specifier: ^1.1.10
-        version: 1.1.10
-      '@0xobelisk/sui-common':
         specifier: ^1.1.11
         version: 1.1.11
+      '@0xobelisk/sui-common':
+        specifier: ^1.1.12
+        version: 1.1.12
       '@0xobelisk/sui-indexer':
         specifier: ^1.1.14
         version: 1.1.14(react@18.3.1)(typescript@5.8.2)(viem@2.24.3)
@@ -506,13 +506,13 @@ packages:
       typescript: 5.8.2
     dev: false
 
-  /@0xobelisk/sui-cli@1.1.10:
-    resolution: {integrity: sha512-yymD75KzVohF5wIyQsS/so7fYyTCia1NE4q+gFcvCWao63+NtDppbg5iWntywx4osfBgdiM/xrDBbZHd2jqc+Q==}
+  /@0xobelisk/sui-cli@1.1.11:
+    resolution: {integrity: sha512-aBJ6IxXtH4WqbpnzAZ4pr8c6nQKUiuZCWNbzMlVUrp+jkwsnZbvXOWySrrzGnZV8nIB5KbHZEBPEPJfUsAkBrg==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
       '@0xobelisk/sui-client': 1.1.12(typescript@5.1.6)
-      '@0xobelisk/sui-common': 1.1.11
+      '@0xobelisk/sui-common': 1.1.12
       '@mysten/sui': 1.19.0(typescript@5.1.6)
       '@types/sqlite3': 3.1.11
       chalk: 5.4.1
@@ -697,8 +697,8 @@ packages:
       - supports-color
     dev: false
 
-  /@0xobelisk/sui-common@1.1.11:
-    resolution: {integrity: sha512-FKDmAWB2cw0kFs2TvmsJLKLloJef/afRCIfNWfY0v9VFAolSxe26N8Qr/TicB8zFdj3UIQyzU4wPgiJSnGAhcA==}
+  /@0xobelisk/sui-common@1.1.12:
+    resolution: {integrity: sha512-CbLgFb73KwbtUcGdJuGjS6auhw5uXpxBJHJQd6z4ulqPBUVdb3DkSswXQ3UrrQUdXL6jubUTxvpSHVJ5tNSJeA==}
     engines: {node: '>=18'}
     dependencies:
       chalk: 5.4.1

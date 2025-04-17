@@ -10,7 +10,9 @@ module merak::wrapper_tests {
 
     #[test]
     public fun wrapper_tests() {
-        let mut scenario = deploy_dapp_for_testing(@0xA);
+         let sender = @0xA;
+        let mut scenario = test_scenario::begin(sender);
+        deploy_dapp_for_testing(&mut scenario);
         let mut schema = test_scenario::take_shared<Schema>(&scenario);
         
         let ctx = test_scenario::ctx(&mut scenario);

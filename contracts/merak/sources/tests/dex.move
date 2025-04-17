@@ -19,7 +19,9 @@ module merak::dex_tests {
     public struct USDT has store, drop {  }
 
     public fun init_test(): (Schema, Scenario) {
-        let mut scenario = deploy_dapp_for_testing(@0xA);
+        let sender = @0xA;
+        let mut scenario = test_scenario::begin(sender);
+        deploy_dapp_for_testing(&mut scenario);
 
         let mut schema = test_scenario::take_shared<Schema>(&scenario);
         schema.next_asset_id().set(0);
