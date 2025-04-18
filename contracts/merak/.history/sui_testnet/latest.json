@@ -1,8 +1,8 @@
 {
   "projectName": "merak",
   "network": "testnet",
-  "packageId": "0x0390d66c47751e375024be6d0075bdea3a035b0a1c8b25c934a1e3e7b42ac591",
-  "schemaId": "0x31e33bdfaec45e75b8e9d97829be2fcbeb74a71a90d791f551cbea1e4da948d0",
+  "packageId": "0xe14134da47f66aec99d9372bb72f352cbe1c0813bc777a475e1d5effa124f857",
+  "schemaId": "0x492e9c4c945d1b148d7e9958c0bc932219c02af3f994fd4073a4e7c3553e08d3",
   "schemas": {
     "next_asset_id": "StorageValue<u256>",
     "asset_metadata": "StorageMap<u256, AssetMetadata>",
@@ -15,6 +15,6 @@
     "pools": "StorageDoubleMap<u256, u256, Pool>",
     "bridge": "StorageMap<String, BridgeConfig>"
   },
-  "upgradeCap": "0xc2dadae6f2eb6b5d5f8c085f439cf34125bb8d4a1e4218d91f40453dd138b8d6",
+  "upgradeCap": "0x2fc1f9e8fc546c41cf87c149abc963f7032944bdb7645fcb9085c8e6a3eb7ab2",
   "version": 1
 }
