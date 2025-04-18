@@ -6,6 +6,7 @@ export const dubheConfig = {
     data: {
         AccountStatus: ['Liquid', 'Frozen', 'Blocked'],
         AssetStatus: ['Liquid', 'Frozen'],
+        AssetType: ['LP', 'Wrapped', 'Private', 'Package'],
         Account: { balance: 'u256', status: 'AccountStatus' },
         AssetMetadata: {
             // The user friendly name of this asset. Limited in length by `StringLimit`.
@@ -34,8 +35,8 @@ export const dubheConfig = {
             is_burnable: 'bool',
             // Whether the asset is freezable.
             is_freezable: 'bool',
-            // Whether the asset is wrapped.
-            wrapped: 'bool',
+            // The type of the asset.
+            asset_type: 'AssetType',
         },
         Pool: {
             pool_address: 'address',

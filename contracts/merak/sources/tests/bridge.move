@@ -1,17 +1,14 @@
 #[test_only]
 module merak::bridge_tests {
-    use std::ascii;
-    use std::ascii::{String, string};
+    use std::ascii::{string};
     use sui::transfer::public_share_object;
     use merak::merak_bridge_system;
     use merak::merak_wrapper_system;
     use merak::dubhe::DUBHE;
-    use merak::merak_assets_functions;
     use merak::merak_init_test::deploy_dapp_for_testing;
     use merak::merak_assets_system;
     use merak::merak_schema::Schema;
     use sui::test_scenario;
-    use sui::test_scenario::Scenario;
     use sui::coin;
 
     #[test]

@@ -8,10 +8,9 @@ module merak::assets_tests {
     use merak::merak_schema::Schema;
     use sui::test_scenario;
     use sui::test_scenario::Scenario;
-
+    use merak::merak_asset_type;
     public fun create_assets(schema: &mut Schema, name: String, symbol: String, description: String, decimals: u8, url: String, info: String, scenario: &mut Scenario): u256 {
-        let ctx = test_scenario::ctx(scenario);
-        let asset_id = merak_assets_functions::do_create(schema, true, true, true, false,@0xA, name, symbol, description, decimals, url, info);
+        let asset_id = merak_assets_functions::do_create(schema, true, true, true, merak_asset_type::new_private(), @0xA, name, symbol, description, decimals, url, info);
         test_scenario::next_tx(scenario,@0xA);
         asset_id
     }

@@ -9,6 +9,7 @@ module merak::merak_dex_system {
     use merak::merak_dex_functions;
     use merak::merak_math_system;
     use merak::merak_schema::Schema;
+    use merak::merak_asset_type;
     use merak::merak_events::{pool_created_event, liquidity_added_event, liquidity_removed_event};
     use merak::merak_errors:: {
         asset_not_found_error, pool_already_exists_error, below_min_amount_error, overflows_error, below_min_liquidity_error
@@ -36,8 +37,8 @@ module merak::merak_dex_system {
             false,
             false,
             false,
-            true,
-            @dubhe,
+            merak_asset_type::new_package(),
+            @0x0,
             ascii::string(LP_ASSET_NAME),
             lp_asset_symbol,
             ascii::string(LP_ASSET_DESCRIPTION),

@@ -8,6 +8,7 @@ module merak::merak_assets_system {
     use merak::merak_account_status;
     use merak::merak_asset_status;
     use merak::merak_assets_functions;
+    use merak::merak_asset_type;
 
     public entry fun create(    
         schema: &mut Schema,
@@ -33,7 +34,7 @@ module merak::merak_assets_system {
             is_mintable,
             is_burnable,
             is_freezable,
-            false,
+            merak_asset_type::new_private(),
             owner,
             name,
             symbol,
@@ -192,7 +193,6 @@ module merak::merak_assets_system {
         description: String, 
         decimals: u8,
         icon_url: String, 
-        owner: address, 
         is_mintable: bool, 
         is_burnable: bool, 
         is_freezable: bool
@@ -202,8 +202,8 @@ module merak::merak_assets_system {
             is_mintable,
             is_burnable,
             is_freezable,
-            false,
-            owner,
+            merak_asset_type::new_package(),
+            @0x0,
             name,
             symbol,
             description,

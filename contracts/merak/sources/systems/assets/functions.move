@@ -9,6 +9,7 @@ module merak::merak_assets_functions {
     use merak::custom_schema;
     use merak::merak_account;
     use merak::merak_schema::Schema;
+    use merak::merak_asset_type::AssetType;
     use merak::merak_events::{asset_transferred_event};
     use merak::merak_errors::{
         account_blocked_error, overflows_error, 
@@ -27,7 +28,7 @@ module merak::merak_assets_functions {
         is_mintable: bool,
         is_burnable: bool,
         is_freezable: bool,
-        wrapped: bool,
+        asset_type: AssetType,
         owner: address,
         name: String,
         symbol: String,
@@ -53,7 +54,7 @@ module merak::merak_assets_functions {
             is_mintable,
             is_burnable,
             is_freezable,
-            wrapped
+            asset_type
         );
         schema.asset_metadata().set(asset_id, asset_metadata);
 

@@ -10,6 +10,8 @@
 
   use merak::merak_asset_status::AssetStatus;
 
+  use merak::merak_asset_type::AssetType;
+
   public struct AssetMetadata has copy, drop, store {
     name: String,
     symbol: String,
@@ -24,7 +26,7 @@
     is_mintable: bool,
     is_burnable: bool,
     is_freezable: bool,
-    wrapped: bool,
+    asset_type: AssetType,
   }
 
   public fun new(
@@ -41,17 +43,17 @@
     is_mintable: bool,
     is_burnable: bool,
     is_freezable: bool,
-    wrapped: bool,
+    asset_type: AssetType,
   ): AssetMetadata {
     AssetMetadata {
-                                   name,symbol,description,decimals,icon_url,extra_info,owner,supply,accounts,status,is_mintable,is_burnable,is_freezable,wrapped
+                                   name,symbol,description,decimals,icon_url,extra_info,owner,supply,accounts,status,is_mintable,is_burnable,is_freezable,asset_type
                                }
   }
 
   public fun get(
     self: &AssetMetadata,
-  ): (String,String,String,u8,String,String,address,u256,u256,AssetStatus,bool,bool,bool,bool) {
-    (self.name,self.symbol,self.description,self.decimals,self.icon_url,self.extra_info,self.owner,self.supply,self.accounts,self.status,self.is_mintable,self.is_burnable,self.is_freezable,self.wrapped)
+  ): (String,String,String,u8,String,String,address,u256,u256,AssetStatus,bool,bool,bool,AssetType) {
+    (self.name,self.symbol,self.description,self.decimals,self.icon_url,self.extra_info,self.owner,self.supply,self.accounts,self.status,self.is_mintable,self.is_burnable,self.is_freezable,self.asset_type)
   }
 
   public fun get_name(self: &AssetMetadata): String {
@@ -106,8 +108,8 @@
     self.is_freezable
   }
 
-  public fun get_wrapped(self: &AssetMetadata): bool {
-    self.wrapped
+  public fun get_asset_type(self: &AssetMetadata): AssetType {
+    self.asset_type
   }
 
   public(package) fun set_name(self: &mut AssetMetadata, name: String) {
@@ -162,8 +164,8 @@
     self.is_freezable = is_freezable;
   }
 
-  public(package) fun set_wrapped(self: &mut AssetMetadata, wrapped: bool) {
-    self.wrapped = wrapped;
+  public(package) fun set_asset_type(self: &mut AssetMetadata, asset_type: AssetType) {
+    self.asset_type = asset_type;
   }
 
   public(package) fun set(
@@ -181,7 +183,7 @@
     is_mintable: bool,
     is_burnable: bool,
     is_freezable: bool,
-    wrapped: bool,
+    asset_type: AssetType,
   ) {
     self.name = name;
     self.symbol = symbol;
@@ -196,6 +198,6 @@
     self.is_mintable = is_mintable;
     self.is_burnable = is_burnable;
     self.is_freezable = is_freezable;
-    self.wrapped = wrapped;
+    self.asset_type = asset_type;
   }
 }

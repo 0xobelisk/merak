@@ -14,6 +14,8 @@
 
   use merak::merak_asset_status::AssetStatus;
 
+  use merak::merak_asset_type::AssetType;
+
   use merak::merak_account::Account;
 
   use merak::merak_asset_metadata::AssetMetadata;

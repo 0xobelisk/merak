@@ -11,10 +11,12 @@ module merak::merak_wrapper_system {
     use merak::custom_schema;
     use merak::merak_schema::Schema;
     use std::type_name;
-    use merak::merak_errors::overflows_error;
+    use merak::merak_errors::{overflows_error, no_permission_error};
+    use merak::merak_asset_type;
 
     public entry fun force_register<T>(schema: &mut Schema, name: String, symbol: String, description: String, decimals: u8, url: String, info: String, ctx: &mut TxContext) {
-        let asset_id = merak_assets_functions::do_create(schema, false, false, true,  true,ctx.sender(), name, symbol, description, decimals, url, info);
+        no_permission_error(schema.dapp__admin()[] == ctx.sender());
+        let asset_id = merak_assets_functions::do_create(schema, false, false, true, merak_asset_type::new_wrapped(),@0x0, name, symbol, description, decimals, url, info);
         custom_schema::wrapper_assets(schema).add<WrapperCoin<T>, u256>(custom_schema::new(), asset_id);
         let coin_type = type_name::get<T>().into_string();
         dubhe::storage_event::emit_set_record<String, String, u256>(string(b"wrapper_assets"), option::some(coin_type), option::none(), option::some(asset_id));
@@ -22,7 +24,7 @@ module merak::merak_wrapper_system {
         dubhe::storage_event::emit_set_record<u256, u256, u64>(string(b"wrapper_pools"), option::some(asset_id), option::none(), option::some(0));
     }
 
-    public entry fun register<T>(schema: &mut Schema, metadata: &CoinMetadata<T>, ctx: &mut TxContext): u256 {
+    public entry fun register<T>(schema: &mut Schema, metadata: &CoinMetadata<T>): u256 {
         let name = metadata.get_name().to_ascii();
         let decimals = metadata.get_decimals();
         let symbol = metadata.get_symbol();
@@ -32,7 +34,7 @@ module merak::merak_wrapper_system {
         } else {
             string(b"")
         };
-        let asset_id = merak_assets_functions::do_create(schema, false, false, true, true,ctx.sender(), name, symbol, description, decimals, icon_url, string(b""));
+        let asset_id = merak_assets_functions::do_create(schema, false, false, true, merak_asset_type::new_wrapped(), @0x0, name, symbol, description, decimals, icon_url, string(b""));
         custom_schema::wrapper_assets(schema).add<WrapperCoin<T>, u256>(custom_schema::new(), asset_id);
         let coin_type = type_name::get<T>().into_string();
         dubhe::storage_event::emit_set_record<String, String, u256>(string(b"wrapper_assets"), option::some(coin_type), option::none(), option::some(asset_id));
@@ -59,7 +61,7 @@ module merak::merak_wrapper_system {
     }
 
     public(package) fun do_register<T>(schema: &mut Schema, name: String, symbol: String, description: String, decimals: u8, url: String, info: String): u256 {
-        let asset_id = merak_assets_functions::do_create(schema, false, false, true, true,@0x0, name, symbol, description, decimals, url, info);
+        let asset_id = merak_assets_functions::do_create(schema, false, false, true, merak_asset_type::new_wrapped(),@0x0, name, symbol, description, decimals, url, info);
         custom_schema::wrapper_assets(schema).add<WrapperCoin<T>, u256>(custom_schema::new(), asset_id);
         let coin_type = type_name::get<T>().into_string();
         dubhe::storage_event::emit_set_record<String, String, u256>(string(b"wrapper_assets"), option::some(coin_type), option::none(), option::some(asset_id));

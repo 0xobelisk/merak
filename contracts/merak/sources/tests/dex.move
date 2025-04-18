@@ -41,7 +41,7 @@ module merak::dex_tests {
 
     #[test]
     public fun check_max_number() {
-        let (mut schema, mut scenario) = init_test();
+        let (mut schema, scenario) = init_test();
         let u128_max = u128::max_value!() as u256;
 
         assert!(merak_dex_functions::quote(3, u128_max, u128_max) ==  3);
