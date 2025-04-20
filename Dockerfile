@@ -2,7 +2,7 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-RUN npm install @0xobelisk/sui-indexer
+RUN npm install @0xobelisk/sui-indexer@1.1.14
 
 COPY . .
 
