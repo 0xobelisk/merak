@@ -8,7 +8,7 @@ import {
 export class Wrapper {
   public dubhe: Dubhe;
   public readonly schemaId: string;
-  private readonly schemaModuleName = 'merak_wrapper_system';
+  private readonly schemaModuleName = 'dubhe_wrapper_system';
 
   constructor(dubhe: Dubhe, schemaId: string) {
     this.dubhe = dubhe;

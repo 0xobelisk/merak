@@ -8,7 +8,7 @@ import {
 export class Dex {
   public dubhe: Dubhe;
   public readonly schemaId: string;
-  private readonly schemaModuleName = 'merak_dex_system';
+  private readonly schemaModuleName = 'dubhe_dex_system';
 
   constructor(dubhe: Dubhe, schemaId: string) {
     this.dubhe = dubhe;

@@ -8,7 +8,7 @@ import {
 export class Bridge {
   public dubhe: Dubhe;
   public readonly schemaId: string;
-  private readonly schemaModuleName = 'merak_bridge_system';
+  private readonly schemaModuleName = 'dubhe_bridge_system';
 
   constructor(dubhe: Dubhe, schemaId: string) {
     this.dubhe = dubhe;

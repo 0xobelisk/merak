@@ -1,19 +1,19 @@
 {
   "custom_schema": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "custom_schema",
     "friends": [
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_assets_functions"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_deploy_hook"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_wrapper_system"
       }
     ],
@@ -51,7 +51,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -79,7 +79,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -108,7 +108,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -137,7 +137,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -166,7 +166,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -195,7 +195,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -228,7 +228,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "custom_schema",
               "name": "WrapperCoin",
               "typeArguments": [
@@ -248,7 +248,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -277,7 +277,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -306,7 +306,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -331,7 +331,7 @@
   },
   "dubhe": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe",
     "friends": [],
     "structs": {
@@ -365,7 +365,7 @@
                 "typeArguments": [
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe",
                       "name": "DUBHE",
                       "typeArguments": []
@@ -394,11 +394,11 @@
   },
   "dubhe_account": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_account",
     "friends": [
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_assets_system"
       }
     ],
@@ -421,7 +421,7 @@
             "name": "status",
             "type": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_account_status",
                 "name": "AccountStatus",
                 "typeArguments": []
@@ -440,7 +440,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_account",
                 "name": "Account",
                 "typeArguments": []
@@ -452,7 +452,7 @@
           "U256",
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -468,7 +468,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_account",
                 "name": "Account",
                 "typeArguments": []
@@ -488,7 +488,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_account",
                 "name": "Account",
                 "typeArguments": []
@@ -499,7 +499,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -515,7 +515,7 @@
           "U256",
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -525,7 +525,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_account",
               "name": "Account",
               "typeArguments": []
@@ -541,7 +541,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_account",
                 "name": "Account",
                 "typeArguments": []
@@ -551,7 +551,7 @@
           "U256",
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -568,7 +568,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_account",
                 "name": "Account",
                 "typeArguments": []
@@ -587,7 +587,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_account",
                 "name": "Account",
                 "typeArguments": []
@@ -596,7 +596,7 @@
           },
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -609,7 +609,7 @@
   },
   "dubhe_account_status": {
     "fileFormatVersion": 7,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_account_status",
     "friends": [],
     "structs": {},
@@ -639,7 +639,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -655,7 +655,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -671,7 +671,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_account_status",
               "name": "AccountStatus",
               "typeArguments": []
@@ -683,7 +683,7 @@
   },
   "dubhe_asset_created_event": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_asset_created_event",
     "friends": [],
     "structs": {
@@ -772,7 +772,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_created_event",
               "name": "AssetCreatedEvent",
               "typeArguments": []
@@ -784,15 +784,15 @@
   },
   "dubhe_asset_metadata": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_asset_metadata",
     "friends": [
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_assets_functions"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_assets_system"
       }
     ],
@@ -882,7 +882,7 @@
             "name": "status",
             "type": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_status",
                 "name": "AssetStatus",
                 "typeArguments": []
@@ -905,7 +905,7 @@
             "name": "asset_type",
             "type": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_type",
                 "name": "AssetType",
                 "typeArguments": []
@@ -924,7 +924,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -979,7 +979,7 @@
           "U256",
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -990,7 +990,7 @@
           "Bool",
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_type",
               "name": "AssetType",
               "typeArguments": []
@@ -1006,7 +1006,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1026,7 +1026,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1037,7 +1037,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_type",
               "name": "AssetType",
               "typeArguments": []
@@ -1053,7 +1053,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1073,7 +1073,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1100,7 +1100,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1127,7 +1127,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1154,7 +1154,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1174,7 +1174,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1194,7 +1194,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1214,7 +1214,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1241,7 +1241,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1261,7 +1261,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1272,7 +1272,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -1288,7 +1288,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1308,7 +1308,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1378,7 +1378,7 @@
           "U256",
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -1389,7 +1389,7 @@
           "Bool",
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_type",
               "name": "AssetType",
               "typeArguments": []
@@ -1399,7 +1399,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_metadata",
               "name": "AssetMetadata",
               "typeArguments": []
@@ -1415,7 +1415,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1468,7 +1468,7 @@
           "U256",
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -1479,7 +1479,7 @@
           "Bool",
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_type",
               "name": "AssetType",
               "typeArguments": []
@@ -1496,7 +1496,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1515,7 +1515,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1524,7 +1524,7 @@
           },
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_type",
               "name": "AssetType",
               "typeArguments": []
@@ -1541,7 +1541,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1560,7 +1560,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1586,7 +1586,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1612,7 +1612,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1638,7 +1638,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1657,7 +1657,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1676,7 +1676,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1695,7 +1695,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1721,7 +1721,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1740,7 +1740,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1749,7 +1749,7 @@
           },
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -1766,7 +1766,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1785,7 +1785,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -1807,7 +1807,7 @@
   },
   "dubhe_asset_status": {
     "fileFormatVersion": 7,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_asset_status",
     "friends": [],
     "structs": {},
@@ -1836,7 +1836,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -1852,7 +1852,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_status",
               "name": "AssetStatus",
               "typeArguments": []
@@ -1864,7 +1864,7 @@
   },
   "dubhe_asset_transferred_event": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_asset_transferred_event",
     "friends": [],
     "structs": {
@@ -1910,7 +1910,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_transferred_event",
               "name": "AssetTransferredEvent",
               "typeArguments": []
@@ -1922,7 +1922,7 @@
   },
   "dubhe_asset_type": {
     "fileFormatVersion": 7,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_asset_type",
     "friends": [],
     "structs": {},
@@ -1953,7 +1953,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_type",
               "name": "AssetType",
               "typeArguments": []
@@ -1969,7 +1969,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_type",
               "name": "AssetType",
               "typeArguments": []
@@ -1985,7 +1985,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_type",
               "name": "AssetType",
               "typeArguments": []
@@ -2001,7 +2001,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_type",
               "name": "AssetType",
               "typeArguments": []
@@ -2013,7 +2013,7 @@
   },
   "dubhe_asset_unwrapped_event": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_asset_unwrapped_event",
     "friends": [],
     "structs": {
@@ -2059,7 +2059,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_unwrapped_event",
               "name": "AssetUnwrappedEvent",
               "typeArguments": []
@@ -2071,7 +2071,7 @@
   },
   "dubhe_asset_wrapped_event": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_asset_wrapped_event",
     "friends": [],
     "structs": {
@@ -2117,7 +2117,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_wrapped_event",
               "name": "AssetWrappedEvent",
               "typeArguments": []
@@ -2129,43 +2129,43 @@
   },
   "dubhe_assets_functions": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_assets_functions",
     "friends": [
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_assets_system"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_bridge_system"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_deploy_hook"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_dex_functions"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_dex_system"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_wrapper_system"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "storage_double_map"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "storage_map"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "storage_value"
       }
     ],
@@ -2211,7 +2211,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2236,7 +2236,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2262,7 +2262,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2280,7 +2280,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2301,7 +2301,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2313,7 +2313,7 @@
           "Bool",
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_type",
               "name": "AssetType",
               "typeArguments": []
@@ -2374,7 +2374,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2395,7 +2395,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2423,7 +2423,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2444,7 +2444,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2462,7 +2462,7 @@
   },
   "dubhe_assets_system": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_assets_system",
     "friends": [],
     "structs": {},
@@ -2475,7 +2475,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2497,7 +2497,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2527,7 +2527,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2564,7 +2564,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2588,7 +2588,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2659,7 +2659,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2718,7 +2718,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2748,7 +2748,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2777,7 +2777,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2814,7 +2814,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2838,7 +2838,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2859,7 +2859,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2889,7 +2889,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2918,7 +2918,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2949,7 +2949,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -2985,7 +2985,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -3010,7 +3010,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -3036,7 +3036,7 @@
   },
   "dubhe_bridge_config": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_bridge_config",
     "friends": [],
     "structs": {
@@ -3074,7 +3074,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -3096,7 +3096,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -3116,7 +3116,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -3136,7 +3136,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -3160,7 +3160,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_bridge_config",
               "name": "BridgeConfig",
               "typeArguments": []
@@ -3176,7 +3176,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -3197,7 +3197,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -3216,7 +3216,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -3235,7 +3235,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -3250,7 +3250,7 @@
   },
   "dubhe_bridge_deposit_event": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_bridge_deposit_event",
     "friends": [],
     "structs": {
@@ -3315,7 +3315,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_bridge_deposit_event",
               "name": "BridgeDepositEvent",
               "typeArguments": []
@@ -3327,7 +3327,7 @@
   },
   "dubhe_bridge_system": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_bridge_system",
     "friends": [],
     "structs": {},
@@ -3340,7 +3340,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -3356,7 +3356,7 @@
                 "typeArguments": [
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe",
                       "name": "DUBHE",
                       "typeArguments": []
@@ -3399,7 +3399,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -3434,7 +3434,7 @@
   },
   "dubhe_bridge_withdraw_event": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_bridge_withdraw_event",
     "friends": [],
     "structs": {
@@ -3504,7 +3504,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_bridge_withdraw_event",
               "name": "BridgeWithdrawEvent",
               "typeArguments": []
@@ -3516,15 +3516,15 @@
   },
   "dubhe_dapp_key": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_dapp_key",
     "friends": [
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_genesis"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_gov_system"
       }
     ],
@@ -3554,7 +3554,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_dapp_key",
               "name": "DappKey",
               "typeArguments": []
@@ -3566,7 +3566,7 @@
   },
   "dubhe_dapp_metadata": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_dapp_metadata",
     "friends": [],
     "structs": {
@@ -3655,7 +3655,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3719,7 +3719,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3748,7 +3748,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3768,7 +3768,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3795,7 +3795,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3822,7 +3822,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3851,7 +3851,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -3924,7 +3924,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_dapp_metadata",
               "name": "DappMetadata",
               "typeArguments": []
@@ -3940,7 +3940,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -4003,7 +4003,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -4031,7 +4031,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -4050,7 +4050,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -4076,7 +4076,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -4102,7 +4102,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -4130,7 +4130,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -4152,15 +4152,15 @@
   },
   "dubhe_dapp_stats": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_dapp_stats",
     "friends": [
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_assets_functions"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_gov_system"
       }
     ],
@@ -4203,7 +4203,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_stats",
                 "name": "DappStats",
                 "typeArguments": []
@@ -4226,7 +4226,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_stats",
                 "name": "DappStats",
                 "typeArguments": []
@@ -4246,7 +4246,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_stats",
                 "name": "DappStats",
                 "typeArguments": []
@@ -4266,7 +4266,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_stats",
                 "name": "DappStats",
                 "typeArguments": []
@@ -4286,7 +4286,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_stats",
                 "name": "DappStats",
                 "typeArguments": []
@@ -4311,7 +4311,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_dapp_stats",
               "name": "DappStats",
               "typeArguments": []
@@ -4327,7 +4327,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_stats",
                 "name": "DappStats",
                 "typeArguments": []
@@ -4349,7 +4349,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_stats",
                 "name": "DappStats",
                 "typeArguments": []
@@ -4368,7 +4368,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_stats",
                 "name": "DappStats",
                 "typeArguments": []
@@ -4387,7 +4387,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_stats",
                 "name": "DappStats",
                 "typeArguments": []
@@ -4406,7 +4406,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_stats",
                 "name": "DappStats",
                 "typeArguments": []
@@ -4421,7 +4421,7 @@
   },
   "dubhe_dapp_system": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_dapp_system",
     "friends": [],
     "structs": {},
@@ -4441,7 +4441,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4453,7 +4453,7 @@
           },
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_dapp_metadata",
               "name": "DappMetadata",
               "typeArguments": []
@@ -4487,7 +4487,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4525,7 +4525,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4554,7 +4554,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4567,36 +4567,6 @@
         ],
         "return": []
       },
-      "get_dapp_admin": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": [
-              "Copy",
-              "Drop"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-                "module": "dubhe_schema",
-                "name": "Schema",
-                "typeArguments": []
-              }
-            }
-          },
-          {
-            "TypeParameter": 0
-          }
-        ],
-        "return": [
-          "Address"
-        ]
-      },
       "set_metadata": {
         "visibility": "Public",
         "isEntry": true,
@@ -4605,7 +4575,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4678,7 +4648,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4708,7 +4678,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4745,7 +4715,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4774,11 +4744,11 @@
   },
   "dubhe_deploy_hook": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_deploy_hook",
     "friends": [
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_genesis"
       }
     ],
@@ -4792,7 +4762,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4816,11 +4786,11 @@
   },
   "dubhe_dex_functions": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_dex_functions",
     "friends": [
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_dex_system"
       }
     ],
@@ -4834,7 +4804,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4850,7 +4820,7 @@
           {
             "Vector": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -4867,7 +4837,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4883,7 +4853,7 @@
           {
             "Vector": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -4900,7 +4870,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4922,7 +4892,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4933,7 +4903,7 @@
           {
             "Vector": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -4954,7 +4924,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -4979,7 +4949,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5016,7 +4986,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5039,7 +5009,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5062,7 +5032,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5075,7 +5045,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_pool",
               "name": "Pool",
               "typeArguments": []
@@ -5091,7 +5061,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5113,7 +5083,7 @@
         "parameters": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_metadata",
               "name": "AssetMetadata",
               "typeArguments": []
@@ -5121,7 +5091,7 @@
           },
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_asset_metadata",
               "name": "AssetMetadata",
               "typeArguments": []
@@ -5173,7 +5143,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5184,7 +5154,7 @@
           {
             "Vector": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -5203,7 +5173,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5220,7 +5190,7 @@
   },
   "dubhe_dex_system": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_dex_system",
     "friends": [],
     "structs": {},
@@ -5233,7 +5203,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5267,7 +5237,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5297,7 +5267,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5321,7 +5291,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5345,7 +5315,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5382,7 +5352,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5427,7 +5397,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5461,7 +5431,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -5491,7 +5461,7 @@
   },
   "dubhe_errors": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_errors",
     "friends": [],
     "structs": {},
@@ -5788,7 +5758,7 @@
   },
   "dubhe_events": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_events",
     "friends": [],
     "structs": {},
@@ -5980,7 +5950,7 @@
   },
   "dubhe_genesis": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_genesis",
     "friends": [],
     "structs": {},
@@ -6017,7 +5987,7 @@
   },
   "dubhe_gov_system": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_gov_system",
     "friends": [],
     "structs": {},
@@ -6034,7 +6004,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6103,7 +6073,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6142,7 +6112,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6172,7 +6142,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -6198,7 +6168,7 @@
   },
   "dubhe_liquidity_added_event": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_liquidity_added_event",
     "friends": [],
     "structs": {
@@ -6259,7 +6229,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_liquidity_added_event",
               "name": "LiquidityAddedEvent",
               "typeArguments": []
@@ -6271,7 +6241,7 @@
   },
   "dubhe_liquidity_removed_event": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_liquidity_removed_event",
     "friends": [],
     "structs": {
@@ -6332,7 +6302,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_liquidity_removed_event",
               "name": "LiquidityRemovedEvent",
               "typeArguments": []
@@ -6344,11 +6314,11 @@
   },
   "dubhe_math_system": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_math_system",
     "friends": [
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_dex_functions"
       }
     ],
@@ -6437,7 +6407,7 @@
   },
   "dubhe_migrate": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_migrate",
     "friends": [],
     "structs": {},
@@ -6455,7 +6425,7 @@
   },
   "dubhe_ownership_transferred_event": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_ownership_transferred_event",
     "friends": [],
     "structs": {
@@ -6496,7 +6466,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_ownership_transferred_event",
               "name": "OwnershipTransferredEvent",
               "typeArguments": []
@@ -6508,7 +6478,7 @@
   },
   "dubhe_path_element": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_path_element",
     "friends": [],
     "structs": {
@@ -6542,7 +6512,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -6563,7 +6533,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -6583,7 +6553,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -6606,7 +6576,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_path_element",
               "name": "PathElement",
               "typeArguments": []
@@ -6622,7 +6592,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -6642,7 +6612,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -6661,7 +6631,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_path_element",
                 "name": "PathElement",
                 "typeArguments": []
@@ -6676,7 +6646,7 @@
   },
   "dubhe_pool": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_pool",
     "friends": [],
     "structs": {
@@ -6710,7 +6680,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -6731,7 +6701,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -6751,7 +6721,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -6774,7 +6744,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_pool",
               "name": "Pool",
               "typeArguments": []
@@ -6790,7 +6760,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -6810,7 +6780,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -6829,7 +6799,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -6844,7 +6814,7 @@
   },
   "dubhe_pool_created_event": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_pool_created_event",
     "friends": [],
     "structs": {
@@ -6914,7 +6884,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_pool_created_event",
               "name": "PoolCreatedEvent",
               "typeArguments": []
@@ -6926,47 +6896,47 @@
   },
   "dubhe_schema": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_schema",
     "friends": [
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "custom_schema"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_assets_functions"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_assets_system"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_bridge_system"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_dapp_system"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_deploy_hook"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_dex_functions"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_dex_system"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_genesis"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_gov_system"
       }
     ],
@@ -7003,7 +6973,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7015,7 +6985,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map_internal",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -7023,7 +6993,7 @@
                   "Address",
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe_account",
                       "name": "Account",
                       "typeArguments": []
@@ -7043,7 +7013,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7055,14 +7025,14 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
                   "U256",
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe_asset_metadata",
                       "name": "AssetMetadata",
                       "typeArguments": []
@@ -7082,7 +7052,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7094,7 +7064,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map_internal",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -7102,7 +7072,7 @@
                   "Address",
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe_account",
                       "name": "Account",
                       "typeArguments": []
@@ -7122,7 +7092,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7134,14 +7104,14 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
                   "U256",
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe_asset_metadata",
                       "name": "AssetMetadata",
                       "typeArguments": []
@@ -7161,7 +7131,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7173,7 +7143,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -7187,7 +7157,7 @@
                   },
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe_bridge_config",
                       "name": "BridgeConfig",
                       "typeArguments": []
@@ -7207,7 +7177,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7219,7 +7189,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -7239,7 +7209,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7251,14 +7221,14 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
                   "Address",
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe_dapp_metadata",
                       "name": "DappMetadata",
                       "typeArguments": []
@@ -7278,7 +7248,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7290,7 +7260,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -7310,7 +7280,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7322,7 +7292,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -7342,7 +7312,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7354,14 +7324,14 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
                   "Address",
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe_dapp_stats",
                       "name": "DappStats",
                       "typeArguments": []
@@ -7381,7 +7351,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7393,7 +7363,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -7413,7 +7383,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7425,7 +7395,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -7444,7 +7414,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7473,7 +7443,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7485,7 +7455,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -7504,7 +7474,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7516,7 +7486,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -7535,7 +7505,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7547,7 +7517,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -7566,7 +7536,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7578,7 +7548,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -7597,7 +7567,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7609,7 +7579,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map_internal",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -7617,7 +7587,7 @@
                   "U256",
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe_pool",
                       "name": "Pool",
                       "typeArguments": []
@@ -7637,7 +7607,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7649,7 +7619,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -7668,7 +7638,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7680,7 +7650,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -7694,7 +7664,7 @@
                   },
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe_bridge_config",
                       "name": "BridgeConfig",
                       "typeArguments": []
@@ -7725,7 +7695,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_schema",
               "name": "Schema",
               "typeArguments": []
@@ -7741,7 +7711,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7753,7 +7723,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -7773,7 +7743,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7785,14 +7755,14 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
                   "Address",
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe_dapp_metadata",
                       "name": "DappMetadata",
                       "typeArguments": []
@@ -7812,7 +7782,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7824,7 +7794,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -7844,7 +7814,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7856,7 +7826,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -7876,7 +7846,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7888,14 +7858,14 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
                   "Address",
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe_dapp_stats",
                       "name": "DappStats",
                       "typeArguments": []
@@ -7915,7 +7885,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7927,7 +7897,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -7947,7 +7917,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7959,7 +7929,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -7978,7 +7948,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -7992,7 +7962,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_account",
                 "name": "Account",
                 "typeArguments": []
@@ -8009,7 +7979,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8022,7 +7992,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_asset_metadata",
                 "name": "AssetMetadata",
                 "typeArguments": []
@@ -8039,7 +8009,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8059,7 +8029,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_bridge_config",
                 "name": "BridgeConfig",
                 "typeArguments": []
@@ -8076,7 +8046,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8099,7 +8069,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8112,7 +8082,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_metadata",
                 "name": "DappMetadata",
                 "typeArguments": []
@@ -8129,7 +8099,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8152,7 +8122,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8175,7 +8145,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8188,7 +8158,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_dapp_stats",
                 "name": "DappStats",
                 "typeArguments": []
@@ -8205,7 +8175,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8228,7 +8198,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8250,7 +8220,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8272,7 +8242,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8294,7 +8264,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8316,7 +8286,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8338,7 +8308,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8352,7 +8322,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_pool",
                 "name": "Pool",
                 "typeArguments": []
@@ -8369,7 +8339,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8391,7 +8361,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8420,7 +8390,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8432,7 +8402,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -8451,7 +8421,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8463,7 +8433,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -8482,7 +8452,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8510,7 +8480,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8522,7 +8492,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -8541,7 +8511,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8553,7 +8523,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -8572,7 +8542,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8584,7 +8554,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map_internal",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -8592,7 +8562,7 @@
                   "U256",
                   {
                     "Struct": {
-                      "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                      "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                       "module": "dubhe_pool",
                       "name": "Pool",
                       "typeArguments": []
@@ -8612,7 +8582,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8624,7 +8594,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -8639,7 +8609,7 @@
   },
   "dubhe_swap_executed_event": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_swap_executed_event",
     "friends": [],
     "structs": {
@@ -8694,7 +8664,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "dubhe_swap_executed_event",
               "name": "SwapExecutedEvent",
               "typeArguments": []
@@ -8706,19 +8676,19 @@
   },
   "dubhe_wrapper_system": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "dubhe_wrapper_system",
     "friends": [
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_bridge_system"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_deploy_hook"
       },
       {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+        "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
         "name": "dubhe_gov_system"
       }
     ],
@@ -8736,7 +8706,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8801,7 +8771,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8847,7 +8817,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8881,7 +8851,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -8910,7 +8880,7 @@
   },
   "storage": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "storage",
     "friends": [],
     "structs": {},
@@ -9038,7 +9008,7 @@
   },
   "storage_double_map": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "storage_double_map",
     "friends": [],
     "structs": {
@@ -9187,7 +9157,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -9244,7 +9214,7 @@
         "parameters": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "storage_double_map",
               "name": "StorageDoubleMap",
               "typeArguments": [
@@ -9293,7 +9263,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -9355,7 +9325,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -9407,7 +9377,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -9473,7 +9443,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "storage_double_map",
               "name": "StorageDoubleMap",
               "typeArguments": [
@@ -9521,7 +9491,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -9583,7 +9553,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -9603,7 +9573,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -9655,7 +9625,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -9724,7 +9694,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -9767,26 +9737,9 @@
   },
   "storage_double_map_internal": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "storage_double_map_internal",
-    "friends": [
-      {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-        "name": "dubhe_assets_functions"
-      },
-      {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-        "name": "dubhe_assets_system"
-      },
-      {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-        "name": "dubhe_dex_system"
-      },
-      {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-        "name": "dubhe_schema"
-      }
-    ],
+    "friends": [],
     "structs": {
       "Entry": {
         "abilities": {
@@ -9933,7 +9886,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map_internal",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -9990,7 +9943,7 @@
         "parameters": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "storage_double_map_internal",
               "name": "StorageDoubleMap",
               "typeArguments": [
@@ -10039,7 +9992,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map_internal",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -10101,7 +10054,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map_internal",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -10153,7 +10106,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map_internal",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -10176,7 +10129,7 @@
         ]
       },
       "new": {
-        "visibility": "Friend",
+        "visibility": "Public",
         "isEntry": false,
         "typeParameters": [
           {
@@ -10219,7 +10172,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "storage_double_map_internal",
               "name": "StorageDoubleMap",
               "typeArguments": [
@@ -10267,7 +10220,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map_internal",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -10294,7 +10247,7 @@
         "return": []
       },
       "set": {
-        "visibility": "Friend",
+        "visibility": "Public",
         "isEntry": false,
         "typeParameters": [
           {
@@ -10323,7 +10276,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map_internal",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -10382,7 +10335,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map_internal",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -10451,7 +10404,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_double_map_internal",
                 "name": "StorageDoubleMap",
                 "typeArguments": [
@@ -10494,7 +10447,7 @@
   },
   "storage_event": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "storage_event",
     "friends": [],
     "structs": {
@@ -10983,7 +10936,7 @@
   },
   "storage_map": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "storage_map",
     "friends": [],
     "structs": {
@@ -11070,7 +11023,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -11114,7 +11067,7 @@
         "parameters": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "storage_map",
               "name": "StorageMap",
               "typeArguments": [
@@ -11153,7 +11106,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -11202,7 +11155,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -11244,7 +11197,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -11300,7 +11253,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "storage_map",
               "name": "StorageMap",
               "typeArguments": [
@@ -11338,7 +11291,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -11387,7 +11340,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -11404,7 +11357,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -11446,7 +11399,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -11502,7 +11455,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -11539,34 +11492,9 @@
   },
   "storage_map_internal": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "storage_map_internal",
-    "friends": [
-      {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-        "name": "dubhe_assets_functions"
-      },
-      {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-        "name": "dubhe_assets_system"
-      },
-      {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-        "name": "dubhe_dapp_system"
-      },
-      {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-        "name": "dubhe_deploy_hook"
-      },
-      {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-        "name": "dubhe_gov_system"
-      },
-      {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-        "name": "dubhe_schema"
-      }
-    ],
+    "friends": [],
     "structs": {
       "StorageMap": {
         "abilities": {
@@ -11651,7 +11579,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -11695,7 +11623,7 @@
         "parameters": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "storage_map_internal",
               "name": "StorageMap",
               "typeArguments": [
@@ -11734,7 +11662,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -11783,7 +11711,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -11825,7 +11753,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -11845,7 +11773,7 @@
         ]
       },
       "new": {
-        "visibility": "Friend",
+        "visibility": "Public",
         "isEntry": false,
         "typeParameters": [
           {
@@ -11881,7 +11809,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "storage_map_internal",
               "name": "StorageMap",
               "typeArguments": [
@@ -11919,7 +11847,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -11940,7 +11868,7 @@
         "return": []
       },
       "set": {
-        "visibility": "Friend",
+        "visibility": "Public",
         "isEntry": false,
         "typeParameters": [
           {
@@ -11962,7 +11890,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -12008,7 +11936,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -12064,7 +11992,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_map_internal",
                 "name": "StorageMap",
                 "typeArguments": [
@@ -12101,7 +12029,7 @@
   },
   "storage_value": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "storage_value",
     "friends": [],
     "structs": {
@@ -12171,7 +12099,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12202,7 +12130,7 @@
         "parameters": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "storage_value",
               "name": "StorageValue",
               "typeArguments": [
@@ -12231,7 +12159,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12267,7 +12195,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12313,7 +12241,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "storage_value",
               "name": "StorageValue",
               "typeArguments": [
@@ -12341,7 +12269,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12381,7 +12309,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12395,7 +12323,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "dubhe_schema",
                 "name": "Schema",
                 "typeArguments": []
@@ -12427,7 +12355,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12470,7 +12398,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12501,22 +12429,9 @@
   },
   "storage_value_internal": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "storage_value_internal",
-    "friends": [
-      {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-        "name": "dubhe_assets_functions"
-      },
-      {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-        "name": "dubhe_deploy_hook"
-      },
-      {
-        "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
-        "name": "dubhe_schema"
-      }
-    ],
+    "friends": [],
     "structs": {
       "StorageValue": {
         "abilities": {
@@ -12584,7 +12499,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12615,7 +12530,7 @@
         "parameters": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "storage_value_internal",
               "name": "StorageValue",
               "typeArguments": [
@@ -12644,7 +12559,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12680,7 +12595,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12697,7 +12612,7 @@
         ]
       },
       "new": {
-        "visibility": "Friend",
+        "visibility": "Public",
         "isEntry": false,
         "typeParameters": [
           {
@@ -12726,7 +12641,7 @@
         "return": [
           {
             "Struct": {
-              "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+              "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
               "module": "storage_value_internal",
               "name": "StorageValue",
               "typeArguments": [
@@ -12754,7 +12669,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12773,7 +12688,7 @@
         ]
       },
       "set": {
-        "visibility": "Friend",
+        "visibility": "Public",
         "isEntry": false,
         "typeParameters": [
           {
@@ -12788,7 +12703,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12821,7 +12736,7 @@
           {
             "Reference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12864,7 +12779,7 @@
           {
             "MutableReference": {
               "Struct": {
-                "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+                "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
                 "module": "storage_value_internal",
                 "name": "StorageValue",
                 "typeArguments": [
@@ -12895,7 +12810,7 @@
   },
   "type_info": {
     "fileFormatVersion": 6,
-    "address": "0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d",
+    "address": "0x6da994e40b6c3da88a6b8b94de66d3c9751a901db0dbe65f203e909da96c6117",
     "name": "type_info",
     "friends": [],
     "structs": {},

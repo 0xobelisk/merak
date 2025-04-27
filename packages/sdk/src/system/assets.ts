@@ -8,7 +8,7 @@ import {
 export class Assets {
   public dubhe: Dubhe;
   public readonly schemaId: string;
-  private readonly schemaModuleName = 'merak_assets_system';
+  private readonly schemaModuleName = 'dubhe_assets_system';
 
   constructor(dubhe: Dubhe, schemaId: string) {
     this.dubhe = dubhe;
