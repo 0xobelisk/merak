@@ -18,6 +18,7 @@ import { fromTokenAtom, toTokenAtom, type Token } from '@/app/jotai/swap/tokens'
 import { WALLETCHAIN } from '@/app/constants';
 import { AssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
 import { AssetInfo } from '@0xobelisk/merak-sdk';
+import { initDubheClient } from '@/app/jotai/dubhe';
 
 // Function to format balance
 const formatBalance = (balance: string, decimals: number): string => {
@@ -454,7 +455,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
           chain: WALLETCHAIN
         },
         {
-          onSuccess: (result) => {
+          onSuccess: async (result) => {
             toast.success('Swap Successful', {
               description: new Date().toUTCString(),
               action: {
@@ -463,6 +464,53 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                   window.open(`https://testnet.suivision.xyz/txblock/${result.digest}`, '_blank')
               }
             });
+
+            // 等待链上数据更新
+            const dubhe = initDubheClient();
+            await dubhe.waitForIndexerTransaction(result.digest);
+
+            // 重新加载用户资产
+            const metadataResults = await merak.listOwnedAssetsInfo({
+              address: account.address
+            });
+
+            // Update state with user's assets
+            setAssetsState({
+              assetInfos: metadataResults.data
+            });
+            // 更新当前代币的余额
+            if (fromToken && toToken) {
+              const fromTokenInfo = assetsState.assetInfos.find(
+                (asset) => asset.assetId === fromToken.id
+              );
+              const toTokenInfo = assetsState.assetInfos.find(
+                (asset) => asset.assetId === toToken.id
+              );
+
+              if (fromTokenInfo) {
+                const formattedBalance = formatBalance(
+                  fromTokenInfo.balance || '0',
+                  fromTokenInfo.metadata.decimals
+                );
+                setFromTokenBalance(formattedBalance);
+                setFromToken((prev) => ({
+                  ...prev,
+                  balance: formattedBalance
+                }));
+              }
+
+              if (toTokenInfo) {
+                const formattedBalance = formatBalance(
+                  toTokenInfo.balance || '0',
+                  toTokenInfo.metadata.decimals
+                );
+                setToTokenBalance(formattedBalance);
+                setToToken((prev) => ({
+                  ...prev,
+                  balance: formattedBalance
+                }));
+              }
+            }
 
             // Clear input after success
             setPayAmount('');

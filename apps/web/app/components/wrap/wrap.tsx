@@ -272,11 +272,11 @@ export default function TokenWrapper() {
           logo: (
             <img
               src={
-                symbol === 'SUI' 
-                  ? 'https://hop.ag/tokens/SUI.svg' 
+                symbol === 'SUI'
+                  ? 'https://hop.ag/tokens/SUI.svg'
                   : symbol === 'DUBHE'
-                    ? 'https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg'
-                    : coinBalance.metadata?.iconUrl || 'https://hop.ag/tokens/SUI.svg'
+                  ? 'https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg'
+                  : coinBalance.metadata?.iconUrl || 'https://hop.ag/tokens/SUI.svg'
               }
               alt={symbol}
               width="20"
@@ -387,12 +387,13 @@ export default function TokenWrapper() {
           chain: WALLETCHAIN
         },
         {
-          onSuccess: (result) => {
+          onSuccess: async (result) => {
             console.log('Wrap transaction successful:', result);
             toast.success('Wrap successful');
             setAmount('');
-            fetchTokenData();
-            fetchWrappedTokens();
+            // 添加短暂延迟确保链上数据更新
+            await dubhe.waitForIndexerTransaction(result.digest);
+            await Promise.all([fetchTokenData(), fetchWrappedTokens()]);
           },
           onError: (error) => {
             console.error('Wrap transaction failed:', error);
@@ -464,19 +465,20 @@ export default function TokenWrapper() {
 
       // Use processed token format
       await merak.unwrap(tx, amountInSmallestUnit, account.address, formattedToken, true);
-
+      const dubhe = initDubheClient();
       await signAndExecuteTransaction(
         {
           transaction: tx.serialize(),
           chain: WALLETCHAIN
         },
         {
-          onSuccess: (result) => {
+          onSuccess: async (result) => {
             console.log('Unwrap transaction successful:', result);
             toast.success('Unwrap successful');
             setAmount('');
-            fetchTokenData();
-            fetchWrappedTokens();
+            // 添加短暂延迟确保链上数据更新
+            await dubhe.waitForIndexerTransaction(result.digest);
+            await Promise.all([fetchTokenData(), fetchWrappedTokens()]);
           },
           onError: (error) => {
             console.error('Unwrap transaction failed:', error);
