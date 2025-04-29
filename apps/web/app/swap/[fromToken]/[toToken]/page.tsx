@@ -191,7 +191,18 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
           address: account?.address
         });
         console.log(availableToTokens, 'availableToTokens');
-
+        if (availableToTokens.length > 0) {
+          setToToken({
+            id: availableToTokens[0].assetId,
+            name: availableToTokens[0].metadata.name,
+            symbol: availableToTokens[0].metadata.symbol,
+            description: availableToTokens[0].metadata.description,
+            decimals: availableToTokens[0].metadata.decimals,
+            icon_url: availableToTokens[0].metadata.icon_url,
+            balance: availableToTokens[0].balance
+          });
+          console.log(toToken, 'toToken');
+        }
         setAvailableToTokens(availableToTokens);
         setAvailableFromTokens(filteredAssets);
       } catch (error) {
