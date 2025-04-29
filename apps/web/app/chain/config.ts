@@ -1,7 +1,7 @@
 type NetworkType = 'testnet' | 'mainnet' | 'devnet' | 'localnet';
 
 const NETWORK: NetworkType = 'testnet';
-const PACKAGE_ID = '0x80351f2a98ca797204ec422662bf09c0f2fbf67d3dd92a1a426676f86e26ec95';
-const SCHEMA_ID = '0x684c20291223a0b2070a22cdbd4f203d6d6ef66be525924d48c27a3d56107d8a';
+const PACKAGE_ID = '0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d';
+const SCHEMA_ID = '0xa565cbb3641fff8f7e8ef384b215808db5f1837aa72c1cca1803b5d973699aac';
 
 export { NETWORK, PACKAGE_ID, SCHEMA_ID };

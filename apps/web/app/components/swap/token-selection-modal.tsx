@@ -15,24 +15,24 @@ const DEFAULT_ICON = 'https://hop.ag/tokens/SUI.svg';
 
 // Popular tokens to show in quick select area
 const POPULAR_TOKENS = [
-  { symbol: 'SUI', icon: 'https://hop.ag/tokens/SUI.svg' },
+  { symbol: 'SUI', icon_url: 'https://hop.ag/tokens/SUI.svg' },
   {
     symbol: 'DUBHE',
-    icon: 'https://pbs.twimg.com/profile_images/1904156933516668928/W9y4Vor__400x400.jpg'
+    icon_url: 'https://pbs.twimg.com/profile_images/1904156933516668928/W9y4Vor__400x400.jpg'
   }
 ];
 
 // Helper function to safely format token balances
 const formatTokenBalance = (balance: string | undefined, decimals: number = 18): string => {
   if (!balance) return '0';
-  
+
   try {
     const numBalance = Number(balance);
     if (isNaN(numBalance)) return '0';
-    
+
     const formattedBalance = numBalance / Math.pow(10, decimals);
     if (isNaN(formattedBalance)) return '0';
-    
+
     return formattedBalance.toLocaleString(undefined, {
       minimumFractionDigits: 0,
       maximumFractionDigits: 4
@@ -122,21 +122,21 @@ function TokenSelectionModalOpen({
 
   const handleSelectToken = (asset: any) => {
     console.log('Selected asset:', asset);
-    
+
     // Use the safe format function to get balance
     const formattedBalance = formatTokenBalance(asset.balance, asset.metadata?.decimals);
-    
+
     onSelectToken({
       symbol: asset.metadata?.symbol || 'Unknown',
       name: asset.metadata?.name || 'Unknown Token',
-      icon: asset.metadata?.icon_url || DEFAULT_ICON,
+      icon_url: asset.metadata?.icon_url || DEFAULT_ICON,
       balance: formattedBalance,
       id: asset.assetId,
       decimals: asset.metadata?.decimals || 18
     });
     onClose();
   };
-  
+
   // Handle popular token selection
   const handlePopularTokenSelect = (token: any) => {
     // Find matching asset by symbol
@@ -185,7 +185,7 @@ function TokenSelectionModalOpen({
                 onClick={() => handlePopularTokenSelect(token)}
               >
                 <img
-                  src={token.icon}
+                  src={token.icon_url}
                   alt={token.symbol}
                   className="w-5 h-5"
                   onError={(e) => {
@@ -228,8 +228,12 @@ function TokenSelectionModalOpen({
                         />
                       </div>
                       <div>
-                        <div className="font-semibold text-gray-900">{asset.metadata?.symbol || 'Unknown'}</div>
-                        <div className="text-sm text-gray-500">{asset.metadata?.name || 'Unknown Token'}</div>
+                        <div className="font-semibold text-gray-900">
+                          {asset.metadata?.symbol || 'Unknown'}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {asset.metadata?.name || 'Unknown Token'}
+                        </div>
                       </div>
                     </div>
                     <div className="text-right">

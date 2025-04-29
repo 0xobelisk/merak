@@ -705,7 +705,7 @@ export class Merak {
     first?: number;
     after?: string;
     orderBy?: string[];
-  }): Promise<AssetInfoResponse> {
+  } = {}): Promise<AssetInfoResponse> {
     const assetsMetadata = await this.storage.list.assetMetadata({
       first: first ?? 9999,
       after: after,

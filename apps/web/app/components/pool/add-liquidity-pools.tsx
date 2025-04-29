@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, ChevronDown } from 'lucide-react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
@@ -10,11 +10,13 @@ import { toast } from 'sonner';
 import { useSignAndExecuteTransaction, useCurrentAccount } from '@mysten/dapp-kit';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { WALLETCHAIN } from '@/app/constants';
+import { useAtom } from 'jotai';
+import { AssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
 
 interface TokenData {
   symbol: string;
   name: string;
-  icon: string;
+  icon_url: string;
   balance: string;
   id: number;
   decimals: number;
@@ -26,10 +28,10 @@ export default function AddLiquidity() {
   const [digest, setDigest] = useState('');
   const [tokenPay, setTokenPay] = useState<TokenData | null>(null);
   const [tokenReceive, setTokenReceive] = useState<TokenData | null>(null);
-  const [amountPay, setAmountPay] = useState('0.0');
-  const [amountReceive, setAmountReceive] = useState('0.0');
-  const [minAmountPay, setMinAmountPay] = useState('0.0');
-  const [minAmountReceive, setMinAmountReceive] = useState('0.0');
+  const [amountPay, setAmountPay] = useState('');
+  const [amountReceive, setAmountReceive] = useState('');
+  const [minAmountPay, setMinAmountPay] = useState('');
+  const [minAmountReceive, setMinAmountReceive] = useState('');
 
   const [isTokenPayModalOpen, setIsTokenPayModalOpen] = useState(false);
   const [isTokenReceiveModalOpen, setIsTokenReceiveModalOpen] = useState(false);
@@ -39,6 +41,49 @@ export default function AddLiquidity() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // Global state management with Jotai
+  const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
+  const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
+
+  /**
+   * Query asset list
+   * Get account information and asset metadata
+   */
+  const queryAssets = useCallback(async () => {
+    if (!account?.address) return;
+
+    try {
+      setIsLoading(true);
+      const merak = initMerakClient();
+
+      const metadataResults = await merak.listOwnedAssetsInfo({
+        address: account.address
+      });
+
+      console.log(metadataResults, 'metadataResults');
+
+      // Update state
+      setAssetsState({
+        assetInfos: metadataResults.data
+      });
+
+      console.log('Retrieved assets:', metadataResults.data);
+    } catch (error) {
+      console.error('Failed to fetch assets:', error);
+      toast.error('Failed to fetch assets, please try again');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [account?.address, setAssetsState]);
+
+  // Initialize asset loading
+  useEffect(() => {
+    console.log(account, 'account');
+    if (account?.address) {
+      queryAssets();
+      console.log('assetsState', assetsState);
+    }
+  }, [account?.address, queryAssets]);
   // useEffect(() => {
   //   const asset1 = searchParams.get('asset1');
   //   const asset2 = searchParams.get('asset2');
@@ -103,10 +148,12 @@ export default function AddLiquidity() {
   // }, [searchParams]);
 
   const handleSelectTokenPay = async (token: TokenData) => {
+    console.log(token, 'select token');
     setTokenPay(token);
     setIsTokenPayModalOpen(false);
     const merak = initMerakClient();
     const connectedTokens = await merak.getConnectedTokens(token.id);
+    console.log(connectedTokens, 'connectedTokens');
     setAvailableTokenReceives(connectedTokens);
     if (tokenReceive && !connectedTokens.includes(tokenReceive.id)) {
       setTokenReceive(null);
@@ -114,6 +161,7 @@ export default function AddLiquidity() {
   };
 
   const handleSelectTokenReceive = (token: TokenData) => {
+    console.log(token, 'select receive token');
     setTokenReceive(token);
     setIsTokenReceiveModalOpen(false);
   };
@@ -134,9 +182,11 @@ export default function AddLiquidity() {
     const quoteDesired = BigInt(
       Math.floor(parseFloat(amountReceive) * Math.pow(10, tokenReceive.decimals))
     );
-    const baseMin = BigInt(Math.floor(parseFloat(minAmountPay) * Math.pow(10, tokenPay.decimals)));
+    const baseMin = BigInt(
+      Math.floor(parseFloat(minAmountPay || '0') * Math.pow(10, tokenPay.decimals))
+    );
     const quoteMin = BigInt(
-      Math.floor(parseFloat(minAmountReceive) * Math.pow(10, tokenReceive.decimals))
+      Math.floor(parseFloat(minAmountReceive || '0') * Math.pow(10, tokenReceive.decimals))
     );
 
     await merak.addLiquidity(
@@ -205,7 +255,7 @@ export default function AddLiquidity() {
             >
               {tokenPay ? (
                 <>
-                  <img src={tokenPay.icon} alt={tokenPay.symbol} className="w-6 h-6 mr-2" />
+                  <img src={tokenPay.icon_url} alt={tokenPay.symbol} className="w-6 h-6 mr-2" />
                   {tokenPay.symbol}
                 </>
               ) : (
@@ -221,7 +271,11 @@ export default function AddLiquidity() {
             >
               {tokenReceive ? (
                 <>
-                  <img src={tokenReceive.icon} alt={tokenReceive.symbol} className="w-6 h-6 mr-2" />
+                  <img
+                    src={tokenReceive.icon_url}
+                    alt={tokenReceive.symbol}
+                    className="w-6 h-6 mr-2"
+                  />
                   {tokenReceive.symbol}
                 </>
               ) : tokenPay ? (
@@ -247,7 +301,7 @@ export default function AddLiquidity() {
                   type="text"
                   value={amountPay}
                   onChange={(e) => setAmountPay(e.target.value)}
-                  placeholder="0.0"
+                  placeholder="Enter amount"
                 />
                 <span className="text-sm font-medium">{tokenPay ? tokenPay.symbol : ''}</span>
               </div>
@@ -264,7 +318,7 @@ export default function AddLiquidity() {
                   type="text"
                   value={amountReceive}
                   onChange={(e) => setAmountReceive(e.target.value)}
-                  placeholder="0.0"
+                  placeholder="Enter amount"
                 />
                 <span className="text-sm font-medium">
                   {tokenReceive ? tokenReceive.symbol : ''}

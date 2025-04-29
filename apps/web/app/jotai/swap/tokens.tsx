@@ -8,7 +8,7 @@ export type Token = {
   symbol: string;
   description: string;
   decimals: number;
-  icon: string;
+  icon_url: string;
   balance: string;
 };
 
@@ -18,7 +18,7 @@ export const fromTokenAtom = atom<Token>({
   symbol: '',
   description: '',
   decimals: 1,
-  icon: '',
+  icon_url: '',
   balance: ''
 });
 export const toTokenAtom = atom<Token>({
@@ -27,6 +27,6 @@ export const toTokenAtom = atom<Token>({
   symbol: '',
   description: '',
   decimals: 1,
-  icon: '',
+  icon_url: '',
   balance: ''
 });

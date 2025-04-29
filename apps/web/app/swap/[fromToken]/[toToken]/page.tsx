@@ -74,20 +74,30 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   // Optimize getAmountOut function
   const getAmountOut = useCallback(
     async (amount: string) => {
+      console.log('=========');
+      console.log(amount, 'amount');
       if (!amount || parseFloat(amount) <= 0) {
+        console.log('========= 0');
         return null;
       }
+      console.log('========= 1');
+      console.log(fromToken, 'fromToken');
+      console.log(toToken, 'toToken');
+      console.log(fromToken.id, 'fromToken.id');
+      console.log(toToken.id, 'toToken.id');
+      console.log(!fromToken?.id || !toToken?.id, '!fromToken?.id || !toToken?.id');
 
-      if (!fromToken?.id || !toToken?.id) {
+      if (fromToken?.id === undefined || toToken?.id === undefined) {
+        console.log('========= 2');
         throw new Error('Please select tokens first');
       }
-
       if (!fromToken.decimals) {
         throw new Error('Token decimals undefined');
       }
 
       try {
         const merak = initMerakClient();
+        console.log('========= in getAmountOut');
         const paths = await merak.querySwapPaths(fromToken.id, toToken.id);
         console.log('paths', paths);
         if (!paths?.length) {
@@ -95,8 +105,9 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
         }
 
         const amountWithDecimals = parseFloat(amount) * 10 ** fromToken.decimals;
+        console.log(amountWithDecimals, 'amountWithDecimals');
         const amountOut = await merak.getAmountOut(paths[0], amountWithDecimals);
-
+        console.log(amountOut, 'amountOut');
         // Check if output amount is zero or extremely small
         if (!amountOut || BigInt(amountOut[0]) <= BigInt(0)) {
           throw new Error('Insufficient liquidity');
@@ -174,8 +185,24 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
           startTokenId: fromTokenId,
           address: account?.address
         });
-        console.log(availableToTokens,"availableToTokens");
-
+        console.log('========= in fetchAvailableToTokens');
+        console.log({
+          startTokenId: fromTokenId,
+          address: account?.address
+        });
+        console.log(availableToTokens, 'availableToTokens');
+        if (availableToTokens.length > 0) {
+          setToToken({
+            id: availableToTokens[0].assetId,
+            name: availableToTokens[0].metadata.name,
+            symbol: availableToTokens[0].metadata.symbol,
+            description: availableToTokens[0].metadata.description,
+            decimals: availableToTokens[0].metadata.decimals,
+            icon_url: availableToTokens[0].metadata.icon_url,
+            balance: availableToTokens[0].balance
+          });
+          console.log(toToken, 'toToken');
+        }
         setAvailableToTokens(availableToTokens);
         setAvailableFromTokens(filteredAssets);
       } catch (error) {
@@ -190,7 +217,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
 
   // Fetch available toTokens when fromToken changes
   useEffect(() => {
-    if (fromToken?.id) {
+    if (fromToken?.id !== undefined) {
       fetchAvailableToTokens(fromToken.id);
     }
   }, [fromToken, fetchAvailableToTokens]);
@@ -231,7 +258,16 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
 
       setTokenSelectionOpen(false);
     },
-    [currentSelection, toToken, fromToken, params.fromToken, params.toToken, router, payAmount, calculateReceiveAmount]
+    [
+      currentSelection,
+      toToken,
+      fromToken,
+      params.fromToken,
+      params.toToken,
+      router,
+      payAmount,
+      calculateReceiveAmount
+    ]
   );
 
   // Optimize Token swap processing
@@ -315,7 +351,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
             symbol: fromTokenInfo.metadata.symbol,
             description: fromTokenInfo.metadata.description,
             decimals: decimals,
-            icon: fromTokenInfo.metadata.icon_url,
+            icon_url: fromTokenInfo.metadata.icon_url,
             balance: formattedBalance
           };
           setFromToken(tokenData);
@@ -331,7 +367,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
             symbol: toTokenInfo.metadata.symbol,
             description: toTokenInfo.metadata.description,
             decimals: decimals,
-            icon: toTokenInfo.metadata.icon_url,
+            icon_url: toTokenInfo.metadata.icon_url,
             balance: formattedBalance
           };
           setToToken(toTokenData);
@@ -363,7 +399,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
 
   // Handle swap execution
   const handleSwapTokens = useCallback(async () => {
-    if (!fromToken?.id || !toToken?.id || !account?.address) {
+    if (fromToken?.id === undefined || toToken?.id === undefined || !account?.address) {
       toast.error('Please ensure tokens are selected and wallet is connected');
       return;
     }
@@ -386,9 +422,10 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
       }
 
       const amountInWithDecimals = BigInt(Math.floor(amountIn * 10 ** fromToken.decimals));
-      
+
       // 在执行交易前再次检查输出金额
       const amountOutCheck = await merak.getAmountOut(path, Number(amountInWithDecimals));
+      console.log(amountOutCheck, 'amountOutCheck');
       if (!amountOutCheck || BigInt(amountOutCheck[0]) <= BigInt(0)) {
         toast.error('Insufficient liquidity for this trade');
         return;
@@ -542,11 +579,11 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                     setTokenSelectionOpen(true);
                   }}
                 >
-                  {fromToken?.id !== null ? (
+                  {fromToken?.id !== undefined ? (
                     <div className="flex items-center">
                       <div className="w-6 h-6 rounded-full overflow-hidden mr-2 flex-shrink-0 border border-gray-100 bg-white">
                         <img
-                          src={fromToken.icon}
+                          src={fromToken.icon_url}
                           alt={fromToken.symbol}
                           className="w-full h-full object-cover"
                         />
@@ -617,11 +654,11 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                     setTokenSelectionOpen(true);
                   }}
                 >
-                  {toToken?.id !== null ? (
+                  {toToken?.id !== undefined ? (
                     <div className="flex items-center">
                       <div className="w-6 h-6 rounded-full overflow-hidden mr-2 flex-shrink-0 border border-gray-100 bg-white">
                         <img
-                          src={toToken.icon}
+                          src={toToken.icon_url}
                           alt={toToken.symbol}
                           className="w-full h-full object-cover"
                         />
@@ -651,35 +688,53 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                   <div className="ml-1 group relative">
                     <Info className="h-4 w-4 text-gray-400 cursor-help" />
                     <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 p-2 bg-gray-800 text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                      Slippage tolerance is the maximum percentage of price movement allowed during trade execution. Higher tolerance increases success rate but may result in less favorable prices.
+                      Slippage tolerance is the maximum percentage of price movement allowed during
+                      trade execution. Higher tolerance increases success rate but may result in
+                      less favorable prices.
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-full">
                   <Button
                     variant="ghost"
-                    className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${slippage === '0.50' ? 'bg-white text-blue-600 font-medium shadow-sm' : 'bg-transparent text-gray-600 hover:bg-gray-200'}`}
+                    className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${
+                      slippage === '0.50'
+                        ? 'bg-white text-blue-600 font-medium shadow-sm'
+                        : 'bg-transparent text-gray-600 hover:bg-gray-200'
+                    }`}
                     onClick={() => setSlippage('0.50')}
                   >
                     0.5%
                   </Button>
                   <Button
                     variant="ghost"
-                    className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${slippage === '1.00' ? 'bg-white text-blue-600 font-medium shadow-sm' : 'bg-transparent text-gray-600 hover:bg-gray-200'}`}
+                    className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${
+                      slippage === '1.00'
+                        ? 'bg-white text-blue-600 font-medium shadow-sm'
+                        : 'bg-transparent text-gray-600 hover:bg-gray-200'
+                    }`}
                     onClick={() => setSlippage('1.00')}
                   >
                     1.0%
                   </Button>
                   <Button
                     variant="ghost"
-                    className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${slippage === '2.00' ? 'bg-white text-blue-600 font-medium shadow-sm' : 'bg-transparent text-gray-600 hover:bg-gray-200'}`}
+                    className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${
+                      slippage === '2.00'
+                        ? 'bg-white text-blue-600 font-medium shadow-sm'
+                        : 'bg-transparent text-gray-600 hover:bg-gray-200'
+                    }`}
                     onClick={() => setSlippage('2.00')}
                   >
                     2.0%
                   </Button>
                   <Button
                     variant="ghost"
-                    className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${slippage === '3.00' ? 'bg-white text-blue-600 font-medium shadow-sm' : 'bg-transparent text-gray-600 hover:bg-gray-200'}`}
+                    className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${
+                      slippage === '3.00'
+                        ? 'bg-white text-blue-600 font-medium shadow-sm'
+                        : 'bg-transparent text-gray-600 hover:bg-gray-200'
+                    }`}
                     onClick={() => setSlippage('3.00')}
                   >
                     3.0%

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3000",
+    "dev": "next dev --port 4000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings 0",
@@ -14,7 +14,7 @@
     "validate": "pnpm format:check && pnpm type-check"
   },
   "dependencies": {
-    "@0xobelisk/merak-sdk": "0.0.35",
+    "@0xobelisk/merak-sdk": "workspace:*",
     "@0xobelisk/sui-cli": "^1.1.6",
     "@0xobelisk/sui-client": "^1.1.12",
     "@0xobelisk/sui-common": "^1.1.7",

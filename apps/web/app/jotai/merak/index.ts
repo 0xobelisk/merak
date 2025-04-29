@@ -7,6 +7,8 @@ import { NETWORK } from '@/app/chain/config';
 const initMerakClient = () => {
   const merak = new Merak({
     networkType: NETWORK,
+    // indexerUrl: 'http://127.0.0.1:4002',
+    // indexerWsUrl: 'ws://127.0.0.1:4002'
     indexerUrl: 'https://merak-indexer-testnet-api.obelisk.build',
     indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build'
   });
