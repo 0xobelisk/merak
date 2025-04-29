@@ -255,7 +255,14 @@ export default function AddLiquidity() {
             >
               {tokenPay ? (
                 <>
-                  <img src={tokenPay.icon_url} alt={tokenPay.symbol} className="w-6 h-6 mr-2" />
+                  <img
+                    src={tokenPay.icon_url}
+                    alt={tokenPay.symbol}
+                    className="w-6 h-6 mr-2"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                    }}
+                  />
                   {tokenPay.symbol}
                 </>
               ) : (
@@ -275,6 +282,9 @@ export default function AddLiquidity() {
                     src={tokenReceive.icon_url}
                     alt={tokenReceive.symbol}
                     className="w-6 h-6 mr-2"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                    }}
                   />
                   {tokenReceive.symbol}
                 </>

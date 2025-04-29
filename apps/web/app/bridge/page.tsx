@@ -368,7 +368,7 @@ export default function Page() {
                       <SelectValue>
                         <div className="flex items-center">
                           <img
-                            src="https://pbs.twimg.com/profile_images/1902743997308940288/1ubXjvHX_400x400.jpg"
+                            src="https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg"
                             alt="DUB logo"
                             className="w-5 h-5 mr-2"
                           />
@@ -380,7 +380,7 @@ export default function Page() {
                       <SelectItem value="dub">
                         <div className="flex items-center">
                           <img
-                            src="https://pbs.twimg.com/profile_images/1902743997308940288/1ubXjvHX_400x400.jpg"
+                            src="https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg"
                             alt="DUB logo"
                             className="w-5 h-5 mr-2"
                           />
@@ -409,7 +409,7 @@ export default function Page() {
                       <SelectValue>
                         <div className="flex items-center">
                           <img
-                            src="https://pbs.twimg.com/profile_images/1902743997308940288/1ubXjvHX_400x400.jpg"
+                            src="https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg"
                             alt="Dubhe logo"
                             className="w-5 h-5 mr-2"
                           />
@@ -421,7 +421,7 @@ export default function Page() {
                       <SelectItem value="ethereum">
                         <div className="flex items-center">
                           <img
-                            src="https://pbs.twimg.com/profile_images/1902743997308940288/1ubXjvHX_400x400.jpg"
+                            src="https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg"
                             alt="Dubhe logo"
                             className="w-5 h-5 mr-2"
                           />

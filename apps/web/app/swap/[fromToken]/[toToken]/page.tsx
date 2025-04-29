@@ -586,6 +586,9 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                           src={fromToken.icon_url}
                           alt={fromToken.symbol}
                           className="w-full h-full object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                          }}
                         />
                       </div>
                       <span className="font-medium">{fromToken.symbol}</span>
@@ -661,6 +664,9 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                           src={toToken.icon_url}
                           alt={toToken.symbol}
                           className="w-full h-full object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                          }}
                         />
                       </div>
                       <span className="font-medium">{toToken.symbol}</span>

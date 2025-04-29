@@ -167,6 +167,9 @@ export default function LiquidityPools() {
               width={24}
               height={24}
               className="rounded-full"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+              }}
             />
             <img
               src={pool.token2Image}
@@ -174,6 +177,9 @@ export default function LiquidityPools() {
               width={24}
               height={24}
               className="rounded-full"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+              }}
             />
             <span className="font-medium text-gray-900">{pool.name}</span>
           </div>
@@ -231,6 +237,9 @@ export default function LiquidityPools() {
                     width={20}
                     height={20}
                     className="rounded-full"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                    }}
                   />
                   <img
                     src={pool.token2Image}
@@ -238,6 +247,9 @@ export default function LiquidityPools() {
                     width={20}
                     height={20}
                     className="rounded-full"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                    }}
                   />
                   <span className="font-medium text-gray-900">{pool.name}</span>
                 </div>
