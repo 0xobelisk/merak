@@ -16,6 +16,7 @@ export function getMerakConfig(network: string): MerakConfig {
         treasuryCap:
           '0x2::coin::TreasuryCap<0x7cb7bfd80494c23a9bc2c8aeb04aef45f1729a9424162f49c41acf0ed8d0699d::dubhe::DUBHE>',
       };
+      break;
     case 'localnet':
       config = {
         metadata: localnetMetadata,

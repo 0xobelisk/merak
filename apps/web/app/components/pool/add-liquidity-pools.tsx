@@ -28,10 +28,10 @@ export default function AddLiquidity() {
   const [digest, setDigest] = useState('');
   const [tokenPay, setTokenPay] = useState<TokenData | null>(null);
   const [tokenReceive, setTokenReceive] = useState<TokenData | null>(null);
-  const [amountPay, setAmountPay] = useState('0.0');
-  const [amountReceive, setAmountReceive] = useState('0.0');
-  const [minAmountPay, setMinAmountPay] = useState('0.0');
-  const [minAmountReceive, setMinAmountReceive] = useState('0.0');
+  const [amountPay, setAmountPay] = useState('');
+  const [amountReceive, setAmountReceive] = useState('');
+  const [minAmountPay, setMinAmountPay] = useState('');
+  const [minAmountReceive, setMinAmountReceive] = useState('');
 
   const [isTokenPayModalOpen, setIsTokenPayModalOpen] = useState(false);
   const [isTokenReceiveModalOpen, setIsTokenReceiveModalOpen] = useState(false);
@@ -153,6 +153,7 @@ export default function AddLiquidity() {
     setIsTokenPayModalOpen(false);
     const merak = initMerakClient();
     const connectedTokens = await merak.getConnectedTokens(token.id);
+    console.log(connectedTokens, 'connectedTokens');
     setAvailableTokenReceives(connectedTokens);
     if (tokenReceive && !connectedTokens.includes(tokenReceive.id)) {
       setTokenReceive(null);
@@ -181,9 +182,11 @@ export default function AddLiquidity() {
     const quoteDesired = BigInt(
       Math.floor(parseFloat(amountReceive) * Math.pow(10, tokenReceive.decimals))
     );
-    const baseMin = BigInt(Math.floor(parseFloat(minAmountPay) * Math.pow(10, tokenPay.decimals)));
+    const baseMin = BigInt(
+      Math.floor(parseFloat(minAmountPay || '0') * Math.pow(10, tokenPay.decimals))
+    );
     const quoteMin = BigInt(
-      Math.floor(parseFloat(minAmountReceive) * Math.pow(10, tokenReceive.decimals))
+      Math.floor(parseFloat(minAmountReceive || '0') * Math.pow(10, tokenReceive.decimals))
     );
 
     await merak.addLiquidity(
@@ -298,7 +301,7 @@ export default function AddLiquidity() {
                   type="text"
                   value={amountPay}
                   onChange={(e) => setAmountPay(e.target.value)}
-                  placeholder="0.0"
+                  placeholder="Enter amount"
                 />
                 <span className="text-sm font-medium">{tokenPay ? tokenPay.symbol : ''}</span>
               </div>
@@ -315,7 +318,7 @@ export default function AddLiquidity() {
                   type="text"
                   value={amountReceive}
                   onChange={(e) => setAmountReceive(e.target.value)}
-                  placeholder="0.0"
+                  placeholder="Enter amount"
                 />
                 <span className="text-sm font-medium">
                   {tokenReceive ? tokenReceive.symbol : ''}

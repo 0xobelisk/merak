@@ -74,20 +74,30 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   // Optimize getAmountOut function
   const getAmountOut = useCallback(
     async (amount: string) => {
+      console.log('=========');
+      console.log(amount, 'amount');
       if (!amount || parseFloat(amount) <= 0) {
+        console.log('========= 0');
         return null;
       }
+      console.log('========= 1');
+      console.log(fromToken, 'fromToken');
+      console.log(toToken, 'toToken');
+      console.log(fromToken.id, 'fromToken.id');
+      console.log(toToken.id, 'toToken.id');
+      console.log(!fromToken?.id || !toToken?.id, '!fromToken?.id || !toToken?.id');
 
-      if (!fromToken?.id || !toToken?.id) {
+      if (fromToken?.id === undefined || toToken?.id === undefined) {
+        console.log('========= 2');
         throw new Error('Please select tokens first');
       }
-
       if (!fromToken.decimals) {
         throw new Error('Token decimals undefined');
       }
 
       try {
         const merak = initMerakClient();
+        console.log('========= in getAmountOut');
         const paths = await merak.querySwapPaths(fromToken.id, toToken.id);
         console.log('paths', paths);
         if (!paths?.length) {
@@ -95,8 +105,9 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
         }
 
         const amountWithDecimals = parseFloat(amount) * 10 ** fromToken.decimals;
+        console.log(amountWithDecimals, 'amountWithDecimals');
         const amountOut = await merak.getAmountOut(paths[0], amountWithDecimals);
-
+        console.log(amountOut, 'amountOut');
         // Check if output amount is zero or extremely small
         if (!amountOut || BigInt(amountOut[0]) <= BigInt(0)) {
           throw new Error('Insufficient liquidity');
@@ -174,6 +185,11 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
           startTokenId: fromTokenId,
           address: account?.address
         });
+        console.log('========= in fetchAvailableToTokens');
+        console.log({
+          startTokenId: fromTokenId,
+          address: account?.address
+        });
         console.log(availableToTokens, 'availableToTokens');
 
         setAvailableToTokens(availableToTokens);
@@ -190,7 +206,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
 
   // Fetch available toTokens when fromToken changes
   useEffect(() => {
-    if (fromToken?.id) {
+    if (fromToken?.id !== undefined) {
       fetchAvailableToTokens(fromToken.id);
     }
   }, [fromToken, fetchAvailableToTokens]);
@@ -372,7 +388,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
 
   // Handle swap execution
   const handleSwapTokens = useCallback(async () => {
-    if (!fromToken?.id || !toToken?.id || !account?.address) {
+    if (fromToken?.id === undefined || toToken?.id === undefined || !account?.address) {
       toast.error('Please ensure tokens are selected and wallet is connected');
       return;
     }
@@ -398,6 +414,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
 
       // 在执行交易前再次检查输出金额
       const amountOutCheck = await merak.getAmountOut(path, Number(amountInWithDecimals));
+      console.log(amountOutCheck, 'amountOutCheck');
       if (!amountOutCheck || BigInt(amountOutCheck[0]) <= BigInt(0)) {
         toast.error('Insufficient liquidity for this trade');
         return;
@@ -551,7 +568,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                     setTokenSelectionOpen(true);
                   }}
                 >
-                  {fromToken?.id !== null ? (
+                  {fromToken?.id !== undefined ? (
                     <div className="flex items-center">
                       <div className="w-6 h-6 rounded-full overflow-hidden mr-2 flex-shrink-0 border border-gray-100 bg-white">
                         <img
@@ -626,7 +643,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                     setTokenSelectionOpen(true);
                   }}
                 >
-                  {toToken?.id !== null ? (
+                  {toToken?.id !== undefined ? (
                     <div className="flex items-center">
                       <div className="w-6 h-6 rounded-full overflow-hidden mr-2 flex-shrink-0 border border-gray-100 bg-white">
                         <img
