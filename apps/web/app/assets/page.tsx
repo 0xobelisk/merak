@@ -18,7 +18,7 @@ import {
 } from '@repo/ui/components/ui/table';
 import { RefreshCw, Search, ArrowUpDown } from 'lucide-react';
 import { initMerakClient } from '@/app/jotai/merak';
-import { AssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
+import { AllAssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
 
 export default function AssetsPage() {
   // DApp Kit hooks
@@ -26,7 +26,7 @@ export default function AssetsPage() {
   const router = useRouter();
 
   // Global state management with Jotai
-  const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
+  const [allAssetsState, setAllAssetsState] = useAtom(AllAssetsStateAtom);
   const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
 
   // Local UI state management
@@ -48,12 +48,12 @@ export default function AssetsPage() {
       setIsLoading(true);
       const merak = initMerakClient();
 
-      const metadataResults = await merak.listAssetsInfo({});
+      const metadataResults = await merak.listAssetsInfo();
 
       console.log(metadataResults, 'metadataResults');
 
       // Update state
-      setAssetsState({
+      setAllAssetsState({
         assetInfos: metadataResults.data
       });
 
@@ -64,7 +64,7 @@ export default function AssetsPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [account?.address, setAssetsState, setIsLoading]);
+  }, [account?.address, setAllAssetsState, setIsLoading]);
 
   // Initialize asset loading
   useEffect(() => {
@@ -92,7 +92,7 @@ export default function AssetsPage() {
 
   // Apply sorting and search filtering
   const filteredAndSortedAssets = React.useMemo(() => {
-    let filteredItems = [...assetsState.assetInfos];
+    let filteredItems = [...allAssetsState.assetInfos];
 
     // Apply search filter
     if (searchTerm) {
@@ -157,7 +157,7 @@ export default function AssetsPage() {
     }
 
     return filteredItems;
-  }, [assetsState.assetInfos, searchTerm, sortConfig]);
+  }, [allAssetsState.assetInfos, searchTerm, sortConfig]);
 
   // Show prompt if user hasn't connected wallet
   if (!account) {
@@ -192,7 +192,7 @@ export default function AssetsPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <p className="text-sm text-muted-foreground">Number of Total Assets</p>
-              <p className="text-2xl font-bold">{assetsState.assetInfos.length}</p>
+              <p className="text-2xl font-bold">{allAssetsState.assetInfos.length}</p>
             </div>
           </div>
         </CardContent>

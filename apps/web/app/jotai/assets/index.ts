@@ -53,6 +53,7 @@ const initialState: AssetsState = {
 
 // Create and export atoms
 const AssetsStateAtom = atom<AssetsState>(initialState);
+const AllAssetsStateAtom = atom<AssetsState>(initialState);
 const AssetsLoadingAtom = atom<boolean>(false);
 const TransactionDigestAtom = atom<string | null>('');
 const AssetOperationAtom = atom<AssetOperation | null>({ type: 'transfer', assetId: 0 });
@@ -69,6 +70,7 @@ const CombinedAssetsAtom = atom((get) => {
 // Export atoms
 export {
   AssetsStateAtom,
+  AllAssetsStateAtom,
   AssetsLoadingAtom,
   TransactionDigestAtom,
   AssetOperationAtom,

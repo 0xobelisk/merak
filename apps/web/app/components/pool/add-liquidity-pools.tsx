@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, ChevronDown } from 'lucide-react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
@@ -10,11 +10,13 @@ import { toast } from 'sonner';
 import { useSignAndExecuteTransaction, useCurrentAccount } from '@mysten/dapp-kit';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { WALLETCHAIN } from '@/app/constants';
+import { useAtom } from 'jotai';
+import { AssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
 
 interface TokenData {
   symbol: string;
   name: string;
-  icon: string;
+  icon_url: string;
   balance: string;
   id: number;
   decimals: number;
@@ -39,6 +41,49 @@ export default function AddLiquidity() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // Global state management with Jotai
+  const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
+  const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
+
+  /**
+   * Query asset list
+   * Get account information and asset metadata
+   */
+  const queryAssets = useCallback(async () => {
+    if (!account?.address) return;
+
+    try {
+      setIsLoading(true);
+      const merak = initMerakClient();
+
+      const metadataResults = await merak.listOwnedAssetsInfo({
+        address: account.address
+      });
+
+      console.log(metadataResults, 'metadataResults');
+
+      // Update state
+      setAssetsState({
+        assetInfos: metadataResults.data
+      });
+
+      console.log('Retrieved assets:', metadataResults.data);
+    } catch (error) {
+      console.error('Failed to fetch assets:', error);
+      toast.error('Failed to fetch assets, please try again');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [account?.address, setAssetsState]);
+
+  // Initialize asset loading
+  useEffect(() => {
+    console.log(account, 'account');
+    if (account?.address) {
+      queryAssets();
+      console.log('assetsState', assetsState);
+    }
+  }, [account?.address, queryAssets]);
   // useEffect(() => {
   //   const asset1 = searchParams.get('asset1');
   //   const asset2 = searchParams.get('asset2');
@@ -103,6 +148,7 @@ export default function AddLiquidity() {
   // }, [searchParams]);
 
   const handleSelectTokenPay = async (token: TokenData) => {
+    console.log(token, 'select token');
     setTokenPay(token);
     setIsTokenPayModalOpen(false);
     const merak = initMerakClient();
@@ -114,6 +160,7 @@ export default function AddLiquidity() {
   };
 
   const handleSelectTokenReceive = (token: TokenData) => {
+    console.log(token, 'select receive token');
     setTokenReceive(token);
     setIsTokenReceiveModalOpen(false);
   };
@@ -205,7 +252,7 @@ export default function AddLiquidity() {
             >
               {tokenPay ? (
                 <>
-                  <img src={tokenPay.icon} alt={tokenPay.symbol} className="w-6 h-6 mr-2" />
+                  <img src={tokenPay.icon_url} alt={tokenPay.symbol} className="w-6 h-6 mr-2" />
                   {tokenPay.symbol}
                 </>
               ) : (
@@ -221,7 +268,11 @@ export default function AddLiquidity() {
             >
               {tokenReceive ? (
                 <>
-                  <img src={tokenReceive.icon} alt={tokenReceive.symbol} className="w-6 h-6 mr-2" />
+                  <img
+                    src={tokenReceive.icon_url}
+                    alt={tokenReceive.symbol}
+                    className="w-6 h-6 mr-2"
+                  />
                   {tokenReceive.symbol}
                 </>
               ) : tokenPay ? (
