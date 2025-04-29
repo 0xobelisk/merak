@@ -389,11 +389,11 @@ export default function TokenWrapper() {
         {
           onSuccess: async (result) => {
             console.log('Wrap transaction successful:', result);
-            toast.success('Wrap successful');
-            setAmount('');
             // 添加短暂延迟确保链上数据更新
             await dubhe.waitForIndexerTransaction(result.digest);
             await Promise.all([fetchTokenData(), fetchWrappedTokens()]);
+            toast.success('Wrap successful');
+            setAmount('');
           },
           onError: (error) => {
             console.error('Wrap transaction failed:', error);
@@ -474,11 +474,11 @@ export default function TokenWrapper() {
         {
           onSuccess: async (result) => {
             console.log('Unwrap transaction successful:', result);
-            toast.success('Unwrap successful');
-            setAmount('');
             // 添加短暂延迟确保链上数据更新
             await dubhe.waitForIndexerTransaction(result.digest);
             await Promise.all([fetchTokenData(), fetchWrappedTokens()]);
+            toast.success('Unwrap successful');
+            setAmount('');
           },
           onError: (error) => {
             console.error('Unwrap transaction failed:', error);

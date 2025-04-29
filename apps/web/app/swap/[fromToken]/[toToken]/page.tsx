@@ -456,15 +456,6 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
         },
         {
           onSuccess: async (result) => {
-            toast.success('Swap Successful', {
-              description: new Date().toUTCString(),
-              action: {
-                label: 'Check in Explorer',
-                onClick: () =>
-                  window.open(`https://testnet.suivision.xyz/txblock/${result.digest}`, '_blank')
-              }
-            });
-
             // 等待链上数据更新
             const dubhe = initDubheClient();
             await dubhe.waitForIndexerTransaction(result.digest);
@@ -511,6 +502,15 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                 }));
               }
             }
+
+            toast.success('Swap Successful', {
+              description: new Date().toUTCString(),
+              action: {
+                label: 'Check in Explorer',
+                onClick: () =>
+                  window.open(`https://testnet.suivision.xyz/txblock/${result.digest}`, '_blank')
+              }
+            });
 
             // Clear input after success
             setPayAmount('');
