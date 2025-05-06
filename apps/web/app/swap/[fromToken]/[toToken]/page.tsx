@@ -109,14 +109,20 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
         console.log(amountWithDecimals, 'amountWithDecimals');
         const amountOut = await merak.getAmountsOut(amountWithDecimals, paths[0]);
         console.log(amountOut, 'amountOut');
+        console.log(amountOut[0][amountOut[0].length - 1], 'amountOut[0]');
+        console.log(
+          !amountOut || BigInt(amountOut[0][amountOut[0].length - 1]) <= BigInt(0),
+          '!amountOut || BigInt(amountOut[0][amountOut[0].length - 1]) <= BigInt(0)'
+        );
         // Check if output amount is zero or extremely small
-        if (!amountOut || BigInt(amountOut[0]) <= BigInt(0)) {
+        if (!amountOut || BigInt(amountOut[0][amountOut[0].length - 1]) <= BigInt(0)) {
           throw new Error('Insufficient liquidity');
         }
+        console.log(amountOut[0][amountOut[0].length - 1], 'amountOut[0][amountOut[0].length - 1]');
 
-        return amountOut;
+        return amountOut[0][amountOut[0].length - 1];
       } catch (error) {
-        toast.error('Insufficient liquidity for this trade');
+        toast.error('Insufficient liquidity for this trade, error: ' + error);
         throw error;
       }
     },
@@ -141,7 +147,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
         if (!amountOutResult || !toToken?.decimals) {
           throw new Error('Invalid calculation result');
         }
-        const amountOut = BigInt(amountOutResult[0]);
+        const amountOut = BigInt(amountOutResult);
         const calculatedReceiveAmount = (Number(amountOut) / 10 ** toToken.decimals).toFixed(9);
 
         // Calculate exchange rate
