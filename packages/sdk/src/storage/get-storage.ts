@@ -124,16 +124,16 @@ export class GetStorage {
   }
 
   async pool({
-    asset1Id,
-    asset2Id,
+    assetAId,
+    assetBId,
   }: {
-    asset1Id: bigint | number | string;
-    asset2Id: bigint | number | string;
+    assetAId: bigint | number | string;
+    assetBId: bigint | number | string;
   }) {
     const item = await this.dubhe.getStorageItem({
       name: 'pools',
-      key1: asset1Id.toString(),
-      key2: asset2Id.toString(),
+      key1: assetAId.toString(),
+      key2: assetBId.toString(),
     });
     return item;
   }

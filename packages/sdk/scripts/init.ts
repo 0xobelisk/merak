@@ -52,9 +52,9 @@ async function main() {
     throw new Error('Failed to fetch asset metadata');
   }
   const decimals = asset_metadata[3];
-  let amount_out = await merak.getAmountOut(
-    path,
-    parseFloat(amount) * 10 ** decimals
+  let amount_out = await merak.getAmountsOut(
+    parseFloat(amount) * 10 ** decimals,
+    path
   );
   console.log(parseFloat(amount) * 10 ** decimals);
   console.log('amount_out', amount_out);

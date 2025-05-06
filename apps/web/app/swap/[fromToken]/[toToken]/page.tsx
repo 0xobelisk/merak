@@ -107,7 +107,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
 
         const amountWithDecimals = parseFloat(amount) * 10 ** fromToken.decimals;
         console.log(amountWithDecimals, 'amountWithDecimals');
-        const amountOut = await merak.getAmountOut(paths[0], amountWithDecimals);
+        const amountOut = await merak.getAmountsOut(amountWithDecimals, paths[0]);
         console.log(amountOut, 'amountOut');
         // Check if output amount is zero or extremely small
         if (!amountOut || BigInt(amountOut[0]) <= BigInt(0)) {
@@ -425,7 +425,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
       const amountInWithDecimals = BigInt(Math.floor(amountIn * 10 ** fromToken.decimals));
 
       // 在执行交易前再次检查输出金额
-      const amountOutCheck = await merak.getAmountOut(path, Number(amountInWithDecimals));
+      const amountOutCheck = await merak.getAmountsOut(Number(amountInWithDecimals), path);
       console.log(amountOutCheck, 'amountOutCheck');
       if (!amountOutCheck || BigInt(amountOutCheck[0]) <= BigInt(0)) {
         toast.error('Insufficient liquidity for this trade');
@@ -442,9 +442,9 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
 
       await merak.swapExactTokensForTokens(
         tx,
-        path,
         amountInWithDecimals,
         minAmountOut,
+        path,
         account.address,
         true
       );

@@ -18,14 +18,14 @@ export class Dex {
   // <=== Dex Transactions ===>
   async createPool(
     tx: Transaction,
-    asset1: bigint | number | string,
-    asset2: bigint | number | string,
+    assetA: bigint | number | string,
+    assetB: bigint | number | string,
     isRaw?: boolean
   ) {
     const params = [
       tx.object(this.schemaId),
-      tx.pure.u256(asset1),
-      tx.pure.u256(asset2),
+      tx.pure.u256(assetA),
+      tx.pure.u256(assetB),
     ] as TransactionArgument[];
 
     return this.dubhe.tx[this.schemaModuleName].create_pool({
@@ -37,22 +37,24 @@ export class Dex {
 
   async addLiquidity(
     tx: Transaction,
-    asset1: bigint | number | string,
-    asset2: bigint | number | string,
-    amount1Desired: bigint | number | string,
-    amount2Desired: bigint | number | string,
-    amount1Min: bigint | number | string,
-    amount2Min: bigint | number | string,
+    assetA: bigint | number | string,
+    assetB: bigint | number | string,
+    amountADesired: bigint | number | string,
+    amountBDesired: bigint | number | string,
+    amountAMin: bigint | number | string,
+    amountBMin: bigint | number | string,
+    to: string,
     isRaw?: boolean
   ) {
     const params = [
       tx.object(this.schemaId),
-      tx.pure.u256(asset1),
-      tx.pure.u256(asset2),
-      tx.pure.u256(amount1Desired),
-      tx.pure.u256(amount2Desired),
-      tx.pure.u256(amount1Min),
-      tx.pure.u256(amount2Min),
+      tx.pure.u256(assetA),
+      tx.pure.u256(assetB),
+      tx.pure.u256(amountADesired),
+      tx.pure.u256(amountBDesired),
+      tx.pure.u256(amountAMin),
+      tx.pure.u256(amountBMin),
+      tx.pure.address(to),
     ] as TransactionArgument[];
 
     return this.dubhe.tx[this.schemaModuleName].add_liquidity({
@@ -64,20 +66,22 @@ export class Dex {
 
   async removeLiquidity(
     tx: Transaction,
-    asset1: bigint | number | string,
-    asset2: bigint | number | string,
-    lpTokenBurn: bigint | number | string,
-    amount1MinReceive: bigint | number | string,
-    amount2MinReceive: bigint | number | string,
+    assetA: bigint | number | string,
+    assetB: bigint | number | string,
+    liquidity: bigint | number | string,
+    amountAMinReceive: bigint | number | string,
+    amountBMinReceive: bigint | number | string,
+    to: string,
     isRaw?: boolean
   ) {
     const params = [
       tx.object(this.schemaId),
-      tx.pure.u256(asset1),
-      tx.pure.u256(asset2),
-      tx.pure.u256(lpTokenBurn),
-      tx.pure.u256(amount1MinReceive),
-      tx.pure.u256(amount2MinReceive),
+      tx.pure.u256(assetA),
+      tx.pure.u256(assetB),
+      tx.pure.u256(liquidity),
+      tx.pure.u256(amountAMinReceive),
+      tx.pure.u256(amountBMinReceive),
+      tx.pure.address(to),
     ] as TransactionArgument[];
 
     return this.dubhe.tx[this.schemaModuleName].remove_liquidity({
@@ -89,17 +93,17 @@ export class Dex {
 
   async swapExactTokensForTokens(
     tx: Transaction,
-    path: bigint[] | number[] | string[],
     amountIn: bigint | number | string,
     amountOutMin: bigint | number | string,
+    path: bigint[] | number[] | string[],
     to: string,
     isRaw?: boolean
   ) {
     const params = [
       tx.object(this.schemaId),
-      tx.pure.vector('u256', path),
       tx.pure.u256(amountIn),
       tx.pure.u256(amountOutMin),
+      tx.pure.vector('u256', path),
       tx.pure.address(to),
     ] as TransactionArgument[];
 
@@ -112,17 +116,17 @@ export class Dex {
 
   async swapTokensForExactTokens(
     tx: Transaction,
-    path: bigint[] | number[] | string[],
     amountOut: bigint | number | string,
     amountInMax: bigint | number | string,
+    path: bigint[] | number[] | string[],
     to: string,
     isRaw?: boolean
   ) {
     const params = [
       tx.object(this.schemaId),
-      tx.pure.vector('u256', path),
       tx.pure.u256(amountOut),
       tx.pure.u256(amountInMax),
+      tx.pure.vector('u256', path),
       tx.pure.address(to),
     ] as TransactionArgument[];
 
@@ -161,40 +165,40 @@ export class Dex {
   }
 
   // <=== Dex Queries ===>
-  async getAmountOut(
-    path: bigint[] | number[] | string[],
-    amountIn: bigint | number | string
+  async getAmountsOut(
+    amountIn: bigint | number | string,
+    path: bigint[] | number[] | string[]
   ): Promise<any[] | undefined> {
     const tx = new Transaction();
     const params = [
       tx.object(this.schemaId),
-      tx.pure.vector('u256', path),
       tx.pure.u256(amountIn),
+      tx.pure.vector('u256', path),
     ] as TransactionArgument[];
 
     const dryResult = (await this.dubhe.query[
       this.schemaModuleName
-    ].get_amount_out({
+    ].get_amounts_out({
       tx,
       params,
     })) as DevInspectResults;
     return this.dubhe.view(dryResult);
   }
 
-  async getAmountIn(
-    path: bigint[] | number[] | string[],
-    amountOut: bigint | number | string
+  async getAmountsIn(
+    amountOut: bigint | number | string,
+    path: bigint[] | number[] | string[]
   ): Promise<any[] | undefined> {
     const tx = new Transaction();
     const params = [
       tx.object(this.schemaId),
-      tx.pure.vector('u256', path),
       tx.pure.u256(amountOut),
+      tx.pure.vector('u256', path),
     ] as TransactionArgument[];
 
     const dryResult = (await this.dubhe.query[
       this.schemaModuleName
-    ].get_amount_in({
+    ].get_amounts_in({
       tx,
       params,
     })) as DevInspectResults;

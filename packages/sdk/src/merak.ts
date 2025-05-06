@@ -226,68 +226,72 @@ export class Merak {
   // Dex Functions
   async createPool(
     tx: Transaction,
-    asset1: bigint | number | string,
-    asset2: bigint | number | string,
+    assetA: bigint | number | string,
+    assetB: bigint | number | string,
     isRaw?: boolean
   ) {
-    return this.dex.createPool(tx, asset1, asset2, isRaw);
+    return this.dex.createPool(tx, assetA, assetB, isRaw);
   }
 
   async addLiquidity(
     tx: Transaction,
-    asset1: bigint | number | string,
-    asset2: bigint | number | string,
-    amount1Desired: bigint | number | string,
-    amount2Desired: bigint | number | string,
-    amount1Min: bigint | number | string,
-    amount2Min: bigint | number | string,
+    assetA: bigint | number | string,
+    assetB: bigint | number | string,
+    amountADesired: bigint | number | string,
+    amountBDesired: bigint | number | string,
+    amountAMin: bigint | number | string,
+    amountBMin: bigint | number | string,
+    to: string,
     isRaw?: boolean
   ) {
     return this.dex.addLiquidity(
       tx,
-      asset1,
-      asset2,
-      amount1Desired,
-      amount2Desired,
-      amount1Min,
-      amount2Min,
+      assetA,
+      assetB,
+      amountADesired,
+      amountBDesired,
+      amountAMin,
+      amountBMin,
+      to,
       isRaw
     );
   }
 
   async removeLiquidity(
     tx: Transaction,
-    asset1: bigint | number | string,
-    asset2: bigint | number | string,
-    lpTokenBurn: bigint | number | string,
-    amount1MinReceive: bigint | number | string,
-    amount2MinReceive: bigint | number | string,
+    assetA: bigint | number | string,
+    assetB: bigint | number | string,
+    liquidity: bigint | number | string,
+    amountAMinReceive: bigint | number | string,
+    amountBMinReceive: bigint | number | string,
+    to: string,
     isRaw?: boolean
   ) {
     return this.dex.removeLiquidity(
       tx,
-      asset1,
-      asset2,
-      lpTokenBurn,
-      amount1MinReceive,
-      amount2MinReceive,
+      assetA,
+      assetB,
+      liquidity,
+      amountAMinReceive,
+      amountBMinReceive,
+      to,
       isRaw
     );
   }
 
   async swapExactTokensForTokens(
     tx: Transaction,
-    path: bigint[] | number[] | string[],
     amountIn: bigint | number | string,
     amountOutMin: bigint | number | string,
+    path: bigint[] | number[] | string[],
     to: string,
     isRaw?: boolean
   ) {
     return this.dex.swapExactTokensForTokens(
       tx,
-      path,
       amountIn,
       amountOutMin,
+      path,
       to,
       isRaw
     );
@@ -295,54 +299,54 @@ export class Merak {
 
   async swapTokensForExactTokens(
     tx: Transaction,
-    path: bigint[] | number[] | string[],
     amountOut: bigint | number | string,
     amountInMax: bigint | number | string,
+    path: bigint[] | number[] | string[],
     to: string,
     isRaw?: boolean
   ) {
     return this.dex.swapTokensForExactTokens(
       tx,
-      path,
       amountOut,
       amountInMax,
-      to,
-      isRaw
-    );
-  }
-
-  async swapExactCoinForTokens(
-    tx: Transaction,
-    path: bigint[] | number[] | string[],
-    amountIn: TransactionArgument,
-    amountOutMin: bigint | number | string,
-    to: string,
-    coinType?: string,
-    isRaw?: boolean
-  ) {
-    return this.dex.swapExactCoinForTokens(
-      tx,
       path,
-      amountIn,
-      amountOutMin,
       to,
-      coinType,
       isRaw
     );
   }
 
-  async getAmountOut(
-    path: bigint[] | number[] | string[],
-    amountIn: bigint | number | string
+  // async swapExactCoinForTokens(
+  //   tx: Transaction,
+  //   path: bigint[] | number[] | string[],
+  //   amountIn: TransactionArgument,
+  //   amountOutMin: bigint | number | string,
+  //   to: string,
+  //   coinType?: string,
+  //   isRaw?: boolean
+  // ) {
+  //   return this.dex.swapExactCoinForTokens(
+  //     tx,
+  //     path,
+  //     amountIn,
+  //     amountOutMin,
+  //     to,
+  //     coinType,
+  //     isRaw
+  //   );
+  // }
+
+  async getAmountsOut(
+    amountIn: bigint | number | string,
+    path: bigint[] | number[] | string[]
   ) {
-    return this.dex.getAmountOut(path, amountIn);
+    return this.dex.getAmountsOut(amountIn, path);
   }
 
-  async getAmountIn(
-    path: bigint[] | number[] | string[],
-    amountOut: bigint | number | string
+  async getAmountsIn(
+    amountOut: bigint | number | string,
+    path: bigint[] | number[] | string[]
   ) {
-    return this.dex.getAmountIn(path, amountOut);
+    return this.dex.getAmountsIn(amountOut, path);
   }
 
   async getPoolList({
