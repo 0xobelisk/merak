@@ -61,67 +61,67 @@ export default function LiquidityPoolSetup({ selectedTokens, onClose }: Liquidit
     );
   };
 
-  const add_liquidity = async () => {
-    try {
-      const merak = initMerakClient();
-      let tx = new Transaction();
+  // const add_liquidity = async () => {
+  //   try {
+  //     const merak = initMerakClient();
+  //     let tx = new Transaction();
 
-      const baseDesired = BigInt(
-        Math.floor(parseFloat(baseAmount) * Math.pow(10, base.metadata[3]))
-      );
-      const quoteDesired = BigInt(
-        Math.floor(parseFloat(quoteAmount) * Math.pow(10, quote.metadata[3]))
-      );
-      const baseMin = BigInt(
-        Math.floor(parseFloat(baseMinAmount) * Math.pow(10, base.metadata[3]))
-      );
-      const quoteMin = BigInt(
-        Math.floor(parseFloat(quoteMinAmount) * Math.pow(10, quote.metadata[3]))
-      );
+  //     const baseDesired = BigInt(
+  //       Math.floor(parseFloat(baseAmount) * Math.pow(10, base.metadata[3]))
+  //     );
+  //     const quoteDesired = BigInt(
+  //       Math.floor(parseFloat(quoteAmount) * Math.pow(10, quote.metadata[3]))
+  //     );
+  //     const baseMin = BigInt(
+  //       Math.floor(parseFloat(baseMinAmount) * Math.pow(10, base.metadata[3]))
+  //     );
+  //     const quoteMin = BigInt(
+  //       Math.floor(parseFloat(quoteMinAmount) * Math.pow(10, quote.metadata[3]))
+  //     );
 
-      await merak.addLiquidity(
-        tx,
-        base.id,
-        quote.id,
-        baseDesired,
-        quoteDesired,
-        baseMin,
-        quoteMin,
-        account.address,
-        true
-      );
+  //     await merak.addLiquidity(
+  //       tx,
+  //       base.id,
+  //       quote.id,
+  //       baseDesired,
+  //       quoteDesired,
+  //       baseMin,
+  //       quoteMin,
+  //       account.address,
+  //       true
+  //     );
 
-      await signAndExecuteTransaction(
-        {
-          transaction: tx.serialize(),
-          chain: WALLETCHAIN
-        },
-        {
-          onSuccess: (result) => {
-            console.log('executed transaction', result);
-            toast('Translation Successful', {
-              description: new Date().toUTCString(),
-              action: {
-                label: 'Check in Explorer',
-                onClick: () =>
-                  window.open(`https://testnet.suivision.xyz/txblock/${result.digest}`, '_blank')
-              }
-            });
-          },
-          onError: (error) => {
-            console.log('executed transaction', error);
-          }
-        }
-      );
-      // Remove this line as it's causing an error
-      // setDigest(result.digest);
-    } catch (error) {
-      console.error('添加流动性失败:', error);
-      toast.error('添加流动性失败', {
-        description: error.message
-      });
-    }
-  };
+  //     await signAndExecuteTransaction(
+  //       {
+  //         transaction: tx.serialize(),
+  //         chain: WALLETCHAIN
+  //       },
+  //       {
+  //         onSuccess: (result) => {
+  //           console.log('executed transaction', result);
+  //           toast('Translation Successful', {
+  //             description: new Date().toUTCString(),
+  //             action: {
+  //               label: 'Check in Explorer',
+  //               onClick: () =>
+  //                 window.open(`https://testnet.suivision.xyz/txblock/${result.digest}`, '_blank')
+  //             }
+  //           });
+  //         },
+  //         onError: (error) => {
+  //           console.log('executed transaction', error);
+  //         }
+  //       }
+  //     );
+  //     // Remove this line as it's causing an error
+  //     // setDigest(result.digest);
+  //   } catch (error) {
+  //     console.error('添加流动性失败:', error);
+  //     toast.error('添加流动性失败', {
+  //       description: error.message
+  //     });
+  //   }
+  // };
 
   const handleCreatePool = async () => {
     console.log('Create pool');
