@@ -98,31 +98,34 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
 
       try {
         const merak = initMerakClient();
-        console.log('========= in getAmountOut');
+
+        // 1. Get swap path
         const paths = await merak.querySwapPaths(fromToken.id, toToken.id);
-        console.log('paths', paths);
         if (!paths?.length) {
           throw new Error('No valid swap path found');
         }
 
-        const amountWithDecimals = parseFloat(amount) * 10 ** fromToken.decimals;
-        console.log(amountWithDecimals, 'amountWithDecimals');
-        const amountOut = await merak.getAmountsOut(amountWithDecimals, paths[0]);
-        console.log(amountOut, 'amountOut');
-        console.log(amountOut[0][amountOut[0].length - 1], 'amountOut[0]');
-        console.log(
-          !amountOut || BigInt(amountOut[0][amountOut[0].length - 1]) <= BigInt(0),
-          '!amountOut || BigInt(amountOut[0][amountOut[0].length - 1]) <= BigInt(0)'
+        // 2. Calculate input amount (with decimals)
+        const amountWithDecimals = BigInt(
+          Math.floor(parseFloat(amount) * 10 ** fromToken.decimals)
         );
-        // Check if output amount is zero or extremely small
-        if (!amountOut || BigInt(amountOut[0][amountOut[0].length - 1]) <= BigInt(0)) {
+
+        // 3. Get output amount
+        const amountsOut = await merak.getAmountsOut(amountWithDecimals, paths[0]);
+        if (!amountsOut?.[0]?.length) {
+          throw new Error('Failed to get output amount');
+        }
+
+        // 4. Get final amount
+        const finalAmount = amountsOut[0][amountsOut[0].length - 1];
+        if (BigInt(finalAmount) <= BigInt(0)) {
           throw new Error('Insufficient liquidity');
         }
-        console.log(amountOut[0][amountOut[0].length - 1], 'amountOut[0][amountOut[0].length - 1]');
 
-        return amountOut[0][amountOut[0].length - 1];
+        return finalAmount;
       } catch (error) {
-        toast.error('Insufficient liquidity for this trade, error: ' + error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        toast.error(`Insufficient liquidity for this trade: ${errorMessage}`);
         throw error;
       }
     },
@@ -430,21 +433,21 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
 
       const amountInWithDecimals = BigInt(Math.floor(amountIn * 10 ** fromToken.decimals));
 
-      // 在执行交易前再次检查输出金额
-      const amountOutCheck = await merak.getAmountsOut(Number(amountInWithDecimals), path);
-      console.log(amountOutCheck, 'amountOutCheck');
-      if (!amountOutCheck || BigInt(amountOutCheck[0]) <= BigInt(0)) {
-        toast.error('Insufficient liquidity for this trade');
+      // Check output amount before executing transaction
+      const amountOutCheck = await merak.getAmountsOut(amountInWithDecimals, path);
+      if (!amountOutCheck?.[0]?.length) {
+        throw new Error('Failed to get output amount');
+      }
+
+      const finalAmount = amountOutCheck[0][amountOutCheck[0].length - 1];
+      if (BigInt(finalAmount) <= BigInt(0)) {
+        toast.error('Insufficient liquidity');
         return;
       }
 
-      const amountOutWithDecimals = BigInt(amountOutCheck[0]);
-
       // Add slippage calculation
       const slippagePercent = parseFloat(slippage) / 100;
-      const minAmountOut = BigInt(
-        Math.floor(Number(amountOutWithDecimals) * (1 - slippagePercent))
-      );
+      const minAmountOut = BigInt(Math.floor(Number(finalAmount) * (1 - slippagePercent)));
 
       await merak.swapExactTokensForTokens(
         tx,
