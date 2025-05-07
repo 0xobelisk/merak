@@ -868,7 +868,7 @@ export class Merak {
   }
 
   async listEvents({
-    name,
+    names,
     sender,
     checkpoint,
     digest,
@@ -876,7 +876,7 @@ export class Merak {
     after,
     orderBy,
   }: {
-    name?: string;
+    names?: string[];
     sender?: string;
     checkpoint?: string;
     digest?: string;
@@ -884,8 +884,24 @@ export class Merak {
     after?: string;
     orderBy?: string[];
   } = {}): Promise<EventInfoResponse> {
+    const defaultEventNames = [
+      'asset_created_event',
+      'asset_transferred_event',
+      'ownership_transferred_event',
+      'pool_created_event',
+      'liquidity_added_event',
+      'liquidity_removed_event',
+      'lp_minted_event',
+      'lp_burned_event',
+      'swap_event',
+      'asset_wrapped_event',
+      'asset_unwrapped_event',
+      'bridge_withdraw_event',
+      'bridge_deposit_event',
+    ];
+
     const events = await this.storage.list.events({
-      name,
+      names: names ?? defaultEventNames,
       sender,
       checkpoint,
       digest,

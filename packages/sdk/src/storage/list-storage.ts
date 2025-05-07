@@ -165,7 +165,7 @@ export class ListStorage {
 
   // Event queries
   async events({
-    name,
+    names,
     sender,
     checkpoint,
     digest,
@@ -173,7 +173,7 @@ export class ListStorage {
     after,
     orderBy,
   }: {
-    name?: string;
+    names?: string[];
     sender?: string;
     checkpoint?: string;
     digest?: string;
@@ -182,7 +182,7 @@ export class ListStorage {
     orderBy?: string[];
   } = {}) {
     const item = await this.dubhe.getEvents({
-      name,
+      names,
       sender,
       checkpoint,
       digest,

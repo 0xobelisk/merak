@@ -1,6 +1,6 @@
 {
   "name": "@0xobelisk/merak-sdk",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "description": "Tookit for interacting with merak protocol",
   "keywords": [
     "sui",
@@ -56,8 +56,8 @@
     "prettier-plugin-rust": "^0.1.9"
   },
   "dependencies": {
-    "@0xobelisk/sui-common": "^1.1.7",
-    "@0xobelisk/sui-client": "^1.1.10",
+    "@0xobelisk/sui-common": "^1.2.0-pre.11",
+    "@0xobelisk/sui-client": "^1.2.0-pre.11",
     "@mysten/sui": "^1.19.0",
     "assert": "^2.1.0",
     "bech32": "^2.0.0",

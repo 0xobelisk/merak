@@ -187,50 +187,7 @@ export default function Portfolio() {
 
         // Generate different display content based on event type
         switch (eventType) {
-          // Asset minting
-          case 'asset_minted':
-          case 'asset_minted_event': {
-            const { asset_id, to, amount } = eventBody;
-            return {
-              id: digest,
-              type: 'Mint',
-              assetId: asset_id,
-              amount,
-              recipient: to,
-              timestamp,
-              status: 'Completed',
-              checkpoint: event.checkpoint,
-              eventType,
-              details: {
-                to: shortenAddress(to),
-                fromPool: to.startsWith('0x01')
-              }
-            };
-          }
-
-          // Asset burning
-          case 'asset_burned':
-          case 'asset_burned_event': {
-            const { asset_id, from, amount } = eventBody;
-            return {
-              id: digest,
-              type: 'Burn',
-              assetId: asset_id,
-              amount,
-              sender: from,
-              timestamp,
-              status: 'Completed',
-              checkpoint: event.checkpoint,
-              eventType,
-              details: {
-                from: shortenAddress(from),
-                toPool: from.startsWith('0x01')
-              }
-            };
-          }
-
           // Asset transfer
-          case 'asset_transferred':
           case 'asset_transferred_event': {
             const { asset_id, from, to, amount } = eventBody;
             return {
@@ -252,8 +209,7 @@ export default function Portfolio() {
           }
 
           // Swap executed
-          case 'swap_executed':
-          case 'swap_executed_event': {
+          case 'swap_event': {
             const { who, send_to, amount_in, amount_out, path } = eventBody;
             return {
               id: digest,
@@ -276,7 +232,6 @@ export default function Portfolio() {
           }
 
           // Liquidity added
-          case 'liquidity_added':
           case 'liquidity_added_event': {
             const {
               who,
@@ -310,7 +265,6 @@ export default function Portfolio() {
           }
 
           // Liquidity removed
-          case 'liquidity_removed':
           case 'liquidity_removed_event': {
             const {
               who,
@@ -344,7 +298,6 @@ export default function Portfolio() {
           }
 
           // Asset created
-          case 'asset_created':
           case 'asset_created_event': {
             const { asset_id, name, symbol, owner, is_mintable, is_burnable, is_freezable } =
               eventBody;
@@ -375,7 +328,6 @@ export default function Portfolio() {
           }
 
           // Pool created
-          case 'pool_created':
           case 'pool_created_event': {
             const { creator, asset1_id, asset2_id, pool_address, lp_asset_id, lp_asset_symbol } =
               eventBody;
@@ -402,7 +354,6 @@ export default function Portfolio() {
           }
 
           // Ownership transferred
-          case 'ownership_transferred':
           case 'ownership_transferred_event': {
             const { asset_id, from, to } = eventBody;
             return {
@@ -422,120 +373,7 @@ export default function Portfolio() {
             };
           }
 
-          // Address frozen
-          case 'address_frozen':
-          case 'address_frozen_event': {
-            const { asset_id, owner } = eventBody;
-            return {
-              id: digest,
-              type: 'AddressFrozen',
-              assetId: asset_id,
-              account: owner,
-              timestamp,
-              status: 'Completed',
-              checkpoint: event.checkpoint,
-              eventType,
-              details: {
-                owner: shortenAddress(owner)
-              }
-            };
-          }
-
-          // Address blocked
-          case 'address_blocked':
-          case 'address_blocked_event': {
-            const { asset_id, owner } = eventBody;
-            return {
-              id: digest,
-              type: 'AddressBlocked',
-              assetId: asset_id,
-              account: owner,
-              timestamp,
-              status: 'Completed',
-              checkpoint: event.checkpoint,
-              eventType,
-              details: {
-                owner: shortenAddress(owner)
-              }
-            };
-          }
-
-          // Address thawed
-          case 'address_thawed':
-          case 'address_thawed_event': {
-            const { asset_id, owner } = eventBody;
-            return {
-              id: digest,
-              type: 'AddressThawed',
-              assetId: asset_id,
-              account: owner,
-              timestamp,
-              status: 'Completed',
-              checkpoint: event.checkpoint,
-              eventType,
-              details: {
-                owner: shortenAddress(owner)
-              }
-            };
-          }
-
-          // Asset frozen
-          case 'asset_frozen':
-          case 'asset_frozen_event': {
-            const { asset_id } = eventBody;
-            return {
-              id: digest,
-              type: 'AssetFrozen',
-              assetId: asset_id,
-              timestamp,
-              status: 'Completed',
-              checkpoint: event.checkpoint,
-              eventType,
-              details: {
-                assetId: asset_id
-              }
-            };
-          }
-
-          // Asset thawed
-          case 'asset_thawed':
-          case 'asset_thawed_event': {
-            const { asset_id } = eventBody;
-            return {
-              id: digest,
-              type: 'AssetThawed',
-              assetId: asset_id,
-              timestamp,
-              status: 'Completed',
-              checkpoint: event.checkpoint,
-              eventType,
-              details: {
-                assetId: asset_id
-              }
-            };
-          }
-
-          // Asset registered
-          case 'asset_registered':
-          case 'asset_registered_event': {
-            const { who, asset_id } = eventBody;
-            return {
-              id: digest,
-              type: 'AssetRegistered',
-              assetId: asset_id,
-              registrar: who,
-              timestamp,
-              status: 'Completed',
-              checkpoint: event.checkpoint,
-              eventType,
-              details: {
-                who: shortenAddress(who)
-              }
-            };
-          }
-
           // Asset wrapped
-          case 'asset_wrapped':
           case 'asset_wrapped_event': {
             const { from, asset_id, amount, beneficiary } = eventBody;
             return {
@@ -557,7 +395,6 @@ export default function Portfolio() {
           }
 
           // Asset unwrapped
-          case 'asset_unwrapped':
           case 'asset_unwrapped_event': {
             const { from, asset_id, amount, beneficiary } = eventBody;
             return {
@@ -578,30 +415,7 @@ export default function Portfolio() {
             };
           }
 
-          // Asset moved
-          case 'asset_moved':
-          case 'asset_moved_event': {
-            const { asset_id, from, chain_address, amount } = eventBody;
-            return {
-              id: digest,
-              type: 'AssetMoved',
-              assetId: asset_id,
-              amount,
-              sender: from,
-              chainAddress: chain_address,
-              timestamp,
-              status: 'Completed',
-              checkpoint: event.checkpoint,
-              eventType,
-              details: {
-                from: shortenAddress(from),
-                toChain: chain_address
-              }
-            };
-          }
-
           // Bridge withdraw
-          case 'bridge_withdraw':
           case 'bridge_withdraw_event': {
             const { asset_id, from, to, to_chain, amount, fee } = eventBody;
             return {
@@ -627,7 +441,6 @@ export default function Portfolio() {
           }
 
           // Bridge deposit
-          case 'bridge_deposit':
           case 'bridge_deposit_event': {
             const { asset_id, from, to, from_chain, amount } = eventBody;
             return {
