@@ -1499,10 +1499,10 @@ export default function Portfolio() {
                                           <span className="text-red-600">
                                             -{formatAmount(tx.amount1, tx.asset1)}
                                           </span>
-                                          <span>→</span>
+                                          {/* <span>→</span>
                                           <span className="text-green-600">
                                             +{formatAmount(tx.amount0, tx.asset0)} LP
-                                          </span>
+                                          </span> */}
                                         </div>
                                       </div>
                                     )}
