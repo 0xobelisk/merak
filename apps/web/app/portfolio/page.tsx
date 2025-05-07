@@ -210,23 +210,29 @@ export default function Portfolio() {
 
           // Swap executed
           case 'swap_event': {
-            const { who, send_to, amount_in, amount_out, path } = eventBody;
+            const { sender, asset0, asset1, amount0_in, amount1_in, amount0_out, amount1_out, to } =
+              eventBody;
             return {
               id: digest,
               type: 'Swap',
-              sender: who,
-              recipient: send_to,
-              amountIn: amount_in,
-              amountOut: amount_out,
-              pathAssets: path,
+              sender: sender,
+              recipient: to,
+              asset0,
+              asset1,
+              amount0In: amount0_in,
+              amount1In: amount1_in,
+              amount0Out: amount0_out,
+              amount1Out: amount1_out,
+              amountIn: amount0_in + amount0_out,
+              amountOut: amount1_in + amount1_out,
               timestamp,
               status: 'Completed',
               checkpoint: event.checkpoint,
               eventType,
               details: {
-                from: shortenAddress(who),
-                to: shortenAddress(send_to),
-                path: path.join(' → ')
+                from: shortenAddress(sender),
+                to: shortenAddress(to),
+                path: `${asset0} → ${asset1}`
               }
             };
           }
@@ -293,6 +299,54 @@ export default function Portfolio() {
                 who: shortenAddress(who),
                 pair: `${asset1_id}/${asset2_id}`,
                 lpToken: lp_asset_id
+              }
+            };
+          }
+
+          // LP Minted
+          case 'lp_minted_event': {
+            const { sender, asset0, asset1, amount0, amount1, to } = eventBody;
+            return {
+              id: digest,
+              type: 'LPMinted',
+              sender: sender,
+              recipient: to,
+              asset0,
+              asset1,
+              amount0,
+              amount1,
+              timestamp,
+              status: 'Completed',
+              checkpoint: event.checkpoint,
+              eventType,
+              details: {
+                from: shortenAddress(sender),
+                to: shortenAddress(to),
+                pair: `${asset0}/${asset1}`
+              }
+            };
+          }
+
+          // LP Burned
+          case 'lp_burned_event': {
+            const { sender, asset0, asset1, amount0, amount1, to } = eventBody;
+            return {
+              id: digest,
+              type: 'LPBurned',
+              sender: sender,
+              recipient: to,
+              asset0,
+              asset1,
+              amount0,
+              amount1,
+              timestamp,
+              status: 'Completed',
+              checkpoint: event.checkpoint,
+              eventType,
+              details: {
+                from: shortenAddress(sender),
+                to: shortenAddress(to),
+                pair: `${asset0}/${asset1}`
               }
             };
           }
@@ -435,7 +489,7 @@ export default function Portfolio() {
                 from: shortenAddress(from),
                 to: shortenAddress(to),
                 toChain: to_chain,
-                fee: formatAmount(fee)
+                fee: formatAmount(fee, asset_id)
               }
             };
           }
@@ -490,12 +544,17 @@ export default function Portfolio() {
   // Add helper function to shorten address display
   const shortenAddress = (address: string) => {
     if (!address) return '';
+    if (address === account?.address) return 'You';
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
   // Helper function: Format amount display
-  const formatAmount = (amount: string, decimals: number = 9) => {
+  const formatAmount = async (amount: string, assetId: string) => {
     try {
+      const metadata = await getAssetMetadata(assetId);
+      console.log('=====metadata=====', metadata);
+      const decimals = metadata.decimals;
+      console.log('=====decimals=====', decimals);
       const value = Number(amount) / Math.pow(10, decimals);
       return value.toLocaleString(undefined, {
         minimumFractionDigits: 0,
@@ -1343,7 +1402,7 @@ export default function Portfolio() {
                                           </span>
                                         </div>
                                         <div className="text-sm text-green-600">
-                                          +{formatAmount(tx.amount)} Token#{tx.assetId}
+                                          +{formatAmount(tx.amount, tx.assetId)} Token#{tx.assetId}
                                         </div>
                                       </div>
                                     )}
@@ -1360,7 +1419,7 @@ export default function Portfolio() {
                                           </span>
                                         </div>
                                         <div className="text-sm text-red-600">
-                                          -{formatAmount(tx.amount)} Token#{tx.assetId}
+                                          -{formatAmount(tx.amount, tx.assetId)} Token#{tx.assetId}
                                         </div>
                                       </div>
                                     )}
@@ -1386,7 +1445,7 @@ export default function Portfolio() {
                                         </div>
                                         <div className="text-sm">
                                           <span className="text-red-600">
-                                            -{formatAmount(tx.amount)}
+                                            -{formatAmount(tx.amount, tx.assetId)}
                                           </span>{' '}
                                           Token#{tx.assetId}
                                         </div>
@@ -1397,19 +1456,15 @@ export default function Portfolio() {
                                     {tx.type === 'Swap' && (
                                       <div>
                                         <div className="text-sm">
-                                          Path:{' '}
-                                          <span className="font-mono">
-                                            {tx.details?.path ||
-                                              (tx.pathAssets ? tx.pathAssets.join('→') : 'Unknown')}
-                                          </span>
+                                          Path: <span className="font-mono">{tx.details.path}</span>
                                         </div>
                                         <div className="text-sm">
                                           <span className="text-red-600">
-                                            -{formatAmount(tx.amountIn)}
+                                            -{formatAmount(tx.amountIn, tx.asset0)}
                                           </span>
                                           {' → '}
                                           <span className="text-green-600">
-                                            +{formatAmount(tx.amountOut)}
+                                            +{formatAmount(tx.amountOut, tx.asset1)}
                                           </span>
                                         </div>
                                       </div>
@@ -1428,14 +1483,14 @@ export default function Portfolio() {
                                         </div>
                                         <div className="flex flex-row gap-2 text-sm">
                                           <span className="text-red-600">
-                                            -{formatAmount(tx.asset1Amount)}
+                                            -{formatAmount(tx.asset1Amount, tx.asset1Id)}
                                           </span>
                                           <span className="text-red-600">
-                                            -{formatAmount(tx.asset2Amount)}
+                                            -{formatAmount(tx.asset2Amount, tx.asset2Id)}
                                           </span>
                                           <span>→</span>
                                           <span className="text-green-600">
-                                            +{formatAmount(tx.lpAmount)} LP
+                                            +{formatAmount(tx.lpAmount, tx.lpAssetId)} LP
                                           </span>
                                         </div>
                                       </div>
@@ -1454,14 +1509,14 @@ export default function Portfolio() {
                                         </div>
                                         <div className="flex flex-row gap-2 text-sm">
                                           <span className="text-red-600">
-                                            -{formatAmount(tx.lpAmount)} LP
+                                            -{formatAmount(tx.lpAmount, tx.lpAssetId)} LP
                                           </span>
                                           <span>→</span>
                                           <span className="text-green-600">
-                                            +{formatAmount(tx.asset1Amount)}
+                                            +{formatAmount(tx.asset1Amount, tx.asset1Id)}
                                           </span>
                                           <span className="text-green-600">
-                                            +{formatAmount(tx.asset2Amount)}
+                                            +{formatAmount(tx.asset2Amount, tx.asset2Id)}
                                           </span>
                                         </div>
                                       </div>
@@ -1630,7 +1685,7 @@ export default function Portfolio() {
                                         </div>
                                         <div className="text-sm">
                                           <span className="text-green-600">
-                                            +{formatAmount(tx.amount)}
+                                            +{formatAmount(tx.amount, tx.assetId)}
                                           </span>{' '}
                                           Token#{tx.assetId}
                                         </div>
@@ -1658,7 +1713,7 @@ export default function Portfolio() {
                                         </div>
                                         <div className="text-sm">
                                           <span className="text-green-600">
-                                            +{formatAmount(tx.amount)}
+                                            +{formatAmount(tx.amount, tx.assetId)}
                                           </span>{' '}
                                           Token#{tx.assetId}
                                         </div>
@@ -1710,10 +1765,11 @@ export default function Portfolio() {
                                           To Chain: {tx.toChain || tx.details?.toChain || 'Unknown'}
                                         </div>
                                         <div className="text-sm text-red-600">
-                                          Amount: -{formatAmount(tx.amount)} Token#{tx.assetId}
+                                          Amount: -{formatAmount(tx.amount, tx.assetId)} Token#
+                                          {tx.assetId}
                                         </div>
                                         <div className="text-sm text-orange-600">
-                                          Fee: {formatAmount(tx.fee)}
+                                          Fee: {formatAmount(tx.fee, tx.assetId)}
                                         </div>
                                       </div>
                                     )}
@@ -1742,7 +1798,8 @@ export default function Portfolio() {
                                           {tx.fromChain || tx.details?.fromChain || 'Unknown'}
                                         </div>
                                         <div className="text-sm text-green-600">
-                                          Amount: +{formatAmount(tx.amount)} Token#{tx.assetId}
+                                          Amount: +{formatAmount(tx.amount, tx.assetId)} Token#
+                                          {tx.assetId}
                                         </div>
                                       </div>
                                     )}

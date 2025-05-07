@@ -15,9 +15,7 @@ async function main() {
     indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build',
   });
 
-  const events = await merak.listEvents({
-    names: ['0x3::coin::Transfer'],
-  });
+  const events = await merak.listEvents();
 
   console.log(events);
 }
