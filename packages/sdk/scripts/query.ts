@@ -15,7 +15,7 @@ async function main() {
     indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build',
   });
 
-  const events = await merak.listAssetsByType({
+  const events = await merak.listOwnedAssetsInfo({
     address:
       '0x1fe342c436eff7ed90988fbe3a85aea7d922517ab6d9bc86e800025f8afcba7a',
     assetType: 'Lp',
