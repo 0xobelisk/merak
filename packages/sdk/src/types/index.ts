@@ -17,6 +17,8 @@ export type PageInfo = {
   endCursor?: string;
 };
 
+export type AssetType = 'Lp' | 'Wrapped' | 'Private' | 'Package';
+
 export type AssetMetadataType = {
   name: string;
   symbol: string;
@@ -31,7 +33,9 @@ export type AssetMetadataType = {
   is_mintable: boolean;
   is_burnable: boolean;
   is_freezable: boolean;
-  wrapped: boolean;
+  asset_type: {
+    [key in AssetType]: {};
+  };
 };
 
 export type AssetInfo = {

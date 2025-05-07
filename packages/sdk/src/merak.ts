@@ -8,6 +8,7 @@ import {
   EventInfoResponse,
   EventInfo,
   BridgeChainName,
+  AssetType,
 } from 'src/types';
 import { Assets, Dex, Wrapper, Bridge } from './system';
 import { Storage } from './storage';
@@ -822,13 +823,15 @@ export class Merak {
     return savedPools;
   }
 
-  async listOwnedWrapperAssets({
+  async listAssetsByType({
     address,
+    assetType,
     first,
     after,
     orderBy,
   }: {
     address: string;
+    assetType: AssetType;
     first?: number;
     after?: string;
     orderBy?: string[];
@@ -840,31 +843,35 @@ export class Merak {
       orderBy,
     });
 
-    const wrapperAssetsPromises = ownedAssets.data.map(async (item) => {
-      const isWrapperAsset = await this.storage.get.wrapperAssets({
-        assetId: item.assetId.toString(),
-      });
-
-      if (isWrapperAsset) {
-        return {
-          balance: item.balance,
-          metadata: item.metadata,
-          assetId: item.assetId,
-          isWrapperAsset: true,
-        };
-      }
-      return null;
+    const filteredAssets = ownedAssets.data.filter((item) => {
+      return item.metadata.asset_type[assetType] !== undefined;
     });
 
-    const wrapperAssets = (await Promise.all(wrapperAssetsPromises)).filter(
-      (asset): asset is NonNullable<typeof asset> => asset !== null
-    );
-
     return {
-      data: wrapperAssets,
+      data: filteredAssets,
       pageInfo: ownedAssets.pageInfo,
-      totalCount: wrapperAssets.length,
+      totalCount: filteredAssets.length,
     };
+  }
+
+  async listOwnedWrapperAssets({
+    address,
+    first,
+    after,
+    orderBy,
+  }: {
+    address: string;
+    first?: number;
+    after?: string;
+    orderBy?: string[];
+  }): Promise<AssetInfoResponse> {
+    return this.listAssetsByType({
+      address,
+      assetType: 'Wrapped',
+      first,
+      after,
+      orderBy,
+    });
   }
 
   async listEvents({

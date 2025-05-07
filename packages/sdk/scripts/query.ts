@@ -15,9 +15,13 @@ async function main() {
     indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build',
   });
 
-  const events = await merak.listEvents();
+  const events = await merak.listAssetsByType({
+    address:
+      '0x1fe342c436eff7ed90988fbe3a85aea7d922517ab6d9bc86e800025f8afcba7a',
+    assetType: 'Lp',
+  });
 
-  console.log(events);
+  console.log(JSON.stringify(events, null, 2));
 }
 
 main();
