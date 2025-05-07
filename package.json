@@ -10,9 +10,9 @@
 		"lint": "eslint . --max-warnings 0"
 	},
 	"dependencies": {
-		"@0xobelisk/sui-cli": "^1.2.0-pre.11",
-		"@0xobelisk/sui-common": "^1.2.0-pre.11",
-		"@0xobelisk/sui-indexer": "^1.2.0-pre.11",
+		"@0xobelisk/sui-cli": "^1.2.0-pre.13",
+		"@0xobelisk/sui-common": "^1.2.0-pre.13",
+		"@0xobelisk/sui-indexer": "^1.2.0-pre.13",
 		"chalk": "^4.1.2",
 		"dotenv": "^16.4.5"
 	},
