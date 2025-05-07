@@ -13,7 +13,7 @@ import { NETWORK } from '@/app/chain/config';
 import { EnokiFlowProvider } from '@mysten/enoki/react';
 import Header from '@/app/components/header';
 import React from 'react';
-import AppWrapper from '@/app/components/app-wrapper';
+import AppWrapper from '@/app/wrapper';
 
 const inter = localFont({
   src: [
@@ -46,7 +46,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Provider>
           <QueryClientProvider client={queryClient}>
             <SuiClientProvider networks={networkConfig} defaultNetwork={NETWORK}>
-              <WalletProvider>
+              <WalletProvider
+                autoConnect={true}
+                preferredWallets={['Sui Wallet', 'Sui Wallet (Sui Wallet)']}
+              >
                 <EnokiFlowProvider apiKey="enoki_public_7278cc47e76ec32331cf1f8fc83a4b1a">
                   <Toaster />
                   <div>

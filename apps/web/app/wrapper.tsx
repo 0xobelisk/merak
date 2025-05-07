@@ -11,18 +11,16 @@ interface AppWrapperProps {
 const STORAGE_KEYS = {
   LOCAL: 'sui_wallet_info',
   SESSION: 'sui_wallet_session',
-  SESSION_TIMEOUT: 30 * 60 * 1000 // 30 minutes in milliseconds
+  SESSION_TIMEOUT: 60 * 60 * 1000 // 30 minutes in milliseconds
 };
 
 export default function AppWrapper({ children }: AppWrapperProps) {
   const { currentWallet, connectionStatus } = useCurrentWallet();
   const wallets = useWallets();
   const [isReconnecting, setIsReconnecting] = useState(false);
-  const [reconnectAttempts, setReconnectAttempts] = useState(0);
-  const MAX_RECONNECT_ATTEMPTS = 3;
   const [hasAttemptedReconnect, setHasAttemptedReconnect] = useState(false);
 
-  // Store wallet info in both localStorage and sessionStorage
+  // Store wallet info in localStorage when connected
   const saveWalletInfo = useCallback(() => {
     if (connectionStatus === 'connected' && currentWallet) {
       try {
@@ -36,7 +34,7 @@ export default function AppWrapper({ children }: AppWrapperProps) {
           })
         );
 
-        // Save to sessionStorage for current session
+        // Save to sessionStorage for current session with timestamp
         sessionStorage.setItem(
           STORAGE_KEYS.SESSION,
           JSON.stringify({
@@ -55,65 +53,76 @@ export default function AppWrapper({ children }: AppWrapperProps) {
   // Attempt to automatically reconnect to the last used wallet
   useEffect(() => {
     const attemptReconnect = async () => {
-      if (connectionStatus === 'disconnected' && !isReconnecting && !hasAttemptedReconnect) {
+      // Only attempt reconnect if disconnected, not already reconnecting, and haven't tried yet
+      if (connectionStatus === 'disconnected' && !isReconnecting && !hasAttemptedReconnect && wallets.length > 0) {
         setHasAttemptedReconnect(true);
-        const savedWalletInfo = localStorage.getItem(STORAGE_KEYS.LOCAL);
-
-        if (!savedWalletInfo) return;
-
+        
         try {
-          setIsReconnecting(true);
-          const parsedInfo = JSON.parse(savedWalletInfo);
-
-          // Find matching wallet
-          const savedWallet = wallets.find((wallet) => wallet.name === parsedInfo.name);
-
-          if (!savedWallet) return;
-
-          // Simplified connection logic - use direct method
-          try {
-            // @ts-ignore
-            if (typeof savedWallet.select === 'function') {
-              await new Promise((resolve) => setTimeout(resolve, 500)); // Add delay
-              // @ts-ignore
-              await savedWallet.select();
-              console.log('Wallet selected successfully');
+          // Check both session and local storage
+          const sessionData = sessionStorage.getItem(STORAGE_KEYS.SESSION);
+          const localData = localStorage.getItem(STORAGE_KEYS.LOCAL);
+          
+          // Prefer session data if it exists and is not expired
+          let walletToConnect = null;
+          let walletName = null;
+          
+          if (sessionData) {
+            const parsedSession = JSON.parse(sessionData);
+            const sessionAge = Date.now() - parsedSession.timestamp;
+            
+            // Use session data if not expired
+            if (sessionAge < STORAGE_KEYS.SESSION_TIMEOUT) {
+              walletName = parsedSession.name;
             }
-          } catch (error) {
-            console.error('Wallet connection failed:', error);
-            localStorage.removeItem(STORAGE_KEYS.LOCAL);
+          }
+          
+          // Fall back to local storage if session is expired or doesn't exist
+          if (!walletName && localData) {
+            const parsedLocal = JSON.parse(localData);
+            walletName = parsedLocal.name;
+          }
+          
+          // If we found a wallet name, try to connect
+          if (walletName) {
+            setIsReconnecting(true);
+            
+            // Find the wallet in available wallets
+            walletToConnect = wallets.find(wallet => wallet.name === walletName);
+            
+            if (walletToConnect) {
+              try {
+                // Add delay to ensure wallet adapter is ready
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                // @ts-ignore - Using internal API
+                if (typeof walletToConnect.select === 'function') {
+                  // @ts-ignore
+                  await walletToConnect.select();
+                  console.log('Wallet reconnected successfully:', walletName);
+                }
+              } catch (error) {
+                console.error('Wallet reconnection failed:', error);
+              }
+            }
           }
         } catch (error) {
-          console.error('Error during reconnection:', error);
+          console.error('Error during reconnection process:', error);
         } finally {
           setIsReconnecting(false);
         }
       }
     };
 
-    // Execute reconnection attempt
-    if (wallets.length > 0) {
-      attemptReconnect();
-    }
-
-    // No retry timer needed
+    // Attempt reconnection when component mounts
+    attemptReconnect();
   }, [connectionStatus, wallets, isReconnecting, hasAttemptedReconnect]);
 
-  // Save wallet info when connected
+  // Save wallet info whenever connection status changes to connected
   useEffect(() => {
     if (connectionStatus === 'connected' && currentWallet) {
       saveWalletInfo();
     }
   }, [connectionStatus, currentWallet, saveWalletInfo]);
-
-  // Monitor connection status changes
-  useEffect(() => {
-    if (connectionStatus === 'connected' && currentWallet) {
-      console.log('Wallet connected:', currentWallet.name);
-      // Reset reconnection attempt counter
-      setReconnectAttempts(0);
-    }
-  }, [connectionStatus, currentWallet]);
 
   // Display connection prompt or application content
   if (!currentWallet) {
@@ -132,5 +141,6 @@ export default function AppWrapper({ children }: AppWrapperProps) {
     );
   }
 
-  return <div className="min-h-screen">{children}</div>;
+  // Return children directly if wallet is connected
+  return <>{children}</>;
 }

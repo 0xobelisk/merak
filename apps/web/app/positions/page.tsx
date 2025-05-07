@@ -26,7 +26,6 @@ import { useAtom } from 'jotai';
 import { AssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-
 interface LPPosition {
   id: number;
   name: string;
@@ -66,7 +65,8 @@ export default function PositionsPage() {
       const merak = initMerakClient();
 
       const metadataResults = await merak.listOwnedAssetsInfo({
-        address: account.address
+        address: account.address,
+        assetType: 'Lp',
       });
 
       console.log(metadataResults, 'metadataResults');
