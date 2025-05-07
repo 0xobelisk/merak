@@ -37,8 +37,8 @@ importers:
   apps/web:
     dependencies:
       '@0xobelisk/merak-sdk':
-        specifier: ^0.0.37
-        version: 0.0.37(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
+        specifier: ^0.0.38
+        version: 0.0.38(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@0xobelisk/sui-cli':
         specifier: ^1.2.0-pre.11
         version: 1.2.0-pre.11(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -487,8 +487,8 @@ packages:
       graphql: ^15.5.0 || ^16.0.0 || ^17.0.0
       typescript: ^5.0.0
 
-  '@0xobelisk/merak-sdk@0.0.37':
-    resolution: {integrity: sha512-tdODLSjBXkoenUKcauAJVtWv0QPlpNzf/akm+QjldIo8bYVbAZ+tyBU8Bs7mlmCcodVS9ifAh7Ylm6EDrZMhCg==}
+  '@0xobelisk/merak-sdk@0.0.38':
+    resolution: {integrity: sha512-W170RaR5nDrf6bgn5ahMSIdatmFzMIQZ9xeU1QGbOobarTeCcIJAOI21xqdW+0W6OOo678MjYQR4SKjYS4cONw==}
     engines: {node: '>=18'}
 
   '@0xobelisk/sui-cli@1.2.0-pre.11':
@@ -496,16 +496,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@0xobelisk/sui-client@1.1.12':
-    resolution: {integrity: sha512-jAybesGUVx/S3t/pwSROJTLKaYM2CxHtmqHaW/dC5C7tdF7QJf2MizqmJso5PAQXC0SF7DnC4h1FoPXM3bH1sw==}
-    engines: {node: '>=18'}
-
   '@0xobelisk/sui-client@1.2.0-pre.11':
     resolution: {integrity: sha512-1Xx5d34jy/q1SbEIG7dpWM3xtQkwxRowhwizpV7cmPcg9lpyiAH2E2b28P/PSPp9tNS6Cmof0vve+gBjXKvX/w==}
-    engines: {node: '>=18'}
-
-  '@0xobelisk/sui-common@1.1.14':
-    resolution: {integrity: sha512-5XUTH/solQCmBaKkXRhVi7HRAtOQlbUmMLHAGQSy0YgbQi1ZHNjsGIphQzuTdkGBTJUleuIk+4NdmfbfcN+U3g==}
     engines: {node: '>=18'}
 
   '@0xobelisk/sui-common@1.2.0-pre.11':
@@ -9095,10 +9087,10 @@ snapshots:
       graphql: 16.11.0
       typescript: 5.8.3
 
-  '@0xobelisk/merak-sdk@0.0.37(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)':
+  '@0xobelisk/merak-sdk@0.0.38(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)':
     dependencies:
-      '@0xobelisk/sui-client': 1.1.12(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
-      '@0xobelisk/sui-common': 1.1.14
+      '@0xobelisk/sui-client': 1.2.0-pre.11(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
+      '@0xobelisk/sui-common': 1.2.0-pre.11
       '@mysten/sui': 1.19.0(typescript@5.8.3)
       assert: 2.1.0
       bech32: 2.0.0
@@ -9151,37 +9143,6 @@ snapshots:
       - bufferutil
       - debug
       - supports-color
-      - utf-8-validate
-
-  '@0xobelisk/sui-client@1.1.12(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@graphql-typed-document-node/core': 3.2.0(graphql@16.11.0)
-      '@mysten/bcs': 1.6.1
-      '@mysten/sui': 1.19.0(typescript@5.8.3)
-      '@mysten/zklogin': 0.7.30(typescript@5.8.3)
-      '@noble/curves': 1.9.0
-      '@noble/hashes': 1.8.0
-      '@scure/bip39': 1.6.0
-      '@suchipi/femver': 1.0.0
-      assert: 2.1.0
-      bech32: 2.0.0
-      colorts: 0.1.63
-      gql.tada: 1.8.10(graphql@16.11.0)(typescript@5.8.3)
-      graphql: 16.11.0
-      husky: 8.0.3
-      keccak256: 1.0.6
-      process: 0.11.10
-      superstruct: 1.0.4
-      tmp: 0.2.3
-      ts-retry-promise: 0.7.1
-      tweetnacl: 1.0.3
-      valibot: 0.36.0
-      ws: 8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - '@gql.tada/svelte-support'
-      - '@gql.tada/vue-support'
-      - bufferutil
-      - typescript
       - utf-8-validate
 
   '@0xobelisk/sui-client@1.2.0-pre.11(bufferutil@4.0.9)(typescript@5.1.6)(utf-8-validate@5.0.10)':
@@ -9245,28 +9206,6 @@ snapshots:
       - bufferutil
       - typescript
       - utf-8-validate
-
-  '@0xobelisk/sui-common@1.1.14':
-    dependencies:
-      chalk: 5.4.1
-      debug: 4.4.0
-      dotenv: 16.5.0
-      ejs: 3.1.10
-      esbuild: 0.17.19
-      execa: 7.2.0
-      find-up: 6.3.0
-      glob: 8.1.0
-      path: 0.12.7
-      prettier: 3.5.3
-      prettier-plugin-move-js: 0.0.5
-      prettier-plugin-rust: 0.1.9
-      prettier-plugin-solidity: 1.4.3(prettier@3.5.3)
-      typescript: 5.1.6
-      yargs: 17.7.2
-      zod: 3.24.4
-      zod-validation-error: 1.5.0(zod@3.24.4)
-    transitivePeerDependencies:
-      - supports-color
 
   '@0xobelisk/sui-common@1.2.0-pre.11':
     dependencies:
