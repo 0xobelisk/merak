@@ -46,6 +46,9 @@ export default function RemoveLiquidity() {
   const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
   const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
 
+  const [slippage, setSlippage] = useState(0.5); // 滑点，百分比
+  const [customSlippage, setCustomSlippage] = useState('');
+
   /**
    * Query asset list
    * Get account information and asset metadata
@@ -311,6 +314,27 @@ export default function RemoveLiquidity() {
     setLiquidityAmount(lpTokenBalance);
   };
 
+  // 自动计算最小输出
+  useEffect(() => {
+    if (!liquidityAmount || !tokenA || !tokenB) {
+      setMinAmountA('');
+      setMinAmountB('');
+      return;
+    }
+    const amount = parseFloat(liquidityAmount);
+    if (isNaN(amount) || amount <= 0) {
+      setMinAmountA('');
+      setMinAmountB('');
+      return;
+    }
+    // 这里假设1:1移除，实际可根据池子比例调整
+    const slippageFactor = 1 - (Number(slippage) / 100);
+    const minA = (amount * slippageFactor / 2).toFixed(tokenA.decimals);
+    const minB = (amount * slippageFactor / 2).toFixed(tokenB.decimals);
+    setMinAmountA(minA);
+    setMinAmountB(minB);
+  }, [liquidityAmount, tokenA, tokenB, slippage]);
+
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-8">
       <div className="flex items-center space-x-4">
@@ -418,7 +442,7 @@ export default function RemoveLiquidity() {
                 <Input
                   type="text"
                   value={minAmountA}
-                  onChange={(e) => setMinAmountA(e.target.value)}
+                  disabled
                   placeholder="0.0"
                 />
                 <span className="text-sm font-medium">{tokenA ? tokenA.symbol : ''}</span>
@@ -430,7 +454,7 @@ export default function RemoveLiquidity() {
                 <Input
                   type="text"
                   value={minAmountB}
-                  onChange={(e) => setMinAmountB(e.target.value)}
+                  disabled
                   placeholder="0.0"
                 />
                 <span className="text-sm font-medium">
@@ -438,6 +462,36 @@ export default function RemoveLiquidity() {
                 </span>
               </div>
             </div>
+          </div>
+        </div>
+        {/* 滑点选择 */}
+        <div>
+          <Label>Slippage</Label>
+          <div className="flex items-center space-x-2 mt-2">
+            {[0.1, 0.5, 1].map((val) => (
+              <Button
+                key={val}
+                type="button"
+                variant={slippage === val ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => { setSlippage(val); setCustomSlippage(''); }}
+              >
+                {val}%
+              </Button>
+            ))}
+            <Input
+              type="number"
+              min={0}
+              step={0.01}
+              placeholder="Custom"
+              value={customSlippage}
+              onChange={e => {
+                setCustomSlippage(e.target.value);
+                setSlippage(Number(e.target.value) || 0);
+              }}
+              className="w-20"
+            />
+            <span className="text-xs text-gray-500">%</span>
           </div>
         </div>
       </div>

@@ -45,6 +45,9 @@ export default function AddLiquidity() {
   const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
   const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
 
+  const [slippage, setSlippage] = useState('0.50'); // 默认0.5%
+  const [customSlippage, setCustomSlippage] = useState('');
+
   /**
    * Query asset list
    * Get account information and asset metadata
@@ -84,68 +87,25 @@ export default function AddLiquidity() {
       console.log('assetsState', assetsState);
     }
   }, [account?.address, queryAssets]);
-  // useEffect(() => {
-  //   const asset1 = searchParams.get('asset1');
-  //   const asset2 = searchParams.get('asset2');
 
-  //   if (asset1 && asset2) {
-  //     const findAndSetTokens = async () => {
-  //       const merak = initMerakClient();
-  //       const asset1Metadata = await merak.metadataOf(Number(asset1));
-  //       const asset2Metadata = await merak.metadataOf(Number(asset2));
-
-  //       let asset1Balance = '0.0';
-  //       let asset2Balance = '0.0';
-
-  //       if (account?.address) {
-  //         const balance1 = await merak.balanceOf(Number(asset1), account.address);
-  //         const balance2 = await merak.balanceOf(Number(asset2), account.address);
-
-  //         asset1Balance = balance1
-  //           ? (Number(balance1[0]) / Math.pow(10, asset1Metadata[3])).toFixed(4)
-  //           : '0.0';
-
-  //         asset2Balance = balance2
-  //           ? (Number(balance2[0]) / Math.pow(10, asset2Metadata[3])).toFixed(4)
-  //           : '0.0';
-  //       }
-
-  //       const asset1Data = {
-  //         id: Number(asset1),
-  //         name: asset1Metadata[0],
-  //         symbol: asset1Metadata[1],
-  //         decimals: asset1Metadata[3],
-  //         icon: asset1Metadata[4],
-  //         balance: asset1Balance
-  //       };
-
-  //       const asset2Data = {
-  //         id: Number(asset2),
-  //         name: asset2Metadata[0],
-  //         symbol: asset2Metadata[1],
-  //         decimals: asset2Metadata[3],
-  //         icon: asset2Metadata[4],
-  //         balance: asset2Balance
-  //       };
-
-  //       console.log('asset1', asset1);
-  //       console.log('asset2', asset2);
-
-  //       console.log('asset1Metadata', asset1Metadata);
-  //       console.log('asset1Data', asset1Data);
-  //       console.log('asset2Metadata', asset2Metadata);
-  //       console.log('asset2Data', asset2Data);
-  //       if (asset1Data) {
-  //         setTokenPay(asset1Data);
-  //       }
-  //       if (asset2Data) {
-  //         setTokenReceive(asset2Data);
-  //       }
-  //     };
-
-  //     findAndSetTokens();
-  //   }
-  // }, [searchParams]);
+  // 自动计算最小存入
+  useEffect(() => {
+    if (!amountPay || !amountReceive || !tokenPay || !tokenReceive) {
+      setMinAmountPay('');
+      setMinAmountReceive('');
+      return;
+    }
+    const pay = parseFloat(amountPay);
+    const receive = parseFloat(amountReceive);
+    if (isNaN(pay) || pay <= 0 || isNaN(receive) || receive <= 0) {
+      setMinAmountPay('');
+      setMinAmountReceive('');
+      return;
+    }
+    const slippageFactor = 1 - (Number(slippage) / 100);
+    setMinAmountPay((pay * slippageFactor).toFixed(tokenPay.decimals));
+    setMinAmountReceive((receive * slippageFactor).toFixed(tokenReceive.decimals));
+  }, [amountPay, amountReceive, tokenPay, tokenReceive, slippage]);
 
   const handleSelectTokenPay = async (token: TokenData) => {
     console.log(token, 'select token');
@@ -356,7 +316,7 @@ export default function AddLiquidity() {
                 <Input
                   type="text"
                   value={minAmountPay}
-                  onChange={(e) => setMinAmountPay(e.target.value)}
+                  disabled
                   placeholder="0.0"
                 />
                 <span className="text-sm font-medium">{tokenPay ? tokenPay.symbol : ''}</span>
@@ -368,7 +328,7 @@ export default function AddLiquidity() {
                 <Input
                   type="text"
                   value={minAmountReceive}
-                  onChange={(e) => setMinAmountReceive(e.target.value)}
+                  disabled
                   placeholder="0.0"
                 />
                 <span className="text-sm font-medium">
@@ -376,6 +336,41 @@ export default function AddLiquidity() {
                 </span>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div>
+          <Label>Slippage</Label>
+          <div className="flex items-center space-x-2 mt-2">
+            {["0.10", "0.50", "1.00"].map((val) => (
+              <Button
+                key={val}
+                type="button"
+                variant={slippage === val ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => { setSlippage(val); setCustomSlippage(''); }}
+              >
+                {parseFloat(val)}%
+              </Button>
+            ))}
+            <Input
+              type="text"
+              inputMode="decimal"
+              pattern="^\\d*\\.?\\d*$"
+              min={0}
+              step={0.01}
+              placeholder="Custom"
+              value={customSlippage}
+              onChange={e => {
+                const v = e.target.value;
+                if (v === '' || /^\d*\.?\d*$/.test(v)) {
+                  setCustomSlippage(v);
+                  setSlippage(v);
+                }
+              }}
+              className="w-16 h-7 px-2 text-xs rounded-full border-none bg-white focus:ring-2 focus:ring-blue-200"
+            />
+            <span className="text-xs text-gray-500">%</span>
           </div>
         </div>
       </div>
