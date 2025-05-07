@@ -8,6 +8,7 @@ import {
   EventInfoResponse,
   EventInfo,
   BridgeChainName,
+  AssetType,
 } from 'src/types';
 import { Assets, Dex, Wrapper, Bridge } from './system';
 import { Storage } from './storage';
@@ -702,10 +703,12 @@ export class Merak {
   }
 
   async listAssetsInfo({
+    assetType,
     first,
     after,
     orderBy,
   }: {
+    assetType?: AssetType;
     first?: number;
     after?: string;
     orderBy?: string[];
@@ -716,7 +719,7 @@ export class Merak {
       orderBy: orderBy ?? ['KEY1_ASC'],
     });
 
-    const assetsMetadataResults: AssetInfo[] = await Promise.all(
+    let assetsMetadataResults: AssetInfo[] = await Promise.all(
       assetsMetadata.data.map(async (item) => {
         return {
           assetId: item.key1,
@@ -724,20 +727,27 @@ export class Merak {
         };
       })
     );
+    if (assetType) {
+      assetsMetadataResults = assetsMetadataResults.filter((item) => {
+        return item.metadata.asset_type[assetType] !== undefined;
+      });
+    }
     return {
       data: assetsMetadataResults,
       pageInfo: assetsMetadata.pageInfo,
-      totalCount: assetsMetadata.totalCount,
+      totalCount: assetsMetadataResults.length,
     };
   }
 
   async listOwnedAssetsInfo({
     address,
+    assetType,
     first,
     after,
     orderBy,
   }: {
     address: string;
+    assetType?: AssetType;
     first?: number;
     after?: string;
     orderBy?: string[];
@@ -749,7 +759,7 @@ export class Merak {
       orderBy: orderBy ?? ['KEY1_ASC'],
     });
 
-    const metadataResults: AssetInfo[] = await Promise.all(
+    let metadataResults: AssetInfo[] = await Promise.all(
       currentAccountInfo.data.map(async (item) => {
         const metadata = (
           await this.storage.get.assetMetadata({
@@ -764,10 +774,15 @@ export class Merak {
         };
       })
     );
+    if (assetType) {
+      metadataResults = metadataResults.filter((item) => {
+        return item.metadata.asset_type[assetType] !== undefined;
+      });
+    }
     return {
       data: metadataResults,
       pageInfo: currentAccountInfo.pageInfo,
-      totalCount: currentAccountInfo.totalCount,
+      totalCount: metadataResults.length,
     };
   }
 
@@ -833,38 +848,13 @@ export class Merak {
     after?: string;
     orderBy?: string[];
   }): Promise<AssetInfoResponse> {
-    const ownedAssets = await this.listOwnedAssetsInfo({
+    return this.listOwnedAssetsInfo({
       address,
+      assetType: 'Wrapped',
       first,
       after,
       orderBy,
     });
-
-    const wrapperAssetsPromises = ownedAssets.data.map(async (item) => {
-      const isWrapperAsset = await this.storage.get.wrapperAssets({
-        assetId: item.assetId.toString(),
-      });
-
-      if (isWrapperAsset) {
-        return {
-          balance: item.balance,
-          metadata: item.metadata,
-          assetId: item.assetId,
-          isWrapperAsset: true,
-        };
-      }
-      return null;
-    });
-
-    const wrapperAssets = (await Promise.all(wrapperAssetsPromises)).filter(
-      (asset): asset is NonNullable<typeof asset> => asset !== null
-    );
-
-    return {
-      data: wrapperAssets,
-      pageInfo: ownedAssets.pageInfo,
-      totalCount: wrapperAssets.length,
-    };
   }
 
   async listEvents({

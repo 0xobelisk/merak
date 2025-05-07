@@ -37,8 +37,8 @@ importers:
   apps/web:
     dependencies:
       '@0xobelisk/merak-sdk':
-        specifier: ^0.0.38
-        version: 0.0.38(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
+        specifier: ^0.0.40
+        version: 0.0.40(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@0xobelisk/sui-cli':
         specifier: ^1.2.0-pre.11
         version: 1.2.0-pre.11(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -487,8 +487,8 @@ packages:
       graphql: ^15.5.0 || ^16.0.0 || ^17.0.0
       typescript: ^5.0.0
 
-  '@0xobelisk/merak-sdk@0.0.38':
-    resolution: {integrity: sha512-W170RaR5nDrf6bgn5ahMSIdatmFzMIQZ9xeU1QGbOobarTeCcIJAOI21xqdW+0W6OOo678MjYQR4SKjYS4cONw==}
+  '@0xobelisk/merak-sdk@0.0.40':
+    resolution: {integrity: sha512-AOGP2i4k8E/tUzDvkwyKvW2B6eRUS8xa3sVE8ciSXQoxabplRqIMSgJlDsDtChDYao4wGFHnZB3W1wHYY/iPMA==}
     engines: {node: '>=18'}
 
   '@0xobelisk/sui-cli@1.2.0-pre.11':
@@ -9087,7 +9087,7 @@ snapshots:
       graphql: 16.11.0
       typescript: 5.8.3
 
-  '@0xobelisk/merak-sdk@0.0.38(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)':
+  '@0xobelisk/merak-sdk@0.0.40(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@0xobelisk/sui-client': 1.2.0-pre.11(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@0xobelisk/sui-common': 1.2.0-pre.11
