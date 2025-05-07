@@ -35,6 +35,9 @@ export default function Header() {
         <Link href="/bridge" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Bridge
         </Link>
+        <Link href="/positions" className="text-sm font-medium text-gray-600 hover:text-blue-500">
+          Positions
+        </Link>
         {/* <Link href="/create" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Create Token
         </Link> */}
