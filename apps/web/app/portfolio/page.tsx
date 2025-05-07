@@ -1353,8 +1353,6 @@ export default function Portfolio() {
 
                                       <div>
                                         <div className="font-medium">
-                                          {tx.type === 'Mint' && 'Token Minting'}
-                                          {tx.type === 'Burn' && 'Token Burning'}
                                           {tx.type === 'Transfer' && 'Token Transfer'}
                                           {tx.type === 'Swap' && 'Token Swap'}
                                           {tx.type === 'AddLiquidity' && 'Liquidity Addition'}
@@ -1363,67 +1361,28 @@ export default function Portfolio() {
                                           {tx.type === 'PoolCreated' && 'Pool Creation'}
                                           {tx.type === 'OwnershipTransferred' &&
                                             'Ownership Transfer'}
-                                          {tx.type === 'AddressFrozen' && 'Address Freezing'}
-                                          {tx.type === 'AddressThawed' && 'Address Thawing'}
-                                          {tx.type === 'AddressBlocked' && 'Address Blocking'}
-                                          {tx.type === 'AssetFrozen' && 'Asset Freezing'}
-                                          {tx.type === 'AssetThawed' && 'Asset Thawing'}
-                                          {tx.type === 'AssetRegistered' && 'Asset Registration'}
-                                          {tx.type === 'AssetWrapped' && 'Asset Wrapping'}
-                                          {tx.type === 'AssetUnwrapped' && 'Asset Unwrapping'}
-                                          {tx.type === 'AssetMoved' && 'Asset Migration'}
+                                          {tx.type === 'AssetWrapped' && 'Token Wrap'}
+                                          {tx.type === 'AssetUnwrapped' && 'Token Unwrap'}
                                           {tx.type === 'BridgeWithdraw' && 'Bridge Withdraw'}
                                           {tx.type === 'BridgeDeposit' && 'Bridge Deposit'}
+                                          {tx.type === 'LPMinted' && 'LP Token Mint'}
+                                          {tx.type === 'LPBurned' && 'LP Token Burn'}
                                           {tx.type === 'Unknown' &&
                                             `Unknown Operation (${tx.eventName || 'Unknown Type'})`}
                                         </div>
                                         <div className="text-xs text-muted-foreground">
                                           {tx.assetId && `Asset ID: ${tx.assetId}`}
-                                          {tx.pathAssets &&
-                                            tx.pathAssets.length > 0 &&
-                                            `Path: ${tx.pathAssets.join('→')}`}
+                                          {tx.asset0 &&
+                                            tx.asset1 &&
+                                            `Pair: ${tx.asset0}/${tx.asset1}`}
                                           {tx.asset1Id &&
                                             tx.asset2Id &&
-                                            `Trade Pair: ${tx.asset1Id}/${tx.asset2Id}`}
+                                            `Pair: ${tx.asset1Id}/${tx.asset2Id}`}
                                         </div>
                                       </div>
                                     </div>
                                   </td>
                                   <td className="py-3 px-4">
-                                    {/* Mint details */}
-                                    {tx.type === 'Mint' && (
-                                      <div>
-                                        <div className="text-sm">
-                                          Recipient:{' '}
-                                          <span className="font-mono">
-                                            {tx.details?.to ||
-                                              shortenAddress(tx.recipient) ||
-                                              'Unknown'}
-                                          </span>
-                                        </div>
-                                        <div className="text-sm text-green-600">
-                                          +{formatAmount(tx.amount, tx.assetId)} Token#{tx.assetId}
-                                        </div>
-                                      </div>
-                                    )}
-
-                                    {/* Burn details */}
-                                    {tx.type === 'Burn' && (
-                                      <div>
-                                        <div className="text-sm">
-                                          Sender:{' '}
-                                          <span className="font-mono">
-                                            {tx.details?.from ||
-                                              shortenAddress(tx.sender) ||
-                                              'Unknown'}
-                                          </span>
-                                        </div>
-                                        <div className="text-sm text-red-600">
-                                          -{formatAmount(tx.amount, tx.assetId)} Token#{tx.assetId}
-                                        </div>
-                                      </div>
-                                    )}
-
                                     {/* Transfer details */}
                                     {tx.type === 'Transfer' && (
                                       <div>
@@ -1522,6 +1481,58 @@ export default function Portfolio() {
                                       </div>
                                     )}
 
+                                    {/* LP Minted details */}
+                                    {tx.type === 'LPMinted' && (
+                                      <div>
+                                        <div className="text-sm">
+                                          Trade Pair:{' '}
+                                          <span className="font-mono">
+                                            {tx.details?.pair ||
+                                              `${tx.asset0}/${tx.asset1}` ||
+                                              'Unknown'}
+                                          </span>
+                                        </div>
+                                        <div className="flex flex-row gap-2 text-sm">
+                                          <span className="text-red-600">
+                                            -{formatAmount(tx.amount0, tx.asset0)}
+                                          </span>
+                                          <span className="text-red-600">
+                                            -{formatAmount(tx.amount1, tx.asset1)}
+                                          </span>
+                                          <span>→</span>
+                                          <span className="text-green-600">
+                                            +{formatAmount(tx.amount0, tx.asset0)} LP
+                                          </span>
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {/* LP Burned details */}
+                                    {tx.type === 'LPBurned' && (
+                                      <div>
+                                        <div className="text-sm">
+                                          Trade Pair:{' '}
+                                          <span className="font-mono">
+                                            {tx.details?.pair ||
+                                              `${tx.asset0}/${tx.asset1}` ||
+                                              'Unknown'}
+                                          </span>
+                                        </div>
+                                        <div className="flex flex-row gap-2 text-sm">
+                                          <span className="text-red-600">
+                                            -{formatAmount(tx.amount0, tx.asset0)} LP
+                                          </span>
+                                          <span>→</span>
+                                          <span className="text-green-600">
+                                            +{formatAmount(tx.amount0, tx.asset0)}
+                                          </span>
+                                          <span className="text-green-600">
+                                            +{formatAmount(tx.amount1, tx.asset1)}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    )}
+
                                     {/* Asset creation details */}
                                     {tx.type === 'AssetCreated' && (
                                       <div>
@@ -1593,78 +1604,7 @@ export default function Portfolio() {
                                       </div>
                                     )}
 
-                                    {/* Address freezing details */}
-                                    {tx.type === 'AddressFrozen' && (
-                                      <div>
-                                        <div className="text-sm">
-                                          Address:{' '}
-                                          <span className="font-mono">
-                                            {tx.details?.owner ||
-                                              shortenAddress(tx.account) ||
-                                              'Unknown'}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    )}
-
-                                    {/* Address blocking details */}
-                                    {tx.type === 'AddressBlocked' && (
-                                      <div>
-                                        <div className="text-sm">
-                                          Address:{' '}
-                                          <span className="font-mono">
-                                            {tx.details?.owner ||
-                                              shortenAddress(tx.account) ||
-                                              'Unknown'}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    )}
-
-                                    {/* Address thawing details */}
-                                    {tx.type === 'AddressThawed' && (
-                                      <div>
-                                        <div className="text-sm">
-                                          Address:{' '}
-                                          <span className="font-mono">
-                                            {tx.details?.owner ||
-                                              shortenAddress(tx.account) ||
-                                              'Unknown'}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    )}
-
-                                    {/* Asset freezing details */}
-                                    {tx.type === 'AssetFrozen' && (
-                                      <div>
-                                        <div className="text-sm">Asset ID: {tx.assetId}</div>
-                                      </div>
-                                    )}
-
-                                    {/* Asset thawing details */}
-                                    {tx.type === 'AssetThawed' && (
-                                      <div>
-                                        <div className="text-sm">Asset ID: {tx.assetId}</div>
-                                      </div>
-                                    )}
-
-                                    {/* Asset registration details */}
-                                    {tx.type === 'AssetRegistered' && (
-                                      <div>
-                                        <div className="text-sm">
-                                          Registrar:{' '}
-                                          <span className="font-mono">
-                                            {tx.details?.who ||
-                                              shortenAddress(tx.registrar) ||
-                                              'Unknown'}
-                                          </span>
-                                        </div>
-                                        <div className="text-sm">Asset ID: {tx.assetId}</div>
-                                      </div>
-                                    )}
-
-                                    {/* Asset wrapping details */}
+                                    {/* Asset wrapped details */}
                                     {tx.type === 'AssetWrapped' && (
                                       <div>
                                         <div className="text-sm">
@@ -1692,7 +1632,7 @@ export default function Portfolio() {
                                       </div>
                                     )}
 
-                                    {/* Asset unwrapping details */}
+                                    {/* Asset unwrapped details */}
                                     {tx.type === 'AssetUnwrapped' && (
                                       <div>
                                         <div className="text-sm">
@@ -1716,28 +1656,6 @@ export default function Portfolio() {
                                             +{formatAmount(tx.amount, tx.assetId)}
                                           </span>{' '}
                                           Token#{tx.assetId}
-                                        </div>
-                                      </div>
-                                    )}
-
-                                    {/* Asset migration details */}
-                                    {tx.type === 'AssetMoved' && (
-                                      <div>
-                                        <div className="text-sm">
-                                          From:{' '}
-                                          <span className="font-mono">
-                                            {tx.details?.from ||
-                                              shortenAddress(tx.sender) ||
-                                              'Unknown'}
-                                          </span>
-                                        </div>
-                                        <div className="text-sm">
-                                          To:{' '}
-                                          <span className="font-mono">
-                                            {tx.details?.toChain ||
-                                              shortenAddress(tx.chainAddress) ||
-                                              'Unknown'}
-                                          </span>
                                         </div>
                                       </div>
                                     )}
