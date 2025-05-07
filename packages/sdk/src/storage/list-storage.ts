@@ -141,20 +141,30 @@ export class ListStorage {
   async pool({
     asset1Id,
     asset2Id,
+    poolAddress,
     first,
     after,
     orderBy,
   }: {
     asset1Id?: bigint | number | string;
     asset2Id?: bigint | number | string;
+    poolAddress?: string;
     first?: number;
     after?: string;
     orderBy?: string[];
   } = {}) {
+    let value = undefined;
+    if (poolAddress) {
+      value = {
+        pool_address: poolAddress,
+      };
+    }
+
     const item = await this.dubhe.getStorage({
       name: 'pools',
       key1: asset1Id?.toString(),
       key2: asset2Id?.toString(),
+      value,
       first,
       after,
       orderBy,

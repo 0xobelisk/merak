@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       '@0xobelisk/sui-cli':
-        specifier: ^1.2.0-pre.11
-        version: 1.2.0-pre.11(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+        specifier: ^1.2.0-pre.13
+        version: 1.2.0-pre.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@0xobelisk/sui-common':
-        specifier: ^1.2.0-pre.11
-        version: 1.2.0-pre.11
+        specifier: ^1.2.0-pre.13
+        version: 1.2.0-pre.13
       '@0xobelisk/sui-indexer':
-        specifier: ^1.2.0-pre.11
-        version: 1.2.0-pre.11(@opentelemetry/api@1.9.0)(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react@18.3.21)(bufferutil@4.0.9)(jiti@1.21.7)(kysely@0.26.3)(postcss@8.5.3)(react@18.3.1)(sql.js@1.13.0)(sqlite3@5.1.7)(tsx@4.19.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.29.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.23.8))(yaml@2.7.1)
+        specifier: ^1.2.0-pre.13
+        version: 1.2.0-pre.13(@opentelemetry/api@1.9.0)(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react@18.3.21)(bufferutil@4.0.9)(jiti@1.21.7)(kysely@0.26.3)(postcss@8.5.3)(react@18.3.1)(sql.js@1.13.0)(sqlite3@5.1.7)(tsx@4.19.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.29.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.23.8))(yaml@2.7.1)
       chalk:
         specifier: ^4.1.2
         version: 4.1.2
@@ -40,14 +40,14 @@ importers:
         specifier: ^0.0.40
         version: 0.0.40(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@0xobelisk/sui-cli':
-        specifier: ^1.2.0-pre.11
-        version: 1.2.0-pre.11(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+        specifier: ^1.2.0-pre.13
+        version: 1.2.0-pre.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@0xobelisk/sui-client':
-        specifier: ^1.2.0-pre.11
-        version: 1.2.0-pre.11(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
+        specifier: ^1.2.0-pre.13
+        version: 1.2.0-pre.13(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@0xobelisk/sui-common':
-        specifier: ^1.2.0-pre.11
-        version: 1.2.0-pre.11
+        specifier: ^1.2.0-pre.13
+        version: 1.2.0-pre.13
       '@mysten/dapp-kit':
         specifier: 0.14.53
         version: 0.14.53(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
@@ -206,11 +206,11 @@ importers:
   packages/sdk:
     dependencies:
       '@0xobelisk/sui-client':
-        specifier: ^1.2.0-pre.11
-        version: 1.2.0-pre.11(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
+        specifier: ^1.2.0-pre.13
+        version: 1.2.0-pre.13(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@0xobelisk/sui-common':
-        specifier: ^1.2.0-pre.11
-        version: 1.2.0-pre.11
+        specifier: ^1.2.0-pre.13
+        version: 1.2.0-pre.13
       '@mysten/sui':
         specifier: ^1.19.0
         version: 1.19.0(typescript@5.8.3)
@@ -491,21 +491,21 @@ packages:
     resolution: {integrity: sha512-AOGP2i4k8E/tUzDvkwyKvW2B6eRUS8xa3sVE8ciSXQoxabplRqIMSgJlDsDtChDYao4wGFHnZB3W1wHYY/iPMA==}
     engines: {node: '>=18'}
 
-  '@0xobelisk/sui-cli@1.2.0-pre.11':
-    resolution: {integrity: sha512-UuXUAmM6mf3Nmn/aJatNxteBTmitwgWDxYNY5gyp407y7/duBoLiGg6Mn23ezYPcWT0hT34QI1d401FX/gVEvA==}
+  '@0xobelisk/sui-cli@1.2.0-pre.13':
+    resolution: {integrity: sha512-tlQdAqM+QyYr/Rcx5cjBhEu8bUZh0dj5axOg7E0A0vzN551/NaR8Pnr/k1xZTGjzjpGUeHrr52Q7icY51GScCQ==}
     engines: {node: '>=18'}
     hasBin: true
 
-  '@0xobelisk/sui-client@1.2.0-pre.11':
-    resolution: {integrity: sha512-1Xx5d34jy/q1SbEIG7dpWM3xtQkwxRowhwizpV7cmPcg9lpyiAH2E2b28P/PSPp9tNS6Cmof0vve+gBjXKvX/w==}
+  '@0xobelisk/sui-client@1.2.0-pre.13':
+    resolution: {integrity: sha512-HgcsZvAZLc2UyAFLvQIl9vN+TuVBLhzVsKz5xb6mvWRfiPmEBfmaRQrG5NYhv7XuJaR/OnhdNWR1LcVn/RaL5A==}
     engines: {node: '>=18'}
 
-  '@0xobelisk/sui-common@1.2.0-pre.11':
-    resolution: {integrity: sha512-s8E9NWkASphpKi0vhF7Dz9dbz4jAONMBBG45TyirghQ7RoeHZgtZowvLfE5jyUWkaRwwMLZtWoQKJAu2U6ldaw==}
+  '@0xobelisk/sui-common@1.2.0-pre.13':
+    resolution: {integrity: sha512-YBaZGhLEzVRtfu3NCoM5S2d4T6vsv9yelOg6opYd0KHAszIzlKrv42eyu/W41OV5R6nUkNPxscvmSVEUVLW3Ug==}
     engines: {node: '>=18'}
 
-  '@0xobelisk/sui-indexer@1.2.0-pre.11':
-    resolution: {integrity: sha512-KVruOAcdYsMEJyxwE2Fv29asvJyxLl+rfezrLshQKbxuIlH27DOFVfK6lk2RXWUEhHCReIrE6LTnly7b/EZw/A==}
+  '@0xobelisk/sui-indexer@1.2.0-pre.13':
+    resolution: {integrity: sha512-vqjYfS2ieXBvwhNvnBXsCDiSoAUgKrDC6SqjXcfoPDHQlv7QCg9ttq9qhVJMq2jUu2yIAWY5O27J5wL8KSn+pg==}
     hasBin: true
     peerDependencies:
       viem: 2.x
@@ -9089,8 +9089,8 @@ snapshots:
 
   '@0xobelisk/merak-sdk@0.0.40(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)':
     dependencies:
-      '@0xobelisk/sui-client': 1.2.0-pre.11(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
-      '@0xobelisk/sui-common': 1.2.0-pre.11
+      '@0xobelisk/sui-client': 1.2.0-pre.13(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
+      '@0xobelisk/sui-common': 1.2.0-pre.13
       '@mysten/sui': 1.19.0(typescript@5.8.3)
       assert: 2.1.0
       bech32: 2.0.0
@@ -9113,10 +9113,10 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@0xobelisk/sui-cli@1.2.0-pre.11(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
+  '@0xobelisk/sui-cli@1.2.0-pre.13(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:
-      '@0xobelisk/sui-client': 1.2.0-pre.11(bufferutil@4.0.9)(typescript@5.1.6)(utf-8-validate@5.0.10)
-      '@0xobelisk/sui-common': 1.2.0-pre.11
+      '@0xobelisk/sui-client': 1.2.0-pre.13(bufferutil@4.0.9)(typescript@5.1.6)(utf-8-validate@5.0.10)
+      '@0xobelisk/sui-common': 1.2.0-pre.13
       '@mysten/sui': 1.19.0(typescript@5.1.6)
       '@types/sqlite3': 3.1.11
       '@types/wait-on': 5.3.4
@@ -9145,7 +9145,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@0xobelisk/sui-client@1.2.0-pre.11(bufferutil@4.0.9)(typescript@5.1.6)(utf-8-validate@5.0.10)':
+  '@0xobelisk/sui-client@1.2.0-pre.13(bufferutil@4.0.9)(typescript@5.1.6)(utf-8-validate@5.0.10)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.11.0)
       '@mysten/bcs': 1.6.1
@@ -9176,7 +9176,7 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@0xobelisk/sui-client@1.2.0-pre.11(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)':
+  '@0xobelisk/sui-client@1.2.0-pre.13(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.11.0)
       '@mysten/bcs': 1.6.1
@@ -9207,7 +9207,7 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@0xobelisk/sui-common@1.2.0-pre.11':
+  '@0xobelisk/sui-common@1.2.0-pre.13':
     dependencies:
       chalk: 5.4.1
       debug: 4.4.0
@@ -9229,9 +9229,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@0xobelisk/sui-indexer@1.2.0-pre.11(@opentelemetry/api@1.9.0)(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react@18.3.21)(bufferutil@4.0.9)(jiti@1.21.7)(kysely@0.26.3)(postcss@8.5.3)(react@18.3.1)(sql.js@1.13.0)(sqlite3@5.1.7)(tsx@4.19.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.29.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.23.8))(yaml@2.7.1)':
+  '@0xobelisk/sui-indexer@1.2.0-pre.13(@opentelemetry/api@1.9.0)(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react@18.3.21)(bufferutil@4.0.9)(jiti@1.21.7)(kysely@0.26.3)(postcss@8.5.3)(react@18.3.1)(sql.js@1.13.0)(sqlite3@5.1.7)(tsx@4.19.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.29.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.23.8))(yaml@2.7.1)':
     dependencies:
-      '@0xobelisk/sui-common': 1.2.0-pre.11
+      '@0xobelisk/sui-common': 1.2.0-pre.13
       '@graphql-tools/schema': 10.0.23(graphql@16.11.0)
       '@koa/cors': 4.0.0
       '@koa/router': 12.0.2
