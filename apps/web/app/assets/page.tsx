@@ -227,17 +227,17 @@ export default function AssetsPage() {
                 <TableRow>
                   <TableHead className="cursor-pointer" onClick={() => requestSort('assetId')}>
                     <div className="flex items-center">
-                      Asset ID
+                      ID
                       {sortConfig?.key === 'assetId' && <ArrowUpDown className="ml-2 h-4 w-4" />}
                     </div>
                   </TableHead>
                   <TableHead className="cursor-pointer" onClick={() => requestSort('symbol')}>
                     <div className="flex items-center">
-                      Token Symbol
+                      Symbol
                       {sortConfig?.key === 'symbol' && <ArrowUpDown className="ml-2 h-4 w-4" />}
                     </div>
                   </TableHead>
-                  <TableHead>Assets</TableHead>
+                  <TableHead>Name</TableHead>
                   <TableHead className="cursor-pointer" onClick={() => requestSort('decimals')}>
                     <div className="flex items-center">
                       Decimals
@@ -256,6 +256,7 @@ export default function AssetsPage() {
                       {sortConfig?.key === 'accounts' && <ArrowUpDown className="ml-2 h-4 w-4" />}
                     </div>
                   </TableHead>
+                  <TableHead>Type</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -285,6 +286,11 @@ export default function AssetsPage() {
                         : '-'}
                     </TableCell>
                     <TableCell>{asset.metadata?.accounts || '-'}</TableCell>
+                    <TableCell>
+                      <span className="inline-block px-2 py-0.5 rounded bg-gray-100 text-gray-800 text-xs font-semibold border border-gray-200">
+                        {asset.metadata?.asset_type ? Object.keys(asset.metadata.asset_type)[0] : '-'}
+                      </span>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
