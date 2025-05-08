@@ -26,6 +26,9 @@ export default function Header() {
         <Link href="/pool" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Pool
         </Link>
+        <Link href="/positions" className="text-sm font-medium text-gray-600 hover:text-blue-500">
+          Positions
+        </Link>
         <Link href="/assets" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Assets
         </Link>
@@ -34,9 +37,6 @@ export default function Header() {
         </Link>
         <Link href="/bridge" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Bridge
-        </Link>
-        <Link href="/positions" className="text-sm font-medium text-gray-600 hover:text-blue-500">
-          Positions
         </Link>
         {/* <Link href="/create" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Create Token
