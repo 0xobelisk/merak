@@ -49,7 +49,12 @@ const initChartJs = async () => {
 initChartJs();
 
 import { initMerakClient } from '@/app/jotai/merak';
-import { AssetsStateAtom, AssetsLoadingAtom, AssetActionDialogProps } from '@/app/jotai/assets';
+import {
+  AssetsStateAtom,
+  AssetsLoadingAtom,
+  AssetActionDialogProps,
+  AllAssetsStateAtom
+} from '@/app/jotai/assets';
 
 const generateRandomColors = (count: number) => {
   const colors = [];
@@ -91,6 +96,7 @@ export default function Portfolio() {
   const account = useCurrentAccount();
   const router = useRouter();
   const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
+  const [allAssetsState, setAllAssetsState] = useAtom(AllAssetsStateAtom);
   const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [totalValue, setTotalValue] = useState(0);
@@ -119,8 +125,11 @@ export default function Portfolio() {
         address: account.address
       });
 
-      // Update state
+      // Update both states
       setAssetsState({
+        assetInfos: metadataResults.data
+      });
+      setAllAssetsState({
         assetInfos: metadataResults.data
       });
 
@@ -161,7 +170,7 @@ export default function Portfolio() {
     } finally {
       setIsLoading(false);
     }
-  }, [account?.address, setAssetsState, setIsLoading]);
+  }, [account?.address, setAssetsState, setAllAssetsState, setIsLoading]);
 
   // Fetch transaction history
   const fetchTransactionHistory = useCallback(async () => {
@@ -232,7 +241,7 @@ export default function Portfolio() {
               details: {
                 from: shortenAddress(sender),
                 to: shortenAddress(to),
-                path: `${asset0} → ${asset1}`
+                path: `${formatSymbol(asset0)} → ${formatSymbol(asset1)}`
               }
             };
           }
@@ -264,7 +273,7 @@ export default function Portfolio() {
               eventType,
               details: {
                 who: shortenAddress(who),
-                pair: `${asset1_id}/${asset2_id}`,
+                pair: `${formatSymbol(asset1_id)}/${formatSymbol(asset2_id)}`,
                 lpToken: lp_asset_id
               }
             };
@@ -297,59 +306,59 @@ export default function Portfolio() {
               eventType,
               details: {
                 who: shortenAddress(who),
-                pair: `${asset1_id}/${asset2_id}`,
+                pair: `${formatSymbol(asset1_id)}/${formatSymbol(asset2_id)}`,
                 lpToken: lp_asset_id
               }
             };
           }
 
-          // LP Minted
-          case 'lp_minted_event': {
-            const { sender, asset0, asset1, amount0, amount1, to } = eventBody;
-            return {
-              id: digest,
-              type: 'LPMinted',
-              sender: sender,
-              recipient: to,
-              asset0,
-              asset1,
-              amount0,
-              amount1,
-              timestamp,
-              status: 'Completed',
-              checkpoint: event.checkpoint,
-              eventType,
-              details: {
-                from: shortenAddress(sender),
-                to: shortenAddress(to),
-                pair: `${asset0}/${asset1}`
-              }
-            };
-          }
+          // // LP Minted
+          // case 'lp_minted_event': {
+          //   const { sender, asset0, asset1, amount0, amount1, to } = eventBody;
+          //   return {
+          //     id: digest,
+          //     type: 'LPMinted',
+          //     sender: sender,
+          //     recipient: to,
+          //     asset0,
+          //     asset1,
+          //     amount0,
+          //     amount1,
+          //     timestamp,
+          //     status: 'Completed',
+          //     checkpoint: event.checkpoint,
+          //     eventType,
+          //     details: {
+          //       from: shortenAddress(sender),
+          //       to: shortenAddress(to),
+          //       pair: `${formatSymbol(asset0)}/${formatSymbol(asset1)}`
+          //     }
+          //   };
+          // }
 
-          // LP Burned
-          case 'lp_burned_event': {
-            const { sender, asset0, asset1, amount0, amount1, to } = eventBody;
-            return {
-              id: digest,
-              type: 'LPBurned',
-              sender: sender,
-              recipient: to,
-              asset0,
-              asset1,
-              amount0,
-              amount1,
-              timestamp,
-              status: 'Completed',
-              checkpoint: event.checkpoint,
-              eventType,
-              details: {
-                from: shortenAddress(sender),
-                to: shortenAddress(to),
-                pair: `${asset0}/${asset1}`
-              }
-            };
-          }
+          // // LP Burned
+          // case 'lp_burned_event': {
+          //   const { sender, asset0, asset1, amount0, amount1, to } = eventBody;
+          //   return {
+          //     id: digest,
+          //     type: 'LPBurned',
+          //     sender: sender,
+          //     recipient: to,
+          //     asset0,
+          //     asset1,
+          //     amount0,
+          //     amount1,
+          //     timestamp,
+          //     status: 'Completed',
+          //     checkpoint: event.checkpoint,
+          //     eventType,
+          //     details: {
+          //       from: shortenAddress(sender),
+          //       to: shortenAddress(to),
+          //       pair: `${formatSymbol(asset0)}/${formatSymbol(asset1)}`
+          //     }
+          //   };
+          // }
 
           // Asset created
           case 'asset_created_event': {
@@ -400,7 +409,7 @@ export default function Portfolio() {
               eventType,
               details: {
                 creator: shortenAddress(creator),
-                pair: `${asset1_id}/${asset2_id}`,
+                pair: `${formatSymbol(asset1_id)}/${formatSymbol(asset2_id)}`,
                 poolAddress: shortenAddress(pool_address),
                 lpSymbol: lp_asset_symbol
               }
@@ -549,12 +558,13 @@ export default function Portfolio() {
   };
 
   // Helper function: Format amount display
-  const formatAmount = async (amount: string, assetId: string) => {
+  const formatAmount = (amount: string, assetId: string) => {
     try {
-      const metadata = await getAssetMetadata(assetId);
-      console.log('=====metadata=====', metadata);
-      const decimals = metadata.decimals;
-      console.log('=====decimals=====', decimals);
+      // 从 allAssetsState 中获取资产的 metadata
+      const assetInfo = allAssetsState.assetInfos.find(
+        (asset) => asset.assetId === parseInt(assetId)
+      );
+      const decimals = assetInfo?.metadata?.decimals || 9; // 如果找不到就使用默认值 9
       const value = Number(amount) / Math.pow(10, decimals);
       return value.toLocaleString(undefined, {
         minimumFractionDigits: 0,
@@ -565,19 +575,17 @@ export default function Portfolio() {
     }
   };
 
-  // Function to get asset metadata
-  const getAssetMetadata = useCallback(async (assetId: string) => {
+  const formatSymbol = (assetId: string) => {
     try {
-      const merak = initMerakClient();
-      const metadata = await merak.storage.get.assetMetadata({
-        assetId: parseInt(assetId)
-      });
-      return metadata.value;
+      // 从 allAssetsState 中获取资产的 metadata
+      const assetInfo = allAssetsState.assetInfos.find(
+        (asset) => asset.assetId === parseInt(assetId)
+      );
+      return assetInfo?.metadata?.symbol || '';
     } catch (e) {
-      console.error(`Error fetching metadata for asset ${assetId}:`, e);
-      return null;
+      return '';
     }
-  }, []);
+  };
 
   // Implement Transfer callback function
   const handleTransfer = useCallback(
@@ -586,12 +594,11 @@ export default function Portfolio() {
         const merak = initMerakClient();
         const tx = new Transaction();
 
-        // Get asset metadata to get decimal places
-        const metadata = await merak.storage.get.assetMetadata({
-          assetId: parseInt(assetId)
-        });
-
-        const decimals = metadata.value.decimals || 9;
+        // 从 allAssetsState 获取 metadata
+        const assetInfo = allAssetsState.assetInfos.find(
+          (asset) => asset.assetId === parseInt(assetId)
+        );
+        const decimals = assetInfo?.metadata?.decimals || 9;
         const amountInSmallestUnit = BigInt(
           Math.floor(parseFloat(amount) * Math.pow(10, decimals))
         );
@@ -653,7 +660,7 @@ export default function Portfolio() {
         toast.error('Transfer failed');
       }
     },
-    [signAndExecuteTransaction, queryAssets]
+    [signAndExecuteTransaction, queryAssets, allAssetsState]
   );
 
   // Implement similar logic for TransferAll
@@ -724,12 +731,11 @@ export default function Portfolio() {
         const merak = initMerakClient();
         const tx = new Transaction();
 
-        // Get asset metadata to get decimal places
-        const metadata = await merak.storage.get.assetMetadata({
-          assetId: parseInt(assetId)
-        });
-
-        const decimals = metadata.value.decimals || 9;
+        // 从 allAssetsState 获取 metadata
+        const assetInfo = allAssetsState.assetInfos.find(
+          (asset) => asset.assetId === parseInt(assetId)
+        );
+        const decimals = assetInfo?.metadata?.decimals || 9;
         const amountInSmallestUnit = BigInt(
           Math.floor(parseFloat(amount) * Math.pow(10, decimals))
         );
@@ -780,7 +786,7 @@ export default function Portfolio() {
         toast.error('Mint failed');
       }
     },
-    [signAndExecuteTransaction, account?.address, queryAssets]
+    [signAndExecuteTransaction, account?.address, queryAssets, allAssetsState]
   );
 
   // Implement Burn function
@@ -790,12 +796,11 @@ export default function Portfolio() {
         const merak = initMerakClient();
         const tx = new Transaction();
 
-        // Get asset metadata to get decimal places
-        const metadata = await merak.storage.get.assetMetadata({
-          assetId: parseInt(assetId)
-        });
-
-        const decimals = metadata.value.decimals || 9;
+        // 从 allAssetsState 获取 metadata
+        const assetInfo = allAssetsState.assetInfos.find(
+          (asset) => asset.assetId === parseInt(assetId)
+        );
+        const decimals = assetInfo?.metadata?.decimals || 9;
         const amountInSmallestUnit = BigInt(
           Math.floor(parseFloat(amount) * Math.pow(10, decimals))
         );
@@ -841,7 +846,7 @@ export default function Portfolio() {
         toast.error('Burn failed');
       }
     },
-    [signAndExecuteTransaction, account?.address, queryAssets]
+    [signAndExecuteTransaction, account?.address, queryAssets, allAssetsState]
   );
 
   // Initialize transaction history on load
@@ -902,6 +907,27 @@ export default function Portfolio() {
       router.push('/');
     }
   }, [account, router, queryAssets]);
+
+  // Add initialization effect for AllAssetsState
+  useEffect(() => {
+    const initAllAssetsState = async () => {
+      if (allAssetsState.assetInfos.length === 0) {
+        try {
+          const merak = initMerakClient();
+          const metadataResults = await merak.listAssetsInfo();
+
+          setAllAssetsState({
+            assetInfos: metadataResults.data
+          });
+        } catch (error) {
+          console.error('Error initializing AllAssetsState:', error);
+          toast.error('Failed to fetch all assets information');
+        }
+      }
+    };
+
+    initAllAssetsState();
+  }, [allAssetsState.assetInfos.length, setAllAssetsState]);
 
   // Add handleActionClick function to Portfolio component
   const handleActionClick = useCallback(
@@ -1371,13 +1397,17 @@ export default function Portfolio() {
                                             `Unknown Operation (${tx.eventName || 'Unknown Type'})`}
                                         </div>
                                         <div className="text-xs text-muted-foreground">
-                                          {tx.assetId && `Asset ID: ${tx.assetId}`}
+                                          {tx.assetId && `Token: ${formatSymbol(tx.assetId)}`}
                                           {tx.asset0 &&
                                             tx.asset1 &&
-                                            `Pair: ${tx.asset0}/${tx.asset1}`}
+                                            `Pair: ${formatSymbol(tx.asset0)}/${formatSymbol(
+                                              tx.asset1
+                                            )}`}
                                           {tx.asset1Id &&
                                             tx.asset2Id &&
-                                            `Pair: ${tx.asset1Id}/${tx.asset2Id}`}
+                                            `Pair: ${formatSymbol(tx.asset1Id)}/${formatSymbol(
+                                              tx.asset2Id
+                                            )}`}
                                         </div>
                                       </div>
                                     </div>
@@ -1406,7 +1436,7 @@ export default function Portfolio() {
                                           <span className="text-red-600">
                                             -{formatAmount(tx.amount, tx.assetId)}
                                           </span>{' '}
-                                          Token#{tx.assetId}
+                                          {formatSymbol(tx.assetId)}
                                         </div>
                                       </div>
                                     )}
@@ -1436,7 +1466,9 @@ export default function Portfolio() {
                                           Trade Pair:{' '}
                                           <span className="font-mono">
                                             {tx.details?.pair ||
-                                              `${tx.asset1Id}/${tx.asset2Id}` ||
+                                              `${formatSymbol(tx.asset1Id)}/${formatSymbol(
+                                                tx.asset2Id
+                                              )}` ||
                                               'Unknown'}
                                           </span>
                                         </div>
@@ -1462,7 +1494,9 @@ export default function Portfolio() {
                                           Trade Pair:{' '}
                                           <span className="font-mono">
                                             {tx.details?.pair ||
-                                              `${tx.asset1Id}/${tx.asset2Id}` ||
+                                              `${formatSymbol(tx.asset1Id)}/${formatSymbol(
+                                                tx.asset2Id
+                                              )}` ||
                                               'Unknown'}
                                           </span>
                                         </div>
@@ -1488,7 +1522,9 @@ export default function Portfolio() {
                                           Trade Pair:{' '}
                                           <span className="font-mono">
                                             {tx.details?.pair ||
-                                              `${tx.asset0}/${tx.asset1}` ||
+                                              `${formatSymbol(tx.asset0)}/${formatSymbol(
+                                                tx.asset1
+                                              )}` ||
                                               'Unknown'}
                                           </span>
                                         </div>
@@ -1514,7 +1550,9 @@ export default function Portfolio() {
                                           Trade Pair:{' '}
                                           <span className="font-mono">
                                             {tx.details?.pair ||
-                                              `${tx.asset0}/${tx.asset1}` ||
+                                              `${formatSymbol(tx.asset0)}/${formatSymbol(
+                                                tx.asset1
+                                              )}` ||
                                               'Unknown'}
                                           </span>
                                         </div>
@@ -1571,13 +1609,17 @@ export default function Portfolio() {
                                           Trade Pair:{' '}
                                           <span className="font-mono">
                                             {tx.details?.pair ||
-                                              `${tx.asset1Id}/${tx.asset2Id}` ||
+                                              `${formatSymbol(tx.asset1Id)}/${formatSymbol(
+                                                tx.asset2Id
+                                              )}` ||
                                               'Unknown'}
                                           </span>
                                         </div>
                                         <div className="text-sm">
                                           LP Token:{' '}
-                                          {tx.lpSymbol || `LP Token#${tx.lpAssetId}` || 'Unknown'}
+                                          {tx.lpSymbol ||
+                                            `LP ${formatSymbol(tx.lpAssetId)}` ||
+                                            'Unknown'}
                                         </div>
                                       </div>
                                     )}
@@ -1627,7 +1669,7 @@ export default function Portfolio() {
                                           <span className="text-green-600">
                                             +{formatAmount(tx.amount, tx.assetId)}
                                           </span>{' '}
-                                          Token#{tx.assetId}
+                                          {formatSymbol(tx.assetId)}
                                         </div>
                                       </div>
                                     )}
@@ -1655,7 +1697,7 @@ export default function Portfolio() {
                                           <span className="text-green-600">
                                             +{formatAmount(tx.amount, tx.assetId)}
                                           </span>{' '}
-                                          Token#{tx.assetId}
+                                          {formatSymbol(tx.assetId)}
                                         </div>
                                       </div>
                                     )}
@@ -1683,8 +1725,8 @@ export default function Portfolio() {
                                           To Chain: {tx.toChain || tx.details?.toChain || 'Unknown'}
                                         </div>
                                         <div className="text-sm text-red-600">
-                                          Amount: -{formatAmount(tx.amount, tx.assetId)} Token#
-                                          {tx.assetId}
+                                          Amount: -{formatAmount(tx.amount, tx.assetId)}{' '}
+                                          {formatSymbol(tx.assetId)}
                                         </div>
                                         <div className="text-sm text-orange-600">
                                           Fee: {formatAmount(tx.fee, tx.assetId)}
@@ -1716,8 +1758,8 @@ export default function Portfolio() {
                                           {tx.fromChain || tx.details?.fromChain || 'Unknown'}
                                         </div>
                                         <div className="text-sm text-green-600">
-                                          Amount: +{formatAmount(tx.amount, tx.assetId)} Token#
-                                          {tx.assetId}
+                                          Amount: +{formatAmount(tx.amount, tx.assetId)}
+                                          {formatSymbol(tx.assetId)}
                                         </div>
                                       </div>
                                     )}

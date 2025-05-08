@@ -63,6 +63,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   // Loading states
   const [isLoading, setIsLoading] = useState(false);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [isSwapping, setIsSwapping] = useState(false);
 
   // Token initialization states
   const [tokensState, setTokensState] = useState<{
@@ -416,6 +417,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
     }
 
     try {
+      setIsSwapping(true);
       const merak = initMerakClient();
       const tx = new Transaction();
 
@@ -529,9 +531,11 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
             setReceiveAmount('');
             setDollarValuePay(null);
             setDollarValueReceive(null);
+            setIsSwapping(false);
           },
           onError: (error) => {
             toast.error('Insufficient liquidity for this trade');
+            setIsSwapping(false);
           }
         }
       );
@@ -805,14 +809,19 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
           <div className="px-6 pb-6 pt-2">
             <Button
               className={`w-full h-12 rounded-xl font-medium text-base transition-all duration-200 ${
-                !payAmount || isCalculating || !isTokensReady
+                !payAmount || isCalculating || !isTokensReady || isSwapping
                   ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   : 'bg-blue-500 hover:bg-blue-600 text-white shadow-sm hover:shadow-md active:scale-[0.99]'
               }`}
-              disabled={!payAmount || isCalculating || !isTokensReady}
+              disabled={!payAmount || isCalculating || !isTokensReady || isSwapping}
               onClick={handleSwapTokens}
             >
-              {isCalculating ? (
+              {isSwapping ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <span>Swapping...</span>
+                </div>
+              ) : isCalculating ? (
                 <div className="flex items-center justify-center gap-2">
                   <Loader2 className="h-5 w-5 animate-spin" />
                   <span>Calculating...</span>

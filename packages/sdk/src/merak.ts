@@ -881,8 +881,6 @@ export class Merak {
       'pool_created_event',
       'liquidity_added_event',
       'liquidity_removed_event',
-      'lp_minted_event',
-      'lp_burned_event',
       'swap_event',
       'asset_wrapped_event',
       'asset_unwrapped_event',
