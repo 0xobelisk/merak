@@ -49,6 +49,9 @@ export default function RemoveLiquidity() {
   const [slippage, setSlippage] = useState(0.5); // 滑点，百分比
   const [customSlippage, setCustomSlippage] = useState('');
 
+  const [estimatedAmountA, setEstimatedAmountA] = useState('');
+  const [estimatedAmountB, setEstimatedAmountB] = useState('');
+
   /**
    * Query asset list
    * Get account information and asset metadata
@@ -105,8 +108,8 @@ export default function RemoveLiquidity() {
           const asset2Id = Number(asset2Param);
 
           // Get token metadata
-          const token1Info = assetsState.assetInfos.find(asset => asset.assetId === asset1Id);
-          const token2Info = assetsState.assetInfos.find(asset => asset.assetId === asset2Id);
+          const token1Info = assetsState.assetInfos.find((asset) => asset.assetId === asset1Id);
+          const token2Info = assetsState.assetInfos.find((asset) => asset.assetId === asset2Id);
 
           if (token1Info) {
             const token1: TokenData = {
@@ -115,7 +118,9 @@ export default function RemoveLiquidity() {
               symbol: token1Info.metadata.symbol || 'Unknown',
               decimals: token1Info.metadata.decimals || 8,
               icon_url: token1Info.metadata.icon_url || 'https://hop.ag/tokens/SUI.svg',
-              balance: (Number(token1Info.balance) / Math.pow(10, token1Info.metadata.decimals || 8)).toFixed(4)
+              balance: (
+                Number(token1Info.balance) / Math.pow(10, token1Info.metadata.decimals || 8)
+              ).toFixed(4)
             };
             setTokenA(token1);
           } else {
@@ -129,7 +134,9 @@ export default function RemoveLiquidity() {
               symbol: token2Info.metadata.symbol || 'Unknown',
               decimals: token2Info.metadata.decimals || 8,
               icon_url: token2Info.metadata.icon_url || 'https://hop.ag/tokens/SUI.svg',
-              balance: (Number(token2Info.balance) / Math.pow(10, token2Info.metadata.decimals || 8)).toFixed(4)
+              balance: (
+                Number(token2Info.balance) / Math.pow(10, token2Info.metadata.decimals || 8)
+              ).toFixed(4)
             };
             setTokenB(token2);
           } else {
@@ -140,7 +147,6 @@ export default function RemoveLiquidity() {
           if (lpTokenIdParam) {
             setLpTokenId(Number(lpTokenIdParam));
           }
-
         } catch (error) {
           console.error('Failed to load tokens from URL parameters:', error);
           toast.error('Failed to load token information');
@@ -155,20 +161,20 @@ export default function RemoveLiquidity() {
   useEffect(() => {
     async function fetchLpToken() {
       if (!tokenA || !tokenB || !account?.address) return;
-      
+
       try {
         const merak = initMerakClient();
-        
+
         // Simplified approach: just look for LP tokens in the user's assets
         // that match the token pair we're interested in
-        const userLpTokens = assetsState.assetInfos.filter(asset => {
+        const userLpTokens = assetsState.assetInfos.filter((asset) => {
           // Check if it's an LP token by examining the symbol (usually contains a hyphen for pair tokens)
           const symbol = asset.metadata.symbol || '';
           return symbol.includes('-') || symbol.includes('/');
         });
-        
+
         // Try to match an LP token with both tokenA and tokenB symbols
-        const matchedLpToken = userLpTokens.find(token => {
+        const matchedLpToken = userLpTokens.find((token) => {
           const symbol = token.metadata.symbol || '';
           return (
             (symbol.includes(tokenA.symbol) && symbol.includes(tokenB.symbol)) ||
@@ -176,10 +182,11 @@ export default function RemoveLiquidity() {
             (symbol.includes(tokenB.symbol) && symbol.includes(tokenA.symbol))
           );
         });
-        
+
         if (matchedLpToken) {
           setLpTokenId(matchedLpToken.assetId);
-          const balance = Number(matchedLpToken.balance) / Math.pow(10, matchedLpToken.metadata.decimals || 8);
+          const balance =
+            Number(matchedLpToken.balance) / Math.pow(10, matchedLpToken.metadata.decimals || 8);
           setLpTokenBalance(balance.toFixed(4));
         } else {
           // If we can't find an exact match, try to query the balance directly
@@ -187,16 +194,18 @@ export default function RemoveLiquidity() {
           try {
             // This assumes we know the LP token ID from some other source (e.g. URL params)
             const lpTokenIdFromParams = searchParams.get('lpTokenId');
-            
+
             if (lpTokenIdFromParams) {
               const tokenId = Number(lpTokenIdFromParams);
               setLpTokenId(tokenId);
-              
+
               const lpBalance = await merak.balanceOf(tokenId, account.address);
-              
+
               if (lpBalance && lpBalance[0]) {
                 const lpDecimals = 8; // Assumption
-                const formattedBalance = (Number(lpBalance[0]) / Math.pow(10, lpDecimals)).toFixed(4);
+                const formattedBalance = (Number(lpBalance[0]) / Math.pow(10, lpDecimals)).toFixed(
+                  4
+                );
                 setLpTokenBalance(formattedBalance);
               } else {
                 setLpTokenBalance('0');
@@ -211,7 +220,7 @@ export default function RemoveLiquidity() {
         toast.error('Failed to fetch LP token information');
       }
     }
-    
+
     fetchLpToken();
   }, [tokenA, tokenB, account?.address, assetsState.assetInfos, searchParams]);
 
@@ -271,7 +280,7 @@ export default function RemoveLiquidity() {
         account.address,
         true
       );
-      
+
       await signAndExecuteTransaction(
         {
           transaction: tx.serialize(),
@@ -289,7 +298,7 @@ export default function RemoveLiquidity() {
               }
             });
             setDigest(result.digest);
-            
+
             // Refresh LP token balance
             queryAssets();
           },
@@ -314,26 +323,68 @@ export default function RemoveLiquidity() {
     setLiquidityAmount(lpTokenBalance);
   };
 
-  // 自动计算最小输出
+  // 计算预估输出金额
+  const calculateEstimatedAmounts = useCallback(
+    async (amount: string) => {
+      if (
+        !tokenA ||
+        !tokenB ||
+        !amount ||
+        parseFloat(amount) <= 0 ||
+        !lpTokenId ||
+        !account?.address
+      ) {
+        setEstimatedAmountA('');
+        setEstimatedAmountB('');
+        return;
+      }
+
+      try {
+        const merak = initMerakClient();
+        const lpAmount = BigInt(Math.floor(parseFloat(amount) * Math.pow(10, 9))); // LP token decimals
+
+        const estimates = await merak.calRemoveLpAmount({
+          address: account.address,
+          poolAssetId: lpTokenId,
+          amount: lpAmount
+        });
+
+        if (estimates) {
+          const amountA = estimates.formattedAmountA.toFixed(tokenA.decimals);
+          const amountB = estimates.formattedAmountB.toFixed(tokenB.decimals);
+          console.log(amountA, amountB, 'amountA, amountB');
+          console.log(estimates, 'estimates');
+          setEstimatedAmountA(amountA);
+          setEstimatedAmountB(amountB);
+        }
+      } catch (error) {
+        console.error('Failed to calculate estimated amounts:', error);
+        toast.error('Failed to calculate output amounts');
+      }
+    },
+    [tokenA, tokenB, lpTokenId, account?.address]
+  );
+
+  // 当输入金额变化时计算预估输出
   useEffect(() => {
-    if (!liquidityAmount || !tokenA || !tokenB) {
+    calculateEstimatedAmounts(liquidityAmount);
+  }, [liquidityAmount, calculateEstimatedAmounts]);
+
+  // 修改自动计算最小输出的逻辑
+  useEffect(() => {
+    if (!estimatedAmountA || !estimatedAmountB || !tokenA || !tokenB) {
       setMinAmountA('');
       setMinAmountB('');
       return;
     }
-    const amount = parseFloat(liquidityAmount);
-    if (isNaN(amount) || amount <= 0) {
-      setMinAmountA('');
-      setMinAmountB('');
-      return;
-    }
-    // 这里假设1:1移除，实际可根据池子比例调整
-    const slippageFactor = 1 - (Number(slippage) / 100);
-    const minA = (amount * slippageFactor / 2).toFixed(tokenA.decimals);
-    const minB = (amount * slippageFactor / 2).toFixed(tokenB.decimals);
+
+    const slippageFactor = 1 - Number(slippage) / 100;
+    const minA = (parseFloat(estimatedAmountA) * slippageFactor).toFixed(tokenA.decimals);
+    const minB = (parseFloat(estimatedAmountB) * slippageFactor).toFixed(tokenB.decimals);
+
     setMinAmountA(minA);
     setMinAmountB(minB);
-  }, [liquidityAmount, tokenA, tokenB, slippage]);
+  }, [estimatedAmountA, estimatedAmountB, tokenA, tokenB, slippage]);
 
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-8">
@@ -343,9 +394,7 @@ export default function RemoveLiquidity() {
         </Button>
         <h1 className="text-2xl font-bold">Remove Liquidity</h1>
       </div>
-      <p className="text-sm text-gray-500">
-        Remove liquidity from a pool and receive tokens back.
-      </p>
+      <p className="text-sm text-gray-500">Remove liquidity from a pool and receive tokens back.</p>
 
       <div className="space-y-6">
         <div>
@@ -423,9 +472,7 @@ export default function RemoveLiquidity() {
               </Button>
             </div>
             {tokenA && tokenB && (
-              <p className="text-sm text-gray-500">
-                LP Token Balance: {lpTokenBalance}
-              </p>
+              <p className="text-sm text-gray-500">LP Token Balance: {lpTokenBalance}</p>
             )}
           </div>
         </div>
@@ -439,28 +486,26 @@ export default function RemoveLiquidity() {
             <div>
               <Label>Minimum {tokenA ? tokenA.symbol : ''} Amount</Label>
               <div className="flex items-center space-x-2">
-                <Input
-                  type="text"
-                  value={minAmountA}
-                  disabled
-                  placeholder="0.0"
-                />
+                <Input type="text" value={minAmountA} disabled placeholder="0.0" />
                 <span className="text-sm font-medium">{tokenA ? tokenA.symbol : ''}</span>
               </div>
+              {estimatedAmountA && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Expected output: {estimatedAmountA} {tokenA?.symbol}
+                </p>
+              )}
             </div>
             <div>
               <Label>Minimum {tokenB ? tokenB.symbol : ''} Amount</Label>
               <div className="flex items-center space-x-2">
-                <Input
-                  type="text"
-                  value={minAmountB}
-                  disabled
-                  placeholder="0.0"
-                />
-                <span className="text-sm font-medium">
-                  {tokenB ? tokenB.symbol : ''}
-                </span>
+                <Input type="text" value={minAmountB} disabled placeholder="0.0" />
+                <span className="text-sm font-medium">{tokenB ? tokenB.symbol : ''}</span>
               </div>
+              {estimatedAmountB && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Expected output: {estimatedAmountB} {tokenB?.symbol}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -474,7 +519,10 @@ export default function RemoveLiquidity() {
                 type="button"
                 variant={slippage === val ? 'default' : 'outline'}
                 size="sm"
-                onClick={() => { setSlippage(val); setCustomSlippage(''); }}
+                onClick={() => {
+                  setSlippage(val);
+                  setCustomSlippage('');
+                }}
               >
                 {val}%
               </Button>
@@ -485,7 +533,7 @@ export default function RemoveLiquidity() {
               step={0.01}
               placeholder="Custom"
               value={customSlippage}
-              onChange={e => {
+              onChange={(e) => {
                 setCustomSlippage(e.target.value);
                 setSlippage(Number(e.target.value) || 0);
               }}
@@ -496,8 +544,8 @@ export default function RemoveLiquidity() {
         </div>
       </div>
 
-      <Button 
-        onClick={handleRemoveLiquidity} 
+      <Button
+        onClick={handleRemoveLiquidity}
         className="w-full"
         disabled={!tokenA || !tokenB || !liquidityAmount || parseFloat(liquidityAmount) <= 0}
       >

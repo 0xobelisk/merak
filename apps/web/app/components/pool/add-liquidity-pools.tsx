@@ -37,6 +37,9 @@ export default function AddLiquidity() {
   const [isTokenReceiveModalOpen, setIsTokenReceiveModalOpen] = useState(false);
 
   const [availableTokenReceives, setAvailableTokenReceives] = useState<number[]>([]);
+  const [reserves, setReserves] = useState<{ reservePay: string; reserveReceive: string } | null>(
+    null
+  );
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -45,7 +48,7 @@ export default function AddLiquidity() {
   const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
   const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
 
-  const [slippage, setSlippage] = useState('0.50'); // 默认0.5%
+  const [slippage, setSlippage] = useState('0.50'); // Default 0.5%
   const [customSlippage, setCustomSlippage] = useState('');
 
   /**
@@ -88,7 +91,7 @@ export default function AddLiquidity() {
     }
   }, [account?.address, queryAssets]);
 
-  // 自动计算最小存入
+  // Automatically calculate minimum deposit
   useEffect(() => {
     if (!amountPay || !amountReceive || !tokenPay || !tokenReceive) {
       setMinAmountPay('');
@@ -102,10 +105,80 @@ export default function AddLiquidity() {
       setMinAmountReceive('');
       return;
     }
-    const slippageFactor = 1 - (Number(slippage) / 100);
+    const slippageFactor = 1 - Number(slippage) / 100;
     setMinAmountPay((pay * slippageFactor).toFixed(tokenPay.decimals));
     setMinAmountReceive((receive * slippageFactor).toFixed(tokenReceive.decimals));
   }, [amountPay, amountReceive, tokenPay, tokenReceive, slippage]);
+
+  // Get pool reserve information
+  const fetchReserves = useCallback(async () => {
+    if (!tokenPay || !tokenReceive) {
+      setReserves(null);
+      return;
+    }
+
+    try {
+      const merak = initMerakClient();
+      const poolInfo = await merak.getPoolList({
+        asset1Id: tokenPay.id,
+        asset2Id: tokenReceive.id
+      });
+
+      if (!poolInfo || poolInfo.data.length === 0) {
+        setReserves(null);
+        return;
+      }
+
+      const poolInfoValue = poolInfo.value[0];
+      setReserves({
+        reservePay: poolInfoValue.reserve0,
+        reserveReceive: poolInfoValue.reserve1
+      });
+    } catch (error) {
+      console.error('Failed to fetch reserves:', error);
+      setReserves(null);
+    }
+  }, [tokenPay, tokenReceive]);
+
+  // Get reserve information when selecting tokens
+  useEffect(() => {
+    fetchReserves();
+  }, [fetchReserves]);
+
+  // Handle input amount changes
+  const handleAmountPayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setAmountPay(value);
+
+    // If the pool has reserves, calculate the amount of the other token
+    if (reserves && reserves.reservePay !== '0' && value) {
+      const amountPayNum = parseFloat(value);
+      const reservePayNum = parseFloat(reserves.reservePay) / Math.pow(10, tokenPay!.decimals);
+      const reserveReceiveNum =
+        parseFloat(reserves.reserveReceive) / Math.pow(10, tokenReceive!.decimals);
+
+      // amountReceive = amountPay * (reserveReceive / reservePay)
+      const calculatedAmountReceive = amountPayNum * (reserveReceiveNum / reservePayNum);
+      setAmountReceive(calculatedAmountReceive.toFixed(tokenReceive!.decimals));
+    }
+  };
+
+  const handleAmountReceiveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setAmountReceive(value);
+
+    // If the pool has reserves, calculate the amount of the other token
+    if (reserves && reserves.reserveReceive !== '0' && value) {
+      const amountReceiveNum = parseFloat(value);
+      const reservePay = parseFloat(reserves.reservePay) / Math.pow(10, tokenPay!.decimals);
+      const reserveReceive =
+        parseFloat(reserves.reserveReceive) / Math.pow(10, tokenReceive!.decimals);
+
+      // amountPay = amountReceive * (reservePay / reserveReceive)
+      const calculatedAmountPay = amountReceiveNum * (reservePay / reserveReceive);
+      setAmountPay(calculatedAmountPay.toFixed(tokenPay!.decimals));
+    }
+  };
 
   const handleSelectTokenPay = async (token: TokenData) => {
     console.log(token, 'select token');
@@ -149,6 +222,10 @@ export default function AddLiquidity() {
       Math.floor(parseFloat(minAmountReceive || '0') * Math.pow(10, tokenReceive.decimals))
     );
 
+    console.log(baseDesired, quoteDesired, baseMin, quoteMin);
+
+    // const baseMin = BigInt(0);
+    // const quoteMin = BigInt(0);
     await merak.addLiquidity(
       tx,
       tokenPay.id,
@@ -271,7 +348,7 @@ export default function AddLiquidity() {
                 <Input
                   type="text"
                   value={amountPay}
-                  onChange={(e) => setAmountPay(e.target.value)}
+                  onChange={handleAmountPayChange}
                   placeholder="Enter amount"
                 />
                 <span className="text-sm font-medium">{tokenPay ? tokenPay.symbol : ''}</span>
@@ -288,7 +365,7 @@ export default function AddLiquidity() {
                 <Input
                   type="text"
                   value={amountReceive}
-                  onChange={(e) => setAmountReceive(e.target.value)}
+                  onChange={handleAmountReceiveChange}
                   placeholder="Enter amount"
                 />
                 <span className="text-sm font-medium">
@@ -301,6 +378,24 @@ export default function AddLiquidity() {
                 </p>
               )}
             </div>
+            {tokenPay && tokenReceive && reserves && (
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600">
+                  {reserves.reservePay === '0' && reserves.reserveReceive === '0' ? (
+                    'This is a new pool, you can set the initial price'
+                  ) : (
+                    <>
+                      Current pool ratio: 1 {tokenPay.symbol} ={' '}
+                      {(
+                        (parseFloat(reserves.reserveReceive) / parseFloat(reserves.reservePay)) *
+                        Math.pow(10, tokenPay.decimals - tokenReceive.decimals)
+                      ).toFixed(6)}{' '}
+                      {tokenReceive.symbol}
+                    </>
+                  )}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -313,24 +408,14 @@ export default function AddLiquidity() {
             <div>
               <Label>Minimum {tokenPay ? tokenPay.symbol : ''} Amount</Label>
               <div className="flex items-center space-x-2">
-                <Input
-                  type="text"
-                  value={minAmountPay}
-                  disabled
-                  placeholder="0.0"
-                />
+                <Input type="text" value={minAmountPay} disabled placeholder="0.0" />
                 <span className="text-sm font-medium">{tokenPay ? tokenPay.symbol : ''}</span>
               </div>
             </div>
             <div>
               <Label>Minimum {tokenReceive ? tokenReceive.symbol : ''} Amount</Label>
               <div className="flex items-center space-x-2">
-                <Input
-                  type="text"
-                  value={minAmountReceive}
-                  disabled
-                  placeholder="0.0"
-                />
+                <Input type="text" value={minAmountReceive} disabled placeholder="0.0" />
                 <span className="text-sm font-medium">
                   {tokenReceive ? tokenReceive.symbol : ''}
                 </span>
@@ -342,13 +427,16 @@ export default function AddLiquidity() {
         <div>
           <Label>Slippage</Label>
           <div className="flex items-center space-x-2 mt-2">
-            {["0.10", "0.50", "1.00"].map((val) => (
+            {['0.10', '0.50', '1.00'].map((val) => (
               <Button
                 key={val}
                 type="button"
                 variant={slippage === val ? 'default' : 'outline'}
                 size="sm"
-                onClick={() => { setSlippage(val); setCustomSlippage(''); }}
+                onClick={() => {
+                  setSlippage(val);
+                  setCustomSlippage('');
+                }}
               >
                 {parseFloat(val)}%
               </Button>
@@ -361,7 +449,7 @@ export default function AddLiquidity() {
               step={0.01}
               placeholder="Custom"
               value={customSlippage}
-              onChange={e => {
+              onChange={(e) => {
                 const v = e.target.value;
                 if (v === '' || /^\d*\.?\d*$/.test(v)) {
                   setCustomSlippage(v);

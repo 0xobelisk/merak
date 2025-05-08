@@ -25,8 +25,9 @@ async function main() {
 
   const amount = await merak.calRemoveLpAmount({
     address:
-      '0xc560cf6c5d6f5f11f8184be7c0ef72e3cce34d715f4cab91d5ef8adfcb4248e7',
+      '0x379aa1cc401f024e2fee2ea25bdb85e48355491bd6fcaf685e39a7fcc84b2101',
     poolAssetId: 2,
+    amount: 15291000,
     // amount: 1000000000000000000n,
   });
 
