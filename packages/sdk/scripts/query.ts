@@ -23,15 +23,22 @@ async function main() {
 
   // console.log(JSON.stringify(events, null, 2));
 
-  const amount = await merak.calRemoveLpAmount({
-    address:
+  // const amount = await merak.calRemoveLpAmount({
+  //   address:
+  //     '0x379aa1cc401f024e2fee2ea25bdb85e48355491bd6fcaf685e39a7fcc84b2101',
+  //   poolAssetId: 2,
+  //   amount: 15291000,
+  //   // amount: 1000000000000000000n,
+  // });
+
+  // console.log(JSON.stringify(amount, null, 2));
+
+  const events = await merak.listEvents({
+    sender:
       '0x379aa1cc401f024e2fee2ea25bdb85e48355491bd6fcaf685e39a7fcc84b2101',
-    poolAssetId: 2,
-    amount: 15291000,
-    // amount: 1000000000000000000n,
   });
 
-  console.log(JSON.stringify(amount, null, 2));
+  console.log(JSON.stringify(events, null, 2));
 }
 
 main();

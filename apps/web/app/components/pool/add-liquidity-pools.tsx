@@ -11,7 +11,7 @@ import { useSignAndExecuteTransaction, useCurrentAccount } from '@mysten/dapp-ki
 import { useRouter, useSearchParams } from 'next/navigation';
 import { WALLETCHAIN } from '@/app/constants';
 import { useAtom } from 'jotai';
-import { AssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
+import { AssetsStateAtom, AssetsLoadingAtom, AllAssetsStateAtom } from '@/app/jotai/assets';
 
 interface TokenData {
   symbol: string;
@@ -48,9 +48,18 @@ export default function AddLiquidity() {
   // Global state management with Jotai
   const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
   const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
+  const [allAssetsState] = useAtom(AllAssetsStateAtom);
 
   const [slippage, setSlippage] = useState('0.50'); // Default 0.5%
   const [customSlippage, setCustomSlippage] = useState('');
+
+  const getAssetMetadata = useCallback(
+    (assetId: number) => {
+      const assetInfo = allAssetsState.assetInfos.find((asset) => asset.assetId === assetId);
+      return assetInfo?.metadata;
+    },
+    [allAssetsState]
+  );
 
   /**
    * Query asset list
@@ -292,11 +301,18 @@ export default function AddLiquidity() {
         asset1Id: tokenPay.id,
         asset2Id: tokenReceive.id
       });
-      const assetInfo = await merak.storage.get.assetMetadata({
-        assetId: poolInfo.value[0].lp_asset_id
-      });
-      console.log(assetInfo, 'assetInfo');
+
       if (!poolInfo || poolInfo.data.length === 0) {
+        setExpectedLPTokens('');
+        return;
+      }
+
+      const lpAssetId = poolInfo.value[0].lp_asset_id;
+      // 使用 getAssetMetadata 获取 LP token 的 metadata
+      const lpMetadata = getAssetMetadata(lpAssetId);
+
+      if (!lpMetadata) {
+        console.error('Failed to get LP token metadata');
         setExpectedLPTokens('');
         return;
       }
@@ -304,7 +320,8 @@ export default function AddLiquidity() {
       const poolInfoValue = poolInfo.value[0];
       const reserveA = parseFloat(poolInfoValue.reserve0);
       const reserveB = parseFloat(poolInfoValue.reserve1);
-      const totalSupply = parseFloat(assetInfo.value.supply);
+      const totalSupply = parseFloat(lpMetadata.supply);
+
       console.log(poolInfoValue, 'poolInfoValue');
       console.log(totalSupply, 'totalSupply');
       const amountA = parseFloat(amountPay) * Math.pow(10, tokenPay.decimals);
@@ -320,15 +337,16 @@ export default function AddLiquidity() {
       }
 
       console.log(lpTokens, 'lpTokens');
-      // 转换为用户可读格式(假设LP token有8位小数)
-      const readableLPTokens = (lpTokens / Math.pow(10, 9)).toFixed(9);
+      // 使用 LP token 的 decimals
+      const lpDecimals = lpMetadata.decimals || 9;
+      const readableLPTokens = (lpTokens / Math.pow(10, lpDecimals)).toFixed(lpDecimals);
       console.log(readableLPTokens, 'readableLPTokens');
       setExpectedLPTokens(readableLPTokens);
     } catch (error) {
       console.error('Failed to calculate LP tokens:', error);
       setExpectedLPTokens('');
     }
-  }, [tokenPay, tokenReceive, amountPay, amountReceive]);
+  }, [tokenPay, tokenReceive, amountPay, amountReceive, getAssetMetadata]);
 
   // 当输入金额变化时重新计算LP代币数量
   useEffect(() => {
@@ -474,7 +492,7 @@ export default function AddLiquidity() {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <Label>Minimum Deposit Amounts</Label>
           <p className="text-sm text-gray-500 mb-2">
             Enter the minimum amount of tokens you're willing to deposit.
@@ -497,7 +515,7 @@ export default function AddLiquidity() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div>
           <Label>Slippage</Label>
