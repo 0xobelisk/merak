@@ -48,14 +48,31 @@ export default function AddLiquidity() {
   // Global state management with Jotai
   const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
   const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
-  const [allAssetsState] = useAtom(AllAssetsStateAtom);
+  const [allAssetsState, setAllAssetsState] = useAtom(AllAssetsStateAtom);
 
   const [slippage, setSlippage] = useState('0.50'); // Default 0.5%
   const [customSlippage, setCustomSlippage] = useState('');
 
   const getAssetMetadata = useCallback(
-    (assetId: number) => {
-      const assetInfo = allAssetsState.assetInfos.find((asset) => asset.assetId === assetId);
+    async (assetId: number) => {
+      if (allAssetsState.assetInfos.length === 0) {
+        const merak = initMerakClient();
+
+        const metadataResults = await merak.listAssetsInfo();
+
+        console.log(metadataResults, 'metadataResults');
+
+        // Update state
+        setAllAssetsState({
+          assetInfos: metadataResults.data
+        });
+
+        const assetInfo = metadataResults.data.find((asset) => asset.assetId === Number(assetId));
+        return assetInfo?.metadata;
+      }
+      const assetInfo = allAssetsState.assetInfos.find(
+        (asset) => asset.assetId === Number(assetId)
+      );
       return assetInfo?.metadata;
     },
     [allAssetsState]
@@ -215,6 +232,22 @@ export default function AddLiquidity() {
       return;
     }
 
+    // 检查用户余额是否足够
+    const payBalance = parseFloat(tokenPay.balance);
+    const receiveBalance = parseFloat(tokenReceive.balance);
+    const payAmount = parseFloat(amountPay);
+    const receiveAmount = parseFloat(amountReceive);
+
+    if (payAmount > payBalance) {
+      toast.error(`Insufficient balance: Not enough ${payBalance} ${tokenPay.symbol} `);
+      return;
+    }
+
+    if (receiveAmount > receiveBalance) {
+      toast.error(`Insufficient balance: Not enough ${receiveBalance} ${tokenReceive.symbol} `);
+      return;
+    }
+
     console.log('Add liquidity');
     const merak = initMerakClient();
     let tx = new Transaction();
@@ -288,7 +321,6 @@ export default function AddLiquidity() {
     router.push('/pool');
   };
 
-  // 计算预期获得的LP代币数量
   const calculateExpectedLPTokens = useCallback(async () => {
     if (!tokenPay || !tokenReceive || !amountPay || !amountReceive) {
       setExpectedLPTokens('');
@@ -308,9 +340,7 @@ export default function AddLiquidity() {
       }
 
       const lpAssetId = poolInfo.value[0].lp_asset_id;
-      // 使用 getAssetMetadata 获取 LP token 的 metadata
-      const lpMetadata = getAssetMetadata(lpAssetId);
-
+      const lpMetadata = await getAssetMetadata(lpAssetId);
       if (!lpMetadata) {
         console.error('Failed to get LP token metadata');
         setExpectedLPTokens('');
@@ -329,18 +359,14 @@ export default function AddLiquidity() {
 
       let lpTokens: number;
       if (reserveA === 0 && reserveB === 0) {
-        // 如果池子为空,使用几何平均数
         lpTokens = Math.sqrt(amountA * amountB);
       } else {
-        // 如果池子已有储备,取最小值
         lpTokens = Math.min((amountA * totalSupply) / reserveA, (amountB * totalSupply) / reserveB);
       }
 
       console.log(lpTokens, 'lpTokens');
-      // 使用 LP token 的 decimals
       const lpDecimals = lpMetadata.decimals || 9;
       const readableLPTokens = (lpTokens / Math.pow(10, lpDecimals)).toFixed(lpDecimals);
-      console.log(readableLPTokens, 'readableLPTokens');
       setExpectedLPTokens(readableLPTokens);
     } catch (error) {
       console.error('Failed to calculate LP tokens:', error);
