@@ -450,6 +450,8 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
       const slippagePercent = parseFloat(slippage) / 100;
       const minAmountOut = BigInt(Math.floor(Number(finalAmount) * (1 - slippagePercent)));
 
+      console.log('============');
+      console.log(amountInWithDecimals, minAmountOut, path, account.address);
       await merak.swapExactTokensForTokens(
         tx,
         amountInWithDecimals,
@@ -759,7 +761,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                   </div>
                 </div>
                 <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-full">
-                  {["0.10", "0.50", "1.00"].map((val) => (
+                  {['0.10', '0.50', '1.00'].map((val) => (
                     <Button
                       key={val}
                       variant="ghost"
@@ -768,7 +770,10 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                           ? 'bg-white text-blue-600 font-medium shadow-sm'
                           : 'bg-transparent text-gray-600 hover:bg-gray-200'
                       }`}
-                      onClick={() => { setSlippage(val); setCustomSlippage(''); }}
+                      onClick={() => {
+                        setSlippage(val);
+                        setCustomSlippage('');
+                      }}
                     >
                       {parseFloat(val)}%
                     </Button>
@@ -781,7 +786,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                     step={0.01}
                     placeholder="Custom"
                     value={customSlippage}
-                    onChange={e => {
+                    onChange={(e) => {
                       const v = e.target.value;
                       if (v === '' || /^\d*\.?\d*$/.test(v)) {
                         setCustomSlippage(v);

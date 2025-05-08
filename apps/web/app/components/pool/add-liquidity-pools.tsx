@@ -32,6 +32,7 @@ export default function AddLiquidity() {
   const [amountReceive, setAmountReceive] = useState('');
   const [minAmountPay, setMinAmountPay] = useState('');
   const [minAmountReceive, setMinAmountReceive] = useState('');
+  const [expectedLPTokens, setExpectedLPTokens] = useState<string>('');
 
   const [isTokenPayModalOpen, setIsTokenPayModalOpen] = useState(false);
   const [isTokenReceiveModalOpen, setIsTokenReceiveModalOpen] = useState(false);
@@ -222,6 +223,17 @@ export default function AddLiquidity() {
       Math.floor(parseFloat(minAmountReceive || '0') * Math.pow(10, tokenReceive.decimals))
     );
 
+    console.log('=============');
+    console.log(
+      tokenPay.id,
+      tokenReceive.id,
+      baseDesired,
+      quoteDesired,
+      baseMin,
+      quoteMin,
+      account.address
+    );
+
     console.log(baseDesired, quoteDesired, baseMin, quoteMin);
 
     // const baseMin = BigInt(0);
@@ -266,6 +278,62 @@ export default function AddLiquidity() {
   const handleBack = () => {
     router.push('/pool');
   };
+
+  // 计算预期获得的LP代币数量
+  const calculateExpectedLPTokens = useCallback(async () => {
+    if (!tokenPay || !tokenReceive || !amountPay || !amountReceive) {
+      setExpectedLPTokens('');
+      return;
+    }
+
+    try {
+      const merak = initMerakClient();
+      const poolInfo = await merak.getPoolList({
+        asset1Id: tokenPay.id,
+        asset2Id: tokenReceive.id
+      });
+      const assetInfo = await merak.storage.get.assetMetadata({
+        assetId: poolInfo.value[0].lp_asset_id
+      });
+      console.log(assetInfo, 'assetInfo');
+      if (!poolInfo || poolInfo.data.length === 0) {
+        setExpectedLPTokens('');
+        return;
+      }
+
+      const poolInfoValue = poolInfo.value[0];
+      const reserveA = parseFloat(poolInfoValue.reserve0);
+      const reserveB = parseFloat(poolInfoValue.reserve1);
+      const totalSupply = parseFloat(assetInfo.value.supply);
+      console.log(poolInfoValue, 'poolInfoValue');
+      console.log(totalSupply, 'totalSupply');
+      const amountA = parseFloat(amountPay) * Math.pow(10, tokenPay.decimals);
+      const amountB = parseFloat(amountReceive) * Math.pow(10, tokenReceive.decimals);
+
+      let lpTokens: number;
+      if (reserveA === 0 && reserveB === 0) {
+        // 如果池子为空,使用几何平均数
+        lpTokens = Math.sqrt(amountA * amountB);
+      } else {
+        // 如果池子已有储备,取最小值
+        lpTokens = Math.min((amountA * totalSupply) / reserveA, (amountB * totalSupply) / reserveB);
+      }
+
+      console.log(lpTokens, 'lpTokens');
+      // 转换为用户可读格式(假设LP token有8位小数)
+      const readableLPTokens = (lpTokens / Math.pow(10, 9)).toFixed(9);
+      console.log(readableLPTokens, 'readableLPTokens');
+      setExpectedLPTokens(readableLPTokens);
+    } catch (error) {
+      console.error('Failed to calculate LP tokens:', error);
+      setExpectedLPTokens('');
+    }
+  }, [tokenPay, tokenReceive, amountPay, amountReceive]);
+
+  // 当输入金额变化时重新计算LP代币数量
+  useEffect(() => {
+    calculateExpectedLPTokens();
+  }, [calculateExpectedLPTokens]);
 
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-8">
@@ -378,6 +446,13 @@ export default function AddLiquidity() {
                 </p>
               )}
             </div>
+            {expectedLPTokens && (
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <p className="text-sm text-blue-600">
+                  Expected LP tokens to receive: {expectedLPTokens}
+                </p>
+              </div>
+            )}
             {tokenPay && tokenReceive && reserves && (
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-sm text-gray-600">

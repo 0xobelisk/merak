@@ -261,7 +261,7 @@ export default function RemoveLiquidity() {
     console.log(tokenA, tokenB);
 
     // Convert amounts to blockchain format (accounting for decimals)
-    const liquidity = BigInt(Math.floor(parseFloat(liquidityAmount) * Math.pow(10, 8))); // LP token decimals
+    const liquidity = BigInt(Math.floor(parseFloat(liquidityAmount) * Math.pow(10, 9))); // LP token decimals
     const minAmountAValue = BigInt(
       Math.floor(parseFloat(minAmountA || '0') * Math.pow(10, tokenA.decimals))
     );
