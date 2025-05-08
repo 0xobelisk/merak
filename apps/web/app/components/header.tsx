@@ -1,12 +1,12 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ConnectButton, useCurrentWallet } from '@mysten/dapp-kit';
 import Image from 'next/image';
 import { IndexerSettings } from './settings/indexer-settings';
 import { WalletMenu } from './wallet/wallet-menu';
 
 export default function Header() {
-  const { currentWallet } = useCurrentWallet();
+  const { currentWallet, connectionStatus } = useCurrentWallet();
 
   return (
     <header className="flex items-center justify-between px-4 py-3 bg-transparent border-b border-gray-200">
@@ -34,6 +34,9 @@ export default function Header() {
         </Link>
         <Link href="/bridge" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Bridge
+        </Link>
+        <Link href="/positions" className="text-sm font-medium text-gray-600 hover:text-blue-500">
+          Positions
         </Link>
         {/* <Link href="/create" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Create Token

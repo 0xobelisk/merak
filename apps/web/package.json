@@ -14,10 +14,10 @@
     "validate": "pnpm format:check && pnpm type-check"
   },
   "dependencies": {
-    "@0xobelisk/merak-sdk": "^0.0.40",
-    "@0xobelisk/sui-cli": "^1.2.0-pre.11",
-    "@0xobelisk/sui-client": "^1.2.0-pre.11",
-    "@0xobelisk/sui-common": "^1.2.0-pre.11",
+    "@0xobelisk/merak-sdk": "workspace:*",
+    "@0xobelisk/sui-cli": "^1.2.0-pre.13",
+    "@0xobelisk/sui-client": "^1.2.0-pre.13",
+    "@0xobelisk/sui-common": "^1.2.0-pre.13",
     "@mysten/dapp-kit": "0.14.53",
     "@mysten/enoki": "^0.4.0",
     "@mysten/sui": "1.19.0",

@@ -935,4 +935,122 @@ export class Merak {
   } = {}) {
     return this.storage.list.bridge({ chainName, first, after, orderBy });
   }
+
+  // async listOwnedLpAssetsInfo({ address }: { address: string }) {
+  //   const lpAssets = await this.listOwnedAssetsInfo({
+  //     address,
+  //     assetType: 'Lp',
+  //   });
+
+  //   const lpAssetsWithRemoveInfo = await Promise.all(
+  //     lpAssets.data.map(async (lpAsset) => {
+  //       try {
+  //         const liquidityInfo = await this.calRemoveLpAmount({
+  //           address,
+  //           poolAssetId: lpAsset.assetId,
+  //         });
+
+  //         return {
+  //           ...lpAsset,
+  //           liquidityInfo: {
+  //             ...liquidityInfo,
+  //             poolAssetId: lpAsset.assetId,
+  //           },
+  //         };
+  //       } catch (error) {
+  //         console.error(
+  //           `Failed to calculate remove LP amount for asset ${lpAsset.assetId}:`,
+  //           error
+  //         );
+  //         return {
+  //           ...lpAsset,
+  //           liquidityInfo: null,
+  //         };
+  //       }
+  //     })
+  //   );
+
+  //   return {
+  //     data: lpAssetsWithRemoveInfo,
+  //     pageInfo: lpAssets.pageInfo,
+  //     totalCount: lpAssets.totalCount,
+  //   };
+  // }
+
+  async calRemoveLpAmount({
+    address,
+    poolAssetId,
+    amount,
+  }: {
+    address: string;
+    poolAssetId: bigint | number | string;
+    amount?: bigint | number | string;
+  }) {
+    const poolAssetMetadata = await this.storage.get.assetMetadata({
+      assetId: poolAssetId,
+    });
+
+    if (!poolAssetMetadata) {
+      throw new Error(`Pool asset metadata not found: ${poolAssetId}`);
+    }
+
+    const poolAssetAmount = await this.storage.get.account({
+      address,
+      assetId: poolAssetId,
+    });
+
+    if (!poolAssetAmount) {
+      throw new Error(`Pool asset amount not found: ${poolAssetId}`);
+    }
+
+    const amountNum = Number(amount ?? poolAssetAmount.value.balance);
+
+    if (Number(poolAssetAmount.value.balance) < amountNum) {
+      throw new Error(
+        `Pool asset amount is less than the amount: ${Number(
+          poolAssetAmount.value.balance
+        )}`
+      );
+    }
+
+    const shareAmount = amountNum / Number(poolAssetMetadata.value.supply);
+
+    const poolsInfo = await this.storage.list.pool({
+      poolAddress: poolAssetMetadata.value.pool_address,
+    });
+
+    if (!poolsInfo) {
+      throw new Error(`Pool info not found: ${poolAssetId}`);
+    }
+
+    const poolInfoData = poolsInfo.data[0];
+    const poolInfoValue = poolsInfo.value[0];
+    // Convert to floating-point calculation
+    const amountA = Number(poolInfoValue.reserve0) * shareAmount;
+    const amountB = Number(poolInfoValue.reserve1) * shareAmount;
+
+    // Get asset precision information
+    const asset1Metadata = await this.storage.get.assetMetadata({
+      assetId: poolInfoData.key1,
+    });
+    const asset2Metadata = await this.storage.get.assetMetadata({
+      assetId: poolInfoData.key2,
+    });
+
+    if (!asset1Metadata || !asset2Metadata) {
+      throw new Error('Asset metadata not found');
+    }
+
+    return {
+      amountA: Math.floor(amountA), // Round down to ensure it doesn't exceed the actual available amount
+      amountB: Math.floor(amountB),
+      amountASymbol: asset1Metadata.value.symbol,
+      amountBSymbol: asset2Metadata.value.symbol,
+      decimalsA: asset1Metadata.value.decimals,
+      decimalsB: asset2Metadata.value.decimals,
+      // Add formatted amounts for easy frontend display
+      formattedAmountA: amountA / Math.pow(10, asset1Metadata.value.decimals),
+      formattedAmountB: amountB / Math.pow(10, asset2Metadata.value.decimals),
+    };
+  }
 }

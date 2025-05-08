@@ -32,11 +32,15 @@ export default function AddLiquidity() {
   const [amountReceive, setAmountReceive] = useState('');
   const [minAmountPay, setMinAmountPay] = useState('');
   const [minAmountReceive, setMinAmountReceive] = useState('');
+  const [expectedLPTokens, setExpectedLPTokens] = useState<string>('');
 
   const [isTokenPayModalOpen, setIsTokenPayModalOpen] = useState(false);
   const [isTokenReceiveModalOpen, setIsTokenReceiveModalOpen] = useState(false);
 
   const [availableTokenReceives, setAvailableTokenReceives] = useState<number[]>([]);
+  const [reserves, setReserves] = useState<{ reservePay: string; reserveReceive: string } | null>(
+    null
+  );
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -44,6 +48,9 @@ export default function AddLiquidity() {
   // Global state management with Jotai
   const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
   const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
+
+  const [slippage, setSlippage] = useState('0.50'); // Default 0.5%
+  const [customSlippage, setCustomSlippage] = useState('');
 
   /**
    * Query asset list
@@ -84,68 +91,95 @@ export default function AddLiquidity() {
       console.log('assetsState', assetsState);
     }
   }, [account?.address, queryAssets]);
-  // useEffect(() => {
-  //   const asset1 = searchParams.get('asset1');
-  //   const asset2 = searchParams.get('asset2');
 
-  //   if (asset1 && asset2) {
-  //     const findAndSetTokens = async () => {
-  //       const merak = initMerakClient();
-  //       const asset1Metadata = await merak.metadataOf(Number(asset1));
-  //       const asset2Metadata = await merak.metadataOf(Number(asset2));
+  // Automatically calculate minimum deposit
+  useEffect(() => {
+    if (!amountPay || !amountReceive || !tokenPay || !tokenReceive) {
+      setMinAmountPay('');
+      setMinAmountReceive('');
+      return;
+    }
+    const pay = parseFloat(amountPay);
+    const receive = parseFloat(amountReceive);
+    if (isNaN(pay) || pay <= 0 || isNaN(receive) || receive <= 0) {
+      setMinAmountPay('');
+      setMinAmountReceive('');
+      return;
+    }
+    const slippageFactor = 1 - Number(slippage) / 100;
+    setMinAmountPay((pay * slippageFactor).toFixed(tokenPay.decimals));
+    setMinAmountReceive((receive * slippageFactor).toFixed(tokenReceive.decimals));
+  }, [amountPay, amountReceive, tokenPay, tokenReceive, slippage]);
 
-  //       let asset1Balance = '0.0';
-  //       let asset2Balance = '0.0';
+  // Get pool reserve information
+  const fetchReserves = useCallback(async () => {
+    if (!tokenPay || !tokenReceive) {
+      setReserves(null);
+      return;
+    }
 
-  //       if (account?.address) {
-  //         const balance1 = await merak.balanceOf(Number(asset1), account.address);
-  //         const balance2 = await merak.balanceOf(Number(asset2), account.address);
+    try {
+      const merak = initMerakClient();
+      const poolInfo = await merak.getPoolList({
+        asset1Id: tokenPay.id,
+        asset2Id: tokenReceive.id
+      });
 
-  //         asset1Balance = balance1
-  //           ? (Number(balance1[0]) / Math.pow(10, asset1Metadata[3])).toFixed(4)
-  //           : '0.0';
+      if (!poolInfo || poolInfo.data.length === 0) {
+        setReserves(null);
+        return;
+      }
 
-  //         asset2Balance = balance2
-  //           ? (Number(balance2[0]) / Math.pow(10, asset2Metadata[3])).toFixed(4)
-  //           : '0.0';
-  //       }
+      const poolInfoValue = poolInfo.value[0];
+      setReserves({
+        reservePay: poolInfoValue.reserve0,
+        reserveReceive: poolInfoValue.reserve1
+      });
+    } catch (error) {
+      console.error('Failed to fetch reserves:', error);
+      setReserves(null);
+    }
+  }, [tokenPay, tokenReceive]);
 
-  //       const asset1Data = {
-  //         id: Number(asset1),
-  //         name: asset1Metadata[0],
-  //         symbol: asset1Metadata[1],
-  //         decimals: asset1Metadata[3],
-  //         icon: asset1Metadata[4],
-  //         balance: asset1Balance
-  //       };
+  // Get reserve information when selecting tokens
+  useEffect(() => {
+    fetchReserves();
+  }, [fetchReserves]);
 
-  //       const asset2Data = {
-  //         id: Number(asset2),
-  //         name: asset2Metadata[0],
-  //         symbol: asset2Metadata[1],
-  //         decimals: asset2Metadata[3],
-  //         icon: asset2Metadata[4],
-  //         balance: asset2Balance
-  //       };
+  // Handle input amount changes
+  const handleAmountPayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setAmountPay(value);
 
-  //       console.log('asset1', asset1);
-  //       console.log('asset2', asset2);
+    // If the pool has reserves, calculate the amount of the other token
+    if (reserves && reserves.reservePay !== '0' && value) {
+      const amountPayNum = parseFloat(value);
+      const reservePayNum = parseFloat(reserves.reservePay) / Math.pow(10, tokenPay!.decimals);
+      const reserveReceiveNum =
+        parseFloat(reserves.reserveReceive) / Math.pow(10, tokenReceive!.decimals);
 
-  //       console.log('asset1Metadata', asset1Metadata);
-  //       console.log('asset1Data', asset1Data);
-  //       console.log('asset2Metadata', asset2Metadata);
-  //       console.log('asset2Data', asset2Data);
-  //       if (asset1Data) {
-  //         setTokenPay(asset1Data);
-  //       }
-  //       if (asset2Data) {
-  //         setTokenReceive(asset2Data);
-  //       }
-  //     };
+      // amountReceive = amountPay * (reserveReceive / reservePay)
+      const calculatedAmountReceive = amountPayNum * (reserveReceiveNum / reservePayNum);
+      setAmountReceive(calculatedAmountReceive.toFixed(tokenReceive!.decimals));
+    }
+  };
 
-  //     findAndSetTokens();
-  //   }
-  // }, [searchParams]);
+  const handleAmountReceiveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setAmountReceive(value);
+
+    // If the pool has reserves, calculate the amount of the other token
+    if (reserves && reserves.reserveReceive !== '0' && value) {
+      const amountReceiveNum = parseFloat(value);
+      const reservePay = parseFloat(reserves.reservePay) / Math.pow(10, tokenPay!.decimals);
+      const reserveReceive =
+        parseFloat(reserves.reserveReceive) / Math.pow(10, tokenReceive!.decimals);
+
+      // amountPay = amountReceive * (reservePay / reserveReceive)
+      const calculatedAmountPay = amountReceiveNum * (reservePay / reserveReceive);
+      setAmountPay(calculatedAmountPay.toFixed(tokenPay!.decimals));
+    }
+  };
 
   const handleSelectTokenPay = async (token: TokenData) => {
     console.log(token, 'select token');
@@ -189,6 +223,21 @@ export default function AddLiquidity() {
       Math.floor(parseFloat(minAmountReceive || '0') * Math.pow(10, tokenReceive.decimals))
     );
 
+    console.log('=============');
+    console.log(
+      tokenPay.id,
+      tokenReceive.id,
+      baseDesired,
+      quoteDesired,
+      baseMin,
+      quoteMin,
+      account.address
+    );
+
+    console.log(baseDesired, quoteDesired, baseMin, quoteMin);
+
+    // const baseMin = BigInt(0);
+    // const quoteMin = BigInt(0);
     await merak.addLiquidity(
       tx,
       tokenPay.id,
@@ -229,6 +278,62 @@ export default function AddLiquidity() {
   const handleBack = () => {
     router.push('/pool');
   };
+
+  // 计算预期获得的LP代币数量
+  const calculateExpectedLPTokens = useCallback(async () => {
+    if (!tokenPay || !tokenReceive || !amountPay || !amountReceive) {
+      setExpectedLPTokens('');
+      return;
+    }
+
+    try {
+      const merak = initMerakClient();
+      const poolInfo = await merak.getPoolList({
+        asset1Id: tokenPay.id,
+        asset2Id: tokenReceive.id
+      });
+      const assetInfo = await merak.storage.get.assetMetadata({
+        assetId: poolInfo.value[0].lp_asset_id
+      });
+      console.log(assetInfo, 'assetInfo');
+      if (!poolInfo || poolInfo.data.length === 0) {
+        setExpectedLPTokens('');
+        return;
+      }
+
+      const poolInfoValue = poolInfo.value[0];
+      const reserveA = parseFloat(poolInfoValue.reserve0);
+      const reserveB = parseFloat(poolInfoValue.reserve1);
+      const totalSupply = parseFloat(assetInfo.value.supply);
+      console.log(poolInfoValue, 'poolInfoValue');
+      console.log(totalSupply, 'totalSupply');
+      const amountA = parseFloat(amountPay) * Math.pow(10, tokenPay.decimals);
+      const amountB = parseFloat(amountReceive) * Math.pow(10, tokenReceive.decimals);
+
+      let lpTokens: number;
+      if (reserveA === 0 && reserveB === 0) {
+        // 如果池子为空,使用几何平均数
+        lpTokens = Math.sqrt(amountA * amountB);
+      } else {
+        // 如果池子已有储备,取最小值
+        lpTokens = Math.min((amountA * totalSupply) / reserveA, (amountB * totalSupply) / reserveB);
+      }
+
+      console.log(lpTokens, 'lpTokens');
+      // 转换为用户可读格式(假设LP token有8位小数)
+      const readableLPTokens = (lpTokens / Math.pow(10, 9)).toFixed(9);
+      console.log(readableLPTokens, 'readableLPTokens');
+      setExpectedLPTokens(readableLPTokens);
+    } catch (error) {
+      console.error('Failed to calculate LP tokens:', error);
+      setExpectedLPTokens('');
+    }
+  }, [tokenPay, tokenReceive, amountPay, amountReceive]);
+
+  // 当输入金额变化时重新计算LP代币数量
+  useEffect(() => {
+    calculateExpectedLPTokens();
+  }, [calculateExpectedLPTokens]);
 
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-8">
@@ -311,7 +416,7 @@ export default function AddLiquidity() {
                 <Input
                   type="text"
                   value={amountPay}
-                  onChange={(e) => setAmountPay(e.target.value)}
+                  onChange={handleAmountPayChange}
                   placeholder="Enter amount"
                 />
                 <span className="text-sm font-medium">{tokenPay ? tokenPay.symbol : ''}</span>
@@ -328,7 +433,7 @@ export default function AddLiquidity() {
                 <Input
                   type="text"
                   value={amountReceive}
-                  onChange={(e) => setAmountReceive(e.target.value)}
+                  onChange={handleAmountReceiveChange}
                   placeholder="Enter amount"
                 />
                 <span className="text-sm font-medium">
@@ -341,6 +446,31 @@ export default function AddLiquidity() {
                 </p>
               )}
             </div>
+            {expectedLPTokens && (
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <p className="text-sm text-blue-600">
+                  Expected LP tokens to receive: {expectedLPTokens}
+                </p>
+              </div>
+            )}
+            {tokenPay && tokenReceive && reserves && (
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600">
+                  {reserves.reservePay === '0' && reserves.reserveReceive === '0' ? (
+                    'This is a new pool, you can set the initial price'
+                  ) : (
+                    <>
+                      Current pool ratio: 1 {tokenPay.symbol} ={' '}
+                      {(
+                        (parseFloat(reserves.reserveReceive) / parseFloat(reserves.reservePay)) *
+                        Math.pow(10, tokenPay.decimals - tokenReceive.decimals)
+                      ).toFixed(6)}{' '}
+                      {tokenReceive.symbol}
+                    </>
+                  )}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -353,29 +483,57 @@ export default function AddLiquidity() {
             <div>
               <Label>Minimum {tokenPay ? tokenPay.symbol : ''} Amount</Label>
               <div className="flex items-center space-x-2">
-                <Input
-                  type="text"
-                  value={minAmountPay}
-                  onChange={(e) => setMinAmountPay(e.target.value)}
-                  placeholder="0.0"
-                />
+                <Input type="text" value={minAmountPay} disabled placeholder="0.0" />
                 <span className="text-sm font-medium">{tokenPay ? tokenPay.symbol : ''}</span>
               </div>
             </div>
             <div>
               <Label>Minimum {tokenReceive ? tokenReceive.symbol : ''} Amount</Label>
               <div className="flex items-center space-x-2">
-                <Input
-                  type="text"
-                  value={minAmountReceive}
-                  onChange={(e) => setMinAmountReceive(e.target.value)}
-                  placeholder="0.0"
-                />
+                <Input type="text" value={minAmountReceive} disabled placeholder="0.0" />
                 <span className="text-sm font-medium">
                   {tokenReceive ? tokenReceive.symbol : ''}
                 </span>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div>
+          <Label>Slippage</Label>
+          <div className="flex items-center space-x-2 mt-2">
+            {['0.10', '0.50', '1.00'].map((val) => (
+              <Button
+                key={val}
+                type="button"
+                variant={slippage === val ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => {
+                  setSlippage(val);
+                  setCustomSlippage('');
+                }}
+              >
+                {parseFloat(val)}%
+              </Button>
+            ))}
+            <Input
+              type="text"
+              inputMode="decimal"
+              pattern="^\\d*\\.?\\d*$"
+              min={0}
+              step={0.01}
+              placeholder="Custom"
+              value={customSlippage}
+              onChange={(e) => {
+                const v = e.target.value;
+                if (v === '' || /^\d*\.?\d*$/.test(v)) {
+                  setCustomSlippage(v);
+                  setSlippage(v);
+                }
+              }}
+              className="w-16 h-7 px-2 text-xs rounded-full border-none bg-white focus:ring-2 focus:ring-blue-200"
+            />
+            <span className="text-xs text-gray-500">%</span>
           </div>
         </div>
       </div>

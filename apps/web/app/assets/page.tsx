@@ -227,17 +227,17 @@ export default function AssetsPage() {
                 <TableRow>
                   <TableHead className="cursor-pointer" onClick={() => requestSort('assetId')}>
                     <div className="flex items-center">
-                      Asset ID
+                      ID
                       {sortConfig?.key === 'assetId' && <ArrowUpDown className="ml-2 h-4 w-4" />}
                     </div>
                   </TableHead>
-                  <TableHead>Assets</TableHead>
                   <TableHead className="cursor-pointer" onClick={() => requestSort('symbol')}>
                     <div className="flex items-center">
-                      Token Symbol
+                      Symbol
                       {sortConfig?.key === 'symbol' && <ArrowUpDown className="ml-2 h-4 w-4" />}
                     </div>
                   </TableHead>
+                  <TableHead>Name</TableHead>
                   <TableHead className="cursor-pointer" onClick={() => requestSort('decimals')}>
                     <div className="flex items-center">
                       Decimals
@@ -256,6 +256,7 @@ export default function AssetsPage() {
                       {sortConfig?.key === 'accounts' && <ArrowUpDown className="ml-2 h-4 w-4" />}
                     </div>
                   </TableHead>
+                  <TableHead>Type</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -263,7 +264,7 @@ export default function AssetsPage() {
                   <TableRow key={asset.assetId}>
                     <TableCell className="font-mono text-xs">{asset.assetId}</TableCell>
                     <TableCell>
-                      <div className="flex items-center">
+                      <div className="flex items-center justify-start">
                         <img
                           src={asset.metadata?.icon_url || 'https://hop.ag/tokens/SUI.svg'}
                           alt={asset.metadata?.name || `Token ${asset.assetId}`}
@@ -272,14 +273,12 @@ export default function AssetsPage() {
                             (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
                           }}
                         />
-                        <div>
-                          <div className="font-medium">
-                            {asset.metadata?.name || `Unknown Asset #${asset.assetId}`}
-                          </div>
-                        </div>
+                        <span className="font-bold">{asset.metadata?.symbol || '-'}</span>
                       </div>
                     </TableCell>
-                    <TableCell>{asset.metadata?.symbol || '-'}</TableCell>
+                    <TableCell>
+                      {asset.metadata?.name || `Unknown Asset #${asset.assetId}`}
+                    </TableCell>
                     <TableCell>{asset.metadata?.decimals || 0}</TableCell>
                     <TableCell>
                       {asset.metadata?.supply
@@ -287,6 +286,11 @@ export default function AssetsPage() {
                         : '-'}
                     </TableCell>
                     <TableCell>{asset.metadata?.accounts || '-'}</TableCell>
+                    <TableCell>
+                      <span className="inline-block px-2 py-0.5 rounded bg-gray-100 text-gray-800 text-xs font-semibold border border-gray-200">
+                        {asset.metadata?.asset_type ? Object.keys(asset.metadata.asset_type)[0] : '-'}
+                      </span>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

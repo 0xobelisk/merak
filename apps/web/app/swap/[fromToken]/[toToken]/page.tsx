@@ -43,7 +43,8 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   // UI states
   const [isTokenSelectionOpen, setTokenSelectionOpen] = useAtom(TokenSelectionOpen);
   const [currentSelection, setCurrentSelection] = useState<'from' | 'to'>('from');
-  const [slippage, setSlippage] = useState('1.00');
+  const [slippage, setSlippage] = useState('0.50');
+  const [customSlippage, setCustomSlippage] = useState('');
 
   // Data states
   const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
@@ -449,6 +450,8 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
       const slippagePercent = parseFloat(slippage) / 100;
       const minAmountOut = BigInt(Math.floor(Number(finalAmount) * (1 - slippagePercent)));
 
+      console.log('============');
+      console.log(amountInWithDecimals, minAmountOut, path, account.address);
       await merak.swapExactTokensForTokens(
         tx,
         amountInWithDecimals,
@@ -758,50 +761,41 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                   </div>
                 </div>
                 <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-full">
-                  <Button
-                    variant="ghost"
-                    className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${
-                      slippage === '0.50'
-                        ? 'bg-white text-blue-600 font-medium shadow-sm'
-                        : 'bg-transparent text-gray-600 hover:bg-gray-200'
-                    }`}
-                    onClick={() => setSlippage('0.50')}
-                  >
-                    0.5%
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${
-                      slippage === '1.00'
-                        ? 'bg-white text-blue-600 font-medium shadow-sm'
-                        : 'bg-transparent text-gray-600 hover:bg-gray-200'
-                    }`}
-                    onClick={() => setSlippage('1.00')}
-                  >
-                    1.0%
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${
-                      slippage === '2.00'
-                        ? 'bg-white text-blue-600 font-medium shadow-sm'
-                        : 'bg-transparent text-gray-600 hover:bg-gray-200'
-                    }`}
-                    onClick={() => setSlippage('2.00')}
-                  >
-                    2.0%
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${
-                      slippage === '3.00'
-                        ? 'bg-white text-blue-600 font-medium shadow-sm'
-                        : 'bg-transparent text-gray-600 hover:bg-gray-200'
-                    }`}
-                    onClick={() => setSlippage('3.00')}
-                  >
-                    3.0%
-                  </Button>
+                  {['0.10', '0.50', '1.00'].map((val) => (
+                    <Button
+                      key={val}
+                      variant="ghost"
+                      className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${
+                        slippage === val
+                          ? 'bg-white text-blue-600 font-medium shadow-sm'
+                          : 'bg-transparent text-gray-600 hover:bg-gray-200'
+                      }`}
+                      onClick={() => {
+                        setSlippage(val);
+                        setCustomSlippage('');
+                      }}
+                    >
+                      {parseFloat(val)}%
+                    </Button>
+                  ))}
+                  <Input
+                    type="text"
+                    inputMode="decimal"
+                    pattern="^\\d*\\.?\\d*$"
+                    min={0}
+                    step={0.01}
+                    placeholder="Custom"
+                    value={customSlippage}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      if (v === '' || /^\d*\.?\d*$/.test(v)) {
+                        setCustomSlippage(v);
+                        setSlippage(v);
+                      }
+                    }}
+                    className="w-16 h-7 px-2 text-xs rounded-full border-none bg-white focus:ring-2 focus:ring-blue-200"
+                  />
+                  <span className="text-xs text-gray-500">%</span>
                 </div>
               </div>
             </div>
