@@ -28,12 +28,12 @@ export function WalletMenu({ address }: { address: string }) {
 
   const handleSelectAccount = (e: React.MouseEvent) => {
     e.preventDefault();
-    switchAccount();
+    switchAccount({ account: undefined });
   };
 
   const handleDisconnect = (e: React.MouseEvent) => {
     e.preventDefault();
-    
+
     // Clear wallet info from storage when disconnecting
     try {
       localStorage.removeItem(STORAGE_KEYS.LOCAL);
@@ -41,7 +41,7 @@ export function WalletMenu({ address }: { address: string }) {
     } catch (error) {
       console.error('Error clearing wallet storage:', error);
     }
-    
+
     // Disconnect the wallet
     disconnect();
     toast.info('Wallet disconnected');
