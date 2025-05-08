@@ -908,6 +908,27 @@ export default function Portfolio() {
     }
   }, [account, router, queryAssets]);
 
+  // Add initialization effect for AllAssetsState
+  useEffect(() => {
+    const initAllAssetsState = async () => {
+      if (allAssetsState.assetInfos.length === 0) {
+        try {
+          const merak = initMerakClient();
+          const metadataResults = await merak.listAssetsInfo();
+
+          setAllAssetsState({
+            assetInfos: metadataResults.data
+          });
+        } catch (error) {
+          console.error('Error initializing AllAssetsState:', error);
+          toast.error('Failed to fetch all assets information');
+        }
+      }
+    };
+
+    initAllAssetsState();
+  }, [allAssetsState.assetInfos.length, setAllAssetsState]);
+
   // Add handleActionClick function to Portfolio component
   const handleActionClick = useCallback(
     (action: AssetOperationType, assetId: number) => {
