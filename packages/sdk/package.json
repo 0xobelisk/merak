@@ -1,6 +1,6 @@
 {
   "name": "@0xobelisk/merak-sdk",
-  "version": "0.0.43",
+  "version": "0.0.45",
   "description": "Tookit for interacting with merak protocol",
   "keywords": [
     "sui",
