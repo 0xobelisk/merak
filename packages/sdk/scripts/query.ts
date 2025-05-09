@@ -11,8 +11,8 @@ async function main() {
   const merak = new Merak({
     networkType: network as NetworkType,
     secretKey: privateKey,
-    indexerUrl: 'https://merak-indexer-testnet-api.obelisk.build',
-    indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build',
+    // indexerUrl: 'https://merak-indexer-testnet-api.obelisk.build',
+    // indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build',
   });
 
   // const events = await merak.listOwnedAssetsInfo({
@@ -39,6 +39,13 @@ async function main() {
   });
 
   console.log(JSON.stringify(events, null, 2));
+
+  const transactions = await merak.listTransactionHistory({
+    sender:
+      '0x379aa1cc401f024e2fee2ea25bdb85e48355491bd6fcaf685e39a7fcc84b2101',
+  });
+
+  console.log(JSON.stringify(transactions, null, 2));
 }
 
 main();

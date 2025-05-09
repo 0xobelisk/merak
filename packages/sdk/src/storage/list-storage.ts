@@ -202,4 +202,30 @@ export class ListStorage {
     });
     return item;
   }
+
+  async transactions({
+    functionName,
+    sender,
+    first,
+    after,
+    orderBy,
+    showEvent,
+  }: {
+    functionName?: string[];
+    sender?: string;
+    first?: number;
+    after?: string;
+    orderBy?: string[];
+    showEvent?: boolean;
+  } = {}) {
+    const item = await this.dubhe.getTransactions({
+      functionName,
+      sender,
+      first,
+      after,
+      orderBy,
+      showEvent,
+    });
+    return item;
+  }
 }

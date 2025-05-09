@@ -1,4 +1,4 @@
-import { DubheParams } from '@0xobelisk/sui-client';
+import { DubheParams, IndexerEvent } from '@0xobelisk/sui-client';
 
 export type MerakParams = {
   schemaId?: string;
@@ -88,6 +88,34 @@ export type EventInfo = {
 
 export type EventInfoResponse = {
   data: EventInfo[];
+  pageInfo: PageInfo;
+  totalCount: number;
+};
+
+export type TransactionInfo = {
+  sender: string;
+  createdAt: string;
+  digest: string;
+  functionName: string;
+  events: IndexerEvent[];
+};
+
+export type TransactionInfoResponse = {
+  data: TransactionInfo[];
+  pageInfo: PageInfo;
+  totalCount: number;
+};
+
+export type TransactionHistoryInfo = {
+  sender: string;
+  createdAt: string;
+  digest: string;
+  functionName: string;
+  event: IndexerEvent;
+};
+
+export type TransactionHistoryInfoResponse = {
+  data: TransactionHistoryInfo[];
   pageInfo: PageInfo;
   totalCount: number;
 };

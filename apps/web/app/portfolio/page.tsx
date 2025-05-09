@@ -182,17 +182,18 @@ export default function Portfolio() {
 
       // Call transaction history API
       const response = await merak
-        .listEvents({
+        .listTransactionHistory({
           sender: account?.address
         })
         .catch(() => ({ data: [] }));
 
       // Process returned data
-      const formattedHistory = (response.data || []).map((event: any) => {
-        const timestamp = new Date(parseInt(event.createdAt)).toISOString();
-        const digest = event.digest;
-        const eventType = event.name; // Compatible with different API return formats
-        const eventBody = event.value; // Compatible with different API return formats
+      const formattedHistory = (response.data || []).map((tx: any) => {
+        const timestamp = new Date(parseInt(tx.createdAt)).toISOString();
+        const digest = tx.event.digest;
+        const eventType = tx.event.name; // Compatible with different API return formats
+        const eventBody = tx.event.value; // Compatible with different API return formats
+        const checkpoint = tx.event.checkpoint;
 
         // Generate different display content based on event type
         switch (eventType) {
@@ -208,7 +209,7 @@ export default function Portfolio() {
               recipient: to,
               timestamp,
               status: 'Completed',
-              checkpoint: event.checkpoint,
+              checkpoint,
               eventType,
               details: {
                 from: shortenAddress(from),
@@ -236,7 +237,7 @@ export default function Portfolio() {
               amountOut: amount1_in + amount1_out,
               timestamp,
               status: 'Completed',
-              checkpoint: event.checkpoint,
+              checkpoint,
               eventType,
               details: {
                 from: shortenAddress(sender),
@@ -269,7 +270,7 @@ export default function Portfolio() {
               lpAmount: lp_asset_minted,
               timestamp,
               status: 'Completed',
-              checkpoint: event.checkpoint,
+              checkpoint,
               eventType,
               details: {
                 who: shortenAddress(who),
@@ -302,7 +303,7 @@ export default function Portfolio() {
               lpAmount: lp_asset_burned,
               timestamp,
               status: 'Completed',
-              checkpoint: event.checkpoint,
+              checkpoint,
               eventType,
               details: {
                 who: shortenAddress(who),
@@ -373,7 +374,7 @@ export default function Portfolio() {
               creator: owner,
               timestamp,
               status: 'Completed',
-              checkpoint: event.checkpoint,
+              checkpoint,
               eventType,
               details: {
                 name,
@@ -405,7 +406,7 @@ export default function Portfolio() {
               lpSymbol: lp_asset_symbol,
               timestamp,
               status: 'Completed',
-              checkpoint: event.checkpoint,
+              checkpoint,
               eventType,
               details: {
                 creator: shortenAddress(creator),
@@ -427,7 +428,7 @@ export default function Portfolio() {
               recipient: to,
               timestamp,
               status: 'Completed',
-              checkpoint: event.checkpoint,
+              checkpoint,
               eventType,
               details: {
                 from: shortenAddress(from),
@@ -448,7 +449,7 @@ export default function Portfolio() {
               recipient: beneficiary,
               timestamp,
               status: 'Completed',
-              checkpoint: event.checkpoint,
+              checkpoint,
               eventType,
               details: {
                 from: shortenAddress(from),
@@ -469,7 +470,7 @@ export default function Portfolio() {
               recipient: beneficiary,
               timestamp,
               status: 'Completed',
-              checkpoint: event.checkpoint,
+              checkpoint,
               eventType,
               details: {
                 from: shortenAddress(from),
@@ -492,7 +493,7 @@ export default function Portfolio() {
               toChain: to_chain,
               timestamp,
               status: 'Completed',
-              checkpoint: event.checkpoint,
+              checkpoint,
               eventType,
               details: {
                 from: shortenAddress(from),
@@ -516,7 +517,7 @@ export default function Portfolio() {
               fromChain: from_chain,
               timestamp,
               status: 'Completed',
-              checkpoint: event.checkpoint,
+              checkpoint,
               eventType,
               details: {
                 from: shortenAddress(from),
@@ -534,7 +535,7 @@ export default function Portfolio() {
               eventName: eventType,
               timestamp,
               status: 'Completed',
-              checkpoint: event.checkpoint,
+              checkpoint,
               eventType,
               details: eventBody
             };

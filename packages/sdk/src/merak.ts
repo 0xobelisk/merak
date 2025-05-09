@@ -9,6 +9,10 @@ import {
   EventInfo,
   BridgeChainName,
   AssetType,
+  TransactionInfoResponse,
+  TransactionInfo,
+  TransactionHistoryInfoResponse,
+  TransactionHistoryInfo,
 } from 'src/types';
 import { Assets, Dex, Wrapper, Bridge } from './system';
 import { Storage } from './storage';
@@ -913,6 +917,85 @@ export class Merak {
       data: eventsWithMetadata,
       pageInfo: events.pageInfo,
       totalCount: events.totalCount,
+    };
+  }
+
+  async listTransactions({
+    functionName,
+    sender,
+    first,
+    after,
+    orderBy,
+  }: {
+    functionName?: string[];
+    sender?: string;
+    first?: number;
+    after?: string;
+    orderBy?: string[];
+  } = {}): Promise<TransactionInfoResponse> {
+    const transactions = await this.storage.list.transactions({
+      functionName,
+      sender,
+      first: first ?? 9999,
+      after,
+      orderBy: orderBy ?? ['ID_DESC'],
+      showEvent: true,
+    });
+    const transactionsWithMetadata: TransactionInfo[] = await Promise.all(
+      transactions.edges.map(async (item) => {
+        return {
+          sender: item.node.sender,
+          createdAt: item.node.created_at,
+          digest: item.node.digest,
+          functionName: item.node.function,
+          events: item.node.events || [],
+        };
+      })
+    );
+    return {
+      data: transactionsWithMetadata,
+      pageInfo: transactions.pageInfo,
+      totalCount: transactions.totalCount,
+    };
+  }
+
+  async listTransactionHistory({
+    functionName,
+    sender,
+    first,
+    after,
+    orderBy,
+  }: {
+    functionName?: string[];
+    sender?: string;
+    first?: number;
+    after?: string;
+    orderBy?: string[];
+  } = {}): Promise<TransactionHistoryInfoResponse> {
+    const transactions = await this.storage.list.transactions({
+      functionName,
+      sender,
+      first: first ?? 9999,
+      after,
+      orderBy: orderBy ?? ['ID_DESC'],
+      showEvent: true,
+    });
+    const transactionHistoryInfo: TransactionHistoryInfo[] = await Promise.all(
+      transactions.edges.map(async (item) => {
+        const event = item.node.events;
+        return {
+          sender: item.node.sender,
+          createdAt: item.node.created_at,
+          digest: item.node.digest,
+          functionName: item.node.function,
+          event: event![0],
+        };
+      })
+    );
+    return {
+      data: transactionHistoryInfo,
+      pageInfo: transactions.pageInfo,
+      totalCount: transactions.totalCount,
     };
   }
 
