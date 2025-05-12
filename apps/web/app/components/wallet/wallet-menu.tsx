@@ -82,13 +82,13 @@ export function WalletMenu({ address }: { address: string }) {
           </div>
         </div>
         <div className="p-1">
-          <DropdownMenuItem
+          {/* <DropdownMenuItem
             className="flex items-center space-x-2 p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
             onClick={handleSelectAccount}
           >
             <ArrowLeftRight className="w-4 h-4" />
             <span>Switch Account</span>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem
             className="flex items-center space-x-2 p-2 cursor-pointer hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400"
             onClick={handleDisconnect}
