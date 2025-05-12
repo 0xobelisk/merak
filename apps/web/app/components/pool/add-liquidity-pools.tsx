@@ -454,6 +454,7 @@ export default function AddLiquidity() {
               onClick={() => setIsTokenPayModalOpen(true)}
               className="w-full justify-between"
               variant="outline"
+              disabled={!!searchParams.get('asset1')}
             >
               {tokenPay ? (
                 <>
@@ -470,13 +471,13 @@ export default function AddLiquidity() {
               ) : (
                 'Select token'
               )}
-              <ChevronDown className="h-4 w-4 ml-2" />
+              {!searchParams.get('asset1') && <ChevronDown className="h-4 w-4 ml-2" />}
             </Button>
             <Button
               onClick={() => setIsTokenReceiveModalOpen(true)}
               className="w-full justify-between"
               variant="outline"
-              disabled={!tokenPay}
+              disabled={!tokenPay || !!searchParams.get('asset2')}
             >
               {tokenReceive ? (
                 <>
@@ -493,9 +494,9 @@ export default function AddLiquidity() {
               ) : tokenPay ? (
                 'Select token'
               ) : (
-                'Select token pay first'
+                'Select first token'
               )}
-              <ChevronDown className="h-4 w-4 ml-2" />
+              {!searchParams.get('asset2') && <ChevronDown className="h-4 w-4 ml-2" />}
             </Button>
           </div>
         </div>
