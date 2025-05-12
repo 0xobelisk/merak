@@ -389,7 +389,7 @@ export class Merak {
     asset1Id?: bigint | number | string;
     asset2Id?: bigint | number | string;
   } = {}) {
-    const pageSize = 10;
+    const pageSize = 9999;
     let pool = await this.storage.list.pool({
       first: pageSize,
       asset1Id: asset1Id?.toString(),
@@ -833,6 +833,7 @@ export class Merak {
             name: `${asset1Metadata.value.symbol} / ${asset2Metadata.value.symbol}`,
             asset1Id: item.key1,
             asset2Id: item.key2,
+            lpAssetId: item.value.lp_asset_id,
             apr: '10%',
             liquidity: `${poolAsset1AmountNum} ${asset1Metadata.value.symbol} / ${poolAsset2AmountNum} ${asset2Metadata.value.symbol}`,
             volume: `${poolAsset1AmountNum + poolAsset2AmountNum}`,

@@ -46,7 +46,7 @@ export default function RemoveLiquidity() {
   const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
   const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
 
-  const [slippage, setSlippage] = useState(0.5); // 滑点，百分比
+  const [slippage, setSlippage] = useState(0.5); // Slippage, percentage
   const [customSlippage, setCustomSlippage] = useState('');
 
   const [estimatedAmountA, setEstimatedAmountA] = useState('');
@@ -67,14 +67,13 @@ export default function RemoveLiquidity() {
         address: account.address
       });
 
+      console.log('=------=======');
       console.log(metadataResults, 'metadataResults');
 
       // Update state
       setAssetsState({
         assetInfos: metadataResults.data
       });
-
-      console.log('Retrieved assets:', metadataResults.data);
     } catch (error) {
       console.error('Failed to fetch assets:', error);
       toast.error('Failed to fetch assets, please try again');
@@ -85,81 +84,85 @@ export default function RemoveLiquidity() {
 
   // Initialize asset loading
   useEffect(() => {
-    console.log(account, 'account');
     if (account?.address) {
       queryAssets();
-      console.log('assetsState', assetsState);
     }
   }, [account?.address, queryAssets]);
 
   // Initialize tokens from URL parameters
   useEffect(() => {
     const loadTokensFromParams = async () => {
-      if (!account?.address || assetsState.assetInfos.length === 0) return;
+      if (!account?.address || !assetsState?.assetInfos || assetsState.assetInfos.length === 0) {
+        console.log('Waiting for assets to load...');
+        return;
+      }
 
       const asset1Param = searchParams.get('asset1');
       const asset2Param = searchParams.get('asset2');
       const lpTokenIdParam = searchParams.get('lpTokenId');
-      console.log('============================================');
-      console.log('searchParams', searchParams);
-      console.log(
-        asset1Param,
-        asset2Param,
-        lpTokenIdParam,
-        'asset1Param, asset2Param, lpTokenIdParam'
-      );
 
-      // 如果 URL 中有 token 参数，则自动选择这些 token
-      if (asset1Param && asset2Param) {
-        try {
-          const asset1Id = Number(asset1Param);
-          const asset2Id = Number(asset2Param);
+      // If required parameters are missing, redirect to positions page
+      if (!asset1Param || !asset2Param || !lpTokenIdParam) {
+        toast.error('Missing required parameters');
+        router.push('/positions');
+        return;
+      }
 
-          // 获取 token 元数据
-          const token1Info = assetsState.assetInfos.find((asset) => asset.assetId === asset1Id);
-          const token2Info = assetsState.assetInfos.find((asset) => asset.assetId === asset2Id);
-
-          if (token1Info) {
-            const token1: TokenData = {
-              id: token1Info.assetId,
-              name: token1Info.metadata.name || 'Unknown',
-              symbol: token1Info.metadata.symbol || 'Unknown',
-              decimals: token1Info.metadata.decimals || 9,
-              icon_url: token1Info.metadata.icon_url || '/sui-logo.svg',
-              balance: (
-                Number(token1Info.balance) / Math.pow(10, token1Info.metadata.decimals || 9)
-              ).toFixed(4)
-            };
-            setTokenA(token1);
-          }
-
-          if (token2Info) {
-            const token2: TokenData = {
-              id: token2Info.assetId,
-              name: token2Info.metadata.name || 'Unknown',
-              symbol: token2Info.metadata.symbol || 'Unknown',
-              decimals: token2Info.metadata.decimals || 9,
-              icon_url: token2Info.metadata.icon_url || '/sui-logo.svg',
-              balance: (
-                Number(token2Info.balance) / Math.pow(10, token2Info.metadata.decimals || 9)
-              ).toFixed(4)
-            };
-            setTokenB(token2);
-          }
-
-          // 设置 LP token ID
-          if (lpTokenIdParam) {
-            setLpTokenId(Number(lpTokenIdParam));
-          }
-        } catch (error) {
-          console.error('Failed to load tokens from URL parameters:', error);
-          toast.error('Failed to load token information');
+      try {
+        const asset1Id = Number(asset1Param);
+        const asset2Id = Number(asset2Param);
+        const lpTokenId = Number(lpTokenIdParam);
+        console.log('------ assetsState', assetsState);
+        // Get token metadata
+        const token1Info = assetsState.assetInfos.find((asset) => asset.assetId === asset1Id);
+        const token2Info = assetsState.assetInfos.find((asset) => asset.assetId === asset2Id);
+        if (!token1Info || !token2Info) {
+          toast.error('Unable to find specified token information');
+          return;
         }
+        // Set first token
+        const token1: TokenData = {
+          id: token1Info.assetId,
+          name: token1Info.metadata.name || 'Unknown',
+          symbol: token1Info.metadata.symbol || 'Unknown',
+          decimals: token1Info.metadata.decimals || 9,
+          icon_url: token1Info.metadata.icon_url || '/sui-logo.svg',
+          balance: (
+            Number(token1Info.balance) / Math.pow(10, token1Info.metadata.decimals || 9)
+          ).toFixed(4)
+        };
+        setTokenA(token1);
+
+        // Set second token
+        const token2: TokenData = {
+          id: token2Info.assetId,
+          name: token2Info.metadata.name || 'Unknown',
+          symbol: token2Info.metadata.symbol || 'Unknown',
+          decimals: token2Info.metadata.decimals || 9,
+          icon_url: token2Info.metadata.icon_url || '/sui-logo.svg',
+          balance: (
+            Number(token2Info.balance) / Math.pow(10, token2Info.metadata.decimals || 9)
+          ).toFixed(4)
+        };
+        setTokenB(token2);
+
+        // Set LP token ID
+        setLpTokenId(lpTokenId);
+
+        // Get available token list
+        const merak = initMerakClient();
+        const connectedTokens = await merak.getConnectedTokens(token1.id);
+        setAvailableTokenBs(connectedTokens);
+      } catch (error) {
+        console.log(error, 'error');
+        console.error('Failed to load tokens from URL parameters:', error);
+        toast.error('Failed to load token information');
+        router.push('/positions');
       }
     };
 
     loadTokensFromParams();
-  }, [account?.address, assetsState.assetInfos, searchParams]);
+  }, [account?.address, assetsState.assetInfos, searchParams, router]);
 
   // Query LP token balance when tokens are selected
   useEffect(() => {
@@ -330,7 +333,7 @@ export default function RemoveLiquidity() {
     setLiquidityAmount(lpTokenBalance);
   };
 
-  // 计算预估输出金额
+  // Calculate estimated output amounts
   const calculateEstimatedAmounts = useCallback(
     async (amount: string) => {
       if (
@@ -374,12 +377,12 @@ export default function RemoveLiquidity() {
     [tokenA, tokenB, lpTokenId, account?.address]
   );
 
-  // 当输入金额变化时计算预估输出
+  // Calculate estimated output when input amount changes
   useEffect(() => {
     calculateEstimatedAmounts(liquidityAmount);
   }, [liquidityAmount, calculateEstimatedAmounts]);
 
-  // 修改自动计算最小输出的逻辑
+  // Modify automatic logic to calculate minimum output
   useEffect(() => {
     if (!estimatedAmountA || !estimatedAmountB || !tokenA || !tokenB) {
       setMinAmountA('');
@@ -418,7 +421,7 @@ export default function RemoveLiquidity() {
               onClick={() => setIsTokenAModalOpen(true)}
               className="w-full justify-between"
               variant="outline"
-              disabled={!!searchParams.get('asset1')} // 如果 URL 中有 token 参数，禁用选择按钮
+              disabled={!!searchParams.get('asset1')} // If URL has token parameter, disable selection button
             >
               {tokenA ? (
                 <>
@@ -441,7 +444,7 @@ export default function RemoveLiquidity() {
               onClick={() => setIsTokenBModalOpen(true)}
               className="w-full justify-between"
               variant="outline"
-              disabled={!tokenA || !!searchParams.get('asset2')} // 如果 URL 中有 token 参数，禁用选择按钮
+              disabled={!tokenA || !!searchParams.get('asset2')} // If URL has token parameter, disable selection button
             >
               {tokenB ? (
                 <>
@@ -521,7 +524,7 @@ export default function RemoveLiquidity() {
             </div>
           </div>
         </div>
-        {/* 滑点选择 */}
+        {/* Slippage selection */}
         <div>
           <Label>Slippage</Label>
           <div className="flex items-center space-x-2 mt-2">

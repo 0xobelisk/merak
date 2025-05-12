@@ -50,6 +50,7 @@ export default function LiquidityPools() {
     name: string;
     asset1Id: number;
     asset2Id: number;
+    lpAssetId: number;
     apr: string;
     liquidity: string;
     volume: string;
@@ -204,7 +205,11 @@ export default function LiquidityPools() {
           <button
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded transition-colors"
             onClick={() => {
-              router.push(`/pool/liquidity?asset1=${pool.asset1Id}&asset2=${pool.asset2Id}`);
+              const queryParams = new URLSearchParams();
+              queryParams.append('asset1', pool.asset1Id.toString());
+              queryParams.append('asset2', pool.asset2Id.toString());
+              queryParams.append('lpAssetId', pool.lpAssetId.toString());
+              router.push(`/pool/liquidity?${queryParams.toString()}`);
             }}
           >
             Add Liquidity
@@ -263,7 +268,14 @@ export default function LiquidityPools() {
                 <button
                   className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded text-sm transition-colors"
                   onClick={() => {
-                    router.push(`/pool/liquidity?asset1=${pool.asset1Id}&asset2=${pool.asset2Id}`);
+                    const queryParams = new URLSearchParams();
+                    queryParams.append('asset1', pool.asset1Id.toString());
+                    queryParams.append('asset2', pool.asset2Id.toString());
+                    queryParams.append('token1Name', pool.name.split(' / ')[0]);
+                    queryParams.append('token2Name', pool.name.split(' / ')[1]);
+                    queryParams.append('token1Image', pool.token1Image);
+                    queryParams.append('token2Image', pool.token2Image);
+                    router.push(`/pool/liquidity?${queryParams.toString()}`);
                   }}
                 >
                   Add Liquidity

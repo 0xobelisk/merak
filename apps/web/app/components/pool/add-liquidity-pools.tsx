@@ -232,7 +232,7 @@ export default function AddLiquidity() {
       return;
     }
 
-    // 检查用户余额是否足够
+    // Check if user has sufficient balance
     const payBalance = parseFloat(tokenPay.balance);
     const receiveBalance = parseFloat(tokenReceive.balance);
     const payAmount = parseFloat(amountPay);
@@ -374,10 +374,78 @@ export default function AddLiquidity() {
     }
   }, [tokenPay, tokenReceive, amountPay, amountReceive, getAssetMetadata]);
 
-  // 当输入金额变化时重新计算LP代币数量
+  // Recalculate LP token amount when input amounts change
   useEffect(() => {
     calculateExpectedLPTokens();
   }, [calculateExpectedLPTokens]);
+
+  // Add logic to initialize tokens from URL parameters
+  useEffect(() => {
+    const loadTokensFromParams = async () => {
+      if (!account?.address || assetsState.assetInfos.length === 0) return;
+
+      const asset1Param = searchParams.get('asset1');
+      const asset2Param = searchParams.get('asset2');
+
+      // If necessary parameters are missing, redirect to pool page
+      if (!asset1Param || !asset2Param) {
+        router.push('/pool');
+        return;
+      }
+
+      try {
+        const asset1Id = Number(asset1Param);
+        const asset2Id = Number(asset2Param);
+
+        // Get token metadata
+        const token1Info = assetsState.assetInfos.find((asset) => asset.assetId === asset1Id);
+        const token2Info = assetsState.assetInfos.find((asset) => asset.assetId === asset2Id);
+
+        if (!token1Info || !token2Info) {
+          return;
+        }
+
+        // Set first token
+        const token1: TokenData = {
+          id: token1Info.assetId,
+          name: token1Info.metadata.name || searchParams.get('token1Name') || 'Unknown',
+          symbol: token1Info.metadata.symbol || 'Unknown',
+          decimals: token1Info.metadata.decimals || 9,
+          icon_url:
+            searchParams.get('token1Image') || token1Info.metadata.icon_url || '/sui-logo.svg',
+          balance: (
+            Number(token1Info.balance) / Math.pow(10, token1Info.metadata.decimals || 9)
+          ).toFixed(4)
+        };
+        setTokenPay(token1);
+
+        // Set second token
+        const token2: TokenData = {
+          id: token2Info.assetId,
+          name: token2Info.metadata.name || searchParams.get('token2Name') || 'Unknown',
+          symbol: token2Info.metadata.symbol || 'Unknown',
+          decimals: token2Info.metadata.decimals || 9,
+          icon_url:
+            searchParams.get('token2Image') || token2Info.metadata.icon_url || '/sui-logo.svg',
+          balance: (
+            Number(token2Info.balance) / Math.pow(10, token2Info.metadata.decimals || 9)
+          ).toFixed(4)
+        };
+        setTokenReceive(token2);
+
+        // Get available token list
+        const merak = initMerakClient();
+        const connectedTokens = await merak.getConnectedTokens(token1.id);
+        setAvailableTokenReceives(connectedTokens);
+      } catch (error) {
+        console.error('Failed to load tokens from URL parameters:', error);
+        toast.error('Failed to load token information');
+        router.push('/pool');
+      }
+    };
+
+    loadTokensFromParams();
+  }, [account?.address, assetsState.assetInfos, searchParams, router]);
 
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-8">
@@ -517,31 +585,6 @@ export default function AddLiquidity() {
             )}
           </div>
         </div>
-
-        {/* <div>
-          <Label>Minimum Deposit Amounts</Label>
-          <p className="text-sm text-gray-500 mb-2">
-            Enter the minimum amount of tokens you're willing to deposit.
-          </p>
-          <div className="space-y-4">
-            <div>
-              <Label>Minimum {tokenPay ? tokenPay.symbol : ''} Amount</Label>
-              <div className="flex items-center space-x-2">
-                <Input type="text" value={minAmountPay} disabled placeholder="0.0" />
-                <span className="text-sm font-medium">{tokenPay ? tokenPay.symbol : ''}</span>
-              </div>
-            </div>
-            <div>
-              <Label>Minimum {tokenReceive ? tokenReceive.symbol : ''} Amount</Label>
-              <div className="flex items-center space-x-2">
-                <Input type="text" value={minAmountReceive} disabled placeholder="0.0" />
-                <span className="text-sm font-medium">
-                  {tokenReceive ? tokenReceive.symbol : ''}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div> */}
 
         <div>
           <Label>Slippage</Label>

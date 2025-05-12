@@ -1119,7 +1119,7 @@ export default function Portfolio() {
                                           <span>Transfer All</span>
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem
+                                        {/* <DropdownMenuItem
                                           onClick={() => handleActionClick('mint', asset.assetId)}
                                         >
                                           <Coins className="mr-2 h-4 w-4" />
@@ -1130,7 +1130,7 @@ export default function Portfolio() {
                                         >
                                           <Flame className="mr-2 h-4 w-4" />
                                           <span>Burn</span>
-                                        </DropdownMenuItem>
+                                        </DropdownMenuItem> */}
                                       </DropdownMenuContent>
                                     </DropdownMenu>
                                   </td>
