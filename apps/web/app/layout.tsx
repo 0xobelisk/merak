@@ -50,6 +50,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" media="(prefers-color-scheme: light)" />
+        <link rel="icon" href="/favicon-black.ico" media="(prefers-color-scheme: dark)" />
+      </head>
       <body className={`${inter.variable} bg-[#F7F8FA]`}>
         <Providers>{children}</Providers>
       </body>
