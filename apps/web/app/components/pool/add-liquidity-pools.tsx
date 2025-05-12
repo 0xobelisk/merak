@@ -410,7 +410,7 @@ export default function AddLiquidity() {
                     alt={tokenPay.symbol}
                     className="w-6 h-6 mr-2"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
                     }}
                   />
                   {tokenPay.symbol}
@@ -433,7 +433,7 @@ export default function AddLiquidity() {
                     alt={tokenReceive.symbol}
                     className="w-6 h-6 mr-2"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
                     }}
                   />
                   {tokenReceive.symbol}

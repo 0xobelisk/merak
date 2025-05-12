@@ -119,7 +119,7 @@ export default function PositionsPage() {
             poolAssetId,
             token1Id,
             token2Id,
-            icon_url: token.metadata.icon_url || 'https://hop.ag/tokens/SUI.svg'
+            icon_url: token.metadata.icon_url || '/sui-logo.svg'
           };
         })
       );
@@ -264,7 +264,7 @@ export default function PositionsPage() {
                             alt={position.symbol}
                             className="w-6 h-6 mr-2 rounded-full"
                             onError={(e) => {
-                              (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                              (e.target as HTMLImageElement).src = '/sui-logo.svg';
                             }}
                           />
                           <div>

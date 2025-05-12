@@ -205,11 +205,11 @@ export default function LiquidityPoolSetup({ selectedTokens, onClose }: Liquidit
             {[base, quote].map((token, index) => (
               <div key={index} className="flex items-center">
                 <img
-                  src={token.metadata[4] || 'https://hop.ag/tokens/SUI.svg'}
+                  src={token.metadata[4] || '/sui-logo.svg'}
                   alt={`${token.metadata[0]} logo`}
                   className="w-8 h-8 rounded-full mr-2"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                    (e.target as HTMLImageElement).src = '/sui-logo.svg';
                   }}
                 />
                 <div className="flex-1">
@@ -238,11 +238,11 @@ export default function LiquidityPoolSetup({ selectedTokens, onClose }: Liquidit
               {[base, quote].map((token, index) => (
                 <div key={index} className="flex items-center">
                   <img
-                    src={token.metadata[4] || 'https://hop.ag/tokens/SUI.svg'}
+                    src={token.metadata[4] || '/sui-logo.svg'}
                     alt={`${token.metadata[0]} logo`}
                     className="w-8 h-8 rounded-full mr-2"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
                     }}
                   />
                   <div className="flex-1">

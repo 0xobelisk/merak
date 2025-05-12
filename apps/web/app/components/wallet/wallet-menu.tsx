@@ -51,7 +51,7 @@ export function WalletMenu({ address }: { address: string }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="flex items-center space-x-2 px-3 py-2 bg-white/5 hover:bg-white/10 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full cursor-pointer transition-colors border border-gray-200 dark:border-gray-700">
-          <Image src="https://hop.ag/tokens/SUI.svg" alt="SUI" width={20} height={20} />
+          <Image src="/sui-logo.svg" alt="SUI" width={20} height={20} />
           <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
             {address.slice(0, 6)}...{address.slice(-4)}
           </span>
@@ -67,7 +67,7 @@ export function WalletMenu({ address }: { address: string }) {
         <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-800" />
         <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg m-2 border border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between mb-2">
-            <Image src="https://hop.ag/tokens/SUI.svg" alt="SUI" width={32} height={32} />
+            <Image src="/sui-logo.svg" alt="SUI" width={32} height={32} />
             <div className="flex space-x-2">
               <button
                 onClick={handleCopy}

@@ -11,11 +11,11 @@ import { AssetInfo } from '@0xobelisk/merak-sdk';
 import { useCurrentAccount } from '@mysten/dapp-kit';
 
 // Set default icon to SUI icon
-const DEFAULT_ICON = 'https://hop.ag/tokens/SUI.svg';
+const DEFAULT_ICON = '/sui-logo.svg';
 
 // Popular tokens to show in quick select area
 const POPULAR_TOKENS = [
-  { symbol: 'SUI', icon_url: 'https://hop.ag/tokens/SUI.svg' },
+  { symbol: 'SUI', icon_url: '/sui-logo.svg' },
   {
     symbol: 'DUBHE',
     icon_url: 'https://pbs.twimg.com/profile_images/1904156933516668928/W9y4Vor__400x400.jpg'

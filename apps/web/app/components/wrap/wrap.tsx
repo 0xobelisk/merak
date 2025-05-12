@@ -151,7 +151,7 @@ export default function TokenWrapper() {
                 balance: asset.balance || '0',
                 decimals: metadata.decimals || 9,
                 symbol: metadata.symbol || 'Unknown',
-                url: metadata.iconUrl || 'https://hop.ag/tokens/SUI.svg',
+                url: metadata.iconUrl || '/sui-logo.svg',
                 name: metadata.name || 'Wrapped Token'
               };
             })
@@ -188,14 +188,14 @@ export default function TokenWrapper() {
             balance: balance,
             logo: (
               <img
-                src={asset.url || 'https://hop.ag/tokens/SUI.svg'}
+                src={asset.url || '/sui-logo.svg'}
                 alt={asset.name || 'Token'}
                 width="20"
                 height="20"
                 style={{ marginRight: '8px' }}
                 onError={(e) => {
                   // Use default icon if image fails to load
-                  e.currentTarget.src = 'https://hop.ag/tokens/SUI.svg';
+                  e.currentTarget.src = '/sui-logo.svg';
                 }}
               />
             ),
@@ -273,10 +273,10 @@ export default function TokenWrapper() {
             <img
               src={
                 symbol === 'SUI'
-                  ? 'https://hop.ag/tokens/SUI.svg'
+                  ? '/sui-logo.svg'
                   : symbol === 'DUBHE'
                   ? '/dubhe-logo.png'
-                  : coinBalance.metadata?.iconUrl || 'https://hop.ag/tokens/SUI.svg'
+                  : coinBalance.metadata?.iconUrl || '/sui-logo.svg'
               }
               alt={symbol}
               width="20"
@@ -284,7 +284,7 @@ export default function TokenWrapper() {
               style={{ marginRight: '8px' }}
               onError={(e) => {
                 // Fallback if image fails to load
-                e.currentTarget.src = 'https://hop.ag/tokens/SUI.svg';
+                e.currentTarget.src = '/sui-logo.svg';
               }}
             />
           ),

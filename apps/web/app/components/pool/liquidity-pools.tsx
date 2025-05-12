@@ -168,7 +168,7 @@ export default function LiquidityPools() {
               height={24}
               className="rounded-full"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                (e.target as HTMLImageElement).src = '/sui-logo.svg';
               }}
             />
             <img
@@ -178,7 +178,7 @@ export default function LiquidityPools() {
               height={24}
               className="rounded-full"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                (e.target as HTMLImageElement).src = '/sui-logo.svg';
               }}
             />
             <span className="font-medium text-gray-900">{pool.name}</span>
@@ -238,7 +238,7 @@ export default function LiquidityPools() {
                     height={20}
                     className="rounded-full"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
                     }}
                   />
                   <img
@@ -248,7 +248,7 @@ export default function LiquidityPools() {
                     height={20}
                     className="rounded-full"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
                     }}
                   />
                   <span className="font-medium text-gray-900">{pool.name}</span>

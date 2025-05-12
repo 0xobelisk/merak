@@ -266,11 +266,11 @@ export default function AssetsPage() {
                     <TableCell>
                       <div className="flex items-center justify-start">
                         <img
-                          src={asset.metadata?.icon_url || 'https://hop.ag/tokens/SUI.svg'}
+                          src={asset.metadata?.icon_url || '/sui-logo.svg'}
                           alt={asset.metadata?.name || `Token ${asset.assetId}`}
                           className="w-8 h-8 mr-3 rounded-full"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                            (e.target as HTMLImageElement).src = '/sui-logo.svg';
                           }}
                         />
                         <span className="font-bold">{asset.metadata?.symbol || '-'}</span>
@@ -288,7 +288,9 @@ export default function AssetsPage() {
                     <TableCell>{asset.metadata?.accounts || '-'}</TableCell>
                     <TableCell>
                       <span className="inline-block px-2 py-0.5 rounded bg-gray-100 text-gray-800 text-xs font-semibold border border-gray-200">
-                        {asset.metadata?.asset_type ? Object.keys(asset.metadata.asset_type)[0] : '-'}
+                        {asset.metadata?.asset_type
+                          ? Object.keys(asset.metadata.asset_type)[0]
+                          : '-'}
                       </span>
                     </TableCell>
                   </TableRow>

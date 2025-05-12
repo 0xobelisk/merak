@@ -1064,15 +1064,11 @@ export default function Portfolio() {
                                   <td className="py-3 px-4">
                                     <div className="flex items-center">
                                       <img
-                                        src={
-                                          asset.metadata?.icon_url ||
-                                          'https://hop.ag/tokens/SUI.svg'
-                                        }
+                                        src={asset.metadata?.icon_url || '/sui-logo.svg'}
                                         alt={asset.metadata?.name || `Token ${index}`}
                                         className="w-6 h-6 mr-2 rounded-full"
                                         onError={(e) => {
-                                          (e.target as HTMLImageElement).src =
-                                            'https://hop.ag/tokens/SUI.svg';
+                                          (e.target as HTMLImageElement).src = '/sui-logo.svg';
                                         }}
                                       />
                                       <div>

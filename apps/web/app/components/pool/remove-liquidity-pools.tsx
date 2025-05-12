@@ -125,7 +125,7 @@ export default function RemoveLiquidity() {
               name: token1Info.metadata.name || 'Unknown',
               symbol: token1Info.metadata.symbol || 'Unknown',
               decimals: token1Info.metadata.decimals || 9,
-              icon_url: token1Info.metadata.icon_url || 'https://hop.ag/tokens/SUI.svg',
+              icon_url: token1Info.metadata.icon_url || '/sui-logo.svg',
               balance: (
                 Number(token1Info.balance) / Math.pow(10, token1Info.metadata.decimals || 9)
               ).toFixed(4)
@@ -139,7 +139,7 @@ export default function RemoveLiquidity() {
               name: token2Info.metadata.name || 'Unknown',
               symbol: token2Info.metadata.symbol || 'Unknown',
               decimals: token2Info.metadata.decimals || 9,
-              icon_url: token2Info.metadata.icon_url || 'https://hop.ag/tokens/SUI.svg',
+              icon_url: token2Info.metadata.icon_url || '/sui-logo.svg',
               balance: (
                 Number(token2Info.balance) / Math.pow(10, token2Info.metadata.decimals || 9)
               ).toFixed(4)
@@ -427,7 +427,7 @@ export default function RemoveLiquidity() {
                     alt={tokenA.symbol}
                     className="w-6 h-6 mr-2"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
                     }}
                   />
                   {tokenA.symbol}
@@ -450,7 +450,7 @@ export default function RemoveLiquidity() {
                     alt={tokenB.symbol}
                     className="w-6 h-6 mr-2"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://hop.ag/tokens/SUI.svg';
+                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
                     }}
                   />
                   {tokenB.symbol}
