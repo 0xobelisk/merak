@@ -26,7 +26,21 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'),
   title: 'Merak · decentralized mobility protocol',
   description:
-    'Merak - Merak is a decentralized mobility protocol built on Dubhe Engine deployed in Sui'
+    'Merak - Merak is a decentralized mobility protocol built on Dubhe Engine deployed in Sui',
+  openGraph: {
+    title: 'Merak · decentralized mobility protocol',
+    description:
+      'Merak - Merak is a decentralized mobility protocol built on Dubhe Engine deployed in Sui',
+    url: new URL(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'),
+    siteName: 'Merak',
+    images: [
+      {
+        url: '/manifest-icon-512.png',
+        alt: 'Merak Logo'
+      }
+    ],
+    type: 'website'
+  }
 };
 
 export const viewport: Viewport = {

@@ -254,6 +254,10 @@ export default function Page() {
         toast.error('Please enter a valid amount');
         return;
       }
+      if (Number(input) < 10) {
+        toast.error('Minimum Bridge amount is 10');
+        return;
+      }
 
       // Get target address - use customAddress directly
       if (!customAddress) {
@@ -367,11 +371,7 @@ export default function Page() {
                     <SelectTrigger className="w-[240px] border-gray-200 bg-white">
                       <SelectValue>
                         <div className="flex items-center">
-                          <img
-                            src="https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg"
-                            alt="DUB logo"
-                            className="w-5 h-5 mr-2"
-                          />
+                          <img src="/dubhe-logo.png" alt="DUB logo" className="w-5 h-5 mr-2" />
                           wDUBHE (WDUBHE)
                         </div>
                       </SelectValue>
@@ -379,11 +379,7 @@ export default function Page() {
                     <SelectContent>
                       <SelectItem value="dub">
                         <div className="flex items-center">
-                          <img
-                            src="https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg"
-                            alt="DUB logo"
-                            className="w-5 h-5 mr-2"
-                          />
+                          <img src="/dubhe-logo.png" alt="DUB logo" className="w-5 h-5 mr-2" />
                           Dubhe (DUBHE)
                         </div>
                       </SelectItem>
@@ -398,6 +394,7 @@ export default function Page() {
                     onChange={(e) => setInput(e.target.value)}
                   />
                 </div>
+                <p className="text-xs text-gray-400 mt-1">Minimum Bridge amount is 10</p>
               </div>
 
               {/* To Token */}
@@ -408,11 +405,7 @@ export default function Page() {
                     <SelectTrigger className="w-[240px] border-gray-200 bg-white">
                       <SelectValue>
                         <div className="flex items-center">
-                          <img
-                            src="https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg"
-                            alt="Dubhe logo"
-                            className="w-5 h-5 mr-2"
-                          />
+                          <img src="/dubhe-logo.png" alt="Dubhe logo" className="w-5 h-5 mr-2" />
                           Dubhe OS
                         </div>
                       </SelectValue>
@@ -420,11 +413,7 @@ export default function Page() {
                     <SelectContent>
                       <SelectItem value="ethereum">
                         <div className="flex items-center">
-                          <img
-                            src="https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg"
-                            alt="Dubhe logo"
-                            className="w-5 h-5 mr-2"
-                          />
+                          <img src="/dubhe-logo.png" alt="Dubhe logo" className="w-5 h-5 mr-2" />
                           Dubhe OS
                         </div>
                       </SelectItem>

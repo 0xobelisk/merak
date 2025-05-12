@@ -275,7 +275,7 @@ export default function TokenWrapper() {
                 symbol === 'SUI'
                   ? 'https://hop.ag/tokens/SUI.svg'
                   : symbol === 'DUBHE'
-                  ? 'https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg'
+                  ? '/dubhe-logo.png'
                   : coinBalance.metadata?.iconUrl || 'https://hop.ag/tokens/SUI.svg'
               }
               alt={symbol}
