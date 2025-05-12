@@ -183,6 +183,12 @@ export class ListStorage {
       after,
       orderBy,
       is_removed: false,
+      jsonOrderBy: [
+        {
+          path: 'lp_asset_id',
+          direction: 'ASC',
+        },
+      ],
     });
     return item;
   }
