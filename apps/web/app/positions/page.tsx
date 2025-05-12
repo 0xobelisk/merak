@@ -40,7 +40,7 @@ interface LPPosition {
 }
 
 export default function PositionsPage() {
-  // 状态管理
+  // State management
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
@@ -90,8 +90,6 @@ export default function PositionsPage() {
           let poolAssetId = Number(token.assetId);
           let token1Id;
           let token2Id;
-          console.log('--------------------------------');
-          console.log(token, 'token');
           try {
             // If needed, call API to get pool details
             const poolInfo = await merak.getPoolList({
@@ -125,7 +123,6 @@ export default function PositionsPage() {
       );
 
       setLpPositions(positions);
-      console.log('LP Positions:', positions);
     } catch (error) {
       console.error('Failed to fetch assets:', error);
       toast.error('Failed to fetch LP positions, please try again');
@@ -162,34 +159,31 @@ export default function PositionsPage() {
     setFilteredPositions(filtered.slice(startIndex, endIndex));
   }, [lpPositions, searchTerm, currentPage, rowsPerPage]);
 
-  // 处理分页变化
+  // Handle pagination change
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  // 处理每页行数变化
+  // Handle rows per page change
   const handleRowsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRowsPerPage(Number(e.target.value));
-    setCurrentPage(1); // 重置到第一页
+    setCurrentPage(1); // Reset to first page
   };
 
   // Handle view pool details (now redirects to remove liquidity)
   const handleViewPool = (position: LPPosition) => {
-    console.log('============================================');
-    console.log(position, 'position');
-    console.log('============================================');
-    // 构建查询参数
+    // Build query parameters
     const queryParams = new URLSearchParams();
 
-    // 确保传递 token1Id 和 token2Id
+    // Ensure token1Id and token2Id are passed
     queryParams.append('asset1', position.token1Id.toString());
 
     queryParams.append('asset2', position.token2Id.toString());
 
-    // 传递 LP token ID
+    // Pass LP token ID
     queryParams.append('lpTokenId', position.id.toString());
 
-    // 直接跳转到 remove liquidity 页面，并带上查询参数
+    // Directly navigate to remove liquidity page with query parameters
     router.push(`/pool/remove?${queryParams.toString()}`);
   };
 
@@ -202,7 +196,7 @@ export default function PositionsPage() {
         </p>
       </div>
 
-      {/* 搜索和筛选 */}
+      {/* Search and filter */}
       <div className="mb-6">
         <div className="relative">
           <input
@@ -230,7 +224,7 @@ export default function PositionsPage() {
         </div>
       </div>
 
-      {/* 我的头寸表格 */}
+      {/* My positions table */}
       <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
         <div className="p-4 border-b border-gray-100">
           <h2 className="text-lg font-medium">My Positions ({lpPositions.length})</h2>
@@ -299,7 +293,7 @@ export default function PositionsPage() {
           )}
         </div>
 
-        {/* 分页控件 */}
+        {/* Pagination controls */}
         <div className="flex items-center justify-between p-4 border-t border-gray-100">
           <div className="flex items-center space-x-2">
             <span className="text-sm text-gray-500">Rows per page</span>

@@ -67,9 +67,6 @@ export default function RemoveLiquidity() {
         address: account.address
       });
 
-      console.log('=------=======');
-      console.log(metadataResults, 'metadataResults');
-
       // Update state
       setAssetsState({
         assetInfos: metadataResults.data
@@ -112,12 +109,10 @@ export default function RemoveLiquidity() {
         const asset1Id = Number(asset1Param);
         const asset2Id = Number(asset2Param);
         const lpTokenId = Number(lpTokenIdParam);
-        console.log('------ assetsState', assetsState);
         // Get token metadata
         const token1Info = assetsState.assetInfos.find((asset) => asset.assetId === asset1Id);
         const token2Info = assetsState.assetInfos.find((asset) => asset.assetId === asset2Id);
         if (!token1Info || !token2Info) {
-          toast.error('Unable to find specified token information');
           return;
         }
         // Set first token
@@ -154,7 +149,6 @@ export default function RemoveLiquidity() {
         const connectedTokens = await merak.getConnectedTokens(token1.id);
         setAvailableTokenBs(connectedTokens);
       } catch (error) {
-        console.log(error, 'error');
         console.error('Failed to load tokens from URL parameters:', error);
         toast.error('Failed to load token information');
         router.push('/positions');
@@ -166,7 +160,6 @@ export default function RemoveLiquidity() {
 
   // Query LP token balance when tokens are selected
   useEffect(() => {
-    console.log(searchParams, 'searchParams');
     async function fetchLpToken() {
       if (!tokenA || !tokenB || !account?.address) return;
 

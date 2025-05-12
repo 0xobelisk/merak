@@ -88,9 +88,6 @@ export default function LiquidityPools() {
 
   useEffect(() => {
     if (pools.length > 0) {
-      console.log('pools ===========');
-      console.log(pools);
-      console.log(pools.length);
       const filtered = pools.filter((pool) =>
         pool.name.toLowerCase().includes(searchTerm.toLowerCase())
       );

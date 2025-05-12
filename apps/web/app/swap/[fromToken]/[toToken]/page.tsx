@@ -77,21 +77,11 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   // Optimize getAmountOut function
   const getAmountOut = useCallback(
     async (amount: string) => {
-      console.log('=========');
-      console.log(amount, 'amount');
       if (!amount || parseFloat(amount) <= 0) {
-        console.log('========= 0');
         return null;
       }
-      console.log('========= 1');
-      console.log(fromToken, 'fromToken');
-      console.log(toToken, 'toToken');
-      console.log(fromToken.id, 'fromToken.id');
-      console.log(toToken.id, 'toToken.id');
-      console.log(!fromToken?.id || !toToken?.id, '!fromToken?.id || !toToken?.id');
 
       if (fromToken?.id === undefined || toToken?.id === undefined) {
-        console.log('========= 2');
         throw new Error('Please select tokens first');
       }
       if (!fromToken.decimals) {
@@ -197,12 +187,6 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
           startTokenId: fromTokenId,
           address: account?.address
         });
-        console.log('========= in fetchAvailableToTokens');
-        console.log({
-          startTokenId: fromTokenId,
-          address: account?.address
-        });
-        console.log(availableToTokens, 'availableToTokens');
         if (availableToTokens.length > 0) {
           setToToken({
             id: availableToTokens[0].assetId,
@@ -452,8 +436,6 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
       const slippagePercent = parseFloat(slippage) / 100;
       const minAmountOut = BigInt(Math.floor(Number(finalAmount) * (1 - slippagePercent)));
 
-      console.log('============');
-      console.log(amountInWithDecimals, minAmountOut, path, account.address);
       await merak.swapExactTokensForTokens(
         tx,
         amountInWithDecimals,

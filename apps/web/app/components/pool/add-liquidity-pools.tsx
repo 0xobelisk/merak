@@ -248,11 +248,8 @@ export default function AddLiquidity() {
       return;
     }
 
-    console.log('Add liquidity');
     const merak = initMerakClient();
     let tx = new Transaction();
-
-    console.log(tokenPay, tokenReceive);
 
     const baseDesired = BigInt(Math.floor(parseFloat(amountPay) * Math.pow(10, tokenPay.decimals)));
     const quoteDesired = BigInt(
@@ -264,19 +261,6 @@ export default function AddLiquidity() {
     const quoteMin = BigInt(
       Math.floor(parseFloat(minAmountReceive || '0') * Math.pow(10, tokenReceive.decimals))
     );
-
-    console.log('=============');
-    console.log(
-      tokenPay.id,
-      tokenReceive.id,
-      baseDesired,
-      quoteDesired,
-      baseMin,
-      quoteMin,
-      account.address
-    );
-
-    console.log(baseDesired, quoteDesired, baseMin, quoteMin);
 
     // const baseMin = BigInt(0);
     // const quoteMin = BigInt(0);
