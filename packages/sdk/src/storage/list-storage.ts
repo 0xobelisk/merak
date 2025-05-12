@@ -142,6 +142,7 @@ export class ListStorage {
     asset1Id,
     asset2Id,
     poolAddress,
+    poolAssetId,
     first,
     after,
     orderBy,
@@ -149,6 +150,7 @@ export class ListStorage {
     asset1Id?: bigint | number | string;
     asset2Id?: bigint | number | string;
     poolAddress?: string;
+    poolAssetId?: bigint | number | string;
     first?: number;
     after?: string;
     orderBy?: string[];
@@ -156,6 +158,18 @@ export class ListStorage {
     let value = undefined;
     if (poolAddress) {
       value = {
+        pool_address: poolAddress,
+      };
+    }
+    if (poolAssetId) {
+      value = {
+        lp_asset_id: poolAssetId,
+      };
+    }
+
+    if (poolAssetId && poolAddress) {
+      value = {
+        lp_asset_id: poolAssetId,
         pool_address: poolAddress,
       };
     }

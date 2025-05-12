@@ -357,12 +357,16 @@ export class Merak {
   async getPoolList({
     asset1Id,
     asset2Id,
+    poolAddress,
+    poolAssetId,
     first,
     after,
     orderBy,
   }: {
     asset1Id?: bigint | number | string;
     asset2Id?: bigint | number | string;
+    poolAddress?: string;
+    poolAssetId?: bigint | number | string;
     first?: number;
     after?: string;
     orderBy?: string[];
@@ -370,6 +374,8 @@ export class Merak {
     return this.storage.list.pool({
       asset1Id,
       asset2Id,
+      poolAddress,
+      poolAssetId,
       first,
       after,
       orderBy,
@@ -1097,7 +1103,7 @@ export class Merak {
     const shareAmount = amountNum / Number(poolAssetMetadata.value.supply);
 
     const poolsInfo = await this.storage.list.pool({
-      poolAddress: poolAssetMetadata.value.pool_address,
+      poolAssetId: poolAssetId.toString(),
     });
 
     if (!poolsInfo) {

@@ -26,9 +26,9 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     shortcuts: [
       {
-        name: '首页',
-        short_name: '首页',
-        description: 'Merak 应用首页',
+        name: 'Home',
+        short_name: 'Home',
+        description: 'Merak App Homepage',
         url: '/',
         icons: [
           {

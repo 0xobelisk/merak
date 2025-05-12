@@ -100,14 +100,22 @@ export default function RemoveLiquidity() {
       const asset1Param = searchParams.get('asset1');
       const asset2Param = searchParams.get('asset2');
       const lpTokenIdParam = searchParams.get('lpTokenId');
+      console.log('============================================');
+      console.log('searchParams', searchParams);
+      console.log(
+        asset1Param,
+        asset2Param,
+        lpTokenIdParam,
+        'asset1Param, asset2Param, lpTokenIdParam'
+      );
 
+      // 如果 URL 中有 token 参数，则自动选择这些 token
       if (asset1Param && asset2Param) {
         try {
-          const merak = initMerakClient();
           const asset1Id = Number(asset1Param);
           const asset2Id = Number(asset2Param);
 
-          // Get token metadata
+          // 获取 token 元数据
           const token1Info = assetsState.assetInfos.find((asset) => asset.assetId === asset1Id);
           const token2Info = assetsState.assetInfos.find((asset) => asset.assetId === asset2Id);
 
@@ -116,15 +124,13 @@ export default function RemoveLiquidity() {
               id: token1Info.assetId,
               name: token1Info.metadata.name || 'Unknown',
               symbol: token1Info.metadata.symbol || 'Unknown',
-              decimals: token1Info.metadata.decimals || 8,
+              decimals: token1Info.metadata.decimals || 9,
               icon_url: token1Info.metadata.icon_url || 'https://hop.ag/tokens/SUI.svg',
               balance: (
-                Number(token1Info.balance) / Math.pow(10, token1Info.metadata.decimals || 8)
+                Number(token1Info.balance) / Math.pow(10, token1Info.metadata.decimals || 9)
               ).toFixed(4)
             };
             setTokenA(token1);
-          } else {
-            console.error(`Token with ID ${asset1Id} not found`);
           }
 
           if (token2Info) {
@@ -132,18 +138,16 @@ export default function RemoveLiquidity() {
               id: token2Info.assetId,
               name: token2Info.metadata.name || 'Unknown',
               symbol: token2Info.metadata.symbol || 'Unknown',
-              decimals: token2Info.metadata.decimals || 8,
+              decimals: token2Info.metadata.decimals || 9,
               icon_url: token2Info.metadata.icon_url || 'https://hop.ag/tokens/SUI.svg',
               balance: (
-                Number(token2Info.balance) / Math.pow(10, token2Info.metadata.decimals || 8)
+                Number(token2Info.balance) / Math.pow(10, token2Info.metadata.decimals || 9)
               ).toFixed(4)
             };
             setTokenB(token2);
-          } else {
-            console.error(`Token with ID ${asset2Id} not found`);
           }
 
-          // If LP token ID is provided directly
+          // 设置 LP token ID
           if (lpTokenIdParam) {
             setLpTokenId(Number(lpTokenIdParam));
           }
@@ -159,6 +163,7 @@ export default function RemoveLiquidity() {
 
   // Query LP token balance when tokens are selected
   useEffect(() => {
+    console.log(searchParams, 'searchParams');
     async function fetchLpToken() {
       if (!tokenA || !tokenB || !account?.address) return;
 
@@ -183,10 +188,12 @@ export default function RemoveLiquidity() {
           );
         });
 
+        console.log(matchedLpToken, 'matchedLpToken');
+
         if (matchedLpToken) {
           setLpTokenId(matchedLpToken.assetId);
           const balance =
-            Number(matchedLpToken.balance) / Math.pow(10, matchedLpToken.metadata.decimals || 8);
+            Number(matchedLpToken.balance) / Math.pow(10, matchedLpToken.metadata.decimals || 9);
           setLpTokenBalance(balance.toFixed(4));
         } else {
           // If we can't find an exact match, try to query the balance directly
@@ -202,7 +209,7 @@ export default function RemoveLiquidity() {
               const lpBalance = await merak.balanceOf(tokenId, account.address);
 
               if (lpBalance && lpBalance[0]) {
-                const lpDecimals = 8; // Assumption
+                const lpDecimals = 9; // Assumption
                 const formattedBalance = (Number(lpBalance[0]) / Math.pow(10, lpDecimals)).toFixed(
                   4
                 );
@@ -315,7 +322,7 @@ export default function RemoveLiquidity() {
   };
 
   const handleBack = () => {
-    router.push('/pool');
+    router.push('/positions');
   };
 
   // Set max liquidity
@@ -348,6 +355,8 @@ export default function RemoveLiquidity() {
           poolAssetId: lpTokenId,
           amount: lpAmount
         });
+
+        console.log(estimates, 'estimates');
 
         if (estimates) {
           const amountA = estimates.formattedAmountA.toFixed(tokenA.decimals);
@@ -400,13 +409,16 @@ export default function RemoveLiquidity() {
         <div>
           <Label>Token Pair</Label>
           <p className="text-sm text-gray-500 mb-2">
-            Select token pair from which you'd like to remove liquidity.
+            {searchParams.get('asset1') && searchParams.get('asset2')
+              ? 'Selected token pair for removing liquidity.'
+              : "Select token pair from which you'd like to remove liquidity."}
           </p>
           <div className="flex space-x-2">
             <Button
               onClick={() => setIsTokenAModalOpen(true)}
               className="w-full justify-between"
               variant="outline"
+              disabled={!!searchParams.get('asset1')} // 如果 URL 中有 token 参数，禁用选择按钮
             >
               {tokenA ? (
                 <>
@@ -423,13 +435,13 @@ export default function RemoveLiquidity() {
               ) : (
                 'Select token'
               )}
-              <ChevronDown className="h-4 w-4 ml-2" />
+              {!searchParams.get('asset1') && <ChevronDown className="h-4 w-4 ml-2" />}
             </Button>
             <Button
               onClick={() => setIsTokenBModalOpen(true)}
               className="w-full justify-between"
               variant="outline"
-              disabled={!tokenA}
+              disabled={!tokenA || !!searchParams.get('asset2')} // 如果 URL 中有 token 参数，禁用选择按钮
             >
               {tokenB ? (
                 <>
@@ -448,7 +460,7 @@ export default function RemoveLiquidity() {
               ) : (
                 'Select first token'
               )}
-              <ChevronDown className="h-4 w-4 ml-2" />
+              {!searchParams.get('asset2') && <ChevronDown className="h-4 w-4 ml-2" />}
             </Button>
           </div>
         </div>

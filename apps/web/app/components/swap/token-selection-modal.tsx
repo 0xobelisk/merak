@@ -125,7 +125,7 @@ function TokenSelectionModalOpen({
 
     // Use the safe format function to get balance
     const formattedBalance = formatTokenBalance(asset.balance, asset.metadata?.decimals);
-
+    console.log('Formatted balance:', formattedBalance);
     onSelectToken({
       symbol: asset.metadata?.symbol || 'Unknown',
       name: asset.metadata?.name || 'Unknown Token',
