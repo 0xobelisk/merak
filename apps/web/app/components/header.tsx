@@ -38,6 +38,9 @@ export default function Header() {
         <Link href="/bridge" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Bridge
         </Link>
+        <Link href="https://merak-docs.obelisk.build/" className="text-sm font-medium text-gray-600 hover:text-blue-500">
+          Docs
+        </Link>
         {/* <Link href="/create" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Create Token
         </Link> */}
