@@ -20,7 +20,6 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import { decodeAddress, isAddress } from '@polkadot/util-crypto';
 import { ConnectButton, useCurrentWallet } from '@mysten/dapp-kit';
 import { u8aToHex, hexToU8a } from '@polkadot/util';
-import { initDubheWsClient } from '../jotai/dubhe-ws';
 
 export default function Page() {
   const { currentWallet, connectionStatus } = useCurrentWallet();
@@ -36,30 +35,6 @@ export default function Page() {
   const [polkadotApi, setPolkadotApi] = useState<any>(null);
   // Add state to track current direction
   const [isFromSuiToDubhe, setIsFromSuiToDubhe] = useState(true);
-
-  const subscribeToEvents = async (dubhe: Dubhe) => {
-    try {
-      // Subscribe to multiple event types
-      const sub = await dubhe.subscribe(
-        [
-          {
-            kind: SubscriptionKind.Event,
-            sender: currentWallet.accounts[0].address
-          },
-          {
-            kind: SubscriptionKind.Schema,
-            name: 'bridge_withdraw'
-          }
-        ],
-        (data) => {
-          console.log('Received real-time data:', data);
-        }
-      );
-      setSubscription(sub);
-    } catch (error) {
-      console.error('Failed to subscribe to events:', error);
-    }
-  };
 
   // Modify event handling function to monitor specific address and amount
   const events_process = async (
@@ -228,9 +203,6 @@ export default function Page() {
 
   // Component cleanup on unmount
   useEffect(() => {
-    const dubhews = initDubheWsClient();
-    subscribeToEvents(dubhews);
-
     // Don't subscribe on initialization, wait for user submission
     // subscribeToDubheOS();
 
