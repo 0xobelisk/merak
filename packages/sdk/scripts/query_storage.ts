@@ -11,8 +11,8 @@ async function main() {
   const merak = new Merak({
     networkType: network as NetworkType,
     secretKey: privateKey,
-    indexerUrl: 'https://merak-indexer-testnet-api.obelisk.build',
-    indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build',
+    indexerUrl: 'https://merak-indexer-testnet-api-1.obelisk.build',
+    indexerWsUrl: 'wss://merak-indexer-testnet-api-1.obelisk.build',
   });
 
   // const account = await merak.storage.getAccount({

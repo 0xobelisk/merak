@@ -8,7 +8,7 @@ const initDubheClient = () => {
   const dubhe = new Dubhe({
     networkType: NETWORK,
     packageId: PACKAGE_ID,
-    indexerUrl: 'https://merak-indexer-testnet-api.obelisk.build'
+    indexerUrl: 'https://merak-indexer-testnet-api-1.obelisk.build'
     // indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build'
   });
   return dubhe;
