@@ -1,7 +1,7 @@
 import localFont from 'next/font/local';
 import type { Metadata, Viewport } from 'next';
 import { Providers } from './providers';
-
+import { Analytics } from "@vercel/analytics/next"
 import '@repo/ui/globals.css';
 import '@mysten/dapp-kit/dist/index.css';
 
@@ -55,7 +55,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/favicon.ico" media="(prefers-color-scheme: dark)" />
       </head>
       <body className={`${inter.variable} bg-[#F7F8FA]`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Analytics />
+          </Providers>
       </body>
     </html>
   );
