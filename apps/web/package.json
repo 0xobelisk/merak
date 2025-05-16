@@ -30,6 +30,7 @@
     "@repo/ui": "workspace:*",
     "@tanstack/react-query": "^5.75.7",
     "@types/lodash.debounce": "^4.0.9",
+    "@vercel/analytics": "^1.5.0",
     "chart.js": "^4.4.9",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
