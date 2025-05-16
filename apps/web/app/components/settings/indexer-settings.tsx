@@ -20,14 +20,14 @@ interface IndexerEndpoint {
   latency: number | null;
 }
 
-const INDEXER_ENDPOINTS: IndexerEndpoint[] = [
-  {
-    name: 'Merak Official',
-    url: 'https://merak-indexer-testnet-api.obelisk.build',
-    wsUrl: 'wss://merak-indexer-testnet-api.obelisk.build',
-    latency: null
-  }
-];
+// const INDEXER_ENDPOINTS: IndexerEndpoint[] = [
+//   {
+//     name: 'Merak Official',
+//     url: 'https://merak-indexer-testnet-api.obelisk.build',
+//     wsUrl: 'wss://merak-indexer-testnet-api.obelisk.build',
+//     latency: null
+//   }
+// ];
 
 const DUBHE_ENDPOINTS: IndexerEndpoint[] = [
   {
@@ -39,7 +39,7 @@ const DUBHE_ENDPOINTS: IndexerEndpoint[] = [
 ];
 
 export function IndexerSettings() {
-  const [endpoints, setEndpoints] = useState(INDEXER_ENDPOINTS);
+  // const [endpoints, setEndpoints] = useState(INDEXER_ENDPOINTS);
   const [dubheEndpoints, setDubheEndpoints] = useState(DUBHE_ENDPOINTS);
   const [selectedEndpoint, setSelectedEndpoint] = useState('Merak Official');
   const [client, setClient] = useAtom(merakClient);
@@ -113,12 +113,12 @@ export function IndexerSettings() {
 
     const updateLatencies = async () => {
       try {
-        const indexerResults = await Promise.all(
-          endpoints.map(async (endpoint) => ({
-            ...endpoint,
-            latency: await checkLatency(endpoint)
-          }))
-        );
+        // const indexerResults = await Promise.all(
+        //   endpoints.map(async (endpoint) => ({
+        //     ...endpoint,
+        //     latency: await checkLatency(endpoint)
+        //   }))
+        // );
 
         const dubheResults = await Promise.all(
           dubheEndpoints.map(async (endpoint) => ({
@@ -128,7 +128,7 @@ export function IndexerSettings() {
         );
 
         if (isMounted) {
-          setEndpoints(indexerResults);
+          // setEndpoints(indexerResults);
           setDubheEndpoints(dubheResults);
         }
       } catch (error) {
@@ -161,13 +161,13 @@ export function IndexerSettings() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-800" />
         <div className="p-2">
-          <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400 mb-4">
+          {/* <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400 mb-4">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
             </svg>
             <span>Indexer Endpoint</span>
-          </div>
-          {endpoints.map((endpoint) => (
+          </div> */}
+          {/* {endpoints.map((endpoint) => (
             <DropdownMenuItem
               key={endpoint.name}
               className="flex items-center justify-between p-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50"
@@ -206,14 +206,14 @@ export function IndexerSettings() {
                   endpoint.latency && endpoint.latency > 400
                     ? 'text-red-500'
                     : endpoint.latency === null
-                      ? 'text-gray-400'
-                      : 'text-yellow-500'
+                    ? 'text-gray-400'
+                    : 'text-yellow-500'
                 }`}
               >
                 {renderLatency(endpoint.latency)}
               </span>
             </DropdownMenuItem>
-          ))}
+          ))} */}
 
           <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400 mt-6 mb-4">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -260,8 +260,8 @@ export function IndexerSettings() {
                   endpoint.latency && endpoint.latency > 400
                     ? 'text-red-500'
                     : endpoint.latency === null
-                      ? 'text-gray-400'
-                      : 'text-yellow-500'
+                    ? 'text-gray-400'
+                    : 'text-yellow-500'
                 }`}
               >
                 {renderLatency(endpoint.latency)}
