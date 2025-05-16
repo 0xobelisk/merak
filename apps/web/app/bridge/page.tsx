@@ -20,6 +20,7 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import { decodeAddress, isAddress } from '@polkadot/util-crypto';
 import { ConnectButton, useCurrentWallet } from '@mysten/dapp-kit';
 import { u8aToHex, hexToU8a } from '@polkadot/util';
+import { initDubheWsClient } from '../jotai/dubhe-ws';
 
 export default function Page() {
   const { currentWallet, connectionStatus } = useCurrentWallet();
@@ -227,8 +228,8 @@ export default function Page() {
 
   // Component cleanup on unmount
   useEffect(() => {
-    const dubhe = initDubheClient();
-    subscribeToEvents(dubhe);
+    const dubhews = initDubheWsClient();
+    subscribeToEvents(dubhews);
 
     // Don't subscribe on initialization, wait for user submission
     // subscribeToDubheOS();
