@@ -188,6 +188,7 @@ function TokenSelectionModalOpen({
                   src={token.icon_url}
                   alt={token.symbol}
                   className="w-5 h-5"
+                  loading="lazy"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = DEFAULT_ICON;
                   }}
@@ -222,6 +223,7 @@ function TokenSelectionModalOpen({
                           src={asset.metadata?.icon_url || DEFAULT_ICON}
                           alt={asset.metadata?.symbol}
                           className="w-full h-full rounded-full"
+                          loading="lazy"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = DEFAULT_ICON;
                           }}

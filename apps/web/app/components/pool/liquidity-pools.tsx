@@ -159,26 +159,28 @@ export default function LiquidityPools() {
         <div key={index} className="bg-white p-4 rounded-lg shadow">
           {/* Token Pair Header */}
           <div className="flex items-center space-x-2 mb-4">
-            <img
-              src={pool.token1Image}
-              alt={pool.name.split(' / ')[0]}
-              width={24}
-              height={24}
-              className="rounded-full"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = '/sui-logo.svg';
-              }}
-            />
-            <img
-              src={pool.token2Image}
-              alt={pool.name.split(' / ')[1]}
-              width={24}
-              height={24}
-              className="rounded-full"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = '/sui-logo.svg';
-              }}
-            />
+              <img
+                src={pool.token1Image}
+                alt={pool.name.split(' / ')[0]}
+                width={24}
+                height={24}
+                className="rounded-full"
+                loading="lazy"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                }}
+              />
+              <img
+                src={pool.token2Image}
+                alt={pool.name.split(' / ')[1]}
+                width={24}
+                height={24}
+                className="rounded-full"
+                loading="lazy"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                }}
+              />
             <span className="font-medium text-gray-900">{pool.name}</span>
           </div>
 
@@ -233,26 +235,28 @@ export default function LiquidityPools() {
             <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
               <td className="py-4 px-4">
                 <div className="flex items-center space-x-2">
-                  <img
-                    src={pool.token1Image}
-                    alt={pool.name.split(' / ')[0]}
-                    width={20}
-                    height={20}
-                    className="rounded-full"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
-                    }}
-                  />
-                  <img
-                    src={pool.token2Image}
-                    alt={pool.name.split(' / ')[1]}
-                    width={20}
-                    height={20}
-                    className="rounded-full"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
-                    }}
-                  />
+                    <img
+                      src={pool.token1Image}
+                      alt={pool.name.split(' / ')[0]}
+                      width={20}
+                      height={20}
+                      className="rounded-full"
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                      }}
+                    />
+                    <img
+                      src={pool.token2Image}
+                      alt={pool.name.split(' / ')[1]}
+                      width={20}
+                      height={20}
+                      className="rounded-full"
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                      }}
+                    />
                   <span className="font-medium text-gray-900">{pool.name}</span>
                 </div>
               </td>

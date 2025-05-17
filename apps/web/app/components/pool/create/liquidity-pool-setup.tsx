@@ -208,6 +208,7 @@ export default function LiquidityPoolSetup({ selectedTokens, onClose }: Liquidit
                   src={token.metadata[4] || '/sui-logo.svg'}
                   alt={`${token.metadata[0]} logo`}
                   className="w-8 h-8 rounded-full mr-2"
+                  loading="lazy"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = '/sui-logo.svg';
                   }}
@@ -241,6 +242,7 @@ export default function LiquidityPoolSetup({ selectedTokens, onClose }: Liquidit
                     src={token.metadata[4] || '/sui-logo.svg'}
                     alt={`${token.metadata[0]} logo`}
                     className="w-8 h-8 rounded-full mr-2"
+                    loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = '/sui-logo.svg';
                     }}
