@@ -6,8 +6,9 @@
 	"scripts": {
 		"build": "turbo build",
 		"dev": "turbo dev",
-		"ui:add": "pnpm --filter @repo/ui ui:add",
-		"lint": "eslint . --max-warnings 0"
+        "ui:add": "pnpm --filter @repo/ui ui:add",
+        "lint": "eslint . --max-warnings 0",
+        "test": "turbo run test"
 	},
 	"dependencies": {
 		"@0xobelisk/sui-cli": "1.2.0-pre.16",
@@ -16,10 +17,14 @@
 		"chalk": "^4.1.2",
 		"dotenv": "^16.5.0"
 	},
-	"devDependencies": {
-		"@repo/eslint-config": "workspace:*",
-		"@repo/typescript-config": "workspace:*",
-		"turbo": "^2.5.3"
+        "devDependencies": {
+                "@repo/eslint-config": "workspace:*",
+                "@repo/typescript-config": "workspace:*",
+                "turbo": "^2.5.3",
+                "vitest": "^1.4.0",
+                "jsdom": "^24.0.0",
+                "@testing-library/react": "^14.0.0",
+                "@testing-library/jest-dom": "^6.0.0"
 	},
 	"packageManager": "pnpm@9.9.0",
 	"engines": {
