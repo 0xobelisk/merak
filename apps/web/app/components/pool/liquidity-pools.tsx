@@ -62,7 +62,9 @@ export default function LiquidityPools() {
   const queryPoolList = async () => {
     const merak = initMerakClient();
     try {
-      const poolList = await merak.listPoolsInfo();
+      const poolList = await merak.listPoolsInfo({
+        pageSize: 3
+      });
 
       setPools(poolList);
     } catch (error) {

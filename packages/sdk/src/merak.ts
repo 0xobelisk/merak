@@ -385,11 +385,13 @@ export class Merak {
   async allPoolList({
     asset1Id,
     asset2Id,
+    pageSize,
   }: {
     asset1Id?: bigint | number | string;
     asset2Id?: bigint | number | string;
+    pageSize?: number;
   } = {}) {
-    const pageSize = 9999;
+    pageSize = pageSize ?? 9999;
     let pool = await this.storage.list.pool({
       first: pageSize,
       asset1Id: asset1Id?.toString(),
@@ -796,8 +798,14 @@ export class Merak {
     };
   }
 
-  async listPoolsInfo(): Promise<PoolInfo[]> {
-    const poolList = await this.allPoolList();
+  async listPoolsInfo({
+    pageSize,
+  }: {
+    pageSize?: number;
+  } = {}): Promise<PoolInfo[]> {
+    const poolList = await this.allPoolList({
+      pageSize,
+    });
     const savedPools: PoolInfo[] = [];
 
     if (poolList && poolList.length > 0) {

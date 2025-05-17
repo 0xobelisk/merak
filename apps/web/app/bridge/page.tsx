@@ -234,7 +234,7 @@ export default function Page() {
 
       // Get target address - use customAddress directly
       if (!customAddress) {
-        toast.error('Please enter a valid receiving address');
+        toast.error('Please enter a valid Polkadot receiving address');
         return;
       }
 
