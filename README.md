@@ -64,4 +64,19 @@ Learn more about shadcn/ui:
 - [Documentation](https://ui.shadcn.com/docs)
 ### Continuous Integration
 
+
+# sov-front-end-template
+
+## Running Tests
+
+The repository uses [Vitest](https://vitest.dev/) for unit testing. After
+installing dependencies with `pnpm`, run:
+
+```sh
+pnpm test
+```
+
+This command runs tests across all packages via Turborepo.
+
 A GitHub Actions workflow installs dependencies and runs `pnpm lint`, `pnpm build` and `pnpm test` for pull requests.
+

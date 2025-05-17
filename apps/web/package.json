@@ -13,6 +13,7 @@
     "type-check": "tsc --noEmit",
     "validate": "pnpm format:check && pnpm type-check",
     "test": "vitest --coverage"
+
   },
   "dependencies": {
     "@0xobelisk/merak-sdk": "^0.0.50",
@@ -70,6 +71,5 @@
     "@testing-library/react": "^14.2.1",
     "@testing-library/jest-dom": "^6.2.0",
     "jsdom": "^24.0.0"
-
   }
 }
