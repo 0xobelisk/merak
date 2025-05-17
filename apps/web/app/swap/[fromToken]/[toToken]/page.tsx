@@ -633,6 +633,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                           src={fromToken.icon_url}
                           alt={fromToken.symbol}
                           className="w-full h-full object-cover"
+                          loading="lazy"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = '/sui-logo.svg';
                           }}
@@ -711,6 +712,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                           src={toToken.icon_url}
                           alt={toToken.symbol}
                           className="w-full h-full object-cover"
+                          loading="lazy"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = '/sui-logo.svg';
                           }}
