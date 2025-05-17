@@ -11,6 +11,7 @@ import { EnokiFlowProvider } from '@mysten/enoki/react';
 import Header from '@/app/components/header';
 import React from 'react';
 import AppWrapper from '@/app/wrapper';
+import useForceClientUpdate from './hooks/useForceClientUpdate';
 
 const { networkConfig } = createNetworkConfig({
   localnet: { url: getFullnodeUrl('localnet') },
@@ -22,6 +23,7 @@ const { networkConfig } = createNetworkConfig({
 const queryClient = new QueryClient();
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  useForceClientUpdate();
   return (
     <Provider>
       <QueryClientProvider client={queryClient}>
