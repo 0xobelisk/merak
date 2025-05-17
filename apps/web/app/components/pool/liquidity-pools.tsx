@@ -406,7 +406,7 @@ export default function LiquidityPools() {
         )}
       </div>
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-sm">
           {currentStep === 'select' ? (
             <TokenCreate onClose={handleCloseModal} onSelectTokens={handleSelectTokens} />
           ) : (

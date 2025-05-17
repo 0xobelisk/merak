@@ -321,14 +321,14 @@ export default function Page() {
     <div className="min-h-screen bg-[#F8F9FA]">
       <div className="container mx-auto px-4 py-8">
         {/* Add page title and description */}
-        <div className="max-w-[520px] mx-auto mb-6">
+        <div className="w-full max-w-lg mx-auto mb-6">
           <h1 className="text-2xl font-semibold text-gray-900">Bridge</h1>
           <p className="mt-2 text-sm text-gray-600">
             Transfer tokens between Sui and Dubhe OS networks
           </p>
         </div>
 
-        <main className="max-w-[520px] mx-auto space-y-4">
+        <main className="w-full max-w-lg mx-auto space-y-4">
           {/* First Card - Transfer Details */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100">
             <div className="px-6 py-4 border-b border-gray-100">
@@ -339,9 +339,9 @@ export default function Page() {
               {/* From Token */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">From</label>
-                <div className="flex justify-between items-center gap-4">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                   <Select defaultValue="dub">
-                    <SelectTrigger className="w-[240px] border-gray-200 bg-white">
+                    <SelectTrigger className="w-full sm:w-60 border-gray-200 bg-white">
                       <SelectValue>
                         <div className="flex items-center">
                           <img src="/dubhe-logo.png" alt="DUB logo" className="w-5 h-5 mr-2" loading="lazy" />
@@ -362,7 +362,7 @@ export default function Page() {
                   <Input
                     type="number"
                     placeholder="0.00"
-                    className="w-[240px] border-gray-200 focus:border-blue-500"
+                    className="w-full sm:w-60 border-gray-200 focus:border-blue-500"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                   />
@@ -373,9 +373,9 @@ export default function Page() {
               {/* To Token */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">To</label>
-                <div className="flex justify-between items-center gap-4">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                   <Select defaultValue="ethereum">
-                    <SelectTrigger className="w-[240px] border-gray-200 bg-white">
+                    <SelectTrigger className="w-full sm:w-60 border-gray-200 bg-white">
                       <SelectValue>
                         <div className="flex items-center">
                           <img src="/dubhe-logo.png" alt="Dubhe logo" className="w-5 h-5 mr-2" loading="lazy" />
@@ -398,7 +398,7 @@ export default function Page() {
                     placeholder="Enter receiving address"
                     value={customAddress}
                     onChange={(e) => setCustomAddress(e.target.value)}
-                    className="w-[240px] border-gray-200 focus:border-blue-500"
+                    className="w-full sm:w-60 border-gray-200 focus:border-blue-500"
                   />
                 </div>
               </div>
