@@ -2,7 +2,7 @@ import testnetMetadata from '../metadata/testnet/metadata.json';
 import localnetMetadata from '../metadata/localnet/metadata.json';
 import { MerakConfig } from '../types';
 
-export function getMerakConfig(network: string): MerakConfig {
+export function getMerakConfig(network: 'testnet' | 'localnet'): MerakConfig {
   let config: MerakConfig;
 
   switch (network) {
