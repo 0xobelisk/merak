@@ -41,6 +41,8 @@ This project integrates [Sentry](https://sentry.io/) for runtime error tracking.
 Set the environment variable `SENTRY_DSN` (or `NEXT_PUBLIC_SENTRY_DSN` for
 browser reporting) before running the application so that errors are reported to
 your Sentry project.
+All application pages are wrapped in a `Sentry.ErrorBoundary` to ensure
+unhandled errors are captured during runtime.
 
 ## Testing
 
@@ -68,3 +70,16 @@ Learn more about shadcn/ui:
 
 A GitHub Actions workflow installs dependencies and runs `pnpm lint`, `pnpm build` and `pnpm test` for pull requests.
 
+
+## Front-End Performance and Caching
+
+- **Code Splitting** – Load modules only when needed with Next.js dynamic imports.
+- **Asset Caching** – Serve static assets through a CDN with long-lived `Cache-Control` headers.
+- **HTTP Caching** – Use `ETag` or `Last-Modified` headers so browsers can reuse responses.
+- **Service Workers** – Optionally cache routes and API responses for offline support.
+- **Image Optimization** – Use the Next.js `Image` component for automatic sizing and compression.
+- **Lazy Loading** – Defer non-critical components and images using dynamic imports and the `loading` attribute.
+- **Compression** – Enable gzip or Brotli compression on the server for faster transfers.
+- **Memoization** – Apply React memoization and virtualization to reduce re-renders.
+- **Build Caching** – Turborepo's cache speeds up builds and tasks across packages.
+- **Version Checking** – The `useForceClientUpdate` hook reloads the page when a new build is available.
