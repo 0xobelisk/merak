@@ -2,6 +2,15 @@
 
 This repository contains the Merak protocol SDK and web application. The project uses **pnpm** and **Turborepo** to manage multiple packages.
 
+## Documentation
+
+Additional guides can be found in the `docs/` directory:
+- [Architecture](docs/architecture.md)
+- [Contracts](docs/contracts.md)
+- [SDK Usage](docs/sdk.md)
+- [Continuous Integration](docs/ci-cd.md)
+- [Getting Started](docs/getting-started.md)
+
 ## Apps and Packages
 
 - **apps/web** – Next.js front‑end
