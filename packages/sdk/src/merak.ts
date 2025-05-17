@@ -398,25 +398,25 @@ export class Merak {
       asset2Id: asset2Id?.toString(),
     });
 
-    let allPoolData = [...pool.data];
+    // let allPoolData = [...pool.data];
 
-    while (pool.pageInfo.hasNextPage) {
-      const nextPage = await this.storage.list.pool({
-        first: pageSize,
-        after: pool.pageInfo.endCursor,
-        asset1Id: asset1Id?.toString(),
-        asset2Id: asset2Id?.toString(),
-      });
+    // while (pool.pageInfo.hasNextPage) {
+    //   const nextPage = await this.storage.list.pool({
+    //     first: pageSize,
+    //     after: pool.pageInfo.endCursor,
+    //     asset1Id: asset1Id?.toString(),
+    //     asset2Id: asset2Id?.toString(),
+    //   });
 
-      allPoolData = [...allPoolData, ...nextPage.data];
-      pool = nextPage;
-    }
+    //   allPoolData = [...allPoolData, ...nextPage.data];
+    //   pool = nextPage;
+    // }
 
-    if (allPoolData.length === 0) {
-      return [];
-    }
+    // if (allPoolData.length === 0) {
+    //   return [];
+    // }
 
-    return allPoolData;
+    return pool.data;
   }
 
   async allPoolListWithId(assetId: bigint | number | string) {
