@@ -2,7 +2,7 @@
 
 const nextConfig = {
   // output: 'export',
-  distDir: 'dist',
+  // distDir: 'dist',
   transpilePackages: ['@repo/ui']
   // async rewrites() {
   //   return [
