@@ -48,16 +48,16 @@ export default function Header() {
         {/* <Link href="/create" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Create Token
         </Link> */}
-        </nav>
-        <Sheet>
-          <SheetTrigger asChild>
-            <button className="md:hidden p-2 rounded-md border border-gray-200">
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">Open Menu</span>
-            </button>
-          </SheetTrigger>
-          <SheetContent side="left">
-            <div className="p-4 space-y-4">
+      </nav>
+      <Sheet>
+        <SheetTrigger asChild>
+          <button className="md:hidden p-2 rounded-md border border-gray-200">
+            <Menu className="h-6 w-6" />
+            <span className="sr-only">Open Menu</span>
+          </button>
+        </SheetTrigger>
+        <SheetContent side="left">
+          <div className="p-4 space-y-4">
             <Link
               href="/wrap"
               className="block text-sm font-medium text-gray-600 hover:text-blue-500"
@@ -117,16 +117,15 @@ export default function Header() {
           </div>
         </SheetContent>
       </Sheet>
-        <div className="hidden md:flex items-center space-x-4">
-          {currentWallet ? (
-            <>
-              <WalletMenu address={currentWallet.accounts[0].address} />
-              <IndexerSettings />
-            </>
-          ) : (
-            <ConnectButton className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-full" />
-          )}
-        </div>
+      <div className="hidden md:flex items-center space-x-4">
+        {currentWallet ? (
+          <>
+            <WalletMenu address={currentWallet.accounts[0].address} />
+            <IndexerSettings />
+          </>
+        ) : (
+          <ConnectButton className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-full" />
+        )}
       </div>
     </header>
   );
