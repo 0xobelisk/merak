@@ -12,7 +12,8 @@
     "format:check": "prettier --check .",
     "type-check": "tsc --noEmit",
     "validate": "pnpm format:check && pnpm type-check",
-    "test": "vitest run"
+    "test": "vitest --coverage"
+
   },
   "dependencies": {
     "@0xobelisk/merak-sdk": "^0.0.50",
@@ -49,6 +50,7 @@
     "react-dom": "^18.3.1",
     "react-stately": "^3.37.0",
     "sonner": "^1.7.4",
+    "@sentry/nextjs": "^7.120.3",
     "tsrpc-browser": "^3.4.16",
     "tsrpc-proto": "^1.4.3"
   },
@@ -65,10 +67,9 @@
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
-    "vitest": "^1.4.0",
-    "jsdom": "^24.0.0",
-    "@testing-library/react": "^14.0.0",
-    "@testing-library/jest-dom": "^6.0.0",
-    "@vitejs/plugin-react": "^4.2.1"
+    "vitest": "^1.5.0",
+    "@testing-library/react": "^14.2.1",
+    "@testing-library/jest-dom": "^6.2.0",
+    "jsdom": "^24.0.0"
   }
 }

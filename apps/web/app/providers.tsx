@@ -1,4 +1,5 @@
 'use client';
+import '../sentry.client.config';
 
 import { createNetworkConfig, SuiClientProvider, WalletProvider } from '@mysten/dapp-kit';
 import { getFullnodeUrl } from '@mysten/sui/client';

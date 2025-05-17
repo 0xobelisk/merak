@@ -6,6 +6,9 @@ First, run the development server:
 pnpm dev
 ```
 
+Ensure `SENTRY_DSN` (or `NEXT_PUBLIC_SENTRY_DSN`) is set in your environment so
+that runtime errors can be reported to Sentry.
+
 Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
