@@ -799,52 +799,52 @@ export class Merak {
   async listPoolsInfo(): Promise<PoolInfo[]> {
     const poolList = await this.allPoolList();
     const savedPools: PoolInfo[] = [];
+
     if (poolList && poolList.length > 0) {
-      await Promise.all(
-        poolList.map(async (item) => {
-          const asset1Metadata = await this.storage.get.assetMetadata({
-            assetId: item.key1,
-          });
-          const asset2Metadata = await this.storage.get.assetMetadata({
-            assetId: item.key2,
-          });
-          const poolAsset1Amount = await this.storage.get.account({
-            address: item.value.pool_address,
-            assetId: item.key1,
-          });
-          const poolAsset2Amount = await this.storage.get.account({
-            address: item.value.pool_address,
-            assetId: item.key2,
-          });
+      for (const item of poolList) {
+        const asset1Metadata = await this.storage.get.assetMetadata({
+          assetId: item.key1,
+        });
+        const asset2Metadata = await this.storage.get.assetMetadata({
+          assetId: item.key2,
+        });
+        const poolAsset1Amount = await this.storage.get.account({
+          address: item.value.pool_address,
+          assetId: item.key1,
+        });
+        const poolAsset2Amount = await this.storage.get.account({
+          address: item.value.pool_address,
+          assetId: item.key2,
+        });
 
-          if (!asset1Metadata || !asset2Metadata) {
-            throw new Error(
-              `Failed to fetch pool info, metadata not found: ${item.key1} / ${item.key2}`
-            );
-          }
+        if (!asset1Metadata || !asset2Metadata) {
+          throw new Error(
+            `Failed to fetch pool info, metadata not found: ${item.key1} / ${item.key2}`
+          );
+        }
 
-          const poolAsset1AmountNum =
-            parseFloat(poolAsset1Amount?.value.balance ?? '0') /
-            10 ** asset1Metadata.value.decimals;
-          const poolAsset2AmountNum =
-            parseFloat(poolAsset2Amount?.value.balance ?? '0') /
-            10 ** asset2Metadata.value.decimals;
-          const poolInfo = {
-            name: `${asset1Metadata.value.symbol} / ${asset2Metadata.value.symbol}`,
-            asset1Id: item.key1,
-            asset2Id: item.key2,
-            lpAssetId: item.value.lp_asset_id,
-            apr: '10%',
-            liquidity: `${poolAsset1AmountNum} ${asset1Metadata.value.symbol} / ${poolAsset2AmountNum} ${asset2Metadata.value.symbol}`,
-            volume: `${poolAsset1AmountNum + poolAsset2AmountNum}`,
-            feeTier: '1%',
-            token1Image: asset1Metadata.value.icon_url,
-            token2Image: asset2Metadata.value.icon_url,
-          };
-          savedPools.push(poolInfo);
-        })
-      );
+        const poolAsset1AmountNum =
+          parseFloat(poolAsset1Amount?.value.balance ?? '0') /
+          10 ** asset1Metadata.value.decimals;
+        const poolAsset2AmountNum =
+          parseFloat(poolAsset2Amount?.value.balance ?? '0') /
+          10 ** asset2Metadata.value.decimals;
+        const poolInfo = {
+          name: `${asset1Metadata.value.symbol} / ${asset2Metadata.value.symbol}`,
+          asset1Id: item.key1,
+          asset2Id: item.key2,
+          lpAssetId: item.value.lp_asset_id,
+          apr: '10%',
+          liquidity: `${poolAsset1AmountNum} ${asset1Metadata.value.symbol} / ${poolAsset2AmountNum} ${asset2Metadata.value.symbol}`,
+          volume: `${poolAsset1AmountNum + poolAsset2AmountNum}`,
+          feeTier: '1%',
+          token1Image: asset1Metadata.value.icon_url,
+          token2Image: asset2Metadata.value.icon_url,
+        };
+        savedPools.push(poolInfo);
+      }
     }
+
     return savedPools;
   }
 

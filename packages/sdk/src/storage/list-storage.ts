@@ -187,6 +187,7 @@ export class ListStorage {
         {
           path: 'lp_asset_id',
           direction: 'ASC',
+          type: 'INTEGER',
         },
       ],
     });
