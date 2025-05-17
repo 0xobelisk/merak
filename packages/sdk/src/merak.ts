@@ -42,7 +42,9 @@ export class Merak {
    * @argument params - The parameters for the Merak instance.
    */
   constructor(params: MerakParams) {
-    const config = getMerakConfig(params.networkType ?? 'testnet');
+    const config = getMerakConfig(
+      (params.networkType ?? 'testnet') as 'testnet' | 'localnet'
+    );
     const packageId = params.packageId ?? config.packageId;
     const schemaId = params.schemaId ?? config.schemaId;
     const metadata = params.metadata ?? config.metadata;
