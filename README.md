@@ -40,6 +40,14 @@ Set the environment variable `SENTRY_DSN` (or `NEXT_PUBLIC_SENTRY_DSN` for
 browser reporting) before running the application so that errors are reported to
 your Sentry project.
 
+## Testing
+
+Run all unit tests across packages:
+
+```sh
+pnpm test
+```
+
 ## Useful Links
 
 Learn more about the power of Turborepo:
