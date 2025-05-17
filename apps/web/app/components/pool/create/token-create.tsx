@@ -96,6 +96,7 @@ export default function TokenCreate({ onClose, onSelectTokens }: TokenCreateProp
                     src={asset.metadata.icon_url || '/default-icon.png'}
                     alt={asset.metadata.name || `Asset ${asset.assetId}`}
                     className="w-6 h-6 mr-2"
+                    loading="lazy"
                   />
                   <span className="ml-2">{asset.metadata.name || `Asset ${asset.assetId}`}</span>
                 </div>
@@ -111,11 +112,12 @@ export default function TokenCreate({ onClose, onSelectTokens }: TokenCreateProp
             {assetsState.assetInfos.map((asset) => (
               <SelectItem key={asset.assetId} value={asset.assetId.toString()}>
                 <div className="flex items-center">
-                  <img
-                    src={asset.metadata.icon_url || '/default-icon.png'}
-                    alt={asset.metadata.name || `Asset ${asset.assetId}`}
-                    className="w-6 h-6 mr-2"
-                  />
+                    <img
+                      src={asset.metadata.icon_url || '/default-icon.png'}
+                      alt={asset.metadata.name || `Asset ${asset.assetId}`}
+                      className="w-6 h-6 mr-2"
+                      loading="lazy"
+                    />
                   <span className="ml-2">{asset.metadata.name || `Asset ${asset.assetId}`}</span>
                 </div>
               </SelectItem>
