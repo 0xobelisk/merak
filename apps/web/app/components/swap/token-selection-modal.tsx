@@ -151,7 +151,7 @@ function TokenSelectionModalOpen({
 
   return (
     <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4 z-[1000]">
-      <div className="bg-white rounded-3xl w-full max-w-[480px] relative">
+      <div className="bg-white rounded-3xl w-full max-w-md relative">
         <div className="p-6">
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-xl font-semibold text-gray-900">Select a token</h2>

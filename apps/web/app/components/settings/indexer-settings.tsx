@@ -153,7 +153,7 @@ export function IndexerSettings() {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-[360px] bg-white dark:bg-[#18181B] border border-gray-100 dark:border-gray-800"
+        className="w-full sm:w-80 bg-white dark:bg-[#18181B] border border-gray-100 dark:border-gray-800"
         align="end"
       >
         <DropdownMenuLabel className="text-xl font-semibold text-gray-900 dark:text-gray-100">
