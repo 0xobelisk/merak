@@ -344,7 +344,7 @@ export default function Page() {
                     <SelectTrigger className="w-[240px] border-gray-200 bg-white">
                       <SelectValue>
                         <div className="flex items-center">
-                          <img src="/dubhe-logo.png" alt="DUB logo" className="w-5 h-5 mr-2" />
+                          <img src="/dubhe-logo.png" alt="DUB logo" className="w-5 h-5 mr-2" loading="lazy" />
                           wDUBHE (WDUBHE)
                         </div>
                       </SelectValue>
@@ -352,7 +352,7 @@ export default function Page() {
                     <SelectContent>
                       <SelectItem value="dub">
                         <div className="flex items-center">
-                          <img src="/dubhe-logo.png" alt="DUB logo" className="w-5 h-5 mr-2" />
+                          <img src="/dubhe-logo.png" alt="DUB logo" className="w-5 h-5 mr-2" loading="lazy" />
                           Dubhe (DUBHE)
                         </div>
                       </SelectItem>
@@ -378,7 +378,7 @@ export default function Page() {
                     <SelectTrigger className="w-[240px] border-gray-200 bg-white">
                       <SelectValue>
                         <div className="flex items-center">
-                          <img src="/dubhe-logo.png" alt="Dubhe logo" className="w-5 h-5 mr-2" />
+                          <img src="/dubhe-logo.png" alt="Dubhe logo" className="w-5 h-5 mr-2" loading="lazy" />
                           Dubhe OS
                         </div>
                       </SelectValue>
@@ -386,7 +386,7 @@ export default function Page() {
                     <SelectContent>
                       <SelectItem value="ethereum">
                         <div className="flex items-center">
-                          <img src="/dubhe-logo.png" alt="Dubhe logo" className="w-5 h-5 mr-2" />
+                          <img src="/dubhe-logo.png" alt="Dubhe logo" className="w-5 h-5 mr-2" loading="lazy" />
                           Dubhe OS
                         </div>
                       </SelectItem>

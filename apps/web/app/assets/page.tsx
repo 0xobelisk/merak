@@ -16,6 +16,14 @@ import {
   TableHeader,
   TableRow
 } from '@repo/ui/components/ui/table';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious
+} from '@repo/ui/components/ui/pagination';
 import { RefreshCw, Search, ArrowUpDown } from 'lucide-react';
 import { initMerakClient } from '@/app/jotai/merak';
 import { AllAssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
@@ -36,6 +44,9 @@ export default function AssetsPage() {
     key: string;
     direction: 'ascending' | 'descending';
   } | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [totalPages, setTotalPages] = useState(1);
 
   /**
    * Query asset list
@@ -159,6 +170,20 @@ export default function AssetsPage() {
     return filteredItems;
   }, [allAssetsState.assetInfos, searchTerm, sortConfig]);
 
+  useEffect(() => {
+    const pages = Math.max(1, Math.ceil(filteredAndSortedAssets.length / rowsPerPage));
+    setTotalPages(pages);
+    if (currentPage > pages) {
+      setCurrentPage(1);
+    }
+  }, [filteredAndSortedAssets.length, rowsPerPage]);
+
+  const paginatedAssets = React.useMemo(() => {
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    return filteredAndSortedAssets.slice(startIndex, endIndex);
+  }, [filteredAndSortedAssets, currentPage, rowsPerPage]);
+
   // Show prompt if user hasn't connected wallet
   if (!account) {
     return (
@@ -260,7 +285,7 @@ export default function AssetsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredAndSortedAssets.map((asset) => (
+                {paginatedAssets.map((asset) => (
                   <TableRow key={asset.assetId}>
                     <TableCell className="font-mono text-xs">{asset.assetId}</TableCell>
                     <TableCell>
@@ -269,6 +294,7 @@ export default function AssetsPage() {
                           src={asset.metadata?.icon_url || '/sui-logo.svg'}
                           alt={asset.metadata?.name || `Token ${asset.assetId}`}
                           className="w-8 h-8 mr-3 rounded-full"
+                          loading="lazy"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = '/sui-logo.svg';
                           }}
@@ -298,6 +324,70 @@ export default function AssetsPage() {
               </TableBody>
             </Table>
           )}
+          <div className="flex items-center justify-between p-4 border-t border-gray-100">
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-500">Rows per page</span>
+              <select
+                className="border rounded p-1 text-sm"
+                value={rowsPerPage}
+                onChange={(e) => {
+                  setRowsPerPage(Number(e.target.value));
+                  setCurrentPage(1);
+                }}
+              >
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-gray-500">
+                Page {currentPage} of {totalPages}
+              </span>
+
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage > 1) setCurrentPage(currentPage - 1);
+                      }}
+                      className={currentPage <= 1 ? 'pointer-events-none opacity-50' : ''}
+                    />
+                  </PaginationItem>
+
+                  {[...Array(totalPages)].map((_, i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage(i + 1);
+                        }}
+                        isActive={currentPage === i + 1}
+                      >
+                        {i + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+                      }}
+                      className={currentPage >= totalPages ? 'pointer-events-none opacity-50' : ''}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

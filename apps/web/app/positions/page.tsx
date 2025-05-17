@@ -257,6 +257,7 @@ export default function PositionsPage() {
                             src={position.icon_url}
                             alt={position.symbol}
                             className="w-6 h-6 mr-2 rounded-full"
+                            loading="lazy"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src = '/sui-logo.svg';
                             }}

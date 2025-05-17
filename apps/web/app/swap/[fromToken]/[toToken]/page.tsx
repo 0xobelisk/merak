@@ -7,7 +7,8 @@ import { TokenSelectionOpen } from '@/app/jotai/swap/swap';
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
 import { ChevronDown, ArrowUpDown, Loader2, Info } from 'lucide-react';
-import TokenSelectionModal from '@/app/components/swap/token-selection-modal';
+import dynamic from 'next/dynamic';
+const TokenSelectionModal = dynamic(() => import('@/app/components/swap/token-selection-modal'));
 import { Transaction } from '@0xobelisk/sui-client';
 import debounce from 'lodash/debounce';
 import { initMerakClient } from '@/app/jotai/merak';
@@ -632,6 +633,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                           src={fromToken.icon_url}
                           alt={fromToken.symbol}
                           className="w-full h-full object-cover"
+                          loading="lazy"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = '/sui-logo.svg';
                           }}
@@ -710,6 +712,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                           src={toToken.icon_url}
                           alt={toToken.symbol}
                           className="w-full h-full object-cover"
+                          loading="lazy"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = '/sui-logo.svg';
                           }}

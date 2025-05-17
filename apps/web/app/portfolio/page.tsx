@@ -1067,6 +1067,7 @@ export default function Portfolio() {
                                         src={asset.metadata?.icon_url || '/sui-logo.svg'}
                                         alt={asset.metadata?.name || `Token ${index}`}
                                         className="w-6 h-6 mr-2 rounded-full"
+                                        loading="lazy"
                                         onError={(e) => {
                                           (e.target as HTMLImageElement).src = '/sui-logo.svg';
                                         }}

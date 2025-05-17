@@ -193,6 +193,7 @@ export default function TokenWrapper() {
                 width="20"
                 height="20"
                 style={{ marginRight: '8px' }}
+                loading="lazy"
                 onError={(e) => {
                   // Use default icon if image fails to load
                   e.currentTarget.src = '/sui-logo.svg';
@@ -282,6 +283,7 @@ export default function TokenWrapper() {
               width="20"
               height="20"
               style={{ marginRight: '8px' }}
+              loading="lazy"
               onError={(e) => {
                 // Fallback if image fails to load
                 e.currentTarget.src = '/sui-logo.svg';
