@@ -112,6 +112,13 @@ Next, you can link your Turborepo to your Remote Cache by running the following 
 npx turbo link
 ```
 
+## Error Monitoring with Sentry
+
+This project integrates [Sentry](https://sentry.io/) for runtime error tracking.
+Set the environment variable `SENTRY_DSN` (or `NEXT_PUBLIC_SENTRY_DSN` for
+browser reporting) before running the application so that errors are reported to
+your Sentry project.
+
 ## Useful Links
 
 Learn more about the power of Turborepo:
