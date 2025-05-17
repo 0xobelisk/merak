@@ -13,6 +13,7 @@ import Header from '@/app/components/header';
 import React from 'react';
 import AppWrapper from '@/app/wrapper';
 import useForceClientUpdate from './hooks/useForceClientUpdate';
+import * as Sentry from '@sentry/nextjs';
 
 const { networkConfig } = createNetworkConfig({
   localnet: { url: getFullnodeUrl('localnet') },
@@ -26,23 +27,25 @@ const queryClient = new QueryClient();
 export function Providers({ children }: { children: React.ReactNode }) {
   useForceClientUpdate();
   return (
-    <Provider>
-      <QueryClientProvider client={queryClient}>
-        <SuiClientProvider networks={networkConfig} defaultNetwork={NETWORK}>
-          <WalletProvider
-            autoConnect={true}
-            preferredWallets={['Sui Wallet', 'Sui Wallet (Sui Wallet)']}
-          >
-            {/* <EnokiFlowProvider apiKey="enoki_public_7278cc47e76ec32331cf1f8fc83a4b1a"> */}
-            <Toaster />
-            <div>
-              <Header />
-              <AppWrapper>{children}</AppWrapper>
-            </div>
-            {/* </EnokiFlowProvider> */}
-          </WalletProvider>
-        </SuiClientProvider>
-      </QueryClientProvider>
-    </Provider>
+    <Sentry.ErrorBoundary fallback={<p>Something went wrong</p>} showDialog>
+      <Provider>
+        <QueryClientProvider client={queryClient}>
+          <SuiClientProvider networks={networkConfig} defaultNetwork={NETWORK}>
+            <WalletProvider
+              autoConnect={true}
+              preferredWallets={['Sui Wallet', 'Sui Wallet (Sui Wallet)']}
+            >
+              {/* <EnokiFlowProvider apiKey="enoki_public_7278cc47e76ec32331cf1f8fc83a4b1a"> */}
+              <Toaster />
+              <div>
+                <Header />
+                <AppWrapper>{children}</AppWrapper>
+              </div>
+              {/* </EnokiFlowProvider> */}
+            </WalletProvider>
+          </SuiClientProvider>
+        </QueryClientProvider>
+      </Provider>
+    </Sentry.ErrorBoundary>
   );
 }
