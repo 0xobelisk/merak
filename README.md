@@ -33,6 +33,27 @@ Tests are executed with [Vitest](https://vitest.dev/):
 pnpm test
 ```
 
+## Error Monitoring with Sentry
+
+This project integrates [Sentry](https://sentry.io/) for runtime error tracking.
+Set the environment variable `SENTRY_DSN` (or `NEXT_PUBLIC_SENTRY_DSN` for
+browser reporting) before running the application so that errors are reported to
+your Sentry project.
+
+## Useful Links
+
+Learn more about the power of Turborepo:
+
+- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
+- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
+- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
+- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
+- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
+- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+
+Learn more about shadcn/ui:
+
+- [Documentation](https://ui.shadcn.com/docs)
 ### Continuous Integration
 
 A GitHub Actions workflow installs dependencies and runs `pnpm lint`, `pnpm build` and `pnpm test` for pull requests.
