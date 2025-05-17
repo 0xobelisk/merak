@@ -49,6 +49,7 @@
     "react-dom": "^18.3.1",
     "react-stately": "^3.37.0",
     "sonner": "^1.7.4",
+    "@sentry/nextjs": "^7.120.3",
     "tsrpc-browser": "^3.4.16",
     "tsrpc-proto": "^1.4.3"
   },
@@ -69,5 +70,6 @@
     "@testing-library/react": "^14.2.1",
     "@testing-library/jest-dom": "^6.2.0",
     "jsdom": "^24.0.0"
+
   }
 }

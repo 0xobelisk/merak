@@ -1,7 +1,8 @@
 import localFont from 'next/font/local';
+import '../sentry.server.config';
 import type { Metadata, Viewport } from 'next';
 import { Providers } from './providers';
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from '@vercel/analytics/next';
 import '@repo/ui/globals.css';
 import '@mysten/dapp-kit/dist/index.css';
 
@@ -58,7 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           {children}
           <Analytics />
-          </Providers>
+        </Providers>
       </body>
     </html>
   );
