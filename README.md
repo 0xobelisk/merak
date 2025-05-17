@@ -112,6 +112,14 @@ Next, you can link your Turborepo to your Remote Cache by running the following 
 npx turbo link
 ```
 
+## Testing
+
+Run all unit tests across packages:
+
+```sh
+pnpm test
+```
+
 ## Useful Links
 
 Learn more about the power of Turborepo:
