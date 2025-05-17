@@ -3,7 +3,8 @@ import { ArrowLeft, ChevronDown } from 'lucide-react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
 import { Label } from '@repo/ui/components/ui/label';
-import TokenSelectionModal from '@/app/components/swap/token-selection-modal';
+import dynamic from 'next/dynamic';
+const TokenSelectionModal = dynamic(() => import('@/app/components/swap/token-selection-modal'));
 import { initMerakClient } from '@/app/jotai/merak';
 import { Transaction, TransactionArgument } from '@0xobelisk/sui-client';
 import { toast } from 'sonner';
@@ -458,14 +459,15 @@ export default function AddLiquidity() {
             >
               {tokenPay ? (
                 <>
-                  <img
-                    src={tokenPay.icon_url}
-                    alt={tokenPay.symbol}
-                    className="w-6 h-6 mr-2"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
-                    }}
-                  />
+                    <img
+                      src={tokenPay.icon_url}
+                      alt={tokenPay.symbol}
+                      className="w-6 h-6 mr-2"
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                      }}
+                    />
                   {tokenPay.symbol}
                 </>
               ) : (
@@ -481,14 +483,15 @@ export default function AddLiquidity() {
             >
               {tokenReceive ? (
                 <>
-                  <img
-                    src={tokenReceive.icon_url}
-                    alt={tokenReceive.symbol}
-                    className="w-6 h-6 mr-2"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
-                    }}
-                  />
+                    <img
+                      src={tokenReceive.icon_url}
+                      alt={tokenReceive.symbol}
+                      className="w-6 h-6 mr-2"
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                      }}
+                    />
                   {tokenReceive.symbol}
                 </>
               ) : tokenPay ? (
