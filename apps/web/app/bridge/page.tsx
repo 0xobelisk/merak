@@ -395,7 +395,7 @@ export default function Page() {
 
                   <Input
                     type="text"
-                    placeholder="Enter receiving address"
+                    placeholder="Enter your Polkadot address"
                     value={customAddress}
                     onChange={(e) => setCustomAddress(e.target.value)}
                     className="w-[240px] border-gray-200 focus:border-blue-500"
