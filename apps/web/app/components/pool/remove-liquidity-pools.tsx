@@ -67,6 +67,8 @@ export default function RemoveLiquidity() {
       const metadataResults = await merak.listOwnedAssetsInfo({
         address: account.address
       });
+      console.log('address', account.address);
+      console.log('metadataResults', metadataResults);
 
       // Update state
       setAssetsState({
@@ -166,6 +168,7 @@ export default function RemoveLiquidity() {
 
       try {
         const merak = initMerakClient();
+        console.log(assetsState.assetInfos, 'assetsState.assetInfos');
 
         // Simplified approach: just look for LP tokens in the user's assets
         // that match the token pair we're interested in
@@ -419,15 +422,15 @@ export default function RemoveLiquidity() {
             >
               {tokenA ? (
                 <>
-                    <img
-                      src={tokenA.icon_url}
-                      alt={tokenA.symbol}
-                      className="w-6 h-6 mr-2"
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/sui-logo.svg';
-                      }}
-                    />
+                  <img
+                    src={tokenA.icon_url}
+                    alt={tokenA.symbol}
+                    className="w-6 h-6 mr-2"
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                    }}
+                  />
                   {tokenA.symbol}
                 </>
               ) : (
@@ -443,15 +446,15 @@ export default function RemoveLiquidity() {
             >
               {tokenB ? (
                 <>
-                    <img
-                      src={tokenB.icon_url}
-                      alt={tokenB.symbol}
-                      className="w-6 h-6 mr-2"
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/sui-logo.svg';
-                      }}
-                    />
+                  <img
+                    src={tokenB.icon_url}
+                    alt={tokenB.symbol}
+                    className="w-6 h-6 mr-2"
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                    }}
+                  />
                   {tokenB.symbol}
                 </>
               ) : tokenA ? (
