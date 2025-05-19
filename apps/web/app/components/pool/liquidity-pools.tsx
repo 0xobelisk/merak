@@ -63,7 +63,7 @@ export default function LiquidityPools() {
     const merak = initMerakClient();
     try {
       const poolList = await merak.listPoolsInfo({
-        pageSize: 5
+        pageSize: 3
       });
 
       setPools(poolList);

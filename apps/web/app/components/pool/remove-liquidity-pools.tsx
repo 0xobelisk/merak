@@ -12,7 +12,7 @@ import { useSignAndExecuteTransaction, useCurrentAccount } from '@mysten/dapp-ki
 import { useRouter, useSearchParams } from 'next/navigation';
 import { WALLETCHAIN } from '@/app/constants';
 import { useAtom } from 'jotai';
-import { AssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
+import { AllAssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
 
 interface TokenData {
   symbol: string;
@@ -24,7 +24,10 @@ interface TokenData {
 }
 
 export default function RemoveLiquidity() {
-  const account = useCurrentAccount();
+  // const account = useCurrentAccount();
+  const account = {
+    address: '0x1fe342c436eff7ed90988fbe3a85aea7d922517ab6d9bc86e800025f8afcba7a'
+  };
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
   const [digest, setDigest] = useState('');
   const [tokenA, setTokenA] = useState<TokenData | null>(null);
@@ -44,7 +47,7 @@ export default function RemoveLiquidity() {
   const searchParams = useSearchParams();
 
   // Global state management with Jotai
-  const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
+  const [allAssetsState, setAllAssetsState] = useAtom(AllAssetsStateAtom);
   const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
 
   const [slippage, setSlippage] = useState(0.5); // Slippage, percentage
@@ -64,14 +67,12 @@ export default function RemoveLiquidity() {
       setIsLoading(true);
       const merak = initMerakClient();
 
-      const metadataResults = await merak.listOwnedAssetsInfo({
-        address: account.address
-      });
+      const metadataResults = await merak.listAssetsInfo({});
       console.log('address', account.address);
       console.log('metadataResults', metadataResults);
 
       // Update state
-      setAssetsState({
+      setAllAssetsState({
         assetInfos: metadataResults.data
       });
     } catch (error) {
@@ -80,7 +81,7 @@ export default function RemoveLiquidity() {
     } finally {
       setIsLoading(false);
     }
-  }, [account?.address, setAssetsState]);
+  }, [account?.address, setAllAssetsState]);
 
   // Initialize asset loading
   useEffect(() => {
@@ -92,7 +93,11 @@ export default function RemoveLiquidity() {
   // Initialize tokens from URL parameters
   useEffect(() => {
     const loadTokensFromParams = async () => {
-      if (!account?.address || !assetsState?.assetInfos || assetsState.assetInfos.length === 0) {
+      if (
+        !account?.address ||
+        !allAssetsState?.assetInfos ||
+        allAssetsState.assetInfos.length === 0
+      ) {
         console.log('Waiting for assets to load...');
         return;
       }
@@ -113,8 +118,11 @@ export default function RemoveLiquidity() {
         const asset2Id = Number(asset2Param);
         const lpTokenId = Number(lpTokenIdParam);
         // Get token metadata
-        const token1Info = assetsState.assetInfos.find((asset) => asset.assetId === asset1Id);
-        const token2Info = assetsState.assetInfos.find((asset) => asset.assetId === asset2Id);
+        const token1Info = allAssetsState.assetInfos.find((asset) => asset.assetId === asset1Id);
+        const token2Info = allAssetsState.assetInfos.find((asset) => asset.assetId === asset2Id);
+        console.log(asset1Id, asset2Id, 'asset1Id, asset2Id');
+        console.log(token1Info, token2Info, 'token1Info, token2Info');
+        console.log(!token1Info || !token2Info, '!token1Info || !token2Info');
         if (!token1Info || !token2Info) {
           return;
         }
@@ -159,41 +167,45 @@ export default function RemoveLiquidity() {
     };
 
     loadTokensFromParams();
-  }, [account?.address, assetsState.assetInfos, searchParams, router]);
+  }, [account?.address, allAssetsState.assetInfos, searchParams, router]);
 
   // Query LP token balance when tokens are selected
   useEffect(() => {
     async function fetchLpToken() {
+      console.log(tokenA, tokenB, 'tokenA, tokenB');
+
+      console.log(!tokenA || !tokenB || !account?.address);
+
       if (!tokenA || !tokenB || !account?.address) return;
 
       try {
         const merak = initMerakClient();
-        console.log(assetsState.assetInfos, 'assetsState.assetInfos');
+        console.log(allAssetsState.assetInfos, 'allAssetsState.assetInfos');
 
-        // Simplified approach: just look for LP tokens in the user's assets
-        // that match the token pair we're interested in
-        const userLpTokens = assetsState.assetInfos.filter((asset) => {
-          // Check if it's an LP token by examining the symbol (usually contains a hyphen for pair tokens)
-          const symbol = asset.metadata.symbol || '';
-          return symbol.includes('-') || symbol.includes('/');
-        });
+        // // Simplified approach: just look for LP tokens in the user's assets
+        // // that match the token pair we're interested in
+        // const userLpTokens = allAssetsState.assetInfos.filter((asset) => {
+        //   // Check if it's an LP token by examining the symbol (usually contains a hyphen for pair tokens)
+        //   const symbol = asset.metadata.symbol || '';
+        //   return symbol.includes('-') || symbol.includes('/');
+        // });
 
-        // Try to match an LP token with both tokenA and tokenB symbols
-        const matchedLpToken = userLpTokens.find((token) => {
-          const symbol = token.metadata.symbol || '';
-          return (
-            (symbol.includes(tokenA.symbol) && symbol.includes(tokenB.symbol)) ||
-            // Also check for reversed order
-            (symbol.includes(tokenB.symbol) && symbol.includes(tokenA.symbol))
-          );
-        });
+        // // Try to match an LP token with both tokenA and tokenB symbols
+        // const matchedLpToken = userLpTokens.find((token) => {
+        //   const symbol = token.metadata.symbol || '';
+        //   return (
+        //     (symbol.includes(tokenA.symbol) && symbol.includes(tokenB.symbol)) ||
+        //     // Also check for reversed order
+        //     (symbol.includes(tokenB.symbol) && symbol.includes(tokenA.symbol))
+        //   );
+        // });
 
-        console.log(matchedLpToken, 'matchedLpToken');
+        // console.log(matchedLpToken, 'matchedLpToken');
 
-        if (matchedLpToken) {
-          setLpTokenId(matchedLpToken.assetId);
-          const balance =
-            Number(matchedLpToken.balance) / Math.pow(10, matchedLpToken.metadata.decimals || 9);
+        const lpBalance = await merak.balanceOf(lpTokenId, account.address);
+        if (lpBalance) {
+          setLpTokenId(lpTokenId);
+          const balance = Number(lpBalance) / Math.pow(10, 9);
           setLpTokenBalance(balance.toFixed(4));
         } else {
           // If we can't find an exact match, try to query the balance directly
@@ -229,7 +241,7 @@ export default function RemoveLiquidity() {
     }
 
     fetchLpToken();
-  }, [tokenA, tokenB, account?.address, assetsState.assetInfos, searchParams]);
+  }, [tokenA, tokenB, account?.address, allAssetsState.assetInfos, searchParams]);
 
   const handleSelectTokenA = async (token: TokenData) => {
     console.log(token, 'select token A');
