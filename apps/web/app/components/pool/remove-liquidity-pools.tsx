@@ -24,10 +24,7 @@ interface TokenData {
 }
 
 export default function RemoveLiquidity() {
-  // const account = useCurrentAccount();
-  const account = {
-    address: '0x1fe342c436eff7ed90988fbe3a85aea7d922517ab6d9bc86e800025f8afcba7a'
-  };
+  const account = useCurrentAccount();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
   const [digest, setDigest] = useState('');
   const [tokenA, setTokenA] = useState<TokenData | null>(null);
