@@ -69,11 +69,42 @@ const formatCoinType = (coinType: string): string => {
   return coinType;
 };
 
+const getCoinMetadata = (coinType: string) => {
+  const metadatas = {
+    '0x2::sui::SUI': {
+      decimals: 9,
+      name: 'Sui',
+      symbol: 'SUI',
+      description: '',
+      iconUrl: null,
+      id: '0x587c29de216efd4219573e08a1f6964d4fa7cb714518c2c8a0f29abfa264327d'
+    },
+    '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::dubhe::DUBHE': {
+      decimals: 7,
+      description: 'Dubhe engine token',
+      iconUrl: null,
+      id: '0x107334aa54e072a4c595f07b215a1a0370a1281962ba4a83876cc6611a6f6771',
+      name: 'DUBHE Token',
+      symbol: 'DUBHE'
+    },
+    '0xaaddbe04ba595ae9d6c33fba5b415bccb1f1dd93877fbb34701666f995a208ca::stars::STARS': {
+      decimals: 7,
+      name: 'STARS Token',
+      symbol: 'STARS',
+      description: 'Stars point',
+      iconUrl: 'https://raw.githubusercontent.com/0xobelisk/dubhe/main/assets/stars.gif',
+      id: '0xc2cc68354f96ff4c483e9085285ce5ea4ce9d28b944f469fe6d9463b3c5a2c52'
+    }
+  };
+  return metadatas[coinType];
+};
 export default function TokenWrapper() {
   const account = useCurrentAccount();
   const [balances, setBalances] = useState<(CoinBalance & { metadata: CoinMetadata })[]>([]);
   const [assetMetadata, setAssetMetadata] = useState<AssetInfo[]>([]);
   const [wrapperAssetsMap, setWrapperAssetsMap] = useState<Map<string, any>>(new Map());
+  // 创建资产ID到币种类型的缓存
+  const [assetIdToCoinTypeMap, setAssetIdToCoinTypeMap] = useState<Map<string, string>>(new Map());
 
   const [isLoading, setIsLoading] = useState(false);
   const [isTokensLoading, setIsTokensLoading] = useState(false);
@@ -93,14 +124,14 @@ export default function TokenWrapper() {
         owner: account.address
       });
       const updatedBalances = await Promise.all(
-        allBalances.map(async (coinBalance) => ({
-          ...coinBalance,
-          metadata: await dubhe.suiInteractor.currentClient.getCoinMetadata({
-            coinType: coinBalance.coinType
-          })
-        }))
+        allBalances.map(async (coinBalance) => {
+          const metadata = getCoinMetadata(coinBalance.coinType);
+          return {
+            ...coinBalance,
+            metadata
+          };
+        })
       );
-
       setBalances(updatedBalances);
     } catch (error) {
       console.error('Error fetching coins data:', error);
@@ -145,6 +176,22 @@ export default function TokenWrapper() {
                 }
               }
 
+              // 获取资产ID对应的币种类型并存入缓存
+              try {
+                const wrapperAssets = await merak.storage.get.wrapperAssets({
+                  assetId: asset.assetId
+                });
+                if (wrapperAssets && wrapperAssets.data && wrapperAssets.data.key1) {
+                  setAssetIdToCoinTypeMap((prevMap) => {
+                    const newMap = new Map(prevMap);
+                    newMap.set(asset.assetId.toString(), wrapperAssets.data.key1);
+                    return newMap;
+                  });
+                }
+              } catch (err) {
+                console.error(`Failed to fetch coin type for asset ${asset.assetId}:`, err);
+              }
+
               return {
                 id: asset.assetId,
                 metadata: metadata,
@@ -157,10 +204,8 @@ export default function TokenWrapper() {
             })
         );
 
-        console.log("User's wrapped tokens:", userWrappedAssets);
         setAssetMetadata(userWrappedAssets);
       } else {
-        console.log('User asset data structure unexpected:', ownedAssets);
         setAssetMetadata([]);
       }
     } catch (error) {
@@ -206,27 +251,28 @@ export default function TokenWrapper() {
     [assetMetadata]
   );
 
-  // Initialize data
+  // Initialize data - 只在组件挂载时调用一次
   useEffect(() => {
-    fetchTokenData();
-    if (account?.address) {
-      fetchWrappedTokens(); // Initialize all wrapped tokens
-    }
+    const initData = async () => {
+      await fetchTokenData();
+      if (account?.address) {
+        await fetchWrappedTokens();
+      }
+    };
+
+    initData();
   }, [fetchTokenData, fetchWrappedTokens, account?.address]);
 
-  // Fetch wrapped tokens when sourceToken changes
-  useEffect(() => {
-    if (sourceToken) {
-      fetchWrappedTokens();
-    }
-  }, [sourceToken, fetchWrappedTokens]);
+  // 移除了 sourceToken 变化时重复调用 fetchWrappedTokens 的 useEffect
 
-  // Query wrapperAssets for each token
+  // 优化 wrapperAssets 查询逻辑
   useEffect(() => {
     const merak = initMerakClient();
     const queryWrapperAssets = async () => {
+      if (balances.length === 0) return;
+
       const newWrapperAssetsMap = new Map<string, any>();
-      for (const coinBalance of balances) {
+      const promises = balances.map(async (coinBalance) => {
         try {
           const formattedCoinType = formatCoinType(coinBalance.coinType);
           const wrapperAssets = await merak.storage.get.wrapperAssets({
@@ -239,7 +285,10 @@ export default function TokenWrapper() {
         } catch (err) {
           console.error('Failed to fetch wrapperAssets:', err);
         }
-      }
+      });
+
+      // 等待所有请求完成
+      await Promise.all(promises);
       setWrapperAssetsMap(newWrapperAssetsMap);
     };
 
@@ -249,6 +298,9 @@ export default function TokenWrapper() {
   // Calculate token list
   const sourceTokens = useMemo(() => {
     const tokenMap = new Map<string, TokenInfo>();
+    if (balances.length === 0) {
+      return Array.from(tokenMap.values());
+    }
 
     balances.forEach((coinBalance) => {
       // 只处理在 wrapperAssets 中的代币
@@ -256,7 +308,6 @@ export default function TokenWrapper() {
         return;
       }
 
-      console.log('coinType', coinBalance.coinType);
       const symbol =
         coinBalance.metadata.symbol || coinBalance.coinType.split('::').pop() || 'Unknown';
       const currentBalance = BigInt(coinBalance.totalBalance);
@@ -304,14 +355,13 @@ export default function TokenWrapper() {
     () => (isWrap ? sourceTokens : targetTokens),
     [isWrap, sourceTokens, targetTokens]
   );
-  console.log('currentSourceTokens', currentSourceTokens);
 
   // Handle amount change
   const handleAmountChange = useCallback(
     (value: string) => {
       const regex = /^\d*\.?\d*$/;
       if (value === '' || regex.test(value)) {
-        const [integer, decimal] = value.split('.');
+        const [, decimal] = value.split('.');
         const selectedSource = currentSourceTokens.find((token) => token.value === sourceToken);
         if (decimal && decimal.length > (selectedSource?.decimals || 8)) {
           return;
@@ -390,7 +440,6 @@ export default function TokenWrapper() {
         },
         {
           onSuccess: async (result) => {
-            console.log('Wrap transaction successful:', result);
             // 添加短暂延迟确保链上数据更新
             await dubhe.waitForTransaction(result.digest);
             await Promise.all([fetchTokenData(), fetchWrappedTokens()]);
@@ -432,11 +481,9 @@ export default function TokenWrapper() {
         throw new Error('Insufficient balance');
       }
 
-      // Check if selected token is in wrapped token registry
       const merak = initMerakClient();
 
       // Get selected asset details
-      console.log('assetMetadata', assetMetadata);
       const selectedAsset = assetMetadata.find((asset) => asset.id.toString() === sourceToken);
       if (!selectedAsset) {
         throw new Error('Unable to get selected token information');
@@ -450,7 +497,20 @@ export default function TokenWrapper() {
       // Ensure amount is an integer using Math.floor
       const amountInSmallestUnit = BigInt(Math.floor(amountToUnwrap * Math.pow(10, decimals)));
 
-      const coin_type = (await merak.storage.get.wrapperAssets({ assetId: sourceToken })).data.key1;
+      // 优先从缓存中获取 coin_type
+      let coin_type;
+      if (assetIdToCoinTypeMap.has(sourceToken)) {
+        coin_type = assetIdToCoinTypeMap.get(sourceToken);
+      } else {
+        const result = await merak.storage.get.wrapperAssets({ assetId: sourceToken });
+        coin_type = result.data.key1;
+        // 更新缓存
+        setAssetIdToCoinTypeMap((prevMap) => {
+          const newMap = new Map(prevMap);
+          newMap.set(sourceToken, coin_type);
+          return newMap;
+        });
+      }
 
       // Process sourceToken format
       let formattedToken = coin_type;
@@ -475,7 +535,6 @@ export default function TokenWrapper() {
         },
         {
           onSuccess: async (result) => {
-            console.log('Unwrap transaction successful:', result);
             // 添加短暂延迟确保链上数据更新
             await dubhe.waitForTransaction(result.digest);
             await Promise.all([fetchTokenData(), fetchWrappedTokens()]);
@@ -498,6 +557,7 @@ export default function TokenWrapper() {
     sourceToken,
     currentSourceTokens,
     assetMetadata,
+    assetIdToCoinTypeMap,
     signAndExecuteTransaction,
     fetchTokenData,
     fetchWrappedTokens
