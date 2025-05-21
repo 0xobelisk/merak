@@ -18,7 +18,7 @@ import { Assets, Dex, Wrapper, Bridge } from './system';
 import { Storage } from './storage';
 import { getMerakConfig } from './utils';
 
-const MAX_PATH_LENGTH = 6;
+const MAX_PATH_LENGTH = 5;
 
 /**
  * @class Merak
@@ -354,7 +354,7 @@ export class Merak {
       asset2Id,
       poolAddress,
       poolAssetId,
-      first,
+      first: first ?? 3,
       after,
       orderBy,
     });
@@ -369,7 +369,7 @@ export class Merak {
     asset2Id?: bigint | number | string;
     pageSize?: number;
   } = {}) {
-    pageSize = pageSize ?? 9999;
+    pageSize = pageSize ?? 3;
     let pool = await this.storage.list.pool({
       first: pageSize,
       asset1Id: asset1Id?.toString(),
@@ -705,6 +705,7 @@ export class Merak {
     const swappableTokens = await this.getAllSwappableTokens({
       startTokenId,
     });
+
     const swappableTokensWithMetadata: AssetInfo[] = await Promise.all(
       swappableTokens.map(async (assetId) => {
         const metadata = (
@@ -773,6 +774,23 @@ export class Merak {
       pageInfo: assetsMetadata.pageInfo,
       totalCount: assetsMetadataResults.length,
     };
+  }
+
+  async getMetadata(assetId: bigint | number | string) {
+    let rawmetadata = undefined;
+    try {
+      rawmetadata = await this.staticMetadataOf(assetId);
+    } catch (error) {}
+
+    if (rawmetadata !== undefined) {
+      return rawmetadata.value as AssetMetadataType;
+    }
+
+    return (
+      await this.storage.get.assetMetadata({
+        assetId,
+      })
+    )?.value as AssetMetadataType;
   }
 
   async staticMetadataOf(assetId: bigint | number | string) {
@@ -1101,12 +1119,8 @@ export class Merak {
 
     if (poolList && poolList.length > 0) {
       for (const item of poolList) {
-        const asset1Metadata = await this.storage.get.assetMetadata({
-          assetId: item.key1,
-        });
-        const asset2Metadata = await this.storage.get.assetMetadata({
-          assetId: item.key2,
-        });
+        const asset1Metadata = await this.getMetadata(item.key1);
+        const asset2Metadata = await this.getMetadata(item.key2);
         const poolAsset1Amount = await this.queryAccount({
           address: item.value.pool_address,
           assetId: item.key1,
@@ -1124,21 +1138,21 @@ export class Merak {
 
         const poolAsset1AmountNum =
           parseFloat(poolAsset1Amount?.value.balance ?? '0') /
-          10 ** asset1Metadata.value.decimals;
+          10 ** asset1Metadata.decimals;
         const poolAsset2AmountNum =
           parseFloat(poolAsset2Amount?.value.balance ?? '0') /
-          10 ** asset2Metadata.value.decimals;
+          10 ** asset2Metadata.decimals;
         const poolInfo = {
-          name: `${asset1Metadata.value.symbol} / ${asset2Metadata.value.symbol}`,
+          name: `${asset1Metadata.symbol} / ${asset2Metadata.symbol}`,
           asset1Id: item.key1,
           asset2Id: item.key2,
           lpAssetId: item.value.lp_asset_id,
           apr: '10%',
-          liquidity: `${poolAsset1AmountNum} ${asset1Metadata.value.symbol} / ${poolAsset2AmountNum} ${asset2Metadata.value.symbol}`,
+          liquidity: `${poolAsset1AmountNum} ${asset1Metadata.symbol} / ${poolAsset2AmountNum} ${asset2Metadata.symbol}`,
           volume: `${poolAsset1AmountNum + poolAsset2AmountNum}`,
           feeTier: '1%',
-          token1Image: asset1Metadata.value.icon_url,
-          token2Image: asset2Metadata.value.icon_url,
+          token1Image: asset1Metadata.icon_url,
+          token2Image: asset2Metadata.icon_url,
         };
         savedPools.push(poolInfo);
       }
@@ -1374,9 +1388,7 @@ export class Merak {
     poolAssetId: bigint | number | string;
     amount?: bigint | number | string;
   }) {
-    const poolAssetMetadata = await this.storage.get.assetMetadata({
-      assetId: poolAssetId,
-    });
+    const poolAssetMetadata = await this.getMetadata(poolAssetId);
 
     if (!poolAssetMetadata) {
       throw new Error(`Pool asset metadata not found: ${poolAssetId}`);
@@ -1401,7 +1413,7 @@ export class Merak {
       );
     }
 
-    const shareAmount = amountNum / Number(poolAssetMetadata.value.supply);
+    const shareAmount = amountNum / Number(poolAssetMetadata.supply);
 
     const poolsInfo = await this.storage.list.pool({
       poolAssetId: poolAssetId.toString(),
@@ -1418,12 +1430,8 @@ export class Merak {
     const amountB = Number(poolInfoValue.reserve1) * shareAmount;
 
     // Get asset precision information
-    const asset1Metadata = await this.storage.get.assetMetadata({
-      assetId: poolInfoData.key1,
-    });
-    const asset2Metadata = await this.storage.get.assetMetadata({
-      assetId: poolInfoData.key2,
-    });
+    const asset1Metadata = await this.getMetadata(poolInfoData.key1);
+    const asset2Metadata = await this.getMetadata(poolInfoData.key2);
 
     if (!asset1Metadata || !asset2Metadata) {
       throw new Error('Asset metadata not found');
@@ -1432,13 +1440,13 @@ export class Merak {
     return {
       amountA: Math.floor(amountA), // Round down to ensure it doesn't exceed the actual available amount
       amountB: Math.floor(amountB),
-      amountASymbol: asset1Metadata.value.symbol,
-      amountBSymbol: asset2Metadata.value.symbol,
-      decimalsA: asset1Metadata.value.decimals,
-      decimalsB: asset2Metadata.value.decimals,
+      amountASymbol: asset1Metadata.symbol,
+      amountBSymbol: asset2Metadata.symbol,
+      decimalsA: asset1Metadata.decimals,
+      decimalsB: asset2Metadata.decimals,
       // Add formatted amounts for easy frontend display
-      formattedAmountA: amountA / Math.pow(10, asset1Metadata.value.decimals),
-      formattedAmountB: amountB / Math.pow(10, asset2Metadata.value.decimals),
+      formattedAmountA: amountA / Math.pow(10, asset1Metadata.decimals),
+      formattedAmountB: amountB / Math.pow(10, asset2Metadata.decimals),
     };
   }
 }
