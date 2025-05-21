@@ -8,7 +8,6 @@ const initDubheClient = () => {
   const dubhe = new Dubhe({
     networkType: NETWORK,
     packageId: PACKAGE_ID,
-    fullnodeUrls: ['https://sui-testnet.blockvision.org/v1/2xPTS0M17DOdeIX7MVSykPktK7d'],
     indexerUrl: 'https://merak-indexer-testnet-api-1.obelisk.build'
     // indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build'
   });
