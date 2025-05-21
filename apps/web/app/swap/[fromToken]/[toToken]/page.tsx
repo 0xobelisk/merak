@@ -455,7 +455,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
           onSuccess: async (result) => {
             // 等待链上数据更新
             const dubhe = initDubheClient();
-            await dubhe.waitForIndexerTransaction(result.digest);
+            await dubhe.waitForTransaction(result.digest);
 
             // 重新加载用户资产
             const metadataResults = await merak.listOwnedAssetsInfo({

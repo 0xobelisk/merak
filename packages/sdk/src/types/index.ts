@@ -42,9 +42,6 @@ export type AssetInfo = {
   assetId: number;
   metadata: AssetMetadataType;
   balance?: string;
-  status?: {
-    [key: string]: {};
-  };
 };
 
 export type AssetInfoResponse = {

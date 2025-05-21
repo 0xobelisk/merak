@@ -206,28 +206,6 @@ export class Merak {
     return this.assets.metadataOf(asset_id);
   }
 
-  async ownedAssets({
-    address,
-    assetId,
-    first,
-    after,
-    orderBy,
-  }: {
-    assetId?: bigint | number | string;
-    address?: string;
-    first?: number;
-    after?: string;
-    orderBy?: string[];
-  }) {
-    return this.storage.list.account({
-      address,
-      assetId,
-      first,
-      after,
-      orderBy,
-    });
-  }
-
   // Dex Functions
   async createPool(
     tx: Transaction,
@@ -397,24 +375,6 @@ export class Merak {
       asset1Id: asset1Id?.toString(),
       asset2Id: asset2Id?.toString(),
     });
-
-    // let allPoolData = [...pool.data];
-
-    // while (pool.pageInfo.hasNextPage) {
-    //   const nextPage = await this.storage.list.pool({
-    //     first: pageSize,
-    //     after: pool.pageInfo.endCursor,
-    //     asset1Id: asset1Id?.toString(),
-    //     asset2Id: asset2Id?.toString(),
-    //   });
-
-    //   allPoolData = [...allPoolData, ...nextPage.data];
-    //   pool = nextPage;
-    // }
-
-    // if (allPoolData.length === 0) {
-    //   return [];
-    // }
 
     return pool.data;
   }
@@ -620,6 +580,70 @@ export class Merak {
     return Array.from(connectedTokens).sort((a, b) => a - b);
   }
 
+  async queryAccount({
+    address,
+    assetId,
+  }: {
+    address: string;
+    assetId: bigint | number | string;
+  }): Promise<{
+    key1: string;
+    key2: string;
+    value: {
+      balance: string;
+    };
+  }> {
+    const allFields = await this.dubhe.client().getDynamicFieldObject({
+      parentId:
+        '0xa676f00193c93b812da927baf1e51bd408c2a32b14104df6c1af2b0e874f33ad',
+      name: {
+        type: '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_double_map_internal::Entry<u256, address>',
+        value: {
+          key1: assetId.toString(),
+          key2: address,
+        },
+      },
+    });
+
+    if (!allFields.data) {
+      return {
+        key1: assetId.toString(),
+        key2: address,
+        value: {
+          balance: '0',
+        },
+      };
+    }
+
+    try {
+      const content = allFields.data.content as any;
+      if (
+        content &&
+        content.fields &&
+        content.fields.value &&
+        content.fields.value.fields
+      ) {
+        return {
+          key1: assetId.toString(),
+          key2: address,
+          value: {
+            balance: content.fields.value.fields.balance || '0',
+          },
+        };
+      }
+    } catch (error) {
+      console.error('Error in queryAccount:', error);
+    }
+
+    return {
+      key1: assetId.toString(),
+      key2: address,
+      value: {
+        balance: '0',
+      },
+    };
+  }
+
   async getAllSwappableTokens({
     startTokenId,
   }: {
@@ -691,15 +715,13 @@ export class Merak {
 
         let balanceNum = '0';
         let creator = undefined;
-        let status = undefined;
         if (address) {
-          const balance = await this.storage.get.account({
+          const balance = await this.queryAccount({
             address: address,
             assetId,
           });
           balanceNum = balance?.value.balance ?? '0';
-          creator = balance?.data.key2;
-          status = balance?.value.status;
+          creator = balance?.key2;
         }
 
         return {
@@ -707,7 +729,6 @@ export class Merak {
           metadata,
           assetId,
           creator,
-          status,
         };
       })
     );
@@ -726,9 +747,9 @@ export class Merak {
     orderBy?: string[];
   } = {}): Promise<AssetInfoResponse> {
     const assetsMetadata = await this.storage.list.assetMetadata({
-      first: first ?? 9999,
+      first: first ?? 6,
       after: after,
-      orderBy: orderBy ?? ['KEY1_ASC'],
+      orderBy: orderBy ?? ['CREATED_AT_ASC'],
     });
 
     let assetsMetadataResults: AssetInfo[] = await Promise.all(
@@ -744,10 +765,298 @@ export class Merak {
         return item.metadata.asset_type[assetType] !== undefined;
       });
     }
+
+    assetsMetadataResults.sort((a, b) => Number(a.assetId) - Number(b.assetId));
+
     return {
       data: assetsMetadataResults,
       pageInfo: assetsMetadata.pageInfo,
       totalCount: assetsMetadataResults.length,
+    };
+  }
+
+  async staticMetadataOf(assetId: bigint | number | string) {
+    const metadatas: Record<string, any> = {
+      '0': {
+        name: 'asset_metadata',
+        key1: 0,
+        key2: null,
+        value: {
+          accounts: '57232',
+          asset_type: {
+            Wrapped: {},
+          },
+          decimals: 9,
+          description: 'Wrapped SUI',
+          extra_info: '',
+          icon_url: 'https://cryptologos.cc/logos/sui-sui-logo.png?v=040',
+          is_burnable: false,
+          is_freezable: true,
+          is_mintable: false,
+          name: 'Wrapped SUI',
+          owner:
+            '0x0000000000000000000000000000000000000000000000000000000000000000',
+          status: {
+            Liquid: {},
+          },
+          supply: '60345806821961',
+          symbol: 'wSUI',
+        },
+      },
+      '1': {
+        name: 'asset_metadata',
+        key1: 1,
+        key2: null,
+        value: {
+          accounts: '55993',
+          asset_type: {
+            Wrapped: {},
+          },
+          decimals: 7,
+          description: 'Wrapped DUBHE',
+          extra_info: '',
+          icon_url:
+            'https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg',
+          is_burnable: false,
+          is_freezable: true,
+          is_mintable: false,
+          name: 'Wrapped DUBHE',
+          owner:
+            '0x0000000000000000000000000000000000000000000000000000000000000000',
+          status: {
+            Liquid: {},
+          },
+          supply: '3173844183554',
+          symbol: 'wDUBHE',
+        },
+      },
+      '2': {
+        name: 'asset_metadata',
+        key1: 2,
+        key2: null,
+        value: {
+          accounts: '49079',
+          asset_type: {
+            Lp: {},
+          },
+          decimals: 9,
+          description: 'Merak LP Asset',
+          extra_info: '',
+          icon_url: '',
+          is_burnable: false,
+          is_freezable: false,
+          is_mintable: false,
+          name: 'Merak LP Asset',
+          owner:
+            '0x0000000000000000000000000000000000000000000000000000000000000000',
+          status: {
+            Liquid: {},
+          },
+          supply: '785526231398',
+          symbol: 'wSUI-wDUBHE',
+        },
+      },
+      '3': {
+        name: 'asset_metadata',
+        key1: 3,
+        key2: null,
+        value: {
+          accounts: '47013',
+          asset_type: {
+            Wrapped: {},
+          },
+          decimals: 7,
+          description: 'Stars point',
+          extra_info: '""',
+          icon_url:
+            'https://raw.githubusercontent.com/0xobelisk/dubhe/main/assets/stars.gif',
+          is_burnable: false,
+          is_freezable: true,
+          is_mintable: false,
+          name: 'Wrapped STARS',
+          owner:
+            '0x0000000000000000000000000000000000000000000000000000000000000000',
+          status: {
+            Liquid: {},
+          },
+          supply: '14988587165891',
+          symbol: 'wSTARS',
+        },
+      },
+      '4': {
+        name: 'asset_metadata',
+        key1: 4,
+        key2: null,
+        value: {
+          accounts: '39332',
+          asset_type: {
+            Lp: {},
+          },
+          decimals: 9,
+          description: 'Merak LP Asset',
+          extra_info: '',
+          icon_url: '',
+          is_burnable: false,
+          is_freezable: false,
+          is_mintable: false,
+          name: 'Merak LP Asset',
+          owner:
+            '0x0000000000000000000000000000000000000000000000000000000000000000',
+          status: {
+            Liquid: {},
+          },
+          supply: '67606965062',
+          symbol: 'wDUBHE-wSTARS',
+        },
+      },
+      '5': {
+        name: 'asset_metadata',
+        key1: 5,
+        key2: null,
+        value: {
+          accounts: '37229',
+          asset_type: {
+            Lp: {},
+          },
+          decimals: 9,
+          description: 'Merak LP Asset',
+          extra_info: '',
+          icon_url: '',
+          is_burnable: false,
+          is_freezable: false,
+          is_mintable: false,
+          name: 'Merak LP Asset',
+          owner:
+            '0x0000000000000000000000000000000000000000000000000000000000000000',
+          status: {
+            Liquid: {},
+          },
+          supply: '234486484400',
+          symbol: 'wSUI-wSTARS',
+        },
+      },
+    };
+    return metadatas[assetId.toString()];
+  }
+
+  async listAccountWrapperAssets({
+    address,
+  }: {
+    address: string;
+  }): Promise<AssetInfoResponse> {
+    const assetIds = [0, 1, 3]; // 0: wSUI, 1: wDUBHE, 3: wSTARS
+    const assetsData = await Promise.all(
+      assetIds.map(async (assetId) => {
+        const parentObjectId =
+          '0xa676f00193c93b812da927baf1e51bd408c2a32b14104df6c1af2b0e874f33ad';
+
+        const fieldDetail = await this.dubhe.client().getDynamicFieldObject({
+          parentId: parentObjectId,
+          name: {
+            type: '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_double_map_internal::Entry<u256, address>',
+            value: {
+              key1: assetId.toString(),
+              key2: address,
+            },
+          },
+        });
+
+        let balance = '0';
+
+        if (
+          fieldDetail.data &&
+          fieldDetail.data.content &&
+          typeof fieldDetail.data.content === 'object' &&
+          'fields' in fieldDetail.data.content
+        ) {
+          const content = fieldDetail.data.content as any;
+          if (
+            content.fields &&
+            content.fields.value &&
+            content.fields.value.fields
+          ) {
+            balance = content.fields.value.fields.balance || '0';
+          }
+        }
+
+        const metadata = (await this.staticMetadataOf(assetId))
+          .value as AssetMetadataType;
+
+        return {
+          assetId,
+          metadata,
+          balance,
+        };
+      })
+    );
+
+    // 按assetId升序排序
+    const sortedAssetsData = assetsData.sort((a, b) => a.assetId - b.assetId);
+
+    return {
+      data: sortedAssetsData,
+      pageInfo: { hasNextPage: false, endCursor: '' },
+      totalCount: assetsData.length,
+    };
+  }
+
+  async listAccountLpAssets({
+    address,
+  }: {
+    address: string;
+  }): Promise<AssetInfoResponse> {
+    const assetIds = [2, 4, 5]; // 0: wSUI, 1: wDUBHE, 3: wSTARS
+    const assetsData = await Promise.all(
+      assetIds.map(async (assetId) => {
+        const parentObjectId =
+          '0xa676f00193c93b812da927baf1e51bd408c2a32b14104df6c1af2b0e874f33ad';
+
+        const fieldDetail = await this.dubhe.client().getDynamicFieldObject({
+          parentId: parentObjectId,
+          name: {
+            type: '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_double_map_internal::Entry<u256, address>',
+            value: {
+              key1: assetId.toString(),
+              key2: address,
+            },
+          },
+        });
+
+        let balance = '0';
+
+        if (
+          fieldDetail.data &&
+          fieldDetail.data.content &&
+          typeof fieldDetail.data.content === 'object' &&
+          'fields' in fieldDetail.data.content
+        ) {
+          const content = fieldDetail.data.content as any;
+          if (
+            content.fields &&
+            content.fields.value &&
+            content.fields.value.fields
+          ) {
+            balance = content.fields.value.fields.balance || '0';
+          }
+        }
+
+        const metadata = (await this.staticMetadataOf(assetId))
+          .value as AssetMetadataType;
+
+        return {
+          assetId,
+          metadata,
+          balance,
+        };
+      })
+    );
+
+    const sortedAssetsData = assetsData.sort((a, b) => a.assetId - b.assetId);
+
+    return {
+      data: sortedAssetsData,
+      pageInfo: { hasNextPage: false, endCursor: '' },
+      totalCount: assetsData.length,
     };
   }
 
@@ -764,38 +1073,20 @@ export class Merak {
     after?: string;
     orderBy?: string[];
   }): Promise<AssetInfoResponse> {
-    const currentAccountInfo = await this.storage.list.account({
-      address: address,
-      first: first ?? 9999,
-      after: after,
-      orderBy: orderBy ?? ['KEY1_ASC'],
-    });
-
-    let metadataResults: AssetInfo[] = await Promise.all(
-      currentAccountInfo.data.map(async (item) => {
-        const metadata = (
-          await this.storage.get.assetMetadata({
-            assetId: item.key1.toString(),
-          })
-        )?.value as AssetMetadataType;
-        return {
-          balance: item.value.balance,
-          metadata,
-          assetId: item.key1,
-          status: item.value.status,
-        };
-      })
-    );
-    if (assetType) {
-      metadataResults = metadataResults.filter((item) => {
-        return item.metadata.asset_type[assetType] !== undefined;
-      });
+    // const currentAccountInfo = await this.storage.list.account({
+    //   address: address,
+    //   first: first ?? 9999,
+    //   after: after,
+    //   orderBy: orderBy ?? ['KEY1_ASC'],
+    // });
+    let data: AssetInfoResponse;
+    if (assetType === 'Lp') {
+      data = await this.listAccountLpAssets({ address });
+    } else {
+      data = await this.listAccountWrapperAssets({ address });
     }
-    return {
-      data: metadataResults,
-      pageInfo: currentAccountInfo.pageInfo,
-      totalCount: metadataResults.length,
-    };
+
+    return data;
   }
 
   async listPoolsInfo({
@@ -816,11 +1107,11 @@ export class Merak {
         const asset2Metadata = await this.storage.get.assetMetadata({
           assetId: item.key2,
         });
-        const poolAsset1Amount = await this.storage.get.account({
+        const poolAsset1Amount = await this.queryAccount({
           address: item.value.pool_address,
           assetId: item.key1,
         });
-        const poolAsset2Amount = await this.storage.get.account({
+        const poolAsset2Amount = await this.queryAccount({
           address: item.value.pool_address,
           assetId: item.key2,
         });
@@ -867,13 +1158,14 @@ export class Merak {
     after?: string;
     orderBy?: string[];
   }): Promise<AssetInfoResponse> {
-    return this.listOwnedAssetsInfo({
-      address,
-      assetType: 'Wrapped',
-      first,
-      after,
-      orderBy,
-    });
+    return this.listAccountWrapperAssets({ address });
+    // return this.listOwnedAssetsInfo({
+    //   address,
+    //   assetType: 'Wrapped',
+    //   first,
+    //   after,
+    //   orderBy,
+    // });
   }
 
   async listEvents({
@@ -1090,7 +1382,7 @@ export class Merak {
       throw new Error(`Pool asset metadata not found: ${poolAssetId}`);
     }
 
-    const poolAssetAmount = await this.storage.get.account({
+    const poolAssetAmount = await this.queryAccount({
       address,
       assetId: poolAssetId,
     });
