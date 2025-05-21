@@ -37,8 +37,8 @@ importers:
   apps/web:
     dependencies:
       '@0xobelisk/merak-sdk':
-        specifier: workspace:*
-        version: link:../../packages/sdk
+        specifier: ^0.0.56
+        version: 0.0.56(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@0xobelisk/sui-cli':
         specifier: 1.2.0-pre.16
         version: 1.2.0-pre.16(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -489,6 +489,10 @@ packages:
     peerDependencies:
       graphql: ^15.5.0 || ^16.0.0 || ^17.0.0
       typescript: ^5.0.0
+
+  '@0xobelisk/merak-sdk@0.0.56':
+    resolution: {integrity: sha512-ADicksGqpoLc7PqE+K/EhoevCtxkHtxrrlt7EdcAgiwq/15m4MQZnEbowj6VO7xi1OiZyEVIqIDXGEBAMNV5MA==}
+    engines: {node: '>=18'}
 
   '@0xobelisk/sui-cli@1.2.0-pre.16':
     resolution: {integrity: sha512-yQNf2KHfQILjT0QYYLNbu51RdbSaHdxyU/QjpMiyIIP2XEqljqjfSn7BMiIod4MV+S+CW7tz+0QD91dbxcK+oQ==}
@@ -9110,6 +9114,32 @@ snapshots:
       '@gql.tada/internal': 1.0.8(graphql@16.11.0)(typescript@5.8.3)
       graphql: 16.11.0
       typescript: 5.8.3
+
+  '@0xobelisk/merak-sdk@0.0.56(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@0xobelisk/sui-client': 1.2.0-pre.16(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
+      '@0xobelisk/sui-common': 1.2.0-pre.16
+      '@mysten/sui': 1.29.1(typescript@5.8.3)
+      assert: 2.1.0
+      bech32: 2.0.0
+      colorts: 0.1.63
+      gql.tada: 1.8.10(graphql@16.11.0)(typescript@5.8.3)
+      graphql: 16.11.0
+      husky: 8.0.3
+      keccak256: 1.0.6
+      process: 0.11.10
+      superstruct: 1.0.4
+      tmp: 0.2.3
+      ts-retry-promise: 0.7.1
+      tweetnacl: 1.0.3
+      valibot: 0.36.0
+    transitivePeerDependencies:
+      - '@gql.tada/svelte-support'
+      - '@gql.tada/vue-support'
+      - bufferutil
+      - supports-color
+      - typescript
+      - utf-8-validate
 
   '@0xobelisk/sui-cli@1.2.0-pre.16(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:
