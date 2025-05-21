@@ -204,7 +204,6 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
         setAvailableFromTokens(filteredAssets);
       } catch (error) {
         console.error('Error fetching available swap paths:', error);
-        toast.error('Failed to fetch available swap paths');
       } finally {
         setIsLoading(false);
       }
