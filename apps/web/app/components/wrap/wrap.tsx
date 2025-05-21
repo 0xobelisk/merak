@@ -397,9 +397,10 @@ export default function TokenWrapper() {
 
       const dubhe = initDubheClient();
       const merak = initMerakClient();
-      const metadata = await dubhe.suiInteractor.currentClient.getCoinMetadata({
-        coinType: sourceToken
-      });
+      // const metadata = await dubhe.suiInteractor.currentClient.getCoinMetadata({
+      //   coinType: sourceToken
+      // });
+      const metadata = getCoinMetadata(sourceToken);
 
       // Process sourceToken format
       let formattedToken = sourceToken;
