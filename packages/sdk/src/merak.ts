@@ -793,6 +793,28 @@ export class Merak {
     )?.value as AssetMetadataType;
   }
 
+  async getMetadataWithGraphql(assetId: bigint | number | string) {
+    const fieldDetails = await this.dubhe.client().getDynamicFieldObject({
+      parentId:
+        '0xe83c2da3f26cedac7ced3652dbfae0df591aeb51818d45fb33e91364d551d0cd',
+      name: {
+        type: 'u256',
+        value: assetId.toString(),
+      },
+    });
+
+    if (
+      fieldDetails.data?.content &&
+      typeof fieldDetails.data.content === 'object' &&
+      'fields' in fieldDetails.data.content
+    ) {
+      const content = fieldDetails.data.content as any;
+      return content.fields?.value?.fields;
+    }
+
+    return null;
+  }
+
   async staticMetadataOf(assetId: bigint | number | string) {
     const metadatas: Record<string, any> = {
       '0': {
@@ -1388,7 +1410,7 @@ export class Merak {
     poolAssetId: bigint | number | string;
     amount?: bigint | number | string;
   }) {
-    const poolAssetMetadata = await this.getMetadata(poolAssetId);
+    const poolAssetMetadata = await this.getMetadataWithGraphql(poolAssetId);
 
     if (!poolAssetMetadata) {
       throw new Error(`Pool asset metadata not found: ${poolAssetId}`);
