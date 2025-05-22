@@ -203,7 +203,7 @@ export default function RemoveLiquidity() {
         if (lpBalance) {
           setLpTokenId(lpTokenId);
           const balance = Number(lpBalance) / Math.pow(10, 9);
-          setLpTokenBalance(balance.toFixed(4));
+          setLpTokenBalance(balance.toFixed(9));
         } else {
           // If we can't find an exact match, try to query the balance directly
           // This is a fallback in case the token symbol naming doesn't follow the expected pattern
