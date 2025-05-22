@@ -303,6 +303,7 @@ export default function AddLiquidity() {
             }
           });
           setDigest(result.digest);
+          router.push('/pool');
         },
         onError: (error) => {
           console.log('executed transaction', error);

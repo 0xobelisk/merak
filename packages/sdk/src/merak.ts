@@ -194,8 +194,13 @@ export class Merak {
     return this.assets.transferOwnership(tx, asset_id, to, isRaw);
   }
 
-  async balanceOf(asset_id: bigint | number | string, accountAddress?: string) {
-    return this.assets.balanceOf(asset_id, accountAddress);
+  async balanceOf(asset_id: bigint | number | string, accountAddress: string) {
+    // return this.assets.balanceOf(asset_id, accountAddress);
+    const account = await this.queryAccount({
+      address: accountAddress,
+      assetId: asset_id,
+    });
+    return account.value.balance;
   }
 
   async supplyOf(asset_id: bigint | number | string) {
@@ -1491,7 +1496,15 @@ export class Merak {
     }
 
     const poolInfoData = poolsInfo.data[0];
-    const poolInfoValue = poolsInfo.value[0];
+    const poolInfoValue = await this.getPoolListWithId({
+      asset1Id: poolInfoData.key1,
+      asset2Id: poolInfoData.key2,
+    });
+
+    if (!poolInfoValue) {
+      throw new Error(`Pool info not found: ${poolAssetId}`);
+    }
+
     // Convert to floating-point calculation
     const amountA = Number(poolInfoValue.reserve0) * shareAmount;
     const amountB = Number(poolInfoValue.reserve1) * shareAmount;

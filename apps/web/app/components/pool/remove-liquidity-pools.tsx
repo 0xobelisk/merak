@@ -284,6 +284,15 @@ export default function RemoveLiquidity() {
     const minAmountBValue = BigInt(
       Math.floor(parseFloat(minAmountB || '0') * Math.pow(10, tokenB.decimals))
     );
+    console.log('============');
+    console.log({
+      tokenA: tokenA.id,
+      tokenB: tokenB.id,
+      liquidity,
+      minAmountAValue,
+      minAmountBValue,
+      accountAddress: account.address
+    });
 
     try {
       await merak.removeLiquidity(
@@ -317,6 +326,7 @@ export default function RemoveLiquidity() {
 
             // Refresh LP token balance
             queryAssets();
+            router.push('/positions');
           },
           onError: (error) => {
             console.log('transaction error', error);
