@@ -58,6 +58,7 @@ export default function AddLiquidity() {
     async (assetId: number) => {
       if (allAssetsState.assetInfos.length === 0) {
         const merak = initMerakClient();
+        console.log('-------------');
 
         const metadataResults = await merak.listAssetsInfo();
 
@@ -147,17 +148,17 @@ export default function AddLiquidity() {
 
     try {
       const merak = initMerakClient();
-      const poolInfo = await merak.getPoolList({
+      const poolInfo = await merak.getPoolListWithId({
         asset1Id: tokenPay.id,
         asset2Id: tokenReceive.id
       });
 
-      if (!poolInfo || poolInfo.data.length === 0) {
+      if (!poolInfo) {
         setReserves(null);
         return;
       }
 
-      const poolInfoValue = poolInfo.value[0];
+      const poolInfoValue = poolInfo;
       setReserves({
         reservePay: poolInfoValue.reserve0,
         reserveReceive: poolInfoValue.reserve1
@@ -263,6 +264,15 @@ export default function AddLiquidity() {
       Math.floor(parseFloat(minAmountReceive || '0') * Math.pow(10, tokenReceive.decimals))
     );
 
+    console.log({
+      tokenPayId: tokenPay.id,
+      tokenReceiveId: tokenReceive.id,
+      baseDesired,
+      quoteDesired,
+      baseMin,
+      quoteMin,
+      accountAddress: account.address
+    });
     // const baseMin = BigInt(0);
     // const quoteMin = BigInt(0);
     await merak.addLiquidity(
@@ -314,30 +324,31 @@ export default function AddLiquidity() {
 
     try {
       const merak = initMerakClient();
-      const poolInfo = await merak.getPoolList({
+      const poolInfo = await merak.getPoolListWithId({
         asset1Id: tokenPay.id,
         asset2Id: tokenReceive.id
       });
 
-      if (!poolInfo || poolInfo.data.length === 0) {
+      if (!poolInfo) {
         setExpectedLPTokens('');
         return;
       }
 
-      const lpAssetId = poolInfo.value[0].lp_asset_id;
-      const lpMetadata = await getAssetMetadata(lpAssetId);
+      const lpAssetId = poolInfo.lp_asset_id;
+      const lpMetadata = await getAssetMetadata(Number(lpAssetId));
+      console.log(lpAssetId);
+      console.log(lpMetadata, 'lpMetadata');
       if (!lpMetadata) {
         console.error('Failed to get LP token metadata');
         setExpectedLPTokens('');
         return;
       }
 
-      const poolInfoValue = poolInfo.value[0];
-      const reserveA = parseFloat(poolInfoValue.reserve0);
-      const reserveB = parseFloat(poolInfoValue.reserve1);
+      const reserveA = parseFloat(poolInfo.reserve0);
+      const reserveB = parseFloat(poolInfo.reserve1);
       const totalSupply = parseFloat(lpMetadata.supply);
 
-      console.log(poolInfoValue, 'poolInfoValue');
+      console.log(poolInfo, 'poolInfo');
       console.log(totalSupply, 'totalSupply');
       const amountA = parseFloat(amountPay) * Math.pow(10, tokenPay.decimals);
       const amountB = parseFloat(amountReceive) * Math.pow(10, tokenReceive.decimals);
@@ -459,15 +470,15 @@ export default function AddLiquidity() {
             >
               {tokenPay ? (
                 <>
-                    <img
-                      src={tokenPay.icon_url}
-                      alt={tokenPay.symbol}
-                      className="w-6 h-6 mr-2"
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/sui-logo.svg';
-                      }}
-                    />
+                  <img
+                    src={tokenPay.icon_url}
+                    alt={tokenPay.symbol}
+                    className="w-6 h-6 mr-2"
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                    }}
+                  />
                   {tokenPay.symbol}
                 </>
               ) : (
@@ -483,15 +494,15 @@ export default function AddLiquidity() {
             >
               {tokenReceive ? (
                 <>
-                    <img
-                      src={tokenReceive.icon_url}
-                      alt={tokenReceive.symbol}
-                      className="w-6 h-6 mr-2"
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/sui-logo.svg';
-                      }}
-                    />
+                  <img
+                    src={tokenReceive.icon_url}
+                    alt={tokenReceive.symbol}
+                    className="w-6 h-6 mr-2"
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                    }}
+                  />
                   {tokenReceive.symbol}
                 </>
               ) : tokenPay ? (

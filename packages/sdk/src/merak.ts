@@ -360,6 +360,51 @@ export class Merak {
     });
   }
 
+  async getPoolListWithId({
+    asset1Id,
+    asset2Id,
+  }: {
+    asset1Id: bigint | number | string;
+    asset2Id: bigint | number | string;
+  }): Promise<{
+    k_last: string;
+    lp_asset_id: string;
+    reserve0: string;
+    reserve1: string;
+  } | null> {
+    const parentObjectId =
+      '0xfb2c58b849d6e4de90a2032dacf42ab9ae11130ebc2d1f0fecfffa9df5aeed0b';
+
+    const fieldDetail = await this.dubhe.client().getDynamicFieldObject({
+      parentId: parentObjectId,
+      name: {
+        type: '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_double_map_internal::Entry<u256, u256>',
+        value: {
+          key1: asset1Id.toString(),
+          key2: asset2Id.toString(),
+        },
+      },
+    });
+
+    if (
+      fieldDetail.data &&
+      fieldDetail.data.content &&
+      typeof fieldDetail.data.content === 'object' &&
+      'fields' in fieldDetail.data.content
+    ) {
+      const content = fieldDetail.data.content as any;
+      if (
+        content.fields &&
+        content.fields.value &&
+        content.fields.value.fields
+      ) {
+        return content.fields.value.fields;
+      }
+    }
+
+    return null;
+  }
+
   async allPoolList({
     asset1Id,
     asset2Id,
