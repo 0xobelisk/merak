@@ -12,36 +12,36 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always
 
-  indexer:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    ports:
-      - "3001:3001"
-    environment:
-      - NODE_ENV=production
-    volumes:
-      - ./.data:/app/.data
-    depends_on:
-      - postgres
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3001/healthz"]
-      interval: 3s
-      timeout: 5s
-      retries: 10
+  # indexer:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3001:3001"
+  #   environment:
+  #     - NODE_ENV=production
+  #   volumes:
+  #     - ./.data:/app/.data
+  #   depends_on:
+  #     - postgres
+  #   healthcheck:
+  #     test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3001/healthz"]
+  #     interval: 3s
+  #     timeout: 5s
+  #     retries: 10
 
-  query:
-    build:
-      context: .
-      dockerfile: api-Dockerfile
-    restart: unless-stopped
-    ports:
-      - "3002:3002"
-    environment:
-      - NODE_ENV=production
-    depends_on:
-      - postgres
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3002/healthz"]
-      interval: 3s
+  # query:
+  #   build:
+  #     context: .
+  #     dockerfile: api-Dockerfile
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3002:3002"
+  #   environment:
+  #     - NODE_ENV=production
+  #   depends_on:
+  #     - postgres
+  #   healthcheck:
+  #     test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3002/healthz"]
+  #     interval: 3s

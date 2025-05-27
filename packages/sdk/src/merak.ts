@@ -377,37 +377,20 @@ export class Merak {
     reserve0: string;
     reserve1: string;
   } | null> {
-    const parentObjectId =
-      '0xfb2c58b849d6e4de90a2032dacf42ab9ae11130ebc2d1f0fecfffa9df5aeed0b';
-
-    const fieldDetail = await this.dubhe.client().getDynamicFieldObject({
-      parentId: parentObjectId,
-      name: {
-        type: '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_double_map_internal::Entry<u256, u256>',
-        value: {
-          key1: asset1Id.toString(),
-          key2: asset2Id.toString(),
-        },
-      },
+    const pool = await this.storage.get.pool({
+      assetAId: asset1Id,
+      assetBId: asset2Id,
     });
-
-    if (
-      fieldDetail.data &&
-      fieldDetail.data.content &&
-      typeof fieldDetail.data.content === 'object' &&
-      'fields' in fieldDetail.data.content
-    ) {
-      const content = fieldDetail.data.content as any;
-      if (
-        content.fields &&
-        content.fields.value &&
-        content.fields.value.fields
-      ) {
-        return content.fields.value.fields;
-      }
+    if (!pool) {
+      return null;
     }
 
-    return null;
+    return {
+      k_last: pool.value.k_last,
+      lp_asset_id: pool.value.lp_asset_id,
+      reserve0: pool.value.reserve0,
+      reserve1: pool.value.reserve1,
+    };
   }
 
   async allPoolList({
@@ -643,19 +626,12 @@ export class Merak {
       balance: string;
     };
   }> {
-    const allFields = await this.dubhe.client().getDynamicFieldObject({
-      parentId:
-        '0xa676f00193c93b812da927baf1e51bd408c2a32b14104df6c1af2b0e874f33ad',
-      name: {
-        type: '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_double_map_internal::Entry<u256, address>',
-        value: {
-          key1: assetId.toString(),
-          key2: address,
-        },
-      },
+    const account = await this.storage.get.account({
+      assetId: assetId,
+      address: address,
     });
 
-    if (!allFields.data) {
+    if (!account) {
       return {
         key1: assetId.toString(),
         key2: address,
@@ -665,31 +641,11 @@ export class Merak {
       };
     }
 
-    try {
-      const content = allFields.data.content as any;
-      if (
-        content &&
-        content.fields &&
-        content.fields.value &&
-        content.fields.value.fields
-      ) {
-        return {
-          key1: assetId.toString(),
-          key2: address,
-          value: {
-            balance: content.fields.value.fields.balance || '0',
-          },
-        };
-      }
-    } catch (error) {
-      console.error('Error in queryAccount:', error);
-    }
-
     return {
       key1: assetId.toString(),
       key2: address,
       value: {
-        balance: '0',
+        balance: account.value.balance || '0',
       },
     };
   }
@@ -802,6 +758,8 @@ export class Merak {
       after: after,
       orderBy: orderBy ?? ['CREATED_AT_ASC'],
     });
+    console.log('==============');
+    console.log(assetsMetadata, 'assetsMetadata');
 
     let assetsMetadataResults: AssetInfo[] = await Promise.all(
       assetsMetadata.data.map(async (item) => {
@@ -843,26 +801,14 @@ export class Merak {
     )?.value as AssetMetadataType;
   }
 
-  async getMetadataWithGraphql(assetId: bigint | number | string) {
-    const fieldDetails = await this.dubhe.client().getDynamicFieldObject({
-      parentId:
-        '0xe83c2da3f26cedac7ced3652dbfae0df591aeb51818d45fb33e91364d551d0cd',
-      name: {
-        type: 'u256',
-        value: assetId.toString(),
-      },
+  async getLatestMetadata(assetId: bigint | number | string) {
+    const metadata = await this.storage.get.assetMetadata({
+      assetId,
     });
-
-    if (
-      fieldDetails.data?.content &&
-      typeof fieldDetails.data.content === 'object' &&
-      'fields' in fieldDetails.data.content
-    ) {
-      const content = fieldDetails.data.content as any;
-      return content.fields?.value?.fields;
+    if (!metadata) {
+      return null;
     }
-
-    return null;
+    return metadata.value as AssetMetadataType;
   }
 
   async staticMetadataOf(assetId: bigint | number | string) {
@@ -1029,152 +975,59 @@ export class Merak {
     return metadatas[assetId.toString()];
   }
 
-  async listAccountWrapperAssets({
-    address,
-  }: {
-    address: string;
-  }): Promise<AssetInfoResponse> {
-    const assetIds = [0, 1, 3]; // 0: wSUI, 1: wDUBHE, 3: wSTARS
-    const assetsData = await Promise.all(
-      assetIds.map(async (assetId) => {
-        const parentObjectId =
-          '0xa676f00193c93b812da927baf1e51bd408c2a32b14104df6c1af2b0e874f33ad';
-
-        const fieldDetail = await this.dubhe.client().getDynamicFieldObject({
-          parentId: parentObjectId,
-          name: {
-            type: '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_double_map_internal::Entry<u256, address>',
-            value: {
-              key1: assetId.toString(),
-              key2: address,
-            },
-          },
-        });
-
-        let balance = '0';
-
-        if (
-          fieldDetail.data &&
-          fieldDetail.data.content &&
-          typeof fieldDetail.data.content === 'object' &&
-          'fields' in fieldDetail.data.content
-        ) {
-          const content = fieldDetail.data.content as any;
-          if (
-            content.fields &&
-            content.fields.value &&
-            content.fields.value.fields
-          ) {
-            balance = content.fields.value.fields.balance || '0';
-          }
-        }
-
-        const metadata = (await this.staticMetadataOf(assetId))
-          .value as AssetMetadataType;
-
-        return {
-          assetId,
-          metadata,
-          balance,
-        };
-      })
-    );
-
-    // 按assetId升序排序
-    const sortedAssetsData = assetsData.sort((a, b) => a.assetId - b.assetId);
-
-    return {
-      data: sortedAssetsData,
-      pageInfo: { hasNextPage: false, endCursor: '' },
-      totalCount: assetsData.length,
-    };
-  }
-
   async listAccountLpAssets({
     address,
+    assetType,
   }: {
     address: string;
+    assetType?: AssetType;
   }): Promise<AssetInfoResponse> {
-    const assetIds = [2, 4, 5]; // 0: wSUI, 1: wDUBHE, 3: wSTARS
-    const assetsData = await Promise.all(
-      assetIds.map(async (assetId) => {
-        const parentObjectId =
-          '0xa676f00193c93b812da927baf1e51bd408c2a32b14104df6c1af2b0e874f33ad';
+    // const assetIds = [2, 4, 5]; // 0: wSUI, 1: wDUBHE, 3: wSTARS
 
-        const fieldDetail = await this.dubhe.client().getDynamicFieldObject({
-          parentId: parentObjectId,
-          name: {
-            type: '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_double_map_internal::Entry<u256, address>',
-            value: {
-              key1: assetId.toString(),
-              key2: address,
-            },
-          },
-        });
+    const assetsData = await this.storage.list.account({
+      address,
+      first: 6,
+      orderBy: ['CREATED_AT_ASC'],
+    });
 
-        let balance = '0';
-
-        if (
-          fieldDetail.data &&
-          fieldDetail.data.content &&
-          typeof fieldDetail.data.content === 'object' &&
-          'fields' in fieldDetail.data.content
-        ) {
-          const content = fieldDetail.data.content as any;
-          if (
-            content.fields &&
-            content.fields.value &&
-            content.fields.value.fields
-          ) {
-            balance = content.fields.value.fields.balance || '0';
-          }
-        }
-
-        const metadata = (await this.staticMetadataOf(assetId))
-          .value as AssetMetadataType;
-
+    let metadataResults: AssetInfo[] = await Promise.all(
+      assetsData.data.map(async (item) => {
+        const metadata = (await this.staticMetadataOf(item.key1.toString()))
+          ?.value as AssetMetadataType;
         return {
-          assetId,
+          balance: item.value.balance,
           metadata,
-          balance,
+          assetId: item.key1,
+          status: item.value.status,
         };
       })
     );
+    if (assetType) {
+      metadataResults = metadataResults.filter((item) => {
+        return item.metadata.asset_type[assetType] !== undefined;
+      });
+    }
 
-    const sortedAssetsData = assetsData.sort((a, b) => a.assetId - b.assetId);
+    const sortedMetadataResults = metadataResults.sort(
+      (a, b) => a.assetId - b.assetId
+    );
 
     return {
-      data: sortedAssetsData,
+      data: sortedMetadataResults,
       pageInfo: { hasNextPage: false, endCursor: '' },
-      totalCount: assetsData.length,
+      totalCount: sortedMetadataResults.length,
     };
   }
 
   async listOwnedAssetsInfo({
     address,
     assetType,
-    first,
-    after,
-    orderBy,
   }: {
     address: string;
     assetType?: AssetType;
-    first?: number;
-    after?: string;
-    orderBy?: string[];
   }): Promise<AssetInfoResponse> {
-    // const currentAccountInfo = await this.storage.list.account({
-    //   address: address,
-    //   first: first ?? 9999,
-    //   after: after,
-    //   orderBy: orderBy ?? ['KEY1_ASC'],
-    // });
     let data: AssetInfoResponse;
-    if (assetType === 'Lp') {
-      data = await this.listAccountLpAssets({ address });
-    } else {
-      data = await this.listAccountWrapperAssets({ address });
-    }
+    data = await this.listAccountLpAssets({ address, assetType });
 
     return data;
   }
@@ -1235,23 +1088,10 @@ export class Merak {
 
   async listOwnedWrapperAssets({
     address,
-    first,
-    after,
-    orderBy,
   }: {
     address: string;
-    first?: number;
-    after?: string;
-    orderBy?: string[];
   }): Promise<AssetInfoResponse> {
-    return this.listAccountWrapperAssets({ address });
-    // return this.listOwnedAssetsInfo({
-    //   address,
-    //   assetType: 'Wrapped',
-    //   first,
-    //   after,
-    //   orderBy,
-    // });
+    return this.listOwnedAssetsInfo({ address, assetType: 'Wrapped' });
   }
 
   async listEvents({
@@ -1460,7 +1300,7 @@ export class Merak {
     poolAssetId: bigint | number | string;
     amount?: bigint | number | string;
   }) {
-    const poolAssetMetadata = await this.getMetadataWithGraphql(poolAssetId);
+    const poolAssetMetadata = await this.getLatestMetadata(poolAssetId);
 
     if (!poolAssetMetadata) {
       throw new Error(`Pool asset metadata not found: ${poolAssetId}`);

@@ -220,7 +220,7 @@ export default function RemoveLiquidity() {
               if (lpBalance && lpBalance[0]) {
                 const lpDecimals = 9; // Assumption
                 const formattedBalance = (Number(lpBalance[0]) / Math.pow(10, lpDecimals)).toFixed(
-                  4
+                  9
                 );
                 setLpTokenBalance(formattedBalance);
               } else {
