@@ -2,10 +2,13 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-RUN npm install @0xobelisk/sui-indexer@1.2.0-pre.18
+RUN npm install @0xobelisk/sui-indexer@1.2.0-pre.21
 
 COPY . .
 
 EXPOSE 3002
 
-CMD ["npx", "postgres-frontend", "--port", "3002", "--database-url", "postgres://postgres:postgres@postgres:5432/postgres"]
+CMD ["npx", "postgres-frontend",
+"--port", "3002",
+"--database-url", "postgres://postgres:postgres@postgres:5432/postgres"
+]
