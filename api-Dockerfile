@@ -10,5 +10,5 @@ EXPOSE 3002
 
 CMD ["npx", "postgres-frontend",
 "--port", "3002",
-"--database-url", "postgres://postgres:postgres@postgres:5432/postgres"
+"--database-url", "postgres://admin:123456@postgres:5433/merak"
 ]

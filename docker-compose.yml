@@ -2,11 +2,11 @@ services:
   postgres:
     image: "postgres:13"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: merak
     ports:
-      - "127.0.0.1:5432:5432"
+      - "127.0.0.1:5433:5432"
     volumes:
       - .data/postgres:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -18,7 +18,7 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "3003:3001"
     environment:
       - NODE_ENV=production
     volumes:
@@ -37,7 +37,7 @@ services:
       dockerfile: api-Dockerfile
     restart: unless-stopped
     ports:
-      - "3002:3002"
+      - "3004:3002"
     environment:
       - NODE_ENV=production
     depends_on:
