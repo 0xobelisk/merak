@@ -7,7 +7,7 @@ export default function Page() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/portfolio');
+    router.push('/pre-mainnet');
   }, [router]);
 
   return <main></main>;

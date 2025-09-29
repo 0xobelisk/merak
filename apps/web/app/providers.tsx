@@ -11,6 +11,7 @@ import { EnokiFlowProvider } from '@mysten/enoki/react';
 import Header from '@/app/components/header';
 import React from 'react';
 import AppWrapper from '@/app/wrapper';
+import { usePathname } from 'next/navigation';
 
 const { networkConfig } = createNetworkConfig({
   localnet: { url: getFullnodeUrl('localnet') },
@@ -20,6 +21,18 @@ const { networkConfig } = createNetworkConfig({
 });
 
 const queryClient = new QueryClient();
+
+function ProvidersContent({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isPreMainnetPage = pathname === '/pre-mainnet';
+
+  return (
+    <div>
+      {!isPreMainnetPage && <Header />}
+      <AppWrapper>{children}</AppWrapper>
+    </div>
+  );
+}
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -32,10 +45,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           >
             {/* <EnokiFlowProvider apiKey="enoki_public_7278cc47e76ec32331cf1f8fc83a4b1a"> */}
             <Toaster />
-            <div>
-              <Header />
-              <AppWrapper>{children}</AppWrapper>
-            </div>
+            <ProvidersContent>{children}</ProvidersContent>
             {/* </EnokiFlowProvider> */}
           </WalletProvider>
         </SuiClientProvider>

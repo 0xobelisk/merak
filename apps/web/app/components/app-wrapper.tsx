@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { ConnectButton, useCurrentWallet } from '@mysten/dapp-kit';
 
 interface AppWrapperProps {
@@ -10,6 +10,8 @@ interface AppWrapperProps {
 
 export default function AppWrapper({ children }: AppWrapperProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const isPreMainnetPage = pathname === '/pre-mainnet';
 
   const { currentWallet, connectionStatus } = useCurrentWallet();
 
@@ -34,7 +36,8 @@ export default function AppWrapper({ children }: AppWrapperProps) {
     }
   }, [connectionStatus]);
 
-  if (!currentWallet) {
+  // Skip wallet check for pre-mainnet page
+  if (!currentWallet && !isPreMainnetPage) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <div className="p-8 bg-white/80 rounded-lg shadow-md backdrop-blur-sm">
