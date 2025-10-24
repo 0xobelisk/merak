@@ -4,70 +4,67 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 /**
- * 查询动态字段中的AssetMetadata
+ * Query AssetMetadata from dynamic fields
  *
- * 使用这个脚本来查询指定对象中的asset_metadata动态字段
- * 该字段包含StorageMap类型数据
+ * Use this script to query asset_metadata dynamic field from specified object
+ * This field contains StorageMap type data
  */
 async function queryAssetMetadata() {
-  // 初始化Sui客户端 - 你可以根据需要更改为其他网络
+  // Initialize Sui client - you can change to other networks as needed
   const client = new SuiClient({
-    url: 'https://sui-testnet.blockvision.org/v1/2wxFvrtcSw2Zc0rIQuVL8i53IhU', // testnet
+    url: 'https://sui-testnet.blockvision.org/v1/2wxFvrtcSw2Zc0rIQuVL8i53IhU' // testnet
   });
 
-  // 用户提供的父对象ID
-  const parentObjectId =
-    '0xe83c2da3f26cedac7ced3652dbfae0df591aeb51818d45fb33e91364d551d0cd';
+  // User-provided parent object ID
+  const parentObjectId = '0xe83c2da3f26cedac7ced3652dbfae0df591aeb51818d45fb33e91364d551d0cd';
 
-  console.log(`查询对象 ${parentObjectId} 的动态字段...`);
+  console.log(`Querying dynamic fields of object ${parentObjectId}...`);
 
   try {
-    // 第一步：获取所有动态字段，找到asset_metadata
+    // Step 1: Get all dynamic fields, find asset_metadata
     const allFields = await client.getDynamicFields({
-      parentId: parentObjectId,
+      parentId: parentObjectId
     });
 
-    console.log(`发现 ${allFields.data.length} 个动态字段`);
+    console.log(`Found ${allFields.data.length} dynamic fields`);
     console.log(JSON.stringify(allFields, null, 2));
-    // 查找特定的asset_metadata字段
-    const metadataField = allFields.data.find(
-      (field) => field.name.value === 'asset_metadata'
-    );
+    // Find specific asset_metadata field
+    const metadataField = allFields.data.find((field) => field.name.value === 'asset_metadata');
 
     if (!metadataField) {
-      console.log('未找到asset_metadata字段');
+      console.log('asset_metadata field not found');
       return;
     }
 
-    console.log('找到asset_metadata字段:');
-    console.log('字段类型:', metadataField.name.type);
-    console.log('字段值:', metadataField.name.value);
+    console.log('Found asset_metadata field:');
+    console.log('Field type:', metadataField.name.type);
+    console.log('Field value:', metadataField.name.value);
 
-    // 第二步：获取该字段的详细信息
+    // Step 2: Get detailed information of this field
     const fieldDetails = await client.getDynamicFieldObject({
       parentId: parentObjectId,
-      name: metadataField.name,
+      name: metadataField.name
     });
 
-    console.log('\n字段详细信息:');
+    console.log('\nField detailed information:');
     console.log(JSON.stringify(fieldDetails, null, 2));
 
-    // 检查数据结构并安全地访问
+    // Check data structure and access safely
     if (fieldDetails.data?.content) {
       const content = fieldDetails.data.content;
-      console.log('\n对象内容:');
+      console.log('\nObject content:');
       console.log(JSON.stringify(content, null, 2));
 
-      // 如果content是MoveObject类型，可能会有fields属性
+      // If content is MoveObject type, it may have fields property
       if ('fields' in content) {
-        console.log('\nMoveObject字段:');
+        console.log('\nMoveObject fields:');
         console.log(JSON.stringify(content.fields, null, 2));
       }
     }
   } catch (error) {
-    console.error('查询出错:', error);
+    console.error('Query error:', error);
   }
 }
 
-// 运行查询函数
+// Run query function
 queryAssetMetadata().catch(console.error);

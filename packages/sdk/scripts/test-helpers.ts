@@ -1,6 +1,6 @@
 /**
- * 测试脚本辅助函数
- * 帮助创建 Merak 实例和其他常用功能
+ * Test script helper functions
+ * Help create Merak instance and other common functionalities
  */
 
 import { Merak, getMerakConfig } from '../src';
@@ -11,7 +11,7 @@ import contractMetadata from '../../contracts/metadata.json';
 import { NETWORK, PACKAGE_ID, DUBHE_SCHEMA_ID } from '../../contracts/deployment';
 
 /**
- * 获取默认的 Indexer URL
+ * Get default Indexer URL
  */
 export function getDefaultIndexerUrl(network: NetworkType): string {
   switch (network) {
@@ -29,7 +29,7 @@ export function getDefaultIndexerUrl(network: NetworkType): string {
 }
 
 /**
- * 创建 Merak 实例的辅助函数
+ * Helper function to create Merak instance
  */
 export function createMerak(params: {
   networkType: NetworkType;
@@ -39,7 +39,7 @@ export function createMerak(params: {
 }): Merak {
   const { networkType, secretKey, fullnodeUrl, indexerUrl } = params;
 
-  // 创建 Dubhe 实例
+  // Create Dubhe instance
   const dubhe = new Dubhe({
     networkType,
     secretKey,
@@ -48,14 +48,14 @@ export function createMerak(params: {
     metadata: contractMetadata as SuiMoveNormalizedModules
   });
 
-  // 创建 GraphQL 客户端
+  // Create GraphQL client
   const graphql = new DubheGraphqlClient({
     endpoint: 'https://dubhe-framework-testnet-api.obelisk.build/graphql',
     subscriptionEndpoint: 'wss://dubhe-framework-testnet-api.obelisk.build/graphql',
     dubheMetadata
   });
 
-  // 创建 Merak 实例
+  // Create Merak instance
   return new Merak({
     network: networkType,
     dubhe,

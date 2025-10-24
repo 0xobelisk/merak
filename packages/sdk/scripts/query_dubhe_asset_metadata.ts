@@ -4,50 +4,48 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 /**
- * 查询Dubhe Asset Metadata
+ * Query Dubhe Asset Metadata
  *
- * 这个脚本专门用于查询由用户提供的父对象中的asset_metadata动态字段，
- * 该字段是StorageMap<u256, AssetMetadata>类型。
+ * This script is specifically for querying asset_metadata dynamic field from user-provided parent object,
+ * which is of type StorageMap<u256, AssetMetadata>.
  */
 async function queryDubheAssetMetadata() {
-  // 初始化Sui客户端
+  // Initialize Sui client
   const client = new SuiClient({
-    url: 'https://sui-testnet.blockvision.org/v1/2wxFvrtcSw2Zc0rIQuVL8i53IhU', // testnet
+    url: 'https://sui-testnet.blockvision.org/v1/2wxFvrtcSw2Zc0rIQuVL8i53IhU' // testnet
   });
 
-  // 用户提供的信息
-  const parentObjectId =
-    '0xcdaf20f659c1f8cd418ca231d074d3be12ff6d7188ea15c0d5241aec31e5c993';
+  // User-provided information
+  const parentObjectId = '0xcdaf20f659c1f8cd418ca231d074d3be12ff6d7188ea15c0d5241aec31e5c993';
   const fieldName = 'asset_metadata';
-  const packageAddress =
-    '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b';
+  const packageAddress = '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b';
 
-  console.log(`查询父对象 ${parentObjectId} 中的 ${fieldName} 动态字段...`);
+  console.log(`Querying ${fieldName} dynamic field in parent object ${parentObjectId}...`);
 
   try {
-    // 1. 首先查询动态字段对象
-    console.log('步骤1: 获取动态字段对象...');
+    // 1. First query the dynamic field object
+    console.log('Step 1: Getting dynamic field object...');
 
     const dynamicFieldObj = await client.getDynamicFieldObject({
       parentId: parentObjectId,
       name: {
         type: 'vector<u8>',
-        value: fieldName,
-      },
+        value: fieldName
+      }
     });
 
     if (!dynamicFieldObj.data) {
-      throw new Error('未找到动态字段对象');
+      throw new Error('Dynamic field object not found');
     }
 
-    console.log('找到动态字段对象:');
-    console.log('- 对象ID:', dynamicFieldObj.data.objectId);
-    console.log('- 类型:', dynamicFieldObj.data.type);
+    console.log('Found dynamic field object:');
+    console.log('- Object ID:', dynamicFieldObj.data.objectId);
+    console.log('- Type:', dynamicFieldObj.data.type);
 
-    // 获取StorageMap对象ID
+    // Get StorageMap object ID
     let storageMapObjectId = '';
 
-    // 类型安全地访问嵌套属性
+    // Type-safe access to nested properties
     if (
       dynamicFieldObj.data.content &&
       typeof dynamicFieldObj.data.content === 'object' &&
@@ -67,51 +65,47 @@ async function queryDubheAssetMetadata() {
         'id' in fields.value.id
       ) {
         storageMapObjectId = fields.value.id.id as string;
-        console.log('- StorageMap对象ID:', storageMapObjectId);
+        console.log('- StorageMap object ID:', storageMapObjectId);
       }
     }
 
     if (!storageMapObjectId) {
-      // 尝试直接使用动态字段对象的ID
-      console.log('无法找到StorageMap对象ID，尝试使用动态字段对象ID');
+      // Try to use dynamic field object ID directly
+      console.log('Cannot find StorageMap object ID, trying to use dynamic field object ID');
       storageMapObjectId = dynamicFieldObj.data.objectId;
     }
 
-    // 2. 查询StorageMap中的所有键值对
-    console.log('\n步骤2: 查询StorageMap中的所有键值对...');
+    // 2. Query all key-value pairs in StorageMap
+    console.log('\nStep 2: Querying all key-value pairs in StorageMap...');
 
     const entries = await client.getDynamicFields({
-      parentId: storageMapObjectId,
+      parentId: storageMapObjectId
     });
 
-    console.log(`StorageMap包含 ${entries.data.length} 个键值对:`);
+    console.log(`StorageMap contains ${entries.data.length} key-value pairs:`);
 
-    // 3. 显示所有键并查询第一个键的详细信息
+    // 3. Display all keys and query details of first key
     if (entries.data.length > 0) {
-      console.log('\n键列表:');
+      console.log('\nKey list:');
       entries.data.forEach((entry, index) => {
         console.log(
-          `${index + 1}. 类型: ${entry.name.type}, 值: ${JSON.stringify(
-            entry.name.value
-          )}`
+          `${index + 1}. Type: ${entry.name.type}, Value: ${JSON.stringify(entry.name.value)}`
         );
       });
 
-      // 4. 获取第一个AssetMetadata详细信息
+      // 4. Get detailed information of first AssetMetadata
       const firstKey = entries.data[0];
       console.log(
-        `\n步骤3: 获取键 ${JSON.stringify(
-          firstKey.name.value
-        )} 的AssetMetadata详细信息...`
+        `\nStep 3: Getting AssetMetadata details for key ${JSON.stringify(firstKey.name.value)}...`
       );
 
       const valueObj = await client.getDynamicFieldObject({
         parentId: storageMapObjectId,
-        name: firstKey.name,
+        name: firstKey.name
       });
 
       if (valueObj.data) {
-        console.log('AssetMetadata详细信息:');
+        console.log('AssetMetadata detailed information:');
 
         if (
           valueObj.data.content &&
@@ -121,32 +115,32 @@ async function queryDubheAssetMetadata() {
           const metadata = valueObj.data.content.fields;
           console.log(JSON.stringify(metadata, null, 2));
         } else {
-          console.log('无法解析AssetMetadata内容');
+          console.log('Cannot parse AssetMetadata content');
           console.log(JSON.stringify(valueObj.data, null, 2));
         }
       } else {
-        console.log('无法获取AssetMetadata详细信息');
+        console.log('Cannot get AssetMetadata detailed information');
       }
 
-      // 5. 如果需要，通过ID查询特定的键
-      console.log('\n步骤4: 如何查询特定u256键的值');
-      console.log('例如，要查询键为1的AssetMetadata:');
+      // 5. If needed, query specific key by ID
+      console.log('\nStep 4: How to query value for specific u256 key');
+      console.log('For example, to query AssetMetadata with key 1:');
       console.log(`
 client.getDynamicFieldObject({
   parentId: '${storageMapObjectId}',
   name: {
     type: 'u256',
-    value: '1'  // 这里替换为您想查询的键值
+    value: '1'  // Replace with your desired key value
   }
 });
       `);
     } else {
-      console.log('StorageMap为空，没有找到键值对');
+      console.log('StorageMap is empty, no key-value pairs found');
     }
   } catch (error) {
-    console.error('查询出错:', error);
+    console.error('Query error:', error);
   }
 }
 
-// 运行查询函数
+// Run query function
 queryDubheAssetMetadata().catch(console.error);

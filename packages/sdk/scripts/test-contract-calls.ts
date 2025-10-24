@@ -1,5 +1,5 @@
 /**
- * 诊断合约调用参数错误的测试脚本
+ * Diagnostic test script for contract call parameter errors
  */
 
 import { NetworkType, Transaction } from '@0xobelisk/sui-client';
@@ -17,7 +17,7 @@ const TEST_CONFIG = {
 async function main() {
   const privateKey = process.env.PRIVATE_KEY;
   if (!privateKey) {
-    console.error('❌ 未设置 PRIVATE_KEY');
+    console.error('❌ PRIVATE_KEY not set');
     process.exit(1);
   }
 
@@ -26,18 +26,18 @@ async function main() {
     secretKey: privateKey
   });
 
-  console.log('✅ Merak 实例创建成功');
+  console.log('✅ Merak instance created successfully');
   console.log(`   Package ID: ${merak.packageId}`);
   console.log(`   Schema ID: ${merak.schemaId}`);
   console.log(`   Test Asset ID: ${TEST_CONFIG.testAssetId}`);
 
-  // 测试 1: 直接调用 dubhe.query
-  console.log('\n=== 测试 1: 直接调用 dubhe.query ===');
+  // Test 1: Direct call to dubhe.query
+  console.log('\n=== Test 1: Direct call to dubhe.query ===');
   try {
     const tx = new Transaction();
     const params = [tx.object(merak.schemaId), tx.pure.address(TEST_CONFIG.testAssetId)];
 
-    console.log('参数:', {
+    console.log('Parameters:', {
       schemaId: merak.schemaId,
       assetId: TEST_CONFIG.testAssetId,
       params: params.map((p: any) => JSON.stringify(p))
@@ -48,22 +48,22 @@ async function main() {
       params
     })) as any;
 
-    console.log('✅ 调用成功');
-    console.log('结果类型:', typeof dryResult);
-    console.log('结果:', JSON.stringify(dryResult, null, 2).substring(0, 500));
+    console.log('✅ Call succeeded');
+    console.log('Result type:', typeof dryResult);
+    console.log('Result:', JSON.stringify(dryResult, null, 2).substring(0, 500));
 
-    // 尝试解析结果
+    // Try to parse result
     const supply = merak.dubhe.view(dryResult as any);
     console.log('Supply:', supply);
   } catch (error: any) {
-    console.error('❌ 调用失败:', error.message);
+    console.error('❌ Call failed:', error.message);
     if (error.stack) {
-      console.error('堆栈:', error.stack.split('\n').slice(0, 5).join('\n'));
+      console.error('Stack:', error.stack.split('\n').slice(0, 5).join('\n'));
     }
   }
 
-  // 测试 2: 测试 balanceOf (这个是成功的)
-  console.log('\n=== 测试 2: 测试 balanceOf (对比成功的调用) ===');
+  // Test 2: Test balanceOf (this one succeeds)
+  console.log('\n=== Test 2: Test balanceOf (compare successful call) ===');
   try {
     const tx = new Transaction();
     const params = [
@@ -72,7 +72,7 @@ async function main() {
       tx.pure.address(TEST_CONFIG.testAccount)
     ];
 
-    console.log('参数:', {
+    console.log('Parameters:', {
       schemaId: merak.schemaId,
       assetId: TEST_CONFIG.testAssetId,
       account: TEST_CONFIG.testAccount
@@ -83,35 +83,35 @@ async function main() {
       params
     })) as any;
 
-    console.log('✅ 调用成功');
+    console.log('✅ Call succeeded');
     const balance = merak.dubhe.view(dryResult as any);
     console.log('Balance:', balance);
   } catch (error: any) {
-    console.error('❌ 调用失败:', error.message);
+    console.error('❌ Call failed:', error.message);
   }
 
-  // 测试 3: 检查 schema 对象
-  console.log('\n=== 测试 3: 检查 Schema 对象 ===');
+  // Test 3: Check schema object
+  console.log('\n=== Test 3: Check Schema object ===');
   try {
     const schemaObject = await merak.dubhe.suiInteractor.currentClient.getObject({
       id: merak.schemaId,
       options: { showContent: true, showType: true }
     });
 
-    console.log('Schema 对象类型:', schemaObject.data?.type);
+    console.log('Schema object type:', schemaObject.data?.type);
     console.log(
-      'Schema 对象内容:',
+      'Schema object content:',
       JSON.stringify(schemaObject.data?.content, null, 2).substring(0, 300)
     );
   } catch (error: any) {
-    console.error('❌ 获取失败:', error.message);
+    console.error('❌ Get failed:', error.message);
   }
 
-  // 测试 4: 尝试不同的参数格式
-  console.log('\n=== 测试 4: 尝试不同的参数格式 ===');
+  // Test 4: Try different parameter formats
+  console.log('\n=== Test 4: Try different parameter formats ===');
 
-  // 4a: 使用 pure.id 代替 pure.address
-  console.log('\n4a: 使用 tx.pure.id()');
+  // 4a: Use pure.id instead of pure.address
+  console.log('\n4a: Use tx.pure.id()');
   try {
     const tx = new Transaction();
     const params = [tx.object(merak.schemaId), tx.pure.id(TEST_CONFIG.testAssetId)];
@@ -121,15 +121,15 @@ async function main() {
       params
     })) as any;
 
-    console.log('✅ 调用成功');
+    console.log('✅ Call succeeded');
     const supply = merak.dubhe.view(dryResult as any);
     console.log('Supply:', supply);
   } catch (error: any) {
-    console.error('❌ 调用失败:', error.message);
+    console.error('❌ Call failed:', error.message);
   }
 
-  // 4b: 直接使用对象
-  console.log('\n4b: 使用 tx.object()');
+  // 4b: Use object directly
+  console.log('\n4b: Use tx.object()');
   try {
     const tx = new Transaction();
     const params = [tx.object(merak.schemaId), tx.object(TEST_CONFIG.testAssetId)];
@@ -139,15 +139,15 @@ async function main() {
       params
     })) as any;
 
-    console.log('✅ 调用成功');
+    console.log('✅ Call succeeded');
     const supply = merak.dubhe.view(dryResult as any);
     console.log('Supply:', supply);
   } catch (error: any) {
-    console.error('❌ 调用失败:', error.message);
+    console.error('❌ Call failed:', error.message);
   }
 }
 
 main().catch((error) => {
-  console.error('\n❌ 测试失败:', error);
+  console.error('\n❌ Test failed:', error);
   process.exit(1);
 });

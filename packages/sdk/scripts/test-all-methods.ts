@@ -1,13 +1,13 @@
 /**
- * Merak SDK 完整接口测试脚本
+ * Complete Merak SDK Interface Test Script
  *
- * 用法：
- * 1. 设置环境变量 PRIVATE_KEY
- * 2. 运行: pnpm test:all
+ * Usage:
+ * 1. Set environment variable PRIVATE_KEY
+ * 2. Run: pnpm test:all
  *
- * 注意：
- * - 修改下面的 TEST_CONFIG 配置测试参数
- * - 部分方法需要已存在的资产/池子才能测试
+ * Notes:
+ * - Modify TEST_CONFIG below to configure test parameters
+ * - Some methods require existing assets/pools to test
  */
 
 import { NetworkType, Transaction } from '@0xobelisk/sui-client';
@@ -16,29 +16,29 @@ import { createMerak } from './test-helpers';
 
 dotenv.config();
 
-// ==================== 配置区 ====================
+// ==================== Configuration ====================
 const TEST_CONFIG = {
-  // 网络配置
+  // Network configuration
   network: 'testnet' as NetworkType,
 
-  // 测试用的资产ID（需要提前创建）
+  // Test asset IDs (need to be created beforehand)
   testAssetId: '0x357cb71d44a3fe292623a589e44f6a4f704d39d64a916bde9f81b78ce7ffac5c',
   testAssetId2: '0xa5481ac67797056f2997fe815b0aef4d70b83ae52157570fb38bc1197e0274d6',
 
-  // 测试用的账户地址
+  // Test account address
   testAccount: '0x1fe342c436eff7ed90988fbe3a85aea7d922517ab6d9bc86e800025f8afcba7a',
 
-  // 测试用的 Coin Type
+  // Test Coin Type
   testCoinType: '0x2::sui::SUI',
 
-  // 是否执行交易类方法（需要 gas）
+  // Whether to execute transaction methods (requires gas)
   executeTransactions: false,
 
-  // 是否显示详细输出
+  // Whether to show detailed output
   verbose: true
 };
 
-// ==================== 辅助函数 ====================
+// ==================== Helper Functions ====================
 
 function logSection(title: string) {
   console.log('\n' + '='.repeat(60));
@@ -53,24 +53,24 @@ function logMethod(methodName: string, description: string) {
 
 function logResult(data: any, truncate = false) {
   if (!TEST_CONFIG.verbose && truncate) {
-    console.log('   ✅ 成功');
+    console.log('   ✅ Success');
     return;
   }
 
   if (typeof data === 'object') {
-    console.log('   结果:', JSON.stringify(data, null, 2).split('\n').slice(0, 20).join('\n'));
+    console.log('   Result:', JSON.stringify(data, null, 2).split('\n').slice(0, 20).join('\n'));
     if (JSON.stringify(data).split('\n').length > 20) {
-      console.log('   ... (结果已截断)');
+      console.log('   ... (result truncated)');
     }
   } else {
-    console.log('   结果:', data);
+    console.log('   Result:', data);
   }
 }
 
 function logError(error: any) {
-  console.error('   ❌ 错误:', error.message || error);
+  console.error('   ❌ Error:', error.message || error);
   if (TEST_CONFIG.verbose && error.stack) {
-    console.error('   堆栈:', error.stack);
+    console.error('   Stack:', error.stack);
   }
 }
 
@@ -90,53 +90,53 @@ async function safeExecute<T>(
   }
 }
 
-// ==================== 主测试函数 ====================
+// ==================== Main Test Function ====================
 
 async function main() {
   const privateKey = process.env.PRIVATE_KEY;
 
   if (!privateKey) {
-    console.error('❌ 错误: 未设置 PRIVATE_KEY 环境变量');
-    console.log('请在 .env 文件中设置 PRIVATE_KEY');
+    console.error('❌ Error: PRIVATE_KEY environment variable not set');
+    console.log('Please set PRIVATE_KEY in .env file');
     process.exit(1);
   }
 
-  console.log('🚀 开始测试 Merak SDK 所有接口...');
-  console.log(`📡 网络: ${TEST_CONFIG.network}`);
-  console.log(`🔑 账户: ${TEST_CONFIG.testAccount.slice(0, 10)}...`);
+  console.log('🚀 Starting Merak SDK interface tests...');
+  console.log(`📡 Network: ${TEST_CONFIG.network}`);
+  console.log(`🔑 Account: ${TEST_CONFIG.testAccount.slice(0, 10)}...`);
 
-  // 初始化 Merak
+  // Initialize Merak
   const merak = createMerak({
     networkType: TEST_CONFIG.network,
     secretKey: privateKey
   });
 
-  console.log('✅ Merak 实例创建成功');
+  console.log('✅ Merak instance created successfully');
   console.log(`   Package ID: ${merak.packageId}`);
   console.log(`   Schema ID: ${merak.schemaId}`);
 
-  // ==================== 1. Storage 查询方法 ====================
-  logSection('1. Storage 查询方法');
+  // ==================== 1. Storage Query Methods ====================
+  logSection('1. Storage Query Methods');
 
-  // 1.1 Storage.get 方法
-  console.log('\n📦 Storage.get 方法：');
+  // 1.1 Storage.get methods
+  console.log('\n📦 Storage.get methods:');
 
   await safeExecute(
     () => merak.storage.get.assetMetadata({ assetId: TEST_CONFIG.testAssetId }),
     'storage.get.assetMetadata()',
-    '获取资产元数据'
+    'Get asset metadata'
   );
 
   await safeExecute(
     () => merak.storage.get.assetSupply({ assetId: TEST_CONFIG.testAssetId }),
     'storage.get.assetSupply()',
-    '获取资产总供应量'
+    'Get asset total supply'
   );
 
   await safeExecute(
     () => merak.storage.get.assetHolder({ assetId: TEST_CONFIG.testAssetId }),
     'storage.get.assetHolder()',
-    '获取资产持有者'
+    'Get asset holder'
   );
 
   await safeExecute(
@@ -146,7 +146,7 @@ async function main() {
         account: TEST_CONFIG.testAccount
       }),
     'storage.get.assetAccount()',
-    '获取账户资产余额'
+    'Get account asset balance'
   );
 
   await safeExecute(
@@ -156,34 +156,34 @@ async function main() {
         asset1: TEST_CONFIG.testAssetId2
       }),
     'storage.get.assetPool()',
-    '获取资产池信息'
+    'Get asset pool info'
   );
 
   await safeExecute(
     () => merak.storage.get.assetWrapper({ coinType: TEST_CONFIG.testCoinType }),
     'storage.get.assetWrapper()',
-    '获取 Wrapper 信息'
+    'Get Wrapper info'
   );
 
-  // 1.2 Storage.list 方法
-  console.log('\n📦 Storage.list 方法：');
+  // 1.2 Storage.list methods
+  console.log('\n📦 Storage.list methods:');
 
   await safeExecute(
     () => merak.storage.list.assetMetadata({ first: 5 }),
     'storage.list.assetMetadata()',
-    '列出所有资产元数据'
+    'List all asset metadata'
   );
 
   await safeExecute(
     () => merak.storage.list.assetSupply({ first: 5 }),
     'storage.list.assetSupply()',
-    '列出资产供应量'
+    'List asset supplies'
   );
 
   await safeExecute(
     () => merak.storage.list.assetHolder({ first: 5 }),
     'storage.list.assetHolder()',
-    '列出资产持有者'
+    'List asset holders'
   );
 
   await safeExecute(
@@ -193,22 +193,22 @@ async function main() {
         first: 5
       }),
     'storage.list.assetAccount()',
-    '列出账户所有资产'
+    'List all account assets'
   );
 
   await safeExecute(
     () => merak.storage.list.assetPool({ first: 5 }),
     'storage.list.assetPool()',
-    '列出所有资产池'
+    'List all asset pools'
   );
 
   await safeExecute(
     () => merak.storage.list.assetWrapper({ first: 5 }),
     'storage.list.assetWrapper()',
-    '列出所有 Wrapper 资产'
+    'List all Wrapper assets'
   );
 
-  // 事件查询
+  // Event queries
   await safeExecute(
     () =>
       merak.storage.list.assetTransfer({
@@ -216,61 +216,61 @@ async function main() {
         first: 5
       }),
     'storage.list.assetTransfer()',
-    '列出资产转账事件'
+    'List asset transfer events'
   );
 
   await safeExecute(
     () => merak.storage.list.assetSwap({ first: 5 }),
     'storage.list.assetSwap()',
-    '列出资产交换事件'
+    'List asset swap events'
   );
 
   await safeExecute(
     () => merak.storage.list.assetWrap({ first: 5 }),
     'storage.list.assetWrap()',
-    '列出资产 Wrap 事件'
+    'List asset Wrap events'
   );
 
   await safeExecute(
     () => merak.storage.list.assetUnwrap({ first: 5 }),
     'storage.list.assetUnwrap()',
-    '列出资产 Unwrap 事件'
+    'List asset Unwrap events'
   );
 
-  // ==================== 2. 资产查询方法 ====================
-  logSection('2. 资产查询方法');
+  // ==================== 2. Asset Query Methods ====================
+  logSection('2. Asset Query Methods');
 
   await safeExecute(
     () => merak.getMetadata(TEST_CONFIG.testAssetId),
     'getMetadata()',
-    '获取资产元数据（自动转换字段名）'
+    'Get asset metadata (auto-convert field names)'
   );
 
   await safeExecute(
     () => merak.getLatestMetadata(TEST_CONFIG.testAssetId),
     'getLatestMetadata()',
-    '获取最新资产元数据'
+    'Get latest asset metadata'
   );
 
   await safeExecute(
     () => merak.balanceOf(TEST_CONFIG.testAssetId, TEST_CONFIG.testAccount),
     'balanceOf()',
-    '查询账户余额'
+    'Query account balance'
   );
 
   await safeExecute(
     () => merak.supplyOf(TEST_CONFIG.testAssetId),
     'supplyOf()',
-    '查询资产总供应量'
+    'Query asset total supply'
   );
 
   await safeExecute(
     () => merak.metadataOf(TEST_CONFIG.testAssetId),
     'metadataOf()',
-    '查询资产元数据（通过合约）'
+    'Query asset metadata (via contract)'
   );
 
-  await safeExecute(() => merak.ownerOf(TEST_CONFIG.testAssetId), 'ownerOf()', '查询资产所有者');
+  await safeExecute(() => merak.ownerOf(TEST_CONFIG.testAssetId), 'ownerOf()', 'Query asset owner');
 
   await safeExecute(
     () =>
@@ -279,13 +279,13 @@ async function main() {
         assetId: TEST_CONFIG.testAssetId
       }),
     'queryAccount()',
-    '查询账户信息'
+    'Query account info'
   );
 
   await safeExecute(
     () => merak.listAssetsInfo({ first: 5 }),
     'listAssetsInfo()',
-    '列出所有资产信息'
+    'List all asset info'
   );
 
   await safeExecute(
@@ -295,7 +295,7 @@ async function main() {
         assetType: 'Lp'
       }),
     'listAssetsInfo({ assetType: "Lp" })',
-    '列出 LP 资产'
+    'List LP assets'
   );
 
   await safeExecute(
@@ -304,7 +304,7 @@ async function main() {
         account: TEST_CONFIG.testAccount
       }),
     'listOwnedAssetsInfo()',
-    '列出账户拥有的所有资产'
+    'List all owned assets by account'
   );
 
   await safeExecute(
@@ -314,7 +314,7 @@ async function main() {
         assetType: 'Lp'
       }),
     'listOwnedAssetsInfo({ assetType: "Lp" })',
-    '列出账户拥有的 LP 资产'
+    'List LP assets owned by account'
   );
 
   await safeExecute(
@@ -323,7 +323,7 @@ async function main() {
         account: TEST_CONFIG.testAccount
       }),
     'listAccountLpAssets()',
-    '列出账户的 LP 资产'
+    'List LP assets of account'
   );
 
   await safeExecute(
@@ -332,20 +332,20 @@ async function main() {
         account: TEST_CONFIG.testAccount
       }),
     'listOwnedWrapperAssets()',
-    '列出账户的 Wrapper 资产'
+    'List Wrapper assets of account'
   );
 
-  // ==================== 3. Pool/DEX 查询方法 ====================
-  logSection('3. Pool/DEX 查询方法');
+  // ==================== 3. Pool/DEX Query Methods ====================
+  logSection('3. Pool/DEX Query Methods');
 
-  await safeExecute(() => merak.getPoolList({ first: 5 }), 'getPoolList()', '获取池子列表');
+  await safeExecute(() => merak.getPoolList({ first: 5 }), 'getPoolList()', 'Get pool list');
 
-  await safeExecute(() => merak.allPoolList({ pageSize: 5 }), 'allPoolList()', '获取所有池子');
+  await safeExecute(() => merak.allPoolList({ pageSize: 5 }), 'allPoolList()', 'Get all pools');
 
   const poolList = await safeExecute(
     () => merak.allPoolListWithId(TEST_CONFIG.testAssetId),
     'allPoolListWithId()',
-    '获取包含指定资产的所有池子'
+    'Get all pools containing specified asset'
   );
 
   if (poolList && poolList.length > 0) {
@@ -356,20 +356,20 @@ async function main() {
           asset2Id: poolList[0].asset1
         }),
       'getPoolListWithId()',
-      '根据资产 ID 对获取池子详情'
+      'Get pool details by asset ID pair'
     );
   }
 
   await safeExecute(
     () => merak.listPoolsInfo({ pageSize: 3 }),
     'listPoolsInfo()',
-    '列出池子详细信息'
+    'List pool detailed info'
   );
 
   await safeExecute(
     () => merak.getConnectedTokens(TEST_CONFIG.testAssetId),
     'getConnectedTokens()',
-    '获取与指定代币直接相连的代币'
+    'Get tokens directly connected to specified token'
   );
 
   await safeExecute(
@@ -378,7 +378,7 @@ async function main() {
         startTokenId: TEST_CONFIG.testAssetId
       }),
     'getAllSwappableTokens()',
-    '获取所有可交换的代币（BFS 搜索）'
+    'Get all swappable tokens (BFS search)'
   );
 
   await safeExecute(
@@ -388,42 +388,42 @@ async function main() {
         address: TEST_CONFIG.testAccount
       }),
     'getAllSwappableTokensWithMetadata()',
-    '获取所有可交换代币（带元数据和余额）'
+    'Get all swappable tokens (with metadata and balance)'
   );
 
-  // 交换路径查询（需要两个存在池子的代币）
+  // Swap path query (requires two tokens with existing pools)
   if (poolList && poolList.length > 0) {
     await safeExecute(
       () => merak.querySwapPaths(poolList[0].asset0, poolList[0].asset1),
       'querySwapPaths()',
-      '查询代币交换路径'
+      'Query token swap paths'
     );
   }
 
-  // 获取交换输出/输入金额
+  // Get swap output/input amounts
   if (poolList && poolList.length >= 2) {
     const path = [poolList[0].asset0, poolList[0].asset1];
 
     await safeExecute(
       () => merak.getAmountsOut('1000000', path),
       'getAmountsOut()',
-      '计算给定输入的输出金额'
+      'Calculate output amounts for given input'
     );
 
     await safeExecute(
       () => merak.getAmountsIn('1000000', path),
       'getAmountsIn()',
-      '计算达到输出所需的输入金额'
+      'Calculate input amounts needed for output'
     );
   }
 
-  // ==================== 4. Wrapper 查询方法 ====================
-  logSection('4. Wrapper 查询方法');
+  // ==================== 4. Wrapper Query Methods ====================
+  logSection('4. Wrapper Query Methods');
 
   await safeExecute(
     () => merak.wrappedAssets({ first: 5 }),
     'wrappedAssets()',
-    '获取所有 Wrapped 资产'
+    'Get all Wrapped assets'
   );
 
   await safeExecute(
@@ -433,13 +433,13 @@ async function main() {
         first: 5
       }),
     'wrappedAssets({ coinType })',
-    '获取指定 Coin Type 的 Wrapper 信息'
+    'Get Wrapper info for specified Coin Type'
   );
 
-  // ==================== 5. Pool 计算方法 ====================
-  logSection('5. Pool 计算方法');
+  // ==================== 5. Pool Calculation Methods ====================
+  logSection('5. Pool Calculation Methods');
 
-  // 需要有 LP token 才能测试
+  // Need LP token to test
   const lpAssets = await merak.listAccountLpAssets({
     account: TEST_CONFIG.testAccount,
     assetType: 'Lp'
@@ -455,7 +455,7 @@ async function main() {
           poolAssetId: lpAssetId
         }),
       'calRemoveLpAmount()',
-      '计算移除流动性可获得的代币数量'
+      'Calculate token amounts for removing liquidity'
     );
 
     await safeExecute(
@@ -466,21 +466,25 @@ async function main() {
           amount: '1000000'
         }),
       'calRemoveLpAmount({ amount })',
-      '计算移除指定数量 LP 可获得的代币'
+      'Calculate tokens for removing specified LP amount'
     );
   } else {
-    console.log('\n⚠️  跳过 calRemoveLpAmount 测试（账户没有 LP 资产）');
+    console.log('\n⚠️  Skipping calRemoveLpAmount test (account has no LP assets)');
   }
 
-  // ==================== 6. 交易方法（可选） ====================
+  // ==================== 6. Transaction Methods (Optional) ====================
   if (TEST_CONFIG.executeTransactions) {
-    logSection('6. 交易方法（需要 Gas）');
+    logSection('6. Transaction Methods (Requires Gas)');
 
-    console.log('\n⚠️  警告: 以下方法会执行实际交易，消耗 Gas');
-    console.log('如果不想执行交易，请设置 TEST_CONFIG.executeTransactions = false');
+    console.log(
+      '\n⚠️  Warning: The following methods will execute real transactions, consuming Gas'
+    );
+    console.log(
+      "If you don't want to execute transactions, set TEST_CONFIG.executeTransactions = false"
+    );
 
-    // 6.1 资产管理交易
-    console.log('\n📝 资产管理交易：');
+    // 6.1 Asset management transactions
+    console.log('\n📝 Asset Management Transactions:');
 
     const tx1 = new Transaction();
     await safeExecute(
@@ -495,11 +499,11 @@ async function main() {
         );
       },
       'setMetadata()',
-      '设置资产元数据（构建交易）'
+      'Set asset metadata (build transaction)'
     );
 
-    // 6.2 DEX 交易
-    console.log('\n💱 DEX 交易：');
+    // 6.2 DEX transactions
+    console.log('\n💱 DEX Transactions:');
 
     const tx2 = new Transaction();
     await safeExecute(
@@ -507,7 +511,7 @@ async function main() {
         return await merak.createPool(tx2, TEST_CONFIG.testAssetId, TEST_CONFIG.testAssetId2);
       },
       'createPool()',
-      '创建交易池（构建交易）'
+      'Create trading pool (build transaction)'
     );
 
     const tx3 = new Transaction();
@@ -525,48 +529,50 @@ async function main() {
         );
       },
       'addLiquidity()',
-      '添加流动性（构建交易）'
+      'Add liquidity (build transaction)'
     );
 
-    console.log('\n⚠️  注意: 以上交易仅构建，未签名和执行');
-    console.log('要执行交易，需要调用 merak.dubhe.signAndSendTransaction()');
+    console.log('\n⚠️  Note: Above transactions are only built, not signed and executed');
+    console.log('To execute transactions, call merak.dubhe.signAndSendTransaction()');
   } else {
-    logSection('6. 交易方法');
-    console.log('\n⏭️  跳过交易方法测试');
-    console.log('要测试交易方法，请设置 TEST_CONFIG.executeTransactions = true');
-    console.log('注意: 交易方法会消耗 Gas');
+    logSection('6. Transaction Methods');
+    console.log('\n⏭️  Skipping transaction method tests');
+    console.log('To test transaction methods, set TEST_CONFIG.executeTransactions = true');
+    console.log('Note: Transaction methods will consume Gas');
   }
 
-  // ==================== 总结 ====================
-  logSection('测试完成');
+  // ==================== Summary ====================
+  logSection('Test Complete');
 
-  console.log('\n✅ 所有测试完成！');
-  console.log('\n📊 测试统计:');
-  console.log('   - Storage.get 方法: 9 个');
-  console.log('   - Storage.list 方法: 12 个');
-  console.log('   - 资产查询方法: 11 个');
-  console.log('   - Pool/DEX 查询方法: 12 个');
-  console.log('   - Wrapper 查询方法: 2 个');
-  console.log('   - Pool 计算方法: 2 个');
-  console.log('   - 交易方法: ' + (TEST_CONFIG.executeTransactions ? '已测试' : '已跳过'));
+  console.log('\n✅ All tests complete!');
+  console.log('\n📊 Test Statistics:');
+  console.log('   - Storage.get methods: 9');
+  console.log('   - Storage.list methods: 12');
+  console.log('   - Asset query methods: 11');
+  console.log('   - Pool/DEX query methods: 12');
+  console.log('   - Wrapper query methods: 2');
+  console.log('   - Pool calculation methods: 2');
+  console.log(
+    '   - Transaction methods: ' + (TEST_CONFIG.executeTransactions ? 'Tested' : 'Skipped')
+  );
 
-  console.log('\n💡 提示:');
-  console.log('   - 修改 TEST_CONFIG 可以自定义测试参数');
-  console.log('   - 设置 verbose: false 可以只显示成功/失败');
-  console.log('   - 某些方法需要预先创建资产/池子才能测试');
-  console.log('   - 详细文档请参考 SDK_UPDATE_SUMMARY.md 和 QUICK_REFERENCE.md');
+  console.log('\n💡 Tips:');
+  console.log('   - Modify TEST_CONFIG to customize test parameters');
+  console.log('   - Set verbose: false to only show success/failure');
+  console.log('   - Some methods require pre-created assets/pools to test');
+  console.log('   - For detailed documentation, see SDK_UPDATE_SUMMARY.md and QUICK_REFERENCE.md');
 }
 
-// ==================== 错误处理 ====================
+// ==================== Error Handling ====================
 
 process.on('unhandledRejection', (error) => {
-  console.error('\n❌ 未处理的 Promise 拒绝:', error);
+  console.error('\n❌ Unhandled Promise rejection:', error);
   process.exit(1);
 });
 
-// ==================== 执行 ====================
+// ==================== Execution ====================
 
 main().catch((error) => {
-  console.error('\n❌ 测试脚本执行失败:', error);
+  console.error('\n❌ Test script execution failed:', error);
   process.exit(1);
 });

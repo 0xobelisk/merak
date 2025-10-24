@@ -4,168 +4,164 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 /**
- * 查询StorageMap类型的动态字段，并根据u256键获取AssetMetadata
+ * Query StorageMap type dynamic field, and get AssetMetadata by u256 key
  *
- * 这个脚本演示如何:
- * 1. 查询StorageMap类型的动态字段
- * 2. 解析其结构
- * 3. 使用特定的键查询数据
+ * This script demonstrates how to:
+ * 1. Query StorageMap type dynamic field
+ * 2. Parse its structure
+ * 3. Query data using specific key
  */
 async function queryStorageMap() {
-  // 初始化Sui客户端
+  // Initialize Sui client
   const client = new SuiClient({
-    url: 'https://sui-testnet.blockvision.org/v1/2wxFvrtcSw2Zc0rIQuVL8i53IhU', // testnet
+    url: 'https://sui-testnet.blockvision.org/v1/2wxFvrtcSw2Zc0rIQuVL8i53IhU' // testnet
   });
 
-  // 用户提供的参数
-  const parentObjectId =
-    '0xcdaf20f659c1f8cd418ca231d074d3be12ff6d7188ea15c0d5241aec31e5c993';
+  // User-provided parameters
+  const parentObjectId = '0xcdaf20f659c1f8cd418ca231d074d3be12ff6d7188ea15c0d5241aec31e5c993';
   const fieldName = 'asset_metadata';
   const storageMapType =
     '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_map_internal::StorageMap<u256, 0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::dubhe_asset_metadata::AssetMetadata>';
 
-  console.log(`查询对象 ${parentObjectId} 中的 ${fieldName} 字段...`);
+  console.log(`Querying ${fieldName} field in object ${parentObjectId}...`);
 
   try {
-    // 步骤1: 直接尝试使用已知的类型和名称查询动态字段
-    console.log('尝试直接查询动态字段...');
+    // Step 1: Directly try to query dynamic field using known type and name
+    console.log('Trying direct dynamic field query...');
 
     try {
       const directQuery = await client.getDynamicFieldObject({
         parentId: parentObjectId,
         name: {
           type: 'vector<u8>',
-          value: fieldName,
-        },
+          value: fieldName
+        }
       });
 
-      console.log('直接查询结果:', JSON.stringify(directQuery, null, 2));
+      console.log('Direct query result:', JSON.stringify(directQuery, null, 2));
 
-      // 检查是否获取到了数据
+      // Check if data was obtained
       if (directQuery.data) {
         parseStorageMapContent(directQuery.data);
       }
     } catch (directError) {
-      console.error('直接查询失败:', directError);
+      console.error('Direct query failed:', directError);
 
-      // 步骤2: 如果直接查询失败，尝试先获取所有动态字段列表
-      console.log('\n尝试获取所有动态字段...');
+      // Step 2: If direct query fails, try to get all dynamic fields list first
+      console.log('\nTrying to get all dynamic fields...');
       const allFields = await client.getDynamicFields({
-        parentId: parentObjectId,
+        parentId: parentObjectId
       });
 
-      console.log(`发现 ${allFields.data.length} 个动态字段:`);
+      console.log(`Found ${allFields.data.length} dynamic fields:`);
       allFields.data.forEach((field, index) => {
-        console.log(
-          `${index + 1}. ${field.name.type}: ${JSON.stringify(
-            field.name.value
-          )}`
-        );
+        console.log(`${index + 1}. ${field.name.type}: ${JSON.stringify(field.name.value)}`);
       });
 
-      // 步骤3: 查找目标字段
+      // Step 3: Find target field
       const targetField = allFields.data.find(
-        (field) =>
-          typeof field.name.value === 'string' && field.name.value === fieldName
+        (field) => typeof field.name.value === 'string' && field.name.value === fieldName
       );
 
       if (targetField) {
-        console.log('\n找到目标字段:', targetField);
+        console.log('\nFound target field:', targetField);
 
-        // 步骤4: 使用找到的字段元数据查询详细内容
+        // Step 4: Query detailed content using found field metadata
         const fieldDetails = await client.getDynamicFieldObject({
           parentId: parentObjectId,
-          name: targetField.name,
+          name: targetField.name
         });
 
-        console.log('字段详细内容:', JSON.stringify(fieldDetails, null, 2));
+        console.log('Field detailed content:', JSON.stringify(fieldDetails, null, 2));
 
         if (fieldDetails.data) {
           parseStorageMapContent(fieldDetails.data);
         }
       } else {
-        console.log(`未找到名为 ${fieldName} 的字段`);
+        console.log(`Field named ${fieldName} not found`);
       }
     }
 
-    // 步骤5: 尝试查询特定u256键的AssetMetadata
-    // 注意：此步骤需要根据实际StorageMap的实现方式调整
-    console.log('\n尝试查询特定键的AssetMetadata...');
-    console.log('这需要了解StorageMap如何存储键值对，可能需要查询子动态字段');
+    // Step 5: Try to query AssetMetadata for specific u256 key
+    // Note: This step needs to be adjusted based on actual StorageMap implementation
+    console.log('\nTrying to query AssetMetadata for specific key...');
+    console.log(
+      'This requires understanding how StorageMap stores key-value pairs, may need to query sub-dynamic fields'
+    );
 
-    // 如果StorageMap是使用内部动态字段实现的，可能需要这样查询:
+    // If StorageMap is implemented using internal dynamic fields, it may need to query like this:
     try {
-      // 假设StorageMap对象ID是我们之前查询到的
+      // Assume StorageMap object ID is what we queried before
       const storageMapObjectId =
-        '0xe83c2da3f26cedac7ced3652dbfae0df591aeb51818d45fb33e91364d551d0cd'; // 从上面的查询结果中获取
+        '0xe83c2da3f26cedac7ced3652dbfae0df591aeb51818d45fb33e91364d551d0cd'; // Get from previous query result
 
-      // 查询StorageMap中的所有动态字段 (键值对)
+      // Query all dynamic fields (key-value pairs) in StorageMap
       const mapEntries = await client.getDynamicFields({
-        parentId: storageMapObjectId,
+        parentId: storageMapObjectId
       });
 
-      console.log(`StorageMap中有 ${mapEntries.data.length} 个条目:`);
+      console.log(`StorageMap has ${mapEntries.data.length} entries:`);
       mapEntries.data.forEach((entry, index) => {
         console.log(
-          `${index + 1}. 键类型: ${entry.name.type}, 键值: ${JSON.stringify(
+          `${index + 1}. Key type: ${entry.name.type}, Key value: ${JSON.stringify(
             entry.name.value
           )}`
         );
       });
 
-      // 如果要查询特定u256键 (例如 "1") 的值:
+      // If you want to query value for specific u256 key (e.g. "1"):
       if (mapEntries.data.length > 0) {
         const firstEntry = mapEntries.data[0];
         const entryDetails = await client.getDynamicFieldObject({
           parentId: storageMapObjectId,
-          name: firstEntry.name,
+          name: firstEntry.name
         });
 
         console.log(
-          `键 ${JSON.stringify(firstEntry.name.value)} 的值:`,
+          `Value for key ${JSON.stringify(firstEntry.name.value)}:`,
           JSON.stringify(entryDetails, null, 2)
         );
       }
     } catch (mapError) {
-      console.error('查询StorageMap条目出错:', mapError);
+      console.error('Error querying StorageMap entries:', mapError);
     }
   } catch (error) {
-    console.error('查询出错:', error);
+    console.error('Query error:', error);
   }
 }
 
 /**
- * 解析并显示StorageMap的内容
+ * Parse and display StorageMap content
  */
 function parseStorageMapContent(data: any) {
-  console.log('\n解析StorageMap内容...');
+  console.log('\nParsing StorageMap content...');
 
-  // 尝试获取StorageMap的对象ID
+  // Try to get StorageMap object ID
   if (data.objectId) {
-    console.log('StorageMap对象ID:', data.objectId);
+    console.log('StorageMap object ID:', data.objectId);
   }
 
-  // 尝试获取类型信息
+  // Try to get type information
   if (data.type) {
-    console.log('StorageMap类型:', data.type);
+    console.log('StorageMap type:', data.type);
   }
 
-  // 尝试获取字段内容
+  // Try to get field content
   if (data.content && 'fields' in data.content) {
-    console.log('StorageMap字段:');
+    console.log('StorageMap fields:');
     console.log(JSON.stringify(data.content.fields, null, 2));
 
-    // 如果fields中有size字段，显示StorageMap大小
+    // If fields has size field, display StorageMap size
     if ('size' in data.content.fields) {
-      console.log(`StorageMap大小: ${data.content.fields.size}`);
+      console.log(`StorageMap size: ${data.content.fields.size}`);
     }
 
-    // 如果fields中有id字段，记录StorageMap的UID (可用于查询其内部的动态字段)
+    // If fields has id field, record StorageMap's UID (can be used to query its internal dynamic fields)
     if ('id' in data.content.fields) {
-      console.log(`StorageMap的UID: ${JSON.stringify(data.content.fields.id)}`);
+      console.log(`StorageMap's UID: ${JSON.stringify(data.content.fields.id)}`);
     }
   }
 }
 
-// 运行查询函数
+// Run query function
 queryStorageMap().catch(console.error);

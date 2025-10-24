@@ -4,43 +4,40 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 /**
- * 查询动态字段中的AssetMetadata
+ * Query AssetMetadata from dynamic fields
  *
- * 使用这个脚本来查询指定对象中的asset_metadata动态字段
- * 该字段包含StorageMap类型数据
+ * Use this script to query asset_metadata dynamic field from specified object
+ * This field contains StorageMap type data
  */
 async function queryAssetMetadata() {
-  // 初始化Sui客户端 - 你可以根据需要更改为其他网络
+  // Initialize Sui client - you can change to other networks as needed
   const client = new SuiClient({
-    url: 'https://sui-testnet.blockvision.org/v1/2wxFvrtcSw2Zc0rIQuVL8i53IhU', // testnet
+    url: 'https://sui-testnet.blockvision.org/v1/2wxFvrtcSw2Zc0rIQuVL8i53IhU' // testnet
   });
 
-  // 用户提供的父对象ID
-  const parentObjectId =
-    '0xfb2c58b849d6e4de90a2032dacf42ab9ae11130ebc2d1f0fecfffa9df5aeed0b';
+  // User-provided parent object ID
+  const parentObjectId = '0xfb2c58b849d6e4de90a2032dacf42ab9ae11130ebc2d1f0fecfffa9df5aeed0b';
 
-  console.log(`查询对象 ${parentObjectId} 的动态字段...`);
+  console.log(`Querying dynamic fields of object ${parentObjectId}...`);
 
   try {
     const allFields = await client.getDynamicFields({
-      parentId: parentObjectId,
+      parentId: parentObjectId
     });
 
-    console.log(`发现 ${allFields.data.length} 个动态字段`);
+    console.log(`Found ${allFields.data.length} dynamic fields`);
     console.log(JSON.stringify(allFields, null, 2));
 
-    // 如果找到了我们需要的字段，根据获得的name再查询具体的对象
+    // If we found the needed field, query the specific object based on the obtained name
     if (allFields.data.length > 0) {
       for (const field of allFields.data) {
-        console.log(
-          `发现字段: ${field.name.type} - ${JSON.stringify(field.name.value)}`
-        );
-        console.log('找到asset_metadata字段，获取详细信息');
+        console.log(`Found field: ${field.name.type} - ${JSON.stringify(field.name.value)}`);
+        console.log('Found asset_metadata field, getting details');
 
-        // 第一步：获取所有动态字段，找到asset_metadata
+        // Step 1: Get all dynamic fields, find asset_metadata
         const allFields = await client.getDynamicFieldObject({
           parentId: parentObjectId,
-          name: field.name,
+          name: field.name
           // name: {
           //   type: field.name.type,
           //   // type: '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_double_map_internal::Entry<u256, u256>',
@@ -54,12 +51,12 @@ async function queryAssetMetadata() {
       }
     }
 
-    console.log('查询完成');
-    console.log(`一共 ${allFields.data.length} 个动态字段`);
+    console.log('Query completed');
+    console.log(`Total ${allFields.data.length} dynamic fields`);
   } catch (error) {
-    console.error('查询出错:', error);
+    console.error('Query error:', error);
   }
 }
 
-// 运行查询函数
+// Run query function
 queryAssetMetadata().catch(console.error);
