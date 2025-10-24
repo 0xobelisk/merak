@@ -48,7 +48,7 @@ const initChartJs = async () => {
 
 initChartJs();
 
-import { initMerakClient } from '@/app/jotai/merak';
+import { useMerak } from '@/app/jotai/merak';
 import {
   AssetsStateAtom,
   AssetsLoadingAtom,
@@ -95,6 +95,10 @@ import { Input } from '@repo/ui/components/ui/input';
 export default function Portfolio() {
   const account = useCurrentAccount();
   const router = useRouter();
+
+  // Merak client
+  const merak = useMerak();
+
   const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
   const [allAssetsState, setAllAssetsState] = useAtom(AllAssetsStateAtom);
   const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
@@ -115,11 +119,10 @@ export default function Portfolio() {
 
   // Define asset query function
   const queryAssets = useCallback(async () => {
-    if (!account?.address) return;
+    if (!account?.address || !merak) return;
 
     try {
       setIsLoading(true);
-      const merak = initMerakClient();
 
       const metadataResults = await merak.listOwnedAssetsInfo({
         address: account.address
@@ -174,11 +177,10 @@ export default function Portfolio() {
 
   // Fetch transaction history
   const fetchTransactionHistory = useCallback(async () => {
-    if (!account?.address) return;
+    if (!account?.address || !merak) return;
 
     try {
       setIsHistoryLoading(true);
-      const merak = initMerakClient();
 
       // Call transaction history API
       const response = await merak
@@ -549,7 +551,7 @@ export default function Portfolio() {
     } finally {
       setIsHistoryLoading(false);
     }
-  }, [account?.address]);
+  }, [account?.address, merak]);
 
   // Add helper function to shorten address display
   const shortenAddress = (address: string) => {
@@ -591,8 +593,11 @@ export default function Portfolio() {
   // Implement Transfer callback function
   const handleTransfer = useCallback(
     async (assetId: string, amount: string, recipient: string) => {
+      if (!merak) {
+        toast.error('Merak client not initialized');
+        return;
+      }
       try {
-        const merak = initMerakClient();
         const tx = new Transaction();
 
         // 从 allAssetsState 获取 metadata
@@ -667,8 +672,11 @@ export default function Portfolio() {
   // Implement similar logic for TransferAll
   const handleTransferAll = useCallback(
     async (assetId: string, recipient: string) => {
+      if (!merak) {
+        toast.error('Merak client not initialized');
+        return;
+      }
       try {
-        const merak = initMerakClient();
         const tx = new Transaction();
 
         console.log('TransferAll params:', { assetId, recipient });
@@ -728,8 +736,11 @@ export default function Portfolio() {
   // Implement Mint function
   const handleMint = useCallback(
     async (assetId: string, amount: string) => {
+      if (!merak) {
+        toast.error('Merak client not initialized');
+        return;
+      }
       try {
-        const merak = initMerakClient();
         const tx = new Transaction();
 
         // 从 allAssetsState 获取 metadata
@@ -793,8 +804,11 @@ export default function Portfolio() {
   // Implement Burn function
   const handleBurn = useCallback(
     async (assetId: string, amount: string) => {
+      if (!merak) {
+        toast.error('Merak client not initialized');
+        return;
+      }
       try {
-        const merak = initMerakClient();
         const tx = new Transaction();
 
         // 从 allAssetsState 获取 metadata
@@ -912,9 +926,8 @@ export default function Portfolio() {
   // Add initialization effect for AllAssetsState
   useEffect(() => {
     const initAllAssetsState = async () => {
-      if (allAssetsState.assetInfos.length === 0) {
+      if (allAssetsState.assetInfos.length === 0 && merak) {
         try {
-          const merak = initMerakClient();
           const metadataResults = await merak.listAssetsInfo();
 
           setAllAssetsState({

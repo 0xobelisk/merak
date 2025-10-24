@@ -17,13 +17,16 @@ import {
   TableRow
 } from '@repo/ui/components/ui/table';
 import { RefreshCw, Search, ArrowUpDown } from 'lucide-react';
-import { initMerakClient } from '@/app/jotai/merak';
+import { useMerak } from '@/app/jotai/merak';
 import { AllAssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
 
 export default function AssetsPage() {
   // DApp Kit hooks
   const account = useCurrentAccount();
   const router = useRouter();
+
+  // Merak client
+  const merak = useMerak();
 
   // Global state management with Jotai
   const [allAssetsState, setAllAssetsState] = useAtom(AllAssetsStateAtom);
@@ -42,11 +45,10 @@ export default function AssetsPage() {
    * Get account information and asset metadata
    */
   const queryAssets = useCallback(async () => {
-    if (!account?.address) return;
+    if (!account?.address || !merak) return;
 
     try {
       setIsLoading(true);
-      const merak = initMerakClient();
 
       const metadataResults = await merak.listAssetsInfo();
 
@@ -64,7 +66,7 @@ export default function AssetsPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [account?.address, setAllAssetsState, setIsLoading]);
+  }, [account?.address, merak, setAllAssetsState, setIsLoading]);
 
   // Initialize asset loading
   useEffect(() => {

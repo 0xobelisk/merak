@@ -11,7 +11,7 @@ import dynamic from 'next/dynamic';
 import TokenSelectionModal from '@/app/components/swap/token-selection-modal';
 import { Transaction } from '@0xobelisk/sui-client';
 import debounce from 'lodash/debounce';
-import { initMerakClient } from '@/app/jotai/merak';
+import { useMerak } from '@/app/jotai/merak';
 import { useSignAndExecuteTransaction } from '@mysten/dapp-kit';
 import { toast } from 'sonner';
 import { useCurrentAccount } from '@mysten/dapp-kit';
@@ -19,7 +19,7 @@ import { fromTokenAtom, toTokenAtom, type Token } from '@/app/jotai/swap/tokens'
 import { WALLETCHAIN } from '@/app/constants';
 import { AssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
 import { AssetInfo } from '@0xobelisk/merak-sdk';
-import { initDubheClient } from '@/app/jotai/dubhe';
+import { useDubhe } from '@0xobelisk/react/sui';
 
 // Function to format balance
 const formatBalance = (balance: string, decimals: number): string => {
@@ -65,6 +65,8 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   const [isLoading, setIsLoading] = useState(false);
   const [isCalculating, setIsCalculating] = useState(false);
   const [isSwapping, setIsSwapping] = useState(false);
+  const { contract: dubheContract } = useDubhe();
+  const merakClient = useMerak();
 
   // Token initialization states
   const [tokensState, setTokensState] = useState<{
@@ -88,12 +90,13 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
       if (!fromToken.decimals) {
         throw new Error('Token decimals undefined');
       }
+      if (!merakClient) {
+        throw new Error('Merak client not initialized');
+      }
 
       try {
-        const merak = initMerakClient();
-
         // 1. Get swap path
-        const paths = await merak.querySwapPaths(fromToken.id, toToken.id);
+        const paths = await merakClient.querySwapPaths(fromToken.id, toToken.id);
         if (!paths?.length) {
           throw new Error('No valid swap path found');
         }
@@ -104,7 +107,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
         );
 
         // 3. Get output amount
-        const amountsOut = await merak.getAmountsOut(amountWithDecimals, paths[0]);
+        const amountsOut = await merakClient.getAmountsOut(amountWithDecimals, paths[0]);
         if (!amountsOut?.[0]?.length) {
           throw new Error('Failed to get output amount');
         }
@@ -122,7 +125,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
         throw error;
       }
     },
-    [fromToken, toToken]
+    [fromToken, toToken, merakClient]
   );
 
   // Optimize calculateReceiveAmount function
@@ -181,10 +184,10 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   // Get available toToken paths
   const fetchAvailableToTokens = useCallback(
     async (fromTokenId: number) => {
+      if (!merakClient) return;
       try {
         setIsLoading(true);
-        const merak = initMerakClient();
-        const availableToTokens = await merak.getAllSwappableTokensWithMetadata({
+        const availableToTokens = await merakClient.getAllSwappableTokensWithMetadata({
           startTokenId: fromTokenId,
           address: account?.address
         });
@@ -208,7 +211,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
         setIsLoading(false);
       }
     },
-    [assetsState.assetInfos]
+    [merakClient, assetsState.assetInfos, account?.address, setToToken, toToken, filteredAssets]
   );
 
   // Fetch available toTokens when fromToken changes
@@ -288,14 +291,13 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
 
   // Add this function - Similar to the portfolio page
   const loadUserAssets = useCallback(async () => {
-    if (!account?.address) return;
+    if (!account?.address || !merakClient) return;
 
     try {
       setIsAssetsLoading(true);
-      const merak = initMerakClient();
 
-      const metadataResults = await merak.listOwnedAssetsInfo({
-        address: account.address
+      const metadataResults = await merakClient.listOwnedAssetsInfo({
+        account: account.address
       });
 
       // Update state with user's assets
@@ -310,7 +312,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
     } finally {
       setIsAssetsLoading(false);
     }
-  }, [account?.address, setAssetsState, setIsAssetsLoading]);
+  }, [account?.address, merakClient, setAssetsState, setIsAssetsLoading]);
 
   // Add this effect - Load assets when the page loads
   useEffect(() => {
@@ -395,17 +397,22 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
 
   // Handle swap execution
   const handleSwapTokens = useCallback(async () => {
-    if (fromToken?.id === undefined || toToken?.id === undefined || !account?.address) {
+    if (
+      fromToken?.id === undefined ||
+      toToken?.id === undefined ||
+      !account?.address ||
+      !merakClient ||
+      !dubheContract
+    ) {
       toast.error('Please ensure tokens are selected and wallet is connected');
       return;
     }
 
     try {
       setIsSwapping(true);
-      const merak = initMerakClient();
       const tx = new Transaction();
 
-      const paths = await merak.querySwapPaths(fromToken.id, toToken.id);
+      const paths = await merakClient.querySwapPaths(fromToken.id, toToken.id);
       if (!paths || paths.length === 0) {
         toast.error('No valid swap path found');
         return;
@@ -421,7 +428,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
       const amountInWithDecimals = BigInt(Math.floor(amountIn * 10 ** fromToken.decimals));
 
       // Check output amount before executing transaction
-      const amountOutCheck = await merak.getAmountsOut(amountInWithDecimals, path);
+      const amountOutCheck = await merakClient.getAmountsOut(amountInWithDecimals, path);
       if (!amountOutCheck?.[0]?.length) {
         throw new Error('Failed to get output amount');
       }
@@ -436,7 +443,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
       const slippagePercent = parseFloat(slippage) / 100;
       const minAmountOut = BigInt(Math.floor(Number(finalAmount) * (1 - slippagePercent)));
 
-      await merak.swapExactTokensForTokens(
+      await merakClient.swapExactTokensForTokens(
         tx,
         amountInWithDecimals,
         minAmountOut,
@@ -453,11 +460,10 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
         {
           onSuccess: async (result) => {
             // 等待链上数据更新
-            const dubhe = initDubheClient();
-            await dubhe.waitForTransaction(result.digest);
+            await dubheContract.waitForTransaction(result.digest);
 
             // 重新加载用户资产
-            const metadataResults = await merak.listOwnedAssetsInfo({
+            const metadataResults = await merakClient.listOwnedAssetsInfo({
               address: account.address
             });
 
@@ -524,7 +530,22 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
     } catch (error) {
       toast.error('Insufficient liquidity for this trade');
     }
-  }, [fromToken, toToken, account, payAmount, slippage, signAndExecuteTransaction]);
+  }, [
+    fromToken,
+    toToken,
+    account,
+    payAmount,
+    slippage,
+    merakClient,
+    dubheContract,
+    signAndExecuteTransaction,
+    assetsState.assetInfos,
+    setAssetsState,
+    setFromToken,
+    setToToken,
+    setFromTokenBalance,
+    setToTokenBalance
+  ]);
 
   // Loading state
   if (isAssetsLoading) {

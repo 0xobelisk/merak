@@ -8,10 +8,11 @@ import LiquidityPoolSetup from '@/app/components/pool/create/liquidity-pool-setu
 import { Dialog, DialogContent } from '@repo/ui/components/ui/dialog';
 import { SelectedPoolTokens } from '@/app/jotai/pool/pool';
 import { useAtom } from 'jotai';
-import { initMerakClient } from '@/app/jotai/merak';
+import { useMerak } from '@/app/jotai/merak';
 import { useRouter } from 'next/navigation';
 
 export default function LiquidityPools() {
+  const merak = useMerak();
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPools, setFilteredPools] = useState<PoolType[]>([]);
@@ -59,30 +60,21 @@ export default function LiquidityPools() {
     token2Image: string;
   };
 
-  const queryPoolList = async () => {
-    const merak = initMerakClient();
+  const fetchPools = useCallback(async () => {
+    if (!merak) return;
+    setIsLoading(true);
+
     try {
       const poolList = await merak.listPoolsInfo({
         pageSize: 3
       });
-
       setPools(poolList);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const fetchPools = useCallback(async () => {
-    setIsLoading(true);
-
-    try {
-      await queryPoolList();
     } catch (error) {
       console.error('Failed to fetch pools:', error);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [merak]);
 
   useEffect(() => {
     fetchPools();

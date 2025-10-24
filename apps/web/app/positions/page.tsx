@@ -21,7 +21,7 @@ import {
 } from '@repo/ui/components/ui/pagination';
 import { ChevronDown, Globe, Loader2 } from 'lucide-react';
 import { useCurrentAccount } from '@mysten/dapp-kit';
-import { initMerakClient } from '@/app/jotai/merak';
+import { useMerak } from '@/app/jotai/merak';
 import { useAtom } from 'jotai';
 import { AssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
 import { toast } from 'sonner';
@@ -40,6 +40,10 @@ interface LPPosition {
 }
 
 export default function PositionsPage() {
+  const account = useCurrentAccount();
+  const router = useRouter();
+  const merak = useMerak();
+
   // State management
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -53,16 +57,12 @@ export default function PositionsPage() {
   const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
   const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
 
-  const account = useCurrentAccount();
-  const router = useRouter();
-
   // Query user assets and filter LP tokens
   const queryAssets = useCallback(async () => {
-    if (!account?.address) return;
+    if (!account?.address || !merak) return;
 
     try {
       setIsLoading(true);
-      const merak = initMerakClient();
 
       const metadataResults = await merak.listOwnedAssetsInfo({
         address: account.address,
@@ -129,7 +129,7 @@ export default function PositionsPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [account?.address, setAssetsState]);
+  }, [account?.address, merak, setAssetsState, setIsLoading]);
 
   // Initialize asset loading
   useEffect(() => {

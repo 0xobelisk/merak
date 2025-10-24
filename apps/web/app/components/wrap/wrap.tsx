@@ -13,9 +13,9 @@ import {
   SelectValue
 } from '@repo/ui/components/ui/select';
 import { Switch } from '@repo/ui/components/ui/switch';
-import { initDubheClient } from '@/app/jotai/dubhe';
-import { initMerakClient } from '@/app/jotai/merak';
+import { useMerak } from '@/app/jotai/merak';
 import { useCurrentAccount, useSignAndExecuteTransaction } from '@mysten/dapp-kit';
+import { useDubhe } from '@0xobelisk/react/sui';
 import type { CoinBalance, CoinMetadata } from '@0xobelisk/sui-client';
 import { Transaction } from '@0xobelisk/sui-client';
 import { toast } from 'sonner';
@@ -100,6 +100,11 @@ const getCoinMetadata = (coinType: string) => {
 };
 export default function TokenWrapper() {
   const account = useCurrentAccount();
+
+  // Dubhe and Merak clients
+  const { contract: dubheContract } = useDubhe();
+  const merak = useMerak();
+
   const [balances, setBalances] = useState<(CoinBalance & { metadata: CoinMetadata })[]>([]);
   const [assetMetadata, setAssetMetadata] = useState<AssetInfo[]>([]);
   const [wrapperAssetsMap, setWrapperAssetsMap] = useState<Map<string, any>>(new Map());
@@ -116,11 +121,10 @@ export default function TokenWrapper() {
 
   // Fetch token data
   const fetchTokenData = useCallback(async () => {
-    if (!account?.address) return;
+    if (!account?.address || !dubheContract) return;
     setIsTokensLoading(true);
     try {
-      const dubhe = initDubheClient();
-      const allBalances = await dubhe.suiInteractor.currentClient.getAllBalances({
+      const allBalances = await dubheContract.suiInteractor.currentClient.getAllBalances({
         owner: account.address
       });
       const updatedBalances = await Promise.all(
@@ -139,15 +143,13 @@ export default function TokenWrapper() {
     } finally {
       setIsTokensLoading(false);
     }
-  }, [account?.address]);
+  }, [account?.address, dubheContract]);
 
   // Fetch wrapped token data
   const fetchWrappedTokens = useCallback(async () => {
-    if (!account?.address) return;
-
+    if (!account?.address || !merak) return;
+    setIsLoading(true);
     try {
-      const merak = initMerakClient();
-
       const ownedAssets = await merak.listOwnedWrapperAssets({
         address: account.address
       });
@@ -212,8 +214,10 @@ export default function TokenWrapper() {
       console.error('Error fetching wrapped tokens:', error);
       toast.error('Failed to fetch wrapped tokens');
       setAssetMetadata([]);
+    } finally {
+      setIsLoading(false);
     }
-  }, [account?.address]);
+  }, [account?.address, merak]);
 
   // Calculate target token list
   const targetTokens = useMemo(
@@ -267,9 +271,8 @@ export default function TokenWrapper() {
 
   // 优化 wrapperAssets 查询逻辑
   useEffect(() => {
-    const merak = initMerakClient();
     const queryWrapperAssets = async () => {
-      if (balances.length === 0) return;
+      if (balances.length === 0 || !merak) return;
 
       const newWrapperAssetsMap = new Map<string, any>();
       const promises = balances.map(async (coinBalance) => {
@@ -293,7 +296,7 @@ export default function TokenWrapper() {
     };
 
     queryWrapperAssets();
-  }, [balances]);
+  }, [balances, merak]);
 
   // Calculate token list
   const sourceTokens = useMemo(() => {
@@ -395,9 +398,11 @@ export default function TokenWrapper() {
         throw new Error('Insufficient balance');
       }
 
-      const dubhe = initDubheClient();
-      const merak = initMerakClient();
-      // const metadata = await dubhe.suiInteractor.currentClient.getCoinMetadata({
+      if (!dubheContract || !merak) {
+        toast.error('Client not initialized');
+        return;
+      }
+      // const metadata = await dubheContract.suiInteractor.currentClient.getCoinMetadata({
       //   coinType: sourceToken
       // });
       const metadata = getCoinMetadata(sourceToken);
@@ -482,7 +487,10 @@ export default function TokenWrapper() {
         throw new Error('Insufficient balance');
       }
 
-      const merak = initMerakClient();
+      if (!merak) {
+        toast.error('Merak client not initialized');
+        return;
+      }
 
       // Get selected asset details
       const selectedAsset = assetMetadata.find((asset) => asset.id.toString() === sourceToken);
@@ -528,7 +536,11 @@ export default function TokenWrapper() {
 
       // Use processed token format
       await merak.unwrap(tx, amountInSmallestUnit, account.address, formattedToken, true);
-      const dubhe = initDubheClient();
+
+      if (!dubheContract) {
+        toast.error('Dubhe client not initialized');
+        return;
+      }
       await signAndExecuteTransaction(
         {
           transaction: tx.serialize(),

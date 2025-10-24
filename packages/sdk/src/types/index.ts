@@ -1,9 +1,12 @@
-import { DubheParams, IndexerEvent } from '@0xobelisk/sui-client';
+import { Dubhe, DubheParams, NetworkType } from '@0xobelisk/sui-client';
+import { DubheGraphqlClient } from '@0xobelisk/graphql-client';
 
 export type MerakParams = {
-  schemaId?: string;
-  treasuryCap?: string;
-} & DubheParams;
+  network: NetworkType;
+  dubhe: Dubhe;
+  graphql: DubheGraphqlClient;
+  schemaId: string;
+};
 
 export type MerakConfig = {
   metadata: any;
@@ -73,48 +76,3 @@ export type PoolInfo = {
   token1Image: string;
   token2Image: string;
 };
-
-export type EventInfo = {
-  name: string;
-  sender: string;
-  value: any;
-  digest: string;
-  createdAt: string;
-  checkpoint: string;
-};
-
-export type EventInfoResponse = {
-  data: EventInfo[];
-  pageInfo: PageInfo;
-  totalCount: number;
-};
-
-export type TransactionInfo = {
-  sender: string;
-  createdAt: string;
-  digest: string;
-  functionName: string;
-  events: IndexerEvent[];
-};
-
-export type TransactionInfoResponse = {
-  data: TransactionInfo[];
-  pageInfo: PageInfo;
-  totalCount: number;
-};
-
-export type TransactionHistoryInfo = {
-  sender: string;
-  createdAt: string;
-  digest: string;
-  functionName: string;
-  event: IndexerEvent;
-};
-
-export type TransactionHistoryInfoResponse = {
-  data: TransactionHistoryInfo[];
-  pageInfo: PageInfo;
-  totalCount: number;
-};
-
-export type BridgeChainName = 'Dubhe OS' | 'Aptos';

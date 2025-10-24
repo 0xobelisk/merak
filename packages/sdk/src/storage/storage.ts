@@ -1,16 +1,17 @@
-import { Dubhe } from '@0xobelisk/sui-client';
+import { DubheGraphqlClient } from '@0xobelisk/graphql-client';
+
 import { GetStorage } from './get-storage';
 import { ListStorage } from './list-storage';
 
 export class Storage {
-  private readonly dubhe: Dubhe;
+  private readonly graphql: DubheGraphqlClient;
   private readonly getStorage: GetStorage;
   private readonly listStorage: ListStorage;
 
-  constructor(dubhe: Dubhe) {
-    this.dubhe = dubhe;
-    this.getStorage = new GetStorage(this.dubhe);
-    this.listStorage = new ListStorage(this.dubhe);
+  constructor(graphql: DubheGraphqlClient) {
+    this.graphql = graphql;
+    this.getStorage = new GetStorage(this.graphql);
+    this.listStorage = new ListStorage(this.graphql);
   }
 
   get get() {
