@@ -10,6 +10,35 @@ import dubheMetadata from '../../contracts/dubhe.config.json';
 import contractMetadata from '../../contracts/metadata.json';
 import { NETWORK, PACKAGE_ID, DUBHE_SCHEMA_ID } from '../../contracts/deployment';
 
+// ==================== Configuration ====================
+export const TEST_CONFIG = {
+  // Network configuration
+  network: 'testnet' as NetworkType,
+
+  // Test asset IDs
+  testAssetId: '0x357cb71d44a3fe292623a589e44f6a4f704d39d64a916bde9f81b78ce7ffac5c',
+  testAssetId2: '0xa5481ac67797056f2997fe815b0aef4d70b83ae52157570fb38bc1197e0274d6',
+
+  // Test account address
+  testAccount: '0x1fe342c436eff7ed90988fbe3a85aea7d922517ab6d9bc86e800025f8afcba7a',
+
+  // Test Coin Type
+  testCoinType: '0x2::sui::SUI',
+
+  // Test Dapp Key (if any)
+  testDappKey:
+    'a09cd4137e604ec5a7a88f72c572ecd064b0e713a3fbf705a88456cdbccf36c0::dapp_key::DappKey',
+
+  // Pagination parameters
+  pageSize: 5,
+
+  // Whether to show detailed output
+  verbose: true,
+
+  // Whether to show empty results
+  showEmptyResults: false
+};
+
 /**
  * Get default Indexer URL
  */

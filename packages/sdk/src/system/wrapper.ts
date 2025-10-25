@@ -63,6 +63,7 @@ export class Wrapper {
     });
   }
 
+  // public entry fun unwrap<T>(dapp_hub: &mut DappHub, amount: u256, beneficiary: address, ctx: &mut TxContext) {
   async unwrap(
     tx: Transaction,
     amount: bigint | number | string,

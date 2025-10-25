@@ -26,7 +26,7 @@ async function main() {
     secretKey: privateKey
   });
 
-  console.log('✅ Merak instance created successfully');
+  console.log('✅ 3. Merak instance created successfully');
   console.log(`   Package ID: ${merak.packageId}`);
   console.log(`   Schema ID: ${merak.schemaId}`);
   console.log(`   Test Asset ID: ${TEST_CONFIG.testAssetId}`);

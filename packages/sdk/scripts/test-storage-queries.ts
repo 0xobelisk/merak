@@ -186,7 +186,7 @@ async function main() {
     networkType: TEST_CONFIG.network
   });
 
-  console.log('✅ Merak instance created successfully');
+  console.log('✅ 6. Merak instance created successfully');
   console.log(`   Package ID: ${merak.packageId}`);
   console.log(`   Schema ID: ${merak.schemaId}`);
 

@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@0xobelisk/sui-cli':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74(@types/node@22.18.8)
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77(@types/node@22.18.8)
       '@0xobelisk/sui-common':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77
       chalk:
         specifier: ^4.1.2
         version: 4.1.2
@@ -34,23 +34,23 @@ importers:
   apps/web:
     dependencies:
       '@0xobelisk/graphql-client':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)
       '@0xobelisk/merak-sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
       '@0xobelisk/react':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74(@0xobelisk/sui-client@1.2.0-pre.74(typescript@5.9.3))(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77(@0xobelisk/sui-client@1.2.0-pre.77(typescript@5.9.3))(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)
       '@0xobelisk/sui-cli':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74(@types/node@22.18.8)
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77(@types/node@22.18.8)
       '@0xobelisk/sui-client':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74(typescript@5.9.3)
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77(typescript@5.9.3)
       '@0xobelisk/sui-common':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77
       '@mysten/dapp-kit':
         specifier: 0.14.53
         version: 0.14.53(@tanstack/react-query@5.90.2(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
@@ -191,14 +191,14 @@ importers:
   packages/contracts:
     dependencies:
       '@0xobelisk/sui-cli':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74(@types/node@22.18.8)
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77(@types/node@22.18.8)
       '@0xobelisk/sui-client':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74(typescript@5.9.3)
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77(typescript@5.9.3)
       '@0xobelisk/sui-common':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77
       chalk:
         specifier: ^4.1.2
         version: 4.1.2
@@ -252,20 +252,20 @@ importers:
   packages/sdk:
     dependencies:
       '@0xobelisk/ecs':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)
       '@0xobelisk/graphql-client':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)
       '@0xobelisk/sui-cli':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74(@types/node@20.19.19)
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77(@types/node@20.19.19)
       '@0xobelisk/sui-client':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74(typescript@5.9.3)
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77(typescript@5.9.3)
       '@0xobelisk/sui-common':
-        specifier: 1.2.0-pre.74
-        version: 1.2.0-pre.74
+        specifier: 1.2.0-pre.77
+        version: 1.2.0-pre.77
       assert:
         specifier: ^2.1.0
         version: 2.1.0
@@ -533,19 +533,19 @@ packages:
       graphql: ^15.5.0 || ^16.0.0 || ^17.0.0
       typescript: ^5.0.0
 
-  '@0xobelisk/ecs@1.2.0-pre.74':
-    resolution: {integrity: sha512-GEQ/6CgyMwk+NOpIsAKNZF/ewVlZbf+zTG+sljNdjQEabOGqkJILCzNhThtDP+6lzevGCWJkinxkbR6621lgyw==}
+  '@0xobelisk/ecs@1.2.0-pre.77':
+    resolution: {integrity: sha512-g9bsi/K9siOEUgJIebvvr/6q18NirffiIakpQP2eSLwx8E3/dtjdSgdazR47TRaMnA0wr+/Dqda8pTwQVmdPbw==}
     engines: {node: '>=22.0.0'}
 
-  '@0xobelisk/graphql-client@1.2.0-pre.74':
-    resolution: {integrity: sha512-dnX/Mna4AWCJdIxhKDKv4lcAp8bZfE0k/h3b2TA8PAd+30s20WB/gdWII+/zUJAkju44Ss3xcBssSwiDaAqyew==}
+  '@0xobelisk/graphql-client@1.2.0-pre.77':
+    resolution: {integrity: sha512-18x1BS5vomgkJsImCU+jQkh9ndKiUaPvZk+O61n9q8x9726Ddfp4ouxj1F4dpKUYt+4T6KkLxc46Vy94pQUerA==}
     engines: {node: '>=22.0.0'}
 
-  '@0xobelisk/react@1.2.0-pre.74':
-    resolution: {integrity: sha512-q+k9WC8s/QFeWuB0+bJhwymmTD05tqrIHu9QXLe42imkBqp0qxbHtY6xjAFzM3h09CDinQrDznaGw9Gc1U5hlQ==}
+  '@0xobelisk/react@1.2.0-pre.77':
+    resolution: {integrity: sha512-fXSklutJiFQYqcdeM+vncKUzHuoyRoV/mflh7B9OrxTPJPC3Q2H+LD9k+7iPrVcKcUd1bSQCr9iWG0CN6v0GfQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      '@0xobelisk/sui-client': 1.2.0-pre.74
+      '@0xobelisk/sui-client': 1.2.0-pre.77
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
       zod: ^3.25.0 || ^4.0.0
@@ -557,17 +557,17 @@ packages:
       react-dom:
         optional: true
 
-  '@0xobelisk/sui-cli@1.2.0-pre.74':
-    resolution: {integrity: sha512-NGuIQHN3G4wNQXvBwNpvKIYnBeCJAjqnNDdDxL/U47OiUN4Xmy6W6pRQYYVt2zR7loNMsgkXF6vskgCH+5pVyA==}
+  '@0xobelisk/sui-cli@1.2.0-pre.77':
+    resolution: {integrity: sha512-ZUEAnirs/zl5aFEo5wErX+9kzDy1x9xmpMcAqIjA9OK/nivWhT4TGbUpe+YuDmHpR6J6CzZcDkuQ5E27+Gmlkw==}
     engines: {node: '>=22.0.0'}
     hasBin: true
 
-  '@0xobelisk/sui-client@1.2.0-pre.74':
-    resolution: {integrity: sha512-ywUAOG3uNdv8xoagSGdk9PUhwdIJNt/k+S9zl25Iy4AtDQ+4Lkw2ytrVQFohiEG3TjS3d09Wp4VgD4C4XKowCg==}
+  '@0xobelisk/sui-client@1.2.0-pre.77':
+    resolution: {integrity: sha512-cU0117GNtO3Q9HZ4ZKCCvoXgn/81OjprnP4GR9WtpiLxG5uNVGX97J6Mz8l5HM1/RmZoZ3VOytv7fCYK/UwrBQ==}
     engines: {node: '>=22.0.0'}
 
-  '@0xobelisk/sui-common@1.2.0-pre.74':
-    resolution: {integrity: sha512-34xUV+z8vTevS9wlKOePBfSV4AZ6qbc70pqC9VP3+hjgjT9MFnC+1Itn8x0tFGLOU0FWTTBNfio1s+gyn4aZkw==}
+  '@0xobelisk/sui-common@1.2.0-pre.77':
+    resolution: {integrity: sha512-foJ3/nrdoiLeo3592yggLnL/V2/jeiTbGOi1nUuTNtMyOtN8Nafo1S/PPicGwrKM6NKuPZWLYP7w5NPABaewag==}
     engines: {node: '>=22.0.0'}
 
   '@adraffy/ens-normalize@1.11.1':
@@ -8117,9 +8117,9 @@ snapshots:
       graphql: 16.11.0
       typescript: 5.9.3
 
-  '@0xobelisk/ecs@1.2.0-pre.74(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)':
+  '@0xobelisk/ecs@1.2.0-pre.77(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)':
     dependencies:
-      '@0xobelisk/graphql-client': 1.2.0-pre.74(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)
+      '@0xobelisk/graphql-client': 1.2.0-pre.77(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)
       '@apollo/client': 3.14.0(@types/react@18.3.26)(graphql@16.11.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.11.0)
       '@types/pluralize': 0.0.33
@@ -8145,7 +8145,7 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@0xobelisk/graphql-client@1.2.0-pre.74(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)':
+  '@0xobelisk/graphql-client@1.2.0-pre.77(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@apollo/client': 3.14.0(@types/react@18.3.26)(graphql@16.11.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.11.0)
@@ -8172,15 +8172,15 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@0xobelisk/react@1.2.0-pre.74(@0xobelisk/sui-client@1.2.0-pre.74(typescript@5.9.3))(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)':
+  '@0xobelisk/react@1.2.0-pre.77(@0xobelisk/sui-client@1.2.0-pre.77(typescript@5.9.3))(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)':
     dependencies:
-      '@0xobelisk/ecs': 1.2.0-pre.74(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)
-      '@0xobelisk/graphql-client': 1.2.0-pre.74(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)
+      '@0xobelisk/ecs': 1.2.0-pre.77(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)
+      '@0xobelisk/graphql-client': 1.2.0-pre.77(@types/react@18.3.26)(bufferutil@4.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)
       '@nanostores/react': 0.8.4(nanostores@0.11.4)(react@18.3.1)
       nanostores: 0.11.4
       zod: 3.25.76
     optionalDependencies:
-      '@0xobelisk/sui-client': 1.2.0-pre.74(typescript@5.9.3)
+      '@0xobelisk/sui-client': 1.2.0-pre.77(typescript@5.9.3)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     transitivePeerDependencies:
@@ -8193,10 +8193,10 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@0xobelisk/sui-cli@1.2.0-pre.74(@types/node@20.19.19)':
+  '@0xobelisk/sui-cli@1.2.0-pre.77(@types/node@20.19.19)':
     dependencies:
-      '@0xobelisk/sui-client': 1.2.0-pre.74(typescript@5.9.3)
-      '@0xobelisk/sui-common': 1.2.0-pre.74
+      '@0xobelisk/sui-client': 1.2.0-pre.77(typescript@5.9.3)
+      '@0xobelisk/sui-common': 1.2.0-pre.77
       '@mysten/sui': 1.39.1(typescript@5.9.3)
       '@types/sqlite3': 3.1.11
       '@types/wait-on': 5.3.4
@@ -8227,10 +8227,10 @@ snapshots:
       - debug
       - supports-color
 
-  '@0xobelisk/sui-cli@1.2.0-pre.74(@types/node@22.18.8)':
+  '@0xobelisk/sui-cli@1.2.0-pre.77(@types/node@22.18.8)':
     dependencies:
-      '@0xobelisk/sui-client': 1.2.0-pre.74(typescript@5.9.3)
-      '@0xobelisk/sui-common': 1.2.0-pre.74
+      '@0xobelisk/sui-client': 1.2.0-pre.77(typescript@5.9.3)
+      '@0xobelisk/sui-common': 1.2.0-pre.77
       '@mysten/sui': 1.39.1(typescript@5.9.3)
       '@types/sqlite3': 3.1.11
       '@types/wait-on': 5.3.4
@@ -8261,7 +8261,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@0xobelisk/sui-client@1.2.0-pre.74(typescript@5.9.3)':
+  '@0xobelisk/sui-client@1.2.0-pre.77(typescript@5.9.3)':
     dependencies:
       '@mysten/bcs': 1.8.0
       '@mysten/sui': 1.39.1(typescript@5.9.3)
@@ -8287,7 +8287,7 @@ snapshots:
       - '@gql.tada/vue-support'
       - typescript
 
-  '@0xobelisk/sui-common@1.2.0-pre.74':
+  '@0xobelisk/sui-common@1.2.0-pre.77':
     dependencies:
       chalk: 5.6.2
       debug: 4.4.3
