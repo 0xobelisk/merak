@@ -194,8 +194,8 @@ async function main() {
 
   logStep('Querying LP token balance before adding liquidity');
   // Use on-chain query for more reliable results (GraphQL indexer may have delays)
-  const lpBalanceBeforeRaw = await merak.assets.balanceOf(lpAssetId, accountAddress);
-  const lpBalanceBefore = lpBalanceBeforeRaw ? String(lpBalanceBeforeRaw) : '0';
+  const lpBalanceBeforeRaw = await merak.balanceOf(lpAssetId, accountAddress);
+  const lpBalanceBefore = lpBalanceBeforeRaw ? String(lpBalanceBeforeRaw.balance) : '0';
   logInfo('LP Balance Before', lpBalanceBefore);
 
   logStep('Preparing liquidity addition');
@@ -234,8 +234,8 @@ async function main() {
   logStep('Verifying liquidity addition');
 
   // Use on-chain query for reliable results (GraphQL indexer has delays)
-  const lpBalanceAfterRaw = await merak.assets.balanceOf(lpAssetId, accountAddress);
-  const lpBalanceAfter = lpBalanceAfterRaw ? String(lpBalanceAfterRaw) : '0';
+  const lpBalanceAfterRaw = await merak.balanceOf(lpAssetId, accountAddress);
+  const lpBalanceAfter = lpBalanceAfterRaw ? String(lpBalanceAfterRaw.balance) : '0';
   logInfo('LP Balance After', lpBalanceAfter);
 
   const lpReceived = BigInt(lpBalanceAfter) - BigInt(lpBalanceBefore);
@@ -299,10 +299,10 @@ async function main() {
 
   logStep('Recording balances before swap');
   // Use on-chain query for consistency
-  const balanceABeforeSwapRaw = await merak.assets.balanceOf(assetA, accountAddress);
-  const balanceBBeforeSwapRaw = await merak.assets.balanceOf(assetB, accountAddress);
-  const balanceABeforeSwap = balanceABeforeSwapRaw ? String(balanceABeforeSwapRaw) : '0';
-  const balanceBBeforeSwap = balanceBBeforeSwapRaw ? String(balanceBBeforeSwapRaw) : '0';
+  const balanceABeforeSwapRaw = await merak.balanceOf(assetA, accountAddress);
+  const balanceBBeforeSwapRaw = await merak.balanceOf(assetB, accountAddress);
+  const balanceABeforeSwap = balanceABeforeSwapRaw ? String(balanceABeforeSwapRaw.balance) : '0';
+  const balanceBBeforeSwap = balanceBBeforeSwapRaw ? String(balanceBBeforeSwapRaw.balance) : '0';
   logInfo('Asset A Before', balanceABeforeSwap);
   logInfo('Asset B Before', balanceBBeforeSwap);
 
@@ -338,10 +338,10 @@ async function main() {
 
   // Verify swap result using on-chain query for reliability
   logStep('Verifying swap result');
-  const balanceAAfterSwapRaw = await merak.assets.balanceOf(assetA, accountAddress);
-  const balanceBAfterSwapRaw = await merak.assets.balanceOf(assetB, accountAddress);
-  const balanceAAfterSwap = balanceAAfterSwapRaw ? String(balanceAAfterSwapRaw) : '0';
-  const balanceBAfterSwap = balanceBAfterSwapRaw ? String(balanceBAfterSwapRaw) : '0';
+  const balanceAAfterSwapRaw = await merak.balanceOf(assetA, accountAddress);
+  const balanceBAfterSwapRaw = await merak.balanceOf(assetB, accountAddress);
+  const balanceAAfterSwap = balanceAAfterSwapRaw ? String(balanceAAfterSwapRaw.balance) : '0';
+  const balanceBAfterSwap = balanceBAfterSwapRaw ? String(balanceBAfterSwapRaw.balance) : '0';
   logInfo('Asset A After', balanceAAfterSwap);
   logInfo('Asset B After', balanceBAfterSwap);
 
@@ -363,10 +363,10 @@ async function main() {
 
   logStep('Recording balances before second swap');
   // Use on-chain query for consistency
-  const balanceABeforeSwap2Raw = await merak.assets.balanceOf(assetA, accountAddress);
-  const balanceBBeforeSwap2Raw = await merak.assets.balanceOf(assetB, accountAddress);
-  const balanceABeforeSwap2 = balanceABeforeSwap2Raw ? String(balanceABeforeSwap2Raw) : '0';
-  const balanceBBeforeSwap2 = balanceBBeforeSwap2Raw ? String(balanceBBeforeSwap2Raw) : '0';
+  const balanceABeforeSwap2Raw = await merak.balanceOf(assetA, accountAddress);
+  const balanceBBeforeSwap2Raw = await merak.balanceOf(assetB, accountAddress);
+  const balanceABeforeSwap2 = balanceABeforeSwap2Raw ? String(balanceABeforeSwap2Raw.balance) : '0';
+  const balanceBBeforeSwap2 = balanceBBeforeSwap2Raw ? String(balanceBBeforeSwap2Raw.balance) : '0';
 
   const exactAmountOut = '5000';
   const reversePath = [assetB, assetA]; // Reverse direction
@@ -408,10 +408,10 @@ async function main() {
 
   // Verify swap result using on-chain query
   logStep('Verifying swap result');
-  const balanceAAfterSwap2Raw = await merak.assets.balanceOf(assetA, accountAddress);
-  const balanceBAfterSwap2Raw = await merak.assets.balanceOf(assetB, accountAddress);
-  const balanceAAfterSwap2 = balanceAAfterSwap2Raw ? String(balanceAAfterSwap2Raw) : '0';
-  const balanceBAfterSwap2 = balanceBAfterSwap2Raw ? String(balanceBAfterSwap2Raw) : '0';
+  const balanceAAfterSwap2Raw = await merak.balanceOf(assetA, accountAddress);
+  const balanceBAfterSwap2Raw = await merak.balanceOf(assetB, accountAddress);
+  const balanceAAfterSwap2 = balanceAAfterSwap2Raw ? String(balanceAAfterSwap2Raw.balance) : '0';
+  const balanceBAfterSwap2 = balanceBAfterSwap2Raw ? String(balanceBAfterSwap2Raw.balance) : '0';
 
   const assetBSpent = BigInt(balanceBBeforeSwap2) - BigInt(balanceBAfterSwap2);
   const assetAReceived = BigInt(balanceAAfterSwap2) - BigInt(balanceABeforeSwap2);
@@ -431,8 +431,8 @@ async function main() {
 
   // Remove a portion of liquidity
   // Use on-chain query for LP balance
-  const currentLpBalanceRaw = await merak.assets.balanceOf(lpAssetId, accountAddress);
-  const currentLpBalance = currentLpBalanceRaw ? String(currentLpBalanceRaw) : '0';
+  const currentLpBalanceRaw = await merak.balanceOf(lpAssetId, accountAddress);
+  const currentLpBalance = currentLpBalanceRaw ? String(currentLpBalanceRaw.balance) : '0';
   const liquidityToRemove = String(BigInt(currentLpBalance) / 2n); // Remove 50%
 
   logStep('Preparing to remove liquidity');
@@ -441,10 +441,14 @@ async function main() {
 
   logStep('Recording balances before removal');
   // Use on-chain query for consistency
-  const balanceABeforeRemoveRaw = await merak.assets.balanceOf(assetA, accountAddress);
-  const balanceBBeforeRemoveRaw = await merak.assets.balanceOf(assetB, accountAddress);
-  const balanceABeforeRemove = balanceABeforeRemoveRaw ? String(balanceABeforeRemoveRaw) : '0';
-  const balanceBBeforeRemove = balanceBBeforeRemoveRaw ? String(balanceBBeforeRemoveRaw) : '0';
+  const balanceABeforeRemoveRaw = await merak.balanceOf(assetA, accountAddress);
+  const balanceBBeforeRemoveRaw = await merak.balanceOf(assetB, accountAddress);
+  const balanceABeforeRemove = balanceABeforeRemoveRaw
+    ? String(balanceABeforeRemoveRaw.balance)
+    : '0';
+  const balanceBBeforeRemove = balanceBBeforeRemoveRaw
+    ? String(balanceBBeforeRemoveRaw.balance)
+    : '0';
 
   const removeLiquidityTx = new Transaction();
   const minReceiveA = '1'; // Minimal amounts due to small liquidity
@@ -475,13 +479,15 @@ async function main() {
 
   // Verify liquidity removal using on-chain query
   logStep('Verifying liquidity removal');
-  const balanceAAfterRemoveRaw = await merak.assets.balanceOf(assetA, accountAddress);
-  const balanceBAfterRemoveRaw = await merak.assets.balanceOf(assetB, accountAddress);
-  const balanceAAfterRemove = balanceAAfterRemoveRaw ? String(balanceAAfterRemoveRaw) : '0';
-  const balanceBAfterRemove = balanceBAfterRemoveRaw ? String(balanceBAfterRemoveRaw) : '0';
+  const balanceAAfterRemoveRaw = await merak.balanceOf(assetA, accountAddress);
+  const balanceBAfterRemoveRaw = await merak.balanceOf(assetB, accountAddress);
+  const balanceAAfterRemove = balanceAAfterRemoveRaw ? String(balanceAAfterRemoveRaw.balance) : '0';
+  const balanceBAfterRemove = balanceBAfterRemoveRaw ? String(balanceBAfterRemoveRaw.balance) : '0';
   // Use on-chain query for LP balance
-  const lpBalanceAfterRemoveRaw = await merak.assets.balanceOf(lpAssetId, accountAddress);
-  const lpBalanceAfterRemove = lpBalanceAfterRemoveRaw ? String(lpBalanceAfterRemoveRaw) : '0';
+  const lpBalanceAfterRemoveRaw = await merak.balanceOf(lpAssetId, accountAddress);
+  const lpBalanceAfterRemove = lpBalanceAfterRemoveRaw
+    ? String(lpBalanceAfterRemoveRaw.balance)
+    : '0';
 
   const assetARecovered = BigInt(balanceAAfterRemove) - BigInt(balanceABeforeRemove);
   const assetBRecovered = BigInt(balanceBAfterRemove) - BigInt(balanceBBeforeRemove);
