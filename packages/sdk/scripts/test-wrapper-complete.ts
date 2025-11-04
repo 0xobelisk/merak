@@ -84,7 +84,7 @@ async function main() {
 
   logStep('Querying native SUI balance');
   const initialSuiBalance = await merak.dubhe.balanceOf();
-  logInfo('SUI Balance', `${Number(initialSuiBalance) / 10 ** suiDecimals} SUI`);
+  logInfo('SUI Balance', `${Number(initialSuiBalance.totalBalance) / 10 ** suiDecimals} SUI`);
 
   logStep('Querying wrapped SUI balance');
   const initialWrappedBalance = await merak.balanceOf(wrappedSuiAssetId);

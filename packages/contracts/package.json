@@ -5,9 +5,9 @@
   "license": "Apache-2.0",
   "scripts": {},
   "dependencies": {
-    "@0xobelisk/sui-cli": "1.2.0-pre.77",
-    "@0xobelisk/sui-client": "1.2.0-pre.77",
-    "@0xobelisk/sui-common": "1.2.0-pre.77",
+    "@0xobelisk/sui-cli": "1.2.0-pre.83",
+    "@0xobelisk/sui-client": "1.2.0-pre.83",
+    "@0xobelisk/sui-common": "1.2.0-pre.83",
     "chalk": "^4.1.2",
     "dotenv": "^16.4.5"
   },
