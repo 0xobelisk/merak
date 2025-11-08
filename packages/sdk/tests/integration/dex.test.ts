@@ -65,6 +65,60 @@ describe('DEX System', () => {
     ]);
 
     logSuccess('Asset preparation complete');
+
+    // Ensure pool exists for testing
+    logStep('Checking if test pool exists');
+    const poolInfo = await merak.getPoolListWithId({
+      asset1Id: assetA,
+      asset2Id: assetB
+    });
+
+    if (!poolInfo) {
+      logWarning('Pool does not exist, creating it for tests...');
+
+      // Create pool by adding initial liquidity
+      const tx = new Transaction();
+      const initialLiquidityA = '1000000'; // 1M
+      const initialLiquidityB = '1000000'; // 1M
+
+      const result = (await merak.addLiquidity(
+        tx,
+        assetA,
+        assetB,
+        initialLiquidityA,
+        initialLiquidityB,
+        '1', // minAmountA
+        '1', // minAmountB
+        accountAddress
+      )) as SuiTransactionBlockResponse;
+
+      expect(result).toBeDefined();
+      expect(result.digest).toBeDefined();
+
+      logSuccess('Test pool created successfully');
+      logInfo('Transaction Hash', result.digest);
+
+      await waitForTransaction(3);
+
+      // Verify pool was created
+      const newPoolInfo = await merak.getPoolListWithId({
+        asset1Id: assetA,
+        asset2Id: assetB
+      });
+
+      if (!newPoolInfo) {
+        throw new Error('Failed to create test pool');
+      }
+
+      logInfo('Pool LP Asset', newPoolInfo.lpAsset);
+      logInfo('Pool Reserve A', newPoolInfo.reserve0);
+      logInfo('Pool Reserve B', newPoolInfo.reserve1);
+    } else {
+      logSuccess('Test pool already exists');
+      logInfo('Pool LP Asset', poolInfo.lpAsset);
+      logInfo('Pool Reserve A', poolInfo.reserve0);
+      logInfo('Pool Reserve B', poolInfo.reserve1);
+    }
   }, 120000); // Increase timeout for wrap operations
 
   afterAll(async () => {
@@ -208,10 +262,9 @@ describe('DEX System', () => {
         asset2Id: assetB
       });
 
-      if (!poolInfo) {
-        logWarning('Pool does not exist, skipping add liquidity test');
-        return;
-      }
+      // Pool should exist from beforeAll setup
+      expect(poolInfo).toBeDefined();
+      if (!poolInfo) throw new Error('Pool info is required');
 
       const reserve0 = BigInt(poolInfo.reserve0);
       const reserve1 = BigInt(poolInfo.reserve1);
@@ -402,10 +455,9 @@ describe('DEX System', () => {
         asset2Id: assetB
       });
 
-      if (!poolInfo) {
-        logWarning('Pool does not exist, skipping remove liquidity test');
-        return;
-      }
+      // Pool should exist from beforeAll setup
+      expect(poolInfo).toBeDefined();
+      if (!poolInfo) throw new Error('Pool info is required');
 
       const lpAssetId = poolInfo.lpAsset;
       logInfo('LP Asset ID', lpAssetId);
@@ -466,5 +518,67 @@ describe('DEX System', () => {
 
       logSuccess('Liquidity removed successfully');
     }, 60000);
+  });
+
+  describe('Swap Error Cases', () => {
+    it('should reject zero amount swap', async () => {
+      logSection('Test: Zero Amount Swap Error');
+
+      const path = [assetA, assetB];
+
+      logStep('Attempting to swap 0 amount (should fail)');
+
+      await expect(async () => {
+        const tx = new Transaction();
+        await merak.swapExactTokensForTokens(tx, '0', '0', path, accountAddress);
+      }).rejects.toThrow();
+
+      logSuccess('Zero amount swap correctly rejected');
+    }, 30000);
+
+    it('should reject swap with insufficient balance', async () => {
+      logSection('Test: Insufficient Balance Swap Error');
+
+      const balance = await merak.balanceOf(assetA);
+      const excessAmount = String(BigInt(balance.balance) + 1000000n);
+      const path = [assetA, assetB];
+
+      logStep(`Attempting to swap ${excessAmount} (exceeds balance: ${balance.balance})`);
+
+      await expect(async () => {
+        const tx = new Transaction();
+        await merak.swapExactTokensForTokens(tx, excessAmount, '1', path, accountAddress);
+      }).rejects.toThrow();
+
+      logSuccess('Insufficient balance swap correctly rejected');
+    }, 30000);
+  });
+
+  describe('Liquidity Error Cases', () => {
+    it('should reject adding liquidity with zero amounts', async () => {
+      logSection('Test: Zero Amount Add Liquidity Error');
+
+      logStep('Attempting to add 0 liquidity (should fail)');
+
+      await expect(async () => {
+        const tx = new Transaction();
+        await merak.addLiquidity(tx, assetA, assetB, '0', '0', '0', '0', accountAddress);
+      }).rejects.toThrow();
+
+      logSuccess('Zero amount add liquidity correctly rejected');
+    }, 30000);
+
+    it('should reject removing liquidity with zero amount', async () => {
+      logSection('Test: Zero Amount Remove Liquidity Error');
+
+      logStep('Attempting to remove 0 liquidity (should fail)');
+
+      await expect(async () => {
+        const tx = new Transaction();
+        await merak.removeLiquidity(tx, assetA, assetB, '0', '0', '0', accountAddress);
+      }).rejects.toThrow();
+
+      logSuccess('Zero amount remove liquidity correctly rejected');
+    }, 30000);
   });
 });
