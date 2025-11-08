@@ -5,7 +5,7 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Label } from '@repo/ui/components/ui/label';
 import dynamic from 'next/dynamic';
 import TokenSelectionModal from '@/app/components/swap/token-selection-modal';
-import { initMerakClient } from '@/app/jotai/merak';
+import { useMerak } from '@/app/jotai/merak';
 import { Transaction, TransactionArgument } from '@0xobelisk/sui-client';
 import { toast } from 'sonner';
 import { useSignAndExecuteTransaction, useCurrentAccount } from '@mysten/dapp-kit';
@@ -19,12 +19,13 @@ interface TokenData {
   name: string;
   iconUrl: string;
   balance: string;
-  id: number;
+  id: string;
   decimals: number;
 }
 
 export default function RemoveLiquidity() {
   const account = useCurrentAccount();
+  const merak = useMerak();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
   const [digest, setDigest] = useState('');
   const [tokenA, setTokenA] = useState<TokenData | null>(null);
@@ -33,12 +34,12 @@ export default function RemoveLiquidity() {
   const [minAmountA, setMinAmountA] = useState('');
   const [minAmountB, setMinAmountB] = useState('');
   const [lpTokenBalance, setLpTokenBalance] = useState('0');
-  const [lpTokenId, setLpTokenId] = useState<number | null>(null);
+  const [lpTokenId, setLpTokenId] = useState<string | null>(null);
 
   const [isTokenAModalOpen, setIsTokenAModalOpen] = useState(false);
   const [isTokenBModalOpen, setIsTokenBModalOpen] = useState(false);
 
-  const [availableTokenBs, setAvailableTokenBs] = useState<number[]>([]);
+  const [availableTokenBs, setAvailableTokenBs] = useState<string[]>([]);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -58,13 +59,14 @@ export default function RemoveLiquidity() {
    * Get account information and asset metadata
    */
   const queryAssets = useCallback(async () => {
-    if (!account?.address) return;
+    if (!account?.address || !merak) return;
 
     try {
       setIsLoading(true);
-      const merak = initMerakClient();
 
-      const metadataResults = await merak.listAssetsInfo({});
+      const metadataResults = await merak.listOwnedAssetsInfo({
+        account: account.address
+      });
       console.log('address', account.address);
       console.log('metadataResults', metadataResults);
 
@@ -78,7 +80,7 @@ export default function RemoveLiquidity() {
     } finally {
       setIsLoading(false);
     }
-  }, [account?.address, setAllAssetsState]);
+  }, [account?.address, merak, setAllAssetsState, setIsLoading]);
 
   // Initialize asset loading
   useEffect(() => {
@@ -111,9 +113,9 @@ export default function RemoveLiquidity() {
       }
 
       try {
-        const asset1Id = Number(asset1Param);
-        const asset2Id = Number(asset2Param);
-        const lpTokenId = Number(lpTokenIdParam);
+        const asset1Id = asset1Param;
+        const asset2Id = asset2Param;
+        const lpTokenId = lpTokenIdParam;
         // Get token metadata
         const token1Info = allAssetsState.assetInfos.find((asset) => asset.assetId === asset1Id);
         const token2Info = allAssetsState.assetInfos.find((asset) => asset.assetId === asset2Id);
@@ -153,7 +155,7 @@ export default function RemoveLiquidity() {
         setLpTokenId(lpTokenId);
 
         // Get available token list
-        const merak = initMerakClient();
+        if (!merak) return;
         const connectedTokens = await merak.getConnectedTokens(token1.id);
         setAvailableTokenBs(connectedTokens);
       } catch (error) {
@@ -164,7 +166,7 @@ export default function RemoveLiquidity() {
     };
 
     loadTokensFromParams();
-  }, [account?.address, allAssetsState.assetInfos, searchParams, router]);
+  }, [account?.address, allAssetsState.assetInfos, searchParams, router, merak]);
 
   // Query LP token balance when tokens are selected
   useEffect(() => {
@@ -173,36 +175,16 @@ export default function RemoveLiquidity() {
 
       console.log(!tokenA || !tokenB || !account?.address);
 
-      if (!tokenA || !tokenB || !account?.address) return;
+      if (!tokenA || !tokenB || !account?.address || !merak) return;
 
       try {
-        const merak = initMerakClient();
         console.log(allAssetsState.assetInfos, 'allAssetsState.assetInfos');
-
-        // // Simplified approach: just look for LP tokens in the user's assets
-        // // that match the token pair we're interested in
-        // const userLpTokens = allAssetsState.assetInfos.filter((asset) => {
-        //   // Check if it's an LP token by examining the symbol (usually contains a hyphen for pair tokens)
-        //   const symbol = asset.metadata.symbol || '';
-        //   return symbol.includes('-') || symbol.includes('/');
-        // });
-
-        // // Try to match an LP token with both tokenA and tokenB symbols
-        // const matchedLpToken = userLpTokens.find((token) => {
-        //   const symbol = token.metadata.symbol || '';
-        //   return (
-        //     (symbol.includes(tokenA.symbol) && symbol.includes(tokenB.symbol)) ||
-        //     // Also check for reversed order
-        //     (symbol.includes(tokenB.symbol) && symbol.includes(tokenA.symbol))
-        //   );
-        // });
-
-        // console.log(matchedLpToken, 'matchedLpToken');
-
+        console.log(lpTokenId, 'lpTokenId');
         const lpBalance = await merak.balanceOf(lpTokenId, account.address);
+        console.log(lpBalance, 'lpBalance');
         if (lpBalance) {
           setLpTokenId(lpTokenId);
-          const balance = Number(lpBalance) / Math.pow(10, 9);
+          const balance = Number(lpBalance.balance) / Math.pow(10, 9);
           setLpTokenBalance(balance.toFixed(9));
         } else {
           // If we can't find an exact match, try to query the balance directly
@@ -212,16 +194,16 @@ export default function RemoveLiquidity() {
             const lpTokenIdFromParams = searchParams.get('lpTokenId');
 
             if (lpTokenIdFromParams) {
-              const tokenId = Number(lpTokenIdFromParams);
+              const tokenId = lpTokenIdFromParams;
               setLpTokenId(tokenId);
 
               const lpBalance = await merak.balanceOf(tokenId, account.address);
 
-              if (lpBalance && lpBalance[0]) {
+              if (lpBalance) {
                 const lpDecimals = 9; // Assumption
-                const formattedBalance = (Number(lpBalance[0]) / Math.pow(10, lpDecimals)).toFixed(
-                  4
-                );
+                const formattedBalance = (
+                  Number(lpBalance.balance) / Math.pow(10, lpDecimals)
+                ).toFixed(4);
                 setLpTokenBalance(formattedBalance);
               } else {
                 setLpTokenBalance('0');
@@ -238,13 +220,13 @@ export default function RemoveLiquidity() {
     }
 
     fetchLpToken();
-  }, [tokenA, tokenB, account?.address, allAssetsState.assetInfos, searchParams]);
+  }, [tokenA, tokenB, account?.address, allAssetsState.assetInfos, searchParams, merak, lpTokenId]);
 
   const handleSelectTokenA = async (token: TokenData) => {
     console.log(token, 'select token A');
     setTokenA(token);
     setIsTokenAModalOpen(false);
-    const merak = initMerakClient();
+    if (!merak) return;
     const connectedTokens = await merak.getConnectedTokens(token.id);
     console.log(connectedTokens, 'connectedTokens');
     setAvailableTokenBs(connectedTokens);
@@ -270,8 +252,12 @@ export default function RemoveLiquidity() {
       return;
     }
 
+    if (!merak || !account?.address) {
+      toast.error('Wallet not connected');
+      return;
+    }
+
     console.log('Remove liquidity');
-    const merak = initMerakClient();
     let tx = new Transaction();
 
     console.log(tokenA, tokenB);
@@ -358,7 +344,8 @@ export default function RemoveLiquidity() {
         !amount ||
         parseFloat(amount) <= 0 ||
         !lpTokenId ||
-        !account?.address
+        !account?.address ||
+        !merak
       ) {
         setEstimatedAmountA('');
         setEstimatedAmountB('');
@@ -366,20 +353,30 @@ export default function RemoveLiquidity() {
       }
 
       try {
-        const merak = initMerakClient();
         const lpAmount = BigInt(Math.floor(parseFloat(amount) * Math.pow(10, 9))); // LP token decimals
+
+        // Get the total supply of LP token
+        const supplyData = await merak.supplyOf(lpTokenId);
+        if (!supplyData) {
+          console.error('LP token supply not found');
+          return;
+        }
 
         const estimates = await merak.calRemoveLpAmount({
           address: account.address,
           poolAssetId: lpTokenId,
+          poolSupply: Number(supplyData.supply),
           amount: lpAmount
         });
 
         console.log(estimates, 'estimates');
 
         if (estimates) {
-          const amountA = estimates.formattedAmountA.toFixed(tokenA.decimals);
-          const amountB = estimates.formattedAmountB.toFixed(tokenB.decimals);
+          // Format the amounts by dividing by decimals
+          const formattedAmountA = estimates.amountA / Math.pow(10, tokenA.decimals);
+          const formattedAmountB = estimates.amountB / Math.pow(10, tokenB.decimals);
+          const amountA = formattedAmountA.toFixed(tokenA.decimals);
+          const amountB = formattedAmountB.toFixed(tokenB.decimals);
           console.log(amountA, amountB, 'amountA, amountB');
           console.log(estimates, 'estimates');
           setEstimatedAmountA(amountA);
@@ -390,7 +387,7 @@ export default function RemoveLiquidity() {
         toast.error('Failed to calculate output amounts');
       }
     },
-    [tokenA, tokenB, lpTokenId, account?.address]
+    [tokenA, tokenB, lpTokenId, account?.address, merak]
   );
 
   // Calculate estimated output when input amount changes

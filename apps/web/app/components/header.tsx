@@ -29,6 +29,9 @@ export default function Header() {
         <Link href="/pool" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Pool
         </Link>
+        <Link href="/positions" className="text-sm font-medium text-gray-600 hover:text-blue-500">
+          Positions
+        </Link>
         <Link href="/assets" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Assets
         </Link>
