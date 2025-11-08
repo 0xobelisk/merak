@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { ArrowLeft, ChevronDown } from 'lucide-react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
@@ -11,8 +11,7 @@ import { toast } from 'sonner';
 import { useSignAndExecuteTransaction, useCurrentAccount } from '@mysten/dapp-kit';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { WALLETCHAIN } from '@/app/constants';
-import { useAtom } from 'jotai';
-import { AllAssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
+import { useUserAssets } from '@/app/hooks/useUserAssets';
 
 interface TokenData {
   symbol: string;
@@ -44,50 +43,22 @@ export default function RemoveLiquidity() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Global state management with Jotai
-  const [allAssetsState, setAllAssetsState] = useAtom(AllAssetsStateAtom);
-  const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
+  // Use React Query hooks for data fetching with automatic caching
+  const { data: userAssetsData, isLoading } = useUserAssets();
+
+  // Memoize assets list for performance
+  const allAssetsState = useMemo(
+    () => ({
+      assetInfos: userAssetsData?.data || []
+    }),
+    [userAssetsData]
+  );
 
   const [slippage, setSlippage] = useState(0.5); // Slippage, percentage
   const [customSlippage, setCustomSlippage] = useState('');
 
   const [estimatedAmountA, setEstimatedAmountA] = useState('');
   const [estimatedAmountB, setEstimatedAmountB] = useState('');
-
-  /**
-   * Query asset list
-   * Get account information and asset metadata
-   */
-  const queryAssets = useCallback(async () => {
-    if (!account?.address || !merak) return;
-
-    try {
-      setIsLoading(true);
-
-      const metadataResults = await merak.listOwnedAssetsInfo({
-        account: account.address
-      });
-      console.log('address', account.address);
-      console.log('metadataResults', metadataResults);
-
-      // Update state
-      setAllAssetsState({
-        assetInfos: metadataResults.data
-      });
-    } catch (error) {
-      console.error('Failed to fetch assets:', error);
-      toast.error('Failed to fetch assets, please try again');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [account?.address, merak, setAllAssetsState, setIsLoading]);
-
-  // Initialize asset loading
-  useEffect(() => {
-    if (account?.address) {
-      queryAssets();
-    }
-  }, [account?.address, queryAssets]);
 
   // Initialize tokens from URL parameters
   useEffect(() => {
@@ -310,8 +281,7 @@ export default function RemoveLiquidity() {
             });
             setDigest(result.digest);
 
-            // Refresh LP token balance
-            queryAssets();
+            // Note: React Query will auto-refetch user assets
             router.push('/positions');
           },
           onError: (error) => {
@@ -362,11 +332,55 @@ export default function RemoveLiquidity() {
           return;
         }
 
+        // Create metadata map from already loaded token data to avoid redundant queries
+        const metadataMap = new Map();
+        if (tokenA && tokenB) {
+          metadataMap.set(tokenA.id, {
+            assetId: tokenA.id,
+            assetType: '',
+            name: tokenA.name,
+            symbol: tokenA.symbol,
+            description: '',
+            decimals: tokenA.decimals,
+            iconUrl: tokenA.iconUrl,
+            owner: '',
+            status: '',
+            isMintable: false,
+            isBurnable: false,
+            isFreezable: false,
+            isDeleted: false,
+            createdAtTimestampMs: '',
+            updatedAtTimestampMs: '',
+            lastUpdateDigest: '',
+            nodeId: ''
+          });
+          metadataMap.set(tokenB.id, {
+            assetId: tokenB.id,
+            assetType: '',
+            name: tokenB.name,
+            symbol: tokenB.symbol,
+            description: '',
+            decimals: tokenB.decimals,
+            iconUrl: tokenB.iconUrl,
+            owner: '',
+            status: '',
+            isMintable: false,
+            isBurnable: false,
+            isFreezable: false,
+            isDeleted: false,
+            createdAtTimestampMs: '',
+            updatedAtTimestampMs: '',
+            lastUpdateDigest: '',
+            nodeId: ''
+          });
+        }
+
         const estimates = await merak.calRemoveLpAmount({
           address: account.address,
           poolAssetId: lpTokenId,
           poolSupply: Number(supplyData.supply),
-          amount: lpAmount
+          amount: lpAmount,
+          metadataMap // Pass cached metadata to avoid redundant queries
         });
 
         console.log(estimates, 'estimates');

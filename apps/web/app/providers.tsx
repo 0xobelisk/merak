@@ -25,7 +25,25 @@ const { networkConfig } = createNetworkConfig({
   mainnet: { url: getFullnodeUrl('mainnet') }
 });
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Metadata caching: 5 minutes
+      staleTime: 5 * 60 * 1000,
+      // Keep unused data in cache for 10 minutes
+      gcTime: 10 * 60 * 1000,
+      // Retry failed requests
+      retry: 2,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      // Don't refetch on window focus by default (hooks can override)
+      refetchOnWindowFocus: false,
+      // Refetch on mount if data is stale
+      refetchOnMount: true,
+      // Don't refetch on reconnect by default
+      refetchOnReconnect: false
+    }
+  }
+});
 
 const DUBHE_CONFIG: DubheConfig = {
   network: NETWORK,

@@ -1,7 +1,7 @@
 'use client';
 
 import { RefreshCw, ArrowRight } from 'lucide-react';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import { Button } from '@repo/ui/components/ui/button';
 import { useMerak } from '@/app/jotai/merak';
@@ -9,13 +9,17 @@ import { useRouter } from 'next/navigation';
 import { useCurrentAccount } from '@mysten/dapp-kit';
 import { useEnrichedAssets } from '@/app/hooks/useRegistryAssets';
 import { getLogoUrl } from '@/app/types/registry';
+import { useUserLpAssets } from '@/app/hooks/useUserAssets';
+import { useBatchAssetMetadata } from '@/app/hooks/useAssetMetadata';
+import { useQuery } from '@tanstack/react-query';
 
 export default function PositionsList() {
   const merak = useMerak();
   const account = useCurrentAccount();
-  const [isLoading, setIsLoading] = useState(true);
-  const [positions, setPositions] = useState<PositionType[]>([]);
   const router = useRouter();
+
+  // Use React Query hook for LP assets
+  const { data: lpAssetsData, isLoading: isLoadingLpAssets } = useUserLpAssets({ first: 50 });
 
   // Get registry assets for local logos
   const { data: enrichedAssets } = useEnrichedAssets({ status: 'live' });
@@ -23,13 +27,63 @@ export default function PositionsList() {
   // Helper function to get logo from registry or fallback to provided URL
   const getTokenLogo = useCallback(
     (assetId: string, fallbackUrl: string) => {
-      const registryAsset = enrichedAssets.find(
-        (asset) => asset.metadata.assetId === assetId
-      );
+      const registryAsset = enrichedAssets.find((asset) => asset.metadata.assetId === assetId);
       return registryAsset ? getLogoUrl(registryAsset) : fallbackUrl;
     },
     [enrichedAssets]
   );
+
+  // Fetch pool info for all LP assets to extract asset IDs
+  const { data: poolInfoList = [] } = useQuery({
+    queryKey: ['lpPoolsInfo', lpAssetsData?.data],
+    queryFn: async () => {
+      if (!merak || !lpAssetsData?.data || lpAssetsData.data.length === 0) {
+        return [];
+      }
+
+      const poolInfoPromises = lpAssetsData.data.map(async (lpAsset) => {
+        try {
+          const poolInfo = await merak.storage.list.assetPool({
+            poolAssetId: lpAsset.assetId,
+            first: 1
+          });
+
+          if (!poolInfo || poolInfo.edges.length === 0) {
+            return null;
+          }
+
+          return {
+            lpAssetId: lpAsset.assetId,
+            lpBalance: lpAsset.balance,
+            lpMetadata: lpAsset.metadata,
+            pool: poolInfo.edges[0].node
+          };
+        } catch (error) {
+          console.error(`Error fetching pool for LP asset ${lpAsset.assetId}:`, error);
+          return null;
+        }
+      });
+
+      const results = await Promise.all(poolInfoPromises);
+      return results.filter((item): item is NonNullable<typeof item> => item !== null);
+    },
+    enabled: !!merak && !!lpAssetsData?.data && lpAssetsData.data.length > 0,
+    staleTime: 30 * 1000, // 30 seconds
+    gcTime: 5 * 60 * 1000
+  });
+
+  // Extract all unique asset IDs for batch metadata fetching
+  const assetIds = useMemo(() => {
+    const ids = new Set<string>();
+    poolInfoList.forEach((poolInfo) => {
+      ids.add(poolInfo.pool.asset0);
+      ids.add(poolInfo.pool.asset1);
+    });
+    return Array.from(ids);
+  }, [poolInfoList]);
+
+  // Batch fetch metadata with React Query caching
+  const { data: metadataMap } = useBatchAssetMetadata(assetIds, assetIds.length > 0);
 
   type PositionType = {
     lpAssetId: string;
@@ -47,102 +101,82 @@ export default function PositionsList() {
     reserve1: string;
   };
 
-  const fetchPositions = useCallback(async () => {
-    if (!merak || !account?.address) return;
-    setIsLoading(true);
+  // Build positions using cached metadata
+  const { data: positions = [], refetch: refetchPositions } = useQuery({
+    queryKey: ['positions', poolInfoList, metadataMap],
+    queryFn: async () => {
+      if (!merak || !metadataMap || poolInfoList.length === 0) {
+        return [];
+      }
 
-    try {
-      // Get all LP tokens owned by user
-      const lpAssets = await merak.listAccountLpAssets({
-        account: account.address,
-        first: 50
-      });
+      try {
+        const positionsData = await Promise.all(
+          poolInfoList.map(async (poolInfo) => {
+            try {
+              const { pool, lpAssetId, lpBalance, lpMetadata } = poolInfo;
 
-      console.log('LP Assets:', lpAssets);
+              // Get metadata from cached map
+              const asset1Metadata = metadataMap.get(pool.asset0);
+              const asset2Metadata = metadataMap.get(pool.asset1);
 
-      // For each LP token, get pool details
-      const positionsData = await Promise.all(
-        lpAssets.data.map(async (lpAsset) => {
-          try {
-            // Query pool info using LP asset ID
-            const poolInfo = await merak.storage.list.assetPool({
-              poolAssetId: lpAsset.assetId,
-              first: 1
-            });
+              if (!asset1Metadata || !asset2Metadata) {
+                console.log('Missing metadata for pool assets');
+                return null;
+              }
 
-            if (!poolInfo || poolInfo.edges.length === 0) {
-              console.log(`No pool found for LP asset ${lpAsset.assetId}`);
+              // Calculate share percentage
+              const lpBalanceBigInt = BigInt(lpBalance || '0');
+              const totalSupply = await merak.supplyOf(lpAssetId);
+              const sharePercentage =
+                totalSupply && BigInt(totalSupply.supply) > 0n
+                  ? ((Number(lpBalanceBigInt) / Number(BigInt(totalSupply.supply))) * 100).toFixed(
+                      4
+                    )
+                  : '0';
+
+              // Format liquidity
+              const reserve0Formatted = (
+                Number(pool.reserve0) / Math.pow(10, asset1Metadata.decimals)
+              ).toFixed(4);
+              const reserve1Formatted = (
+                Number(pool.reserve1) / Math.pow(10, asset2Metadata.decimals)
+              ).toFixed(4);
+
+              return {
+                lpAssetId,
+                lpBalance: (Number(lpBalance || '0') / Math.pow(10, lpMetadata.decimals)).toFixed(
+                  9
+                ),
+                lpSymbol: lpMetadata.symbol || 'LP',
+                asset1Id: pool.asset0,
+                asset2Id: pool.asset1,
+                asset1Symbol: asset1Metadata.symbol || 'Unknown',
+                asset2Symbol: asset2Metadata.symbol || 'Unknown',
+                asset1Image: asset1Metadata.iconUrl || '/registry/sui/images/sui.svg',
+                asset2Image: asset2Metadata.iconUrl || '/registry/sui/images/sui.svg',
+                poolLiquidity: `${reserve0Formatted} / ${reserve1Formatted}`,
+                sharePercentage,
+                reserve0: pool.reserve0,
+                reserve1: pool.reserve1
+              } as PositionType;
+            } catch (error) {
+              console.error(`Error processing position:`, error);
               return null;
             }
+          })
+        );
 
-            const pool = poolInfo.edges[0].node;
-
-            // Get metadata for both tokens in the pool
-            const [asset1Metadata, asset2Metadata] = await Promise.all([
-              merak.getMetadata(pool.asset0),
-              merak.getMetadata(pool.asset1)
-            ]);
-
-            if (!asset1Metadata || !asset2Metadata) {
-              console.log('Missing metadata for pool assets');
-              return null;
-            }
-
-            // Calculate share percentage
-            const lpBalance = BigInt(lpAsset.balance || '0');
-            const totalSupply = await merak.supplyOf(lpAsset.assetId);
-            const sharePercentage =
-              totalSupply && totalSupply > 0n
-                ? ((Number(lpBalance) / Number(totalSupply)) * 100).toFixed(4)
-                : '0';
-
-            // Format liquidity (sum of reserves in their respective decimals)
-            const reserve0Formatted = (
-              Number(pool.reserve0) / Math.pow(10, asset1Metadata.decimals)
-            ).toFixed(4);
-            const reserve1Formatted = (
-              Number(pool.reserve1) / Math.pow(10, asset2Metadata.decimals)
-            ).toFixed(4);
-
-            return {
-              lpAssetId: lpAsset.assetId,
-              lpBalance: (
-                Number(lpAsset.balance || '0') / Math.pow(10, lpAsset.metadata.decimals)
-              ).toFixed(9),
-              lpSymbol: lpAsset.metadata.symbol || 'LP',
-              asset1Id: pool.asset0,
-              asset2Id: pool.asset1,
-              asset1Symbol: asset1Metadata.symbol || 'Unknown',
-              asset2Symbol: asset2Metadata.symbol || 'Unknown',
-              asset1Image: asset1Metadata.iconUrl || '/registry/sui/images/sui.svg',
-              asset2Image: asset2Metadata.iconUrl || '/registry/sui/images/sui.svg',
-              poolLiquidity: `${reserve0Formatted} / ${reserve1Formatted}`,
-              sharePercentage,
-              reserve0: pool.reserve0,
-              reserve1: pool.reserve1
-            } as PositionType;
-          } catch (error) {
-            console.error(`Error processing LP asset ${lpAsset.assetId}:`, error);
-            return null;
-          }
-        })
-      );
-
-      // Filter out null values
-      const validPositions = positionsData.filter(
-        (position): position is PositionType => position !== null
-      );
-      setPositions(validPositions);
-    } catch (error) {
-      console.error('Failed to fetch positions:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [merak, account?.address]);
-
-  useEffect(() => {
-    fetchPositions();
-  }, [fetchPositions]);
+        return positionsData.filter((position): position is PositionType => position !== null);
+      } catch (error) {
+        console.error('Failed to build positions:', error);
+        return [];
+      }
+    },
+    enabled: !!merak && !!metadataMap && poolInfoList.length > 0,
+    staleTime: 30 * 1000, // 30 seconds
+    gcTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: true
+  });
 
   const handleRemoveLiquidity = (position: PositionType) => {
     const queryParams = new URLSearchParams();
@@ -162,6 +196,9 @@ export default function PositionsList() {
     );
   }
 
+  // Determine if we're still loading
+  const isProcessing = isLoadingLpAssets || (!metadataMap && poolInfoList.length > 0);
+
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
       {/* Header */}
@@ -173,17 +210,17 @@ export default function PositionsList() {
         <Button
           variant="outline"
           size="sm"
-          onClick={fetchPositions}
-          disabled={isLoading}
+          onClick={() => refetchPositions()}
+          disabled={isProcessing}
           className="flex items-center space-x-2"
         >
-          <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`h-4 w-4 ${isProcessing ? 'animate-spin' : ''}`} />
           <span>Refresh</span>
         </Button>
       </div>
 
       {/* Loading State */}
-      {isLoading && (
+      {isProcessing && (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
             <div key={i} className="bg-white p-6 rounded-lg shadow">
@@ -194,7 +231,7 @@ export default function PositionsList() {
       )}
 
       {/* Empty State */}
-      {!isLoading && positions.length === 0 && (
+      {!isProcessing && positions.length === 0 && (
         <div className="bg-white p-12 rounded-lg shadow text-center">
           <p className="text-gray-500 mb-4">You don't have any liquidity positions yet</p>
           <Button onClick={() => router.push('/pool')}>Browse Pools</Button>
@@ -202,7 +239,7 @@ export default function PositionsList() {
       )}
 
       {/* Positions List */}
-      {!isLoading && positions.length > 0 && (
+      {!isProcessing && positions.length > 0 && (
         <div className="space-y-4">
           {positions.map((position, index) => (
             <div
@@ -273,4 +310,3 @@ export default function PositionsList() {
     </div>
   );
 }
-

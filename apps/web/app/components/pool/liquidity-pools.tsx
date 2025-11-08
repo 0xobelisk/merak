@@ -3,21 +3,21 @@
 import { Search, ChevronDown, RefreshCw, Grid, List, Info } from 'lucide-react';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
-import { useMerak } from '@/app/jotai/merak';
 import { useRouter } from 'next/navigation';
 import { useEnrichedAssets } from '@/app/hooks/useRegistryAssets';
 import { getLogoUrl } from '@/app/types/registry';
+import { usePools } from '@/app/hooks/usePools';
 
 export default function LiquidityPools() {
-  const merak = useMerak();
-  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPools, setFilteredPools] = useState<PoolType[]>([]);
-  const [pools, setPools] = useState<PoolType[]>([]);
   const [category, setCategory] = useState('All');
   const [sortBy, setSortBy] = useState('Default');
   const [viewMode, setViewMode] = useState('card'); // 'card' or 'table'
   const router = useRouter();
+
+  // Use React Query hook for pools data with automatic caching
+  const { data: pools = [], isLoading, refetch: refetchPools } = usePools({ pageSize: 3 });
 
   // Get registry assets for local logos
   const { data: enrichedAssets } = useEnrichedAssets({ status: 'live' });
@@ -68,34 +68,18 @@ export default function LiquidityPools() {
     token2Image: string;
   };
 
-  const fetchPools = useCallback(async () => {
-    if (!merak) return;
-    setIsLoading(true);
-
-    try {
-      const poolList = await merak.listPoolsInfo({
-        pageSize: 3
-      });
-      setPools(poolList);
-    } catch (error) {
-      console.error('Failed to fetch pools:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [merak]);
-
-  useEffect(() => {
-    fetchPools();
-  }, [fetchPools]);
-
+  // Filter pools based on search term
   useEffect(() => {
     if (pools.length > 0) {
       const filtered = pools.filter((pool) =>
         pool.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredPools(filtered);
+    } else {
+      setFilteredPools([]);
     }
   }, [searchTerm, pools]);
+
 
   const handleViewModeChange = () => {
     setViewMode((prevMode) => (prevMode === 'card' ? 'table' : 'card'));
@@ -359,7 +343,7 @@ export default function LiquidityPools() {
                 className={`bg-white p-2 rounded border border-gray-300 transition-all duration-200 ${
                   isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
                 }`}
-                onClick={fetchPools}
+                onClick={() => refetchPools()}
                 disabled={isLoading}
               >
                 <RefreshCw

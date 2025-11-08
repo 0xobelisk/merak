@@ -1,6 +1,7 @@
 'use client';
 
 import { ConnectButton, useCurrentWallet } from '@mysten/dapp-kit';
+import DataProvider from '@/app/components/data-provider';
 
 interface AppWrapperProps {
   children: React.ReactNode;
@@ -25,5 +26,6 @@ export default function AppWrapper({ children }: AppWrapperProps) {
     );
   }
 
-  return <>{children}</>;
+  // Wrap children with DataProvider for global data prefetching
+  return <DataProvider>{children}</DataProvider>;
 }

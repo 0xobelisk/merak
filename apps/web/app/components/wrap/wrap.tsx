@@ -29,6 +29,8 @@ import {
 } from '@repo/ui/components/ui/dialog';
 import { useEnrichedAssets } from '@/app/hooks/useRegistryAssets';
 import { getLogoUrl } from '@/app/types/registry';
+import { useBatchAssetMetadata } from '@/app/hooks/useAssetMetadata';
+import { useQuery } from '@tanstack/react-query';
 
 // Type definitions
 interface TokenInfo {
@@ -91,83 +93,64 @@ export default function TokenWrapper() {
   const [error, setError] = useState<string | null>(null);
 
   // Data states
-  const [wrapperAssets, setWrapperAssets] = useState<WrapperAssetInfo[]>([]);
   const [nativeTokenBalances, setNativeTokenBalances] = useState<Map<string, string>>(new Map());
-  const [ownedWrapperTokens, setOwnedWrapperTokens] = useState<TokenInfo[]>([]);
 
   // Get enriched assets from registry (whitelist with local logos)
-  const { data: enrichedAssets, isLoading: isRegistryLoading } = useEnrichedAssets({
+  const { data: enrichedAssets = [], isLoading: isRegistryLoading } = useEnrichedAssets({
     status: 'live'
   });
 
-  // Fetch all wrapper assets (supported tokens for wrapping)
-  // Now enhanced with registry data for better logos and metadata
-  const fetchWrapperAssets = useCallback(async () => {
-    if (!merak) return;
-    try {
-      const result = await merak.storage.list.assetWrapper({
-        first: 100
-      });
+  // Fetch wrapper assets list using React Query
+  const { data: wrapperAssetsRaw = [] } = useQuery({
+    queryKey: ['wrapperAssetsList'],
+    queryFn: async () => {
+      if (!merak) return [];
+      const result = await merak.storage.list.assetWrapper({ first: 100 });
+      return result?.edges?.map((edge) => edge.node) || [];
+    },
+    enabled: !!merak,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000
+  });
 
-      console.log('============== assetWrapper result ==============', result);
-      console.log('============== enrichedAssets ==============', enrichedAssets);
-      if (result?.edges) {
-        const assets: WrapperAssetInfo[] = await Promise.all(
-          result.edges.map(async (edge) => {
-            const node = edge.node;
-            console.log('============== node.assetId ==============', node.assetId);
-            console.log('============== node.coinType ==============', node.coinType);
+  // Extract assetIds for batch metadata fetching
+  const wrapperAssetIds = useMemo(
+    () => wrapperAssetsRaw.map((asset) => asset.assetId),
+    [wrapperAssetsRaw]
+  );
 
-            // Find matching registry asset for better metadata and local logo
-            const registryAsset = enrichedAssets.find(
-              (asset) => asset.metadata.assetId === node.assetId
-            );
-            console.log(
-              '============== registryAsset found ==============',
-              !!registryAsset,
-              registryAsset?.asset.symbol
-            );
+  // Batch fetch metadata with caching and auto-refresh
+  const { data: wrapperMetadataMap } = useBatchAssetMetadata(
+    wrapperAssetIds,
+    wrapperAssetIds.length > 0
+  );
 
-            let metadata = {
-              decimals: registryAsset?.metadata.decimals || 9,
-              symbol: registryAsset?.metadata.symbol || 'Unknown',
-              iconUrl: registryAsset ? getLogoUrl(registryAsset) : '/registry/sui/images/sui.svg'
-            };
+  // Build wrapper assets with metadata
+  const wrapperAssets = useMemo<WrapperAssetInfo[]>(() => {
+    if (!wrapperMetadataMap || wrapperAssetsRaw.length === 0) return [];
 
-            // If no registry data, fallback to on-chain metadata (but not iconUrl - avoid external URLs)
-            if (!registryAsset) {
-              try {
-                // Use getMetadata() which utilizes API caching
-                console.log('============== node.assetId 2 ==============', node.assetId);
-                const assetMetadata = await merak.getMetadata(node.assetId);
-                console.log('============== assetMetadata ==============', assetMetadata);
-                if (assetMetadata) {
-                  metadata = {
-                    decimals: assetMetadata.decimals || 9,
-                    symbol: assetMetadata.symbol || 'Unknown',
-                    // Always use local fallback icon, avoid external URLs
-                    iconUrl: '/registry/sui/images/sui.svg'
-                  };
-                }
-              } catch (err) {
-                console.error(`Failed to fetch metadata for asset ${node.assetId}:`, err);
-              }
-            }
+    return wrapperAssetsRaw.map((node) => {
+      // Find matching registry asset for better metadata and local logo
+      const registryAsset = enrichedAssets.find((asset) => asset.metadata.assetId === node.assetId);
 
-            return {
-              assetId: node.assetId,
-              coinType: node.coinType,
-              ...metadata
-            };
-          })
-        );
-        setWrapperAssets(assets);
-      }
-    } catch (error) {
-      console.error('Error fetching wrapper assets:', error);
-      toast.error('Failed to fetch wrapper assets');
-    }
-  }, [merak, enrichedAssets]);
+      // Use registry data or cached metadata
+      const metadata = {
+        decimals:
+          registryAsset?.metadata.decimals || wrapperMetadataMap.get(node.assetId)?.decimals || 9,
+        symbol:
+          registryAsset?.metadata.symbol ||
+          wrapperMetadataMap.get(node.assetId)?.symbol ||
+          'Unknown',
+        iconUrl: registryAsset ? getLogoUrl(registryAsset) : '/registry/sui/images/sui.svg'
+      };
+
+      return {
+        assetId: node.assetId,
+        coinType: node.coinType,
+        ...metadata
+      };
+    });
+  }, [wrapperAssetsRaw, wrapperMetadataMap, enrichedAssets]);
 
   // Fetch user's native token balances for wrapping
   const fetchNativeTokenBalances = useCallback(async () => {
@@ -197,103 +180,93 @@ export default function TokenWrapper() {
     }
   }, [account?.address, dubheContract, wrapperAssets]);
 
-  // Fetch user's owned wrapper tokens for unwrapping
-  const fetchOwnedWrapperTokens = useCallback(async () => {
-    if (!account?.address || !merak) return;
-    try {
-      const ownedAssets = await merak.listOwnedWrapperAssets({
-        account: account.address,
-        first: 50,
-        orderBy: [{ field: 'CREATED_AT_TIMESTAMP_MS', direction: 'ASC' }]
-      });
+  // Fetch user's owned wrapper tokens using React Query with cached metadata
+  const { data: ownedWrapperTokens = [] } = useQuery({
+    queryKey: ['ownedWrapperTokens', account?.address, wrapperMetadataMap],
+    queryFn: async () => {
+      if (!account?.address || !merak || !wrapperMetadataMap) return [];
 
-      console.log('============== ownedAssets ==============', ownedAssets);
-      if (ownedAssets?.data && Array.isArray(ownedAssets.data)) {
-        const tokens: TokenInfo[] = await Promise.all(
-          ownedAssets.data
-            .filter((asset) => asset && asset.balance && BigInt(asset.balance) > 0)
-            .map(async (asset) => {
-              // Find matching registry asset for better metadata and local logo
-              const registryAsset = enrichedAssets.find(
-                (regAsset) => regAsset.metadata.assetId === asset.assetId
-              );
+      try {
+        // Pass cached metadata map to SDK
+        const ownedAssets = await merak.listOwnedWrapperAssets({
+          account: account.address,
+          first: 50,
+          orderBy: [{ field: 'CREATED_AT_TIMESTAMP_MS', direction: 'ASC' }],
+          metadataMap: wrapperMetadataMap // Use React Query cached metadata
+        });
 
-              let metadata = {
-                decimals: registryAsset?.metadata.decimals || 9,
-                symbol: registryAsset?.metadata.symbol || 'Unknown',
-                iconUrl: registryAsset ? getLogoUrl(registryAsset) : '/registry/sui/images/sui.svg'
-              };
+        if (!ownedAssets?.data || !Array.isArray(ownedAssets.data)) {
+          return [];
+        }
 
-              // If no registry data, fallback to on-chain metadata (but not iconUrl - avoid external URLs)
-              if (!registryAsset) {
-                try {
-                  // Use getMetadata() which utilizes API caching
-                  console.log('============== asset.assetId 1 ==============', asset.assetId);
-                  const assetMetadata = await merak.getMetadata(asset.assetId);
-                  if (assetMetadata) {
-                    metadata = {
-                      decimals: assetMetadata.decimals || 9,
-                      symbol: assetMetadata.symbol || 'Unknown',
-                      // Always use local fallback icon, avoid external URLs
-                      iconUrl: '/registry/sui/images/sui.svg'
-                    };
-                  }
-                } catch (err) {
-                  console.error(`Failed to fetch metadata for asset ${asset.assetId}:`, err);
-                }
-              }
+        return ownedAssets.data
+          .filter((asset) => asset && asset.balance && BigInt(asset.balance) > 0)
+          .map((asset) => {
+            // Find matching registry asset for better metadata and local logo
+            const registryAsset = enrichedAssets.find(
+              (regAsset) => regAsset.metadata.assetId === asset.assetId
+            );
 
-              // Find coinType from wrapperAssets
-              const wrapperAsset = wrapperAssets.find((wa) => wa.assetId === asset.assetId);
+            // Use registry data or cached metadata (from wrapperMetadataMap)
+            const cachedMetadata = wrapperMetadataMap.get(asset.assetId);
+            const metadata = {
+              decimals:
+                registryAsset?.metadata.decimals ||
+                cachedMetadata?.decimals ||
+                asset.metadata?.decimals ||
+                9,
+              symbol:
+                registryAsset?.metadata.symbol ||
+                cachedMetadata?.symbol ||
+                asset.metadata?.symbol ||
+                'Unknown',
+              iconUrl: registryAsset ? getLogoUrl(registryAsset) : '/registry/sui/images/sui.svg'
+            };
 
-              return {
-                value: asset.assetId,
-                symbol: metadata.symbol,
-                balance: (Number(asset.balance) / Math.pow(10, metadata.decimals)).toFixed(4),
-                rawBalance: asset.balance,
-                decimals: metadata.decimals,
-                coinType: wrapperAsset?.coinType,
-                logo: (
-                  <img
-                    src={metadata.iconUrl}
-                    alt={metadata.symbol}
-                    width="20"
-                    height="20"
-                    style={{ marginRight: '8px' }}
-                    loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.src = '/registry/sui/images/sui.svg';
-                    }}
-                  />
-                )
-              };
-            })
-        );
-        setOwnedWrapperTokens(tokens);
-      } else {
-        setOwnedWrapperTokens([]);
+            // Find coinType from wrapperAssets
+            const wrapperAsset = wrapperAssets.find((wa) => wa.assetId === asset.assetId);
+
+            return {
+              value: asset.assetId,
+              symbol: metadata.symbol,
+              balance: (Number(asset.balance) / Math.pow(10, metadata.decimals)).toFixed(4),
+              rawBalance: asset.balance,
+              decimals: metadata.decimals,
+              coinType: wrapperAsset?.coinType,
+              logo: (
+                <img
+                  src={metadata.iconUrl}
+                  alt={metadata.symbol}
+                  width="20"
+                  height="20"
+                  style={{ marginRight: '8px' }}
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.src = '/registry/sui/images/sui.svg';
+                  }}
+                />
+              )
+            };
+          });
+      } catch (error) {
+        console.error('Error fetching owned wrapper tokens:', error);
+        toast.error('Failed to fetch owned wrapper tokens');
+        return [];
       }
-    } catch (error) {
-      console.error('Error fetching owned wrapper tokens:', error);
-      toast.error('Failed to fetch owned wrapper tokens');
-      setOwnedWrapperTokens([]);
-    }
-  }, [account?.address, merak, wrapperAssets, enrichedAssets]);
+    },
+    enabled: !!account?.address && !!merak && !!wrapperMetadataMap && wrapperAssets.length > 0,
+    staleTime: 30 * 1000, // 30 seconds (balances change frequently)
+    gcTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: true, // Auto-refresh when user returns to tab
+    refetchInterval: 30 * 1000 // Auto-refresh every 30 seconds
+  });
 
-  // Initialize data
-  useEffect(() => {
-    // Only fetch when enrichedAssets are loaded and merak is ready
-    if (enrichedAssets.length > 0 && merak) {
-      fetchWrapperAssets();
-    }
-  }, [enrichedAssets, merak, fetchWrapperAssets]);
-
+  // Fetch native token balances when wrapperAssets change
   useEffect(() => {
     if (wrapperAssets.length > 0) {
       fetchNativeTokenBalances();
-      fetchOwnedWrapperTokens();
     }
-  }, [wrapperAssets, fetchNativeTokenBalances, fetchOwnedWrapperTokens]);
+  }, [wrapperAssets, fetchNativeTokenBalances]);
 
   // Build token list for wrap mode
   const wrapTokenList = useMemo<TokenInfo[]>(() => {
@@ -408,7 +381,8 @@ export default function TokenWrapper() {
         {
           onSuccess: async (result) => {
             await dubheContract.waitForTransaction(result.digest);
-            await Promise.all([fetchNativeTokenBalances(), fetchOwnedWrapperTokens()]);
+            await fetchNativeTokenBalances();
+            // React Query will auto-refresh ownedWrapperTokens
             toast.success('Wrap successful');
             setAmount('');
           },
@@ -430,8 +404,7 @@ export default function TokenWrapper() {
     dubheContract,
     merak,
     signAndExecuteTransaction,
-    fetchNativeTokenBalances,
-    fetchOwnedWrapperTokens
+    fetchNativeTokenBalances
   ]);
 
   // Handle unwrap operation
@@ -479,7 +452,8 @@ export default function TokenWrapper() {
         {
           onSuccess: async (result) => {
             await dubheContract.waitForTransaction(result.digest);
-            await Promise.all([fetchNativeTokenBalances(), fetchOwnedWrapperTokens()]);
+            await fetchNativeTokenBalances();
+            // React Query will auto-refresh ownedWrapperTokens
             toast.success('Unwrap successful');
             setAmount('');
           },
@@ -501,8 +475,7 @@ export default function TokenWrapper() {
     dubheContract,
     merak,
     signAndExecuteTransaction,
-    fetchNativeTokenBalances,
-    fetchOwnedWrapperTokens
+    fetchNativeTokenBalances
   ]);
 
   return (

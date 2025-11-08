@@ -17,12 +17,12 @@ import { toast } from 'sonner';
 import { useCurrentAccount } from '@mysten/dapp-kit';
 import { fromTokenAtom, toTokenAtom, type Token } from '@/app/jotai/swap/tokens';
 import { WALLETCHAIN } from '@/app/constants';
-import { AssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
 import { AssetInfo } from '@0xobelisk/merak-sdk';
 import { useDubhe } from '@0xobelisk/react/sui';
 import { useEnrichedAssets } from '@/app/hooks/useRegistryAssets';
 import { useAssetWrappers } from '@/app/hooks/useAssetMetadata';
 import { getLogoUrl, findAssetByAssetId } from '@/app/types/registry';
+import { useUserAssets } from '@/app/hooks/useUserAssets';
 
 // Function to format balance
 const formatBalance = (balance: string, decimals: number): string => {
@@ -53,10 +53,18 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   const [slippage, setSlippage] = useState('0.50');
   const [customSlippage, setCustomSlippage] = useState('');
 
-  // Data states
-  const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
-  const [isAssetsLoading, setIsAssetsLoading] = useAtom(AssetsLoadingAtom);
-  const [filteredAssets, setFilteredAssets] = useState(assetsState.assetInfos);
+  // Use React Query hook for user assets with automatic caching
+  const { data: userAssetsData, isLoading: isAssetsLoading } = useUserAssets();
+
+  // Memoize assets state
+  const assetsState = useMemo(
+    () => ({
+      assetInfos: userAssetsData?.data || []
+    }),
+    [userAssetsData]
+  );
+
+  const [filteredAssets, setFilteredAssets] = useState<AssetInfo[]>([]);
   const [availableToTokens, setAvailableToTokens] = useState<AssetInfo[]>([]);
   const [availableFromTokens, setAvailableFromTokens] = useState<AssetInfo[]>([]);
 
@@ -392,39 +400,12 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
     }
   }, [fromToken, toToken, payAmount, router, setFromToken, setToToken, getCoinTypeFromAssetId]);
 
-  // Add this function - Similar to the portfolio page
-  const loadUserAssets = useCallback(async () => {
-    if (!account?.address || !merakClient) return;
-
-    try {
-      setIsAssetsLoading(true);
-
-      const metadataResults = await merakClient.listOwnedAssetsInfo({
-        account: account.address
-      });
-
-      // Update state with user's assets
-      setAssetsState({
-        assetInfos: metadataResults.data
-      });
-
-      console.log('Loaded user assets:', metadataResults.data);
-    } catch (error) {
-      console.error('Error querying assets:', error);
-      toast.error('Failed to fetch assets');
-    } finally {
-      setIsAssetsLoading(false);
-    }
-  }, [account?.address, merakClient, setAssetsState, setIsAssetsLoading]);
-
-  // Add this effect - Load assets when the page loads
+  // Redirect if wallet not connected
   useEffect(() => {
-    if (account?.address) {
-      loadUserAssets();
-    } else {
+    if (!account?.address) {
       router.push('/'); // Redirect to home if no wallet connected
     }
-  }, [account, router, loadUserAssets]);
+  }, [account, router]);
 
   // Initialize Tokens
   useEffect(() => {
@@ -596,21 +577,14 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
             // 等待链上数据更新
             await dubheContract.waitForTransaction(result.digest);
 
-            // 重新加载用户资产
-            const metadataResults = await merakClient.listOwnedAssetsInfo({
-              account: account.address
-            });
-
-            // Update state with user's assets
-            setAssetsState({
-              assetInfos: metadataResults.data
-            });
+            // 重新加载用户资产 - React Query will auto-refetch
+            // Note: This will be handled automatically by the useUserAssets hook
             // 更新当前代币的余额 (保持使用 registry logo)
-            if (fromToken && toToken) {
-              const fromTokenInfo = metadataResults.data.find(
+            if (fromToken && toToken && assetsState.assetInfos) {
+              const fromTokenInfo = assetsState.assetInfos.find(
                 (asset) => asset.assetId === fromToken.id
               );
-              const toTokenInfo = metadataResults.data.find(
+              const toTokenInfo = assetsState.assetInfos.find(
                 (asset) => asset.assetId === toToken.id
               );
 
@@ -676,7 +650,6 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
     dubheContract,
     signAndExecuteTransaction,
     assetsState.assetInfos,
-    setAssetsState,
     setFromToken,
     setToToken,
     setFromTokenBalance,

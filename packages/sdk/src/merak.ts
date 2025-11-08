@@ -701,13 +701,15 @@ export class Merak {
     assetType,
     first,
     after,
-    orderBy
+    orderBy,
+    metadataMap: providedMetadataMap
   }: {
     account: string;
     assetType?: AssetType;
     first?: number;
     after?: string;
     orderBy?: OrderBy[];
+    metadataMap?: Map<string, AssetMetadataType>;
   }): Promise<AssetInfoResponse> {
     const assetsData = await this.storage.list.assetAccount({
       account,
@@ -716,9 +718,18 @@ export class Merak {
       orderBy: orderBy ?? [{ field: 'CREATED_AT_TIMESTAMP_MS', direction: 'ASC' }]
     });
 
+    // If metadata map is provided, use it; otherwise fetch each individually
     const allResults = await Promise.all(
       assetsData.edges.map(async (item) => {
-        const metadata = await this.getMetadata(item.node.assetId);
+        let metadata: AssetMetadataType | null = null;
+
+        if (providedMetadataMap && providedMetadataMap.has(item.node.assetId)) {
+          // Use provided metadata from cache
+          metadata = providedMetadataMap.get(item.node.assetId) || null;
+        } else {
+          // Fetch metadata if not provided
+          metadata = await this.getMetadata(item.node.assetId);
+        }
 
         // Skip if metadata is not found
         if (!metadata) {
@@ -762,64 +773,141 @@ export class Merak {
     assetType,
     first,
     after,
-    orderBy
+    orderBy,
+    metadataMap
   }: {
     account: string;
     assetType?: AssetType;
     first?: number;
     after?: string;
     orderBy?: OrderBy[];
+    metadataMap?: Map<string, AssetMetadataType>;
   }): Promise<AssetInfoResponse> {
-    return this.listAccountLpAssets({ account, assetType, first, after, orderBy });
+    return this.listAccountLpAssets({ account, assetType, first, after, orderBy, metadataMap });
   }
 
   async listPoolsInfo({
-    pageSize
+    pageSize,
+    metadataMap: providedMetadataMap
   }: {
     pageSize?: number;
+    metadataMap?: Map<string, AssetMetadataType>;
   } = {}): Promise<PoolInfo[]> {
     const poolList = await this.allPoolList({
       pageSize
     });
-    const savedPools: PoolInfo[] = [];
 
-    if (poolList && poolList.length > 0) {
-      for (const item of poolList) {
-        const asset1Metadata = await this.getMetadata(item.asset0);
-        const asset2Metadata = await this.getMetadata(item.asset1);
-        const poolAsset1Amount = await this.queryAccount({
-          address: item.poolAddress,
-          assetId: item.asset0
+    if (!poolList || poolList.length === 0) {
+      return [];
+    }
+
+    // Collect unique asset IDs and pool addresses for batch querying
+    const uniqueAssetIds = new Set<string>();
+    const accountQueries: Array<{
+      address: string;
+      assetId: string;
+      poolIndex: number;
+      assetIndex: number;
+    }> = [];
+
+    poolList.forEach((item, poolIndex) => {
+      uniqueAssetIds.add(item.asset0);
+      uniqueAssetIds.add(item.asset1);
+      accountQueries.push({
+        address: item.poolAddress,
+        assetId: item.asset0,
+        poolIndex,
+        assetIndex: 0
+      });
+      accountQueries.push({
+        address: item.poolAddress,
+        assetId: item.asset1,
+        poolIndex,
+        assetIndex: 1
+      });
+    });
+
+    // Create metadata map: use provided metadata or fetch missing ones
+    let metadataMap: Map<string, AssetMetadataType>;
+
+    if (providedMetadataMap) {
+      // Use provided metadata, only fetch missing ones
+      metadataMap = new Map(providedMetadataMap);
+      const missingAssetIds = Array.from(uniqueAssetIds).filter(
+        (assetId) => !metadataMap.has(assetId)
+      );
+
+      if (missingAssetIds.length > 0) {
+        const missingMetadataPromises = missingAssetIds.map((assetId) =>
+          this.getMetadata(assetId).then((metadata) => ({ assetId, metadata }))
+        );
+        const missingMetadataResults = await Promise.all(missingMetadataPromises);
+        missingMetadataResults.forEach(({ assetId, metadata }) => {
+          if (metadata) {
+            metadataMap.set(assetId, metadata);
+          }
         });
-        const poolAsset2Amount = await this.queryAccount({
-          address: item.poolAddress,
-          assetId: item.asset1
-        });
-
-        if (!asset1Metadata || !asset2Metadata) {
-          throw new Error(
-            `Failed to fetch pool info, metadata not found: ${item.asset0} / ${item.asset1}`
-          );
-        }
-
-        const poolAsset1AmountNum =
-          parseFloat(poolAsset1Amount?.balance ?? '0') / 10 ** asset1Metadata.decimals;
-        const poolAsset2AmountNum =
-          parseFloat(poolAsset2Amount?.balance ?? '0') / 10 ** asset2Metadata.decimals;
-        const poolInfo = {
-          name: `${asset1Metadata.symbol} / ${asset2Metadata.symbol}`,
-          asset1Id: item.asset0,
-          asset2Id: item.asset1,
-          lpAssetId: item.lpAsset,
-          apr: '10%',
-          liquidity: `${poolAsset1AmountNum} ${asset1Metadata.symbol} / ${poolAsset2AmountNum} ${asset2Metadata.symbol}`,
-          volume: `${poolAsset1AmountNum + poolAsset2AmountNum}`,
-          feeTier: '1%',
-          token1Image: asset1Metadata.iconUrl,
-          token2Image: asset2Metadata.iconUrl
-        };
-        savedPools.push(poolInfo);
       }
+    } else {
+      // Fetch all metadata if not provided
+      const metadataPromises = Array.from(uniqueAssetIds).map((assetId) =>
+        this.getMetadata(assetId).then((metadata) => ({ assetId, metadata }))
+      );
+      const metadataResults = await Promise.all(metadataPromises);
+      metadataMap = new Map<string, AssetMetadataType>();
+      metadataResults.forEach(({ assetId, metadata }) => {
+        if (metadata) {
+          metadataMap.set(assetId, metadata);
+        }
+      });
+    }
+
+    // Batch fetch all account balances concurrently
+    const balancePromises = accountQueries.map((query) =>
+      this.queryAccount({ address: query.address, assetId: query.assetId }).then((balance) => ({
+        ...query,
+        balance
+      }))
+    );
+    const balanceResults = await Promise.all(balancePromises);
+
+    // Create balance map indexed by poolIndex and assetIndex
+    const balanceMap = new Map<string, string>();
+    balanceResults.forEach(({ poolIndex, assetIndex, balance }) => {
+      balanceMap.set(`${poolIndex}-${assetIndex}`, balance?.balance ?? '0');
+    });
+
+    // Build pool info array
+    const savedPools: PoolInfo[] = [];
+    for (let i = 0; i < poolList.length; i++) {
+      const item = poolList[i];
+      const asset1Metadata = metadataMap.get(item.asset0);
+      const asset2Metadata = metadataMap.get(item.asset1);
+
+      if (!asset1Metadata || !asset2Metadata) {
+        console.warn(`Skipping pool ${i}: metadata not found for ${item.asset0} or ${item.asset1}`);
+        continue;
+      }
+
+      const poolAsset1Balance = balanceMap.get(`${i}-0`) ?? '0';
+      const poolAsset2Balance = balanceMap.get(`${i}-1`) ?? '0';
+
+      const poolAsset1AmountNum = parseFloat(poolAsset1Balance) / 10 ** asset1Metadata.decimals;
+      const poolAsset2AmountNum = parseFloat(poolAsset2Balance) / 10 ** asset2Metadata.decimals;
+
+      const poolInfo = {
+        name: `${asset1Metadata.symbol} / ${asset2Metadata.symbol}`,
+        asset1Id: item.asset0,
+        asset2Id: item.asset1,
+        lpAssetId: item.lpAsset,
+        apr: '10%',
+        liquidity: `${poolAsset1AmountNum} ${asset1Metadata.symbol} / ${poolAsset2AmountNum} ${asset2Metadata.symbol}`,
+        volume: `${poolAsset1AmountNum + poolAsset2AmountNum}`,
+        feeTier: '1%',
+        token1Image: asset1Metadata.iconUrl,
+        token2Image: asset2Metadata.iconUrl
+      };
+      savedPools.push(poolInfo);
     }
 
     return savedPools;
@@ -829,26 +917,37 @@ export class Merak {
     account,
     first,
     after,
-    orderBy
+    orderBy,
+    metadataMap
   }: {
     account: string;
     first?: number;
     after?: string;
     orderBy?: OrderBy[];
+    metadataMap?: Map<string, AssetMetadataType>;
   }): Promise<AssetInfoResponse> {
-    return this.listOwnedAssetsInfo({ account, assetType: 'Wrapped', first, after, orderBy });
+    return this.listOwnedAssetsInfo({
+      account,
+      assetType: 'Wrapped',
+      first,
+      after,
+      orderBy,
+      metadataMap
+    });
   }
 
   async calRemoveLpAmount({
     address,
     poolAssetId,
     poolSupply,
-    amount
+    amount,
+    metadataMap: providedMetadataMap
   }: {
     address: string;
     poolAssetId: string;
     poolSupply: number;
     amount?: bigint | number | string;
+    metadataMap?: Map<string, AssetMetadataType>;
   }) {
     // const poolAssetMetadata = await this.getLatestMetadata(poolAssetId);
 
@@ -899,8 +998,26 @@ export class Merak {
     const amountB = Number(poolInfoValue.reserve1) * shareAmount;
 
     // Get asset precision information
-    const asset1Metadata = await this.getMetadata(poolInfoData.asset0);
-    const asset2Metadata = await this.getMetadata(poolInfoData.asset1);
+    let asset1Metadata: AssetMetadataType | null = null;
+    let asset2Metadata: AssetMetadataType | null = null;
+
+    if (providedMetadataMap) {
+      // Use provided metadata if available
+      asset1Metadata = providedMetadataMap.get(poolInfoData.asset0) || null;
+      asset2Metadata = providedMetadataMap.get(poolInfoData.asset1) || null;
+
+      // Fetch missing metadata
+      if (!asset1Metadata) {
+        asset1Metadata = await this.getMetadata(poolInfoData.asset0);
+      }
+      if (!asset2Metadata) {
+        asset2Metadata = await this.getMetadata(poolInfoData.asset1);
+      }
+    } else {
+      // Fetch both if no metadata map provided
+      asset1Metadata = await this.getMetadata(poolInfoData.asset0);
+      asset2Metadata = await this.getMetadata(poolInfoData.asset1);
+    }
 
     if (!asset1Metadata || !asset2Metadata) {
       throw new Error('Asset metadata not found');

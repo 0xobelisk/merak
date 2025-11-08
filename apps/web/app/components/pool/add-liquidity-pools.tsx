@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { ArrowLeft, ChevronDown } from 'lucide-react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
@@ -11,8 +11,8 @@ import { toast } from 'sonner';
 import { useSignAndExecuteTransaction, useCurrentAccount } from '@mysten/dapp-kit';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { WALLETCHAIN } from '@/app/constants';
-import { useAtom } from 'jotai';
-import { AssetsStateAtom, AssetsLoadingAtom, AllAssetsStateAtom } from '@/app/jotai/assets';
+import { useUserAssets } from '@/app/hooks/useUserAssets';
+import { useAssetMetadata } from '@/app/hooks/useAssetMetadata';
 
 interface TokenData {
   symbol: string;
@@ -47,72 +47,30 @@ export default function AddLiquidity() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Global state management with Jotai
-  const [assetsState, setAssetsState] = useAtom(AssetsStateAtom);
-  const [isLoading, setIsLoading] = useAtom(AssetsLoadingAtom);
-  const [allAssetsState, setAllAssetsState] = useAtom(AllAssetsStateAtom);
+  // Use React Query hooks for data fetching with automatic caching
+  const { data: userAssetsData, isLoading } = useUserAssets();
+
+  // Memoize assets list for performance
+  const assetsState = useMemo(
+    () => ({
+      assetInfos: userAssetsData?.data || []
+    }),
+    [userAssetsData]
+  );
 
   const [slippage, setSlippage] = useState('0.50'); // Default 0.5%
   const [customSlippage, setCustomSlippage] = useState('');
 
-  const getAssetMetadata = useCallback(
-    async (assetId: string) => {
-      if (!merak) return;
+  // Get LP asset ID from pool info
+  const [lpAssetId, setLpAssetId] = useState<string | null>(null);
 
-      // Try to find in current state first
-      const assetInfo = allAssetsState.assetInfos.find(
-        (asset) => asset.assetId === String(assetId)
-      );
-      if (assetInfo) {
-        return assetInfo.metadata;
-      }
+  // Use hook to fetch LP metadata (will be cached by React Query)
+  const { data: lpMetadataResponse } = useAssetMetadata({
+    assetId: lpAssetId || '',
+    enabled: !!lpAssetId
+  });
 
-      // If not found, fetch directly
-      const metadata = await merak.getMetadata(assetId);
-      return metadata;
-    },
-    [merak, allAssetsState]
-  );
-
-  /**
-   * Query asset list
-   * Get account information and asset metadata
-   */
-  const queryAssets = useCallback(async () => {
-    if (!account?.address) return;
-
-    try {
-      setIsLoading(true);
-      if (!merak) return;
-
-      const metadataResults = await merak.listOwnedAssetsInfo({
-        account: account.address
-      });
-
-      console.log(metadataResults, 'metadataResults');
-
-      // Update state
-      setAssetsState({
-        assetInfos: metadataResults.data
-      });
-
-      console.log('Retrieved assets:', metadataResults.data);
-    } catch (error) {
-      console.error('Failed to fetch assets:', error);
-      toast.error('Failed to fetch assets, please try again');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [account?.address, setAssetsState]);
-
-  // Initialize asset loading
-  useEffect(() => {
-    console.log(account, 'account');
-    if (account?.address) {
-      queryAssets();
-      console.log('assetsState', assetsState);
-    }
-  }, [account?.address, queryAssets]);
+  const lpMetadata = lpMetadataResponse?.data;
 
   // Automatically calculate minimum deposit
   useEffect(() => {
@@ -314,6 +272,7 @@ export default function AddLiquidity() {
   const calculateExpectedLPTokens = useCallback(async () => {
     if (!tokenPay || !tokenReceive || !amountPay || !amountReceive) {
       setExpectedLPTokens('');
+      setLpAssetId(null);
       return;
     }
 
@@ -326,53 +285,96 @@ export default function AddLiquidity() {
 
       if (!poolInfo) {
         setExpectedLPTokens('');
+        setLpAssetId(null);
         return;
       }
 
-      const lpAssetId = poolInfo.lpAsset;
-      const lpMetadata = await getAssetMetadata(String(lpAssetId));
-      console.log(lpAssetId);
-      console.log(lpMetadata, 'lpMetadata');
-      if (!lpMetadata) {
-        console.error('Failed to get LP token metadata');
-        setExpectedLPTokens('');
-        return;
-      }
+      // Set LP asset ID to trigger metadata fetching via hook
+      const currentLpAssetId = String(poolInfo.lpAsset);
+      setLpAssetId(currentLpAssetId);
 
-      // Get supply from merak.supplyOf instead of metadata
-      const lpSupply = await merak.supplyOf(String(lpAssetId));
-      console.log(lpSupply, 'lpSupply');
-      if (!lpSupply) {
-        console.error('Failed to get LP token supply');
-        setExpectedLPTokens('');
-        return;
-      }
+      // Wait for lpMetadata to be available (will be set by useAssetMetadata hook)
+      // The actual calculation will be done in a useEffect that watches lpMetadata
 
-      const reserveA = parseFloat(poolInfo.reserve0);
-      const reserveB = parseFloat(poolInfo.reserve1);
-      const totalSupply = parseFloat(lpSupply.supply);
-
-      console.log(poolInfo, 'poolInfo');
-      console.log(totalSupply, 'totalSupply');
-      const amountA = parseFloat(amountPay) * Math.pow(10, tokenPay.decimals);
-      const amountB = parseFloat(amountReceive) * Math.pow(10, tokenReceive.decimals);
-
-      let lpTokens: number;
-      if (reserveA === 0 && reserveB === 0) {
-        lpTokens = Math.sqrt(amountA * amountB);
-      } else {
-        lpTokens = Math.min((amountA * totalSupply) / reserveA, (amountB * totalSupply) / reserveB);
-      }
-
-      console.log(lpTokens, 'lpTokens');
-      const lpDecimals = lpMetadata.decimals || 9;
-      const readableLPTokens = (lpTokens / Math.pow(10, lpDecimals)).toFixed(lpDecimals);
-      setExpectedLPTokens(readableLPTokens);
+      // Store pool info temporarily for calculation
+      (window as any).__tempPoolInfo = {
+        poolInfo,
+        lpAssetId: currentLpAssetId
+      };
     } catch (error) {
-      console.error('Failed to calculate LP tokens:', error);
+      console.error('Failed to calculate expected LP tokens:', error);
       setExpectedLPTokens('');
+      setLpAssetId(null);
     }
-  }, [tokenPay, tokenReceive, amountPay, amountReceive, getAssetMetadata]);
+  }, [tokenPay, tokenReceive, amountPay, amountReceive, merak]);
+
+  // Calculate LP tokens when metadata is available
+  useEffect(() => {
+    const doCalculation = async () => {
+      if (
+        !lpMetadata ||
+        !lpAssetId ||
+        !tokenPay ||
+        !tokenReceive ||
+        !amountPay ||
+        !amountReceive ||
+        !merak
+      ) {
+        return;
+      }
+
+      const tempData = (window as any).__tempPoolInfo;
+      if (!tempData || tempData.lpAssetId !== lpAssetId) {
+        return;
+      }
+
+      const { poolInfo } = tempData;
+
+      try {
+        // Get supply from merak.supplyOf
+        const lpSupply = await merak.supplyOf(lpAssetId);
+        if (!lpSupply) {
+          console.error('Failed to get LP token supply');
+          setExpectedLPTokens('');
+          return;
+        }
+
+        const reserveA = parseFloat(poolInfo.reserve0);
+        const reserveB = parseFloat(poolInfo.reserve1);
+        const totalSupply = parseFloat(lpSupply.supply);
+
+        const amountA = parseFloat(amountPay) * Math.pow(10, tokenPay.decimals);
+        const amountB = parseFloat(amountReceive) * Math.pow(10, tokenReceive.decimals);
+
+        let lpTokens: number;
+        if (reserveA === 0 && reserveB === 0) {
+          lpTokens = Math.sqrt(amountA * amountB);
+        } else {
+          lpTokens = Math.min(
+            (amountA * totalSupply) / reserveA,
+            (amountB * totalSupply) / reserveB
+          );
+        }
+
+        console.log(lpTokens, 'lpTokens');
+        const formattedLPTokens = (lpTokens / Math.pow(10, lpMetadata.decimals)).toFixed(
+          lpMetadata.decimals
+        );
+        console.log(formattedLPTokens, 'formattedLPTokens');
+        setExpectedLPTokens(formattedLPTokens);
+
+        // Clean up temp data
+        if ((window as any).__tempPoolInfo) {
+          delete (window as any).__tempPoolInfo;
+        }
+      } catch (error) {
+        console.error('Failed to calculate LP tokens:', error);
+        setExpectedLPTokens('');
+      }
+    };
+
+    doCalculation();
+  }, [lpMetadata, lpAssetId, tokenPay, tokenReceive, amountPay, amountReceive, merak]);
 
   // Recalculate LP token amount when input amounts change
   useEffect(() => {

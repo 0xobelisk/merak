@@ -126,3 +126,51 @@ export function useAssetWrappers(enabled: boolean = true) {
     refetchOnWindowFocus: false
   });
 }
+
+/**
+ * Hook to fetch metadata for multiple assets in batch (concurrent)
+ * Uses React Query's built-in caching to dedupe requests
+ * Each asset's metadata is cached individually, allowing efficient reuse
+ *
+ * @example
+ * const { data, isLoading } = useBatchAssetMetadata(['0', '1', '2']);
+ */
+export function useBatchAssetMetadata(assetIds: string[], enabled: boolean = true) {
+  return useQuery({
+    queryKey: ['batchAssetMetadata', ...assetIds.sort()],
+    queryFn: async () => {
+      // Fetch all metadata concurrently
+      // React Query will dedupe any individual requests that are already cached
+      const results = await Promise.all(
+        assetIds.map(async (assetId) => {
+          try {
+            const response = await fetch(`/api/assets/metadata/${assetId}`);
+            if (!response.ok) {
+              console.warn(`Failed to fetch metadata for asset ${assetId}`);
+              return null;
+            }
+            const data: SingleAssetMetadataResponse = await response.json();
+            return { assetId, metadata: data.data };
+          } catch (error) {
+            console.error(`Error fetching metadata for asset ${assetId}:`, error);
+            return null;
+          }
+        })
+      );
+
+      // Filter out failed requests and create a map
+      const metadataMap = new Map<string, AssetMetadata>();
+      results.forEach((result) => {
+        if (result && result.metadata) {
+          metadataMap.set(result.assetId, result.metadata);
+        }
+      });
+
+      return metadataMap;
+    },
+    enabled: enabled && assetIds.length > 0,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false
+  });
+}
