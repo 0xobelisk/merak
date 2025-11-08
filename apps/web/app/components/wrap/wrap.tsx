@@ -479,7 +479,7 @@ export default function TokenWrapper() {
   ]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#F7F8FA] p-4">
+    <div className="flex flex-col items-center justify-center flex-1 bg-[#F7F8FA] py-4">
       <Card className="w-[400px] border-gray-200 shadow-sm">
         <CardContent className="pt-6">
           <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>

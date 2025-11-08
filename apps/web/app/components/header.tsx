@@ -9,7 +9,7 @@ export default function Header() {
   const { currentWallet, connectionStatus } = useCurrentWallet();
 
   return (
-    <header className="flex items-center justify-between px-4 py-3 bg-transparent border-b border-gray-200">
+    <header className="flex items-center justify-between px-4 h-14 bg-transparent border-b border-gray-200 flex-shrink-0">
       <div className="flex items-center space-x-4">
         <div className="flex items-center space-x-2">
           <Image src="/merak-logo.svg" alt="Merak Logo" width={120} height={30} priority />

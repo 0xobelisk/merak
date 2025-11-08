@@ -659,7 +659,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   // Loading state
   if (isAssetsLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#F5F7FA]">
+      <div className="flex items-center justify-center flex-1 bg-[#F5F7FA]">
         <div className="flex flex-col items-center">
           <Loader2 className="h-12 w-12 animate-spin text-blue-500 mb-4" />
           <p className="text-gray-500 font-medium">Loading assets...</p>
@@ -671,7 +671,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   // Error state
   if (tokensState.error) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#F5F7FA]">
+      <div className="flex items-center justify-center flex-1 bg-[#F5F7FA]">
         <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-md max-w-md w-full">
           <div className="flex flex-col items-center text-center">
             <div className="bg-red-100 p-3 rounded-full mb-4">
@@ -709,8 +709,8 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   }
 
   return (
-    <div className="bg-[#F8F9FA] min-h-screen flex items-center justify-center">
-      <main className="w-full max-w-md px-4 py-8">
+    <div className="bg-[#F8F9FA] flex-1 flex items-center justify-center overflow-y-auto">
+      <main className="w-full max-w-md px-4 py-6">
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-6 py-5 border-b border-gray-50">
             <h1 className="text-xl font-semibold text-gray-800">Swap</h1>

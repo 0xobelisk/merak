@@ -75,7 +75,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <DubheProvider config={DUBHE_CONFIG}>
               {/* <EnokiFlowProvider apiKey="enoki_public_7278cc47e76ec32331cf1f8fc83a4b1a"> */}
               <Toaster />
-              <div>
+              <div className="min-h-screen flex flex-col">
                 <Header />
                 <AppWrapper>{children}</AppWrapper>
               </div>

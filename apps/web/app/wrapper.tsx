@@ -12,10 +12,10 @@ export default function AppWrapper({ children }: AppWrapperProps) {
 
   if (!currentWallet) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="p-8 bg-white/80 rounded-lg shadow-md backdrop-blur-sm">
+      <div className="flex flex-col items-center justify-center flex-1">
+        <div className="w-full max-w-md p-8 bg-white/80 rounded-lg shadow-md backdrop-blur-sm">
           <h1 className="mb-4 text-2xl font-bold text-center">Welcome to Merak</h1>
-          <p className="mb-6 text-center text-gray-600">
+          <p className="mb-6 text-center text-gray-600 min-h-[48px] flex items-center justify-center">
             {connectionStatus === 'connecting'
               ? 'Connecting to your wallet...'
               : 'Please connect your wallet to access all features.'}
