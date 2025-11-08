@@ -73,16 +73,20 @@ export class ListStorage {
 
   async assetWrapper({
     coinType,
+    assetId,
     first,
     after,
     orderBy
   }: {
     coinType?: string;
+    assetId?: string;
     first?: number;
     after?: string;
     orderBy?: OrderBy[];
   } = {}) {
-    const filter = coinType ? { coinType: { equalTo: coinType } } : undefined;
+    const filter: any = {};
+    if (coinType) filter.coinType = { equalTo: coinType };
+    if (assetId) filter.assetId = { equalTo: assetId };
     const item = await this.graphql.getAllTables('asset_wrapper', {
       filter,
       first,
@@ -187,6 +191,8 @@ export class ListStorage {
     asset1,
     poolAddress,
     poolAssetId,
+    assetId,
+    assetIds,
     first,
     after,
     orderBy
@@ -195,13 +201,28 @@ export class ListStorage {
     asset1?: string;
     poolAddress?: string;
     poolAssetId?: string;
+    assetId?: string;
+    assetIds?: string[];
     first?: number;
     after?: string;
     orderBy?: OrderBy[];
   } = {}) {
     const filter: any = {};
-    if (asset0) filter.asset0 = { equalTo: asset0 };
-    if (asset1) filter.asset1 = { equalTo: asset1 };
+
+    // If assetIds array is provided, search for pools where either asset0 or asset1 is in the array
+    if (assetIds && assetIds.length > 0) {
+      filter.or = [{ asset0: { in: assetIds } }, { asset1: { in: assetIds } }];
+    }
+    // If single assetId is provided, search for pools where asset is either asset0 or asset1
+    else if (assetId) {
+      filter.or = [{ asset0: { equalTo: assetId } }, { asset1: { equalTo: assetId } }];
+    }
+    // Otherwise use individual asset0/asset1 filters
+    else {
+      if (asset0) filter.asset0 = { equalTo: asset0 };
+      if (asset1) filter.asset1 = { equalTo: asset1 };
+    }
+
     if (poolAddress) filter.pool_address = { equalTo: poolAddress };
     if (poolAssetId) filter.lpAsset = { equalTo: poolAssetId };
 

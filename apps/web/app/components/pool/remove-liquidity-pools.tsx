@@ -17,7 +17,7 @@ import { AllAssetsStateAtom, AssetsLoadingAtom } from '@/app/jotai/assets';
 interface TokenData {
   symbol: string;
   name: string;
-  icon_url: string;
+  iconUrl: string;
   balance: string;
   id: number;
   decimals: number;
@@ -129,7 +129,7 @@ export default function RemoveLiquidity() {
           name: token1Info.metadata.name || 'Unknown',
           symbol: token1Info.metadata.symbol || 'Unknown',
           decimals: token1Info.metadata.decimals || 9,
-          icon_url: token1Info.metadata.icon_url || '/sui-logo.svg',
+          iconUrl: token1Info.metadata.iconUrl || '/registry/sui/images/sui.svg',
           balance: (
             Number(token1Info.balance) / Math.pow(10, token1Info.metadata.decimals || 9)
           ).toFixed(4)
@@ -142,7 +142,7 @@ export default function RemoveLiquidity() {
           name: token2Info.metadata.name || 'Unknown',
           symbol: token2Info.metadata.symbol || 'Unknown',
           decimals: token2Info.metadata.decimals || 9,
-          icon_url: token2Info.metadata.icon_url || '/sui-logo.svg',
+          iconUrl: token2Info.metadata.iconUrl || '/registry/sui/images/sui.svg',
           balance: (
             Number(token2Info.balance) / Math.pow(10, token2Info.metadata.decimals || 9)
           ).toFixed(4)
@@ -442,12 +442,12 @@ export default function RemoveLiquidity() {
               {tokenA ? (
                 <>
                   <img
-                    src={tokenA.icon_url}
+                    src={tokenA.iconUrl}
                     alt={tokenA.symbol}
                     className="w-6 h-6 mr-2"
                     loading="lazy"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                      (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
                     }}
                   />
                   {tokenA.symbol}
@@ -466,12 +466,12 @@ export default function RemoveLiquidity() {
               {tokenB ? (
                 <>
                   <img
-                    src={tokenB.icon_url}
+                    src={tokenB.iconUrl}
                     alt={tokenB.symbol}
                     className="w-6 h-6 mr-2"
                     loading="lazy"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                      (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
                     }}
                   />
                   {tokenB.symbol}

@@ -5,7 +5,7 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Label } from '@repo/ui/components/ui/label';
 import dynamic from 'next/dynamic';
 import TokenSelectionModal from '@/app/components/swap/token-selection-modal';
-import { initMerakClient } from '@/app/jotai/merak';
+import { useMerak } from '@/app/jotai/merak';
 import { Transaction, TransactionArgument } from '@0xobelisk/sui-client';
 import { toast } from 'sonner';
 import { useSignAndExecuteTransaction, useCurrentAccount } from '@mysten/dapp-kit';
@@ -17,15 +17,16 @@ import { AssetsStateAtom, AssetsLoadingAtom, AllAssetsStateAtom } from '@/app/jo
 interface TokenData {
   symbol: string;
   name: string;
-  icon_url: string;
+  iconUrl: string;
   balance: string;
-  id: number;
+  id: string;
   decimals: number;
 }
 
 export default function AddLiquidity() {
   const account = useCurrentAccount();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
+  const merak = useMerak();
   const [digest, setDigest] = useState('');
   const [tokenPay, setTokenPay] = useState<TokenData | null>(null);
   const [tokenReceive, setTokenReceive] = useState<TokenData | null>(null);
@@ -38,7 +39,7 @@ export default function AddLiquidity() {
   const [isTokenPayModalOpen, setIsTokenPayModalOpen] = useState(false);
   const [isTokenReceiveModalOpen, setIsTokenReceiveModalOpen] = useState(false);
 
-  const [availableTokenReceives, setAvailableTokenReceives] = useState<number[]>([]);
+  const [availableTokenReceives, setAvailableTokenReceives] = useState<string[]>([]);
   const [reserves, setReserves] = useState<{ reservePay: string; reserveReceive: string } | null>(
     null
   );
@@ -55,29 +56,22 @@ export default function AddLiquidity() {
   const [customSlippage, setCustomSlippage] = useState('');
 
   const getAssetMetadata = useCallback(
-    async (assetId: number) => {
-      if (allAssetsState.assetInfos.length === 0) {
-        const merak = initMerakClient();
-        console.log('-------------');
+    async (assetId: string) => {
+      if (!merak) return;
 
-        const metadataResults = await merak.listAssetsInfo();
-
-        console.log(metadataResults, 'metadataResults');
-
-        // Update state
-        setAllAssetsState({
-          assetInfos: metadataResults.data
-        });
-
-        const assetInfo = metadataResults.data.find((asset) => asset.assetId === Number(assetId));
-        return assetInfo?.metadata;
-      }
+      // Try to find in current state first
       const assetInfo = allAssetsState.assetInfos.find(
-        (asset) => asset.assetId === Number(assetId)
+        (asset) => asset.assetId === String(assetId)
       );
-      return assetInfo?.metadata;
+      if (assetInfo) {
+        return assetInfo.metadata;
+      }
+
+      // If not found, fetch directly
+      const metadata = await merak.getMetadata(assetId);
+      return metadata;
     },
-    [allAssetsState]
+    [merak, allAssetsState]
   );
 
   /**
@@ -89,10 +83,10 @@ export default function AddLiquidity() {
 
     try {
       setIsLoading(true);
-      const merak = initMerakClient();
+      if (!merak) return;
 
       const metadataResults = await merak.listOwnedAssetsInfo({
-        address: account.address
+        account: account.address
       });
 
       console.log(metadataResults, 'metadataResults');
@@ -147,7 +141,7 @@ export default function AddLiquidity() {
     }
 
     try {
-      const merak = initMerakClient();
+      if (!merak) return;
       const poolInfo = await merak.getPoolListWithId({
         asset1Id: tokenPay.id,
         asset2Id: tokenReceive.id
@@ -213,7 +207,7 @@ export default function AddLiquidity() {
     console.log(token, 'select token');
     setTokenPay(token);
     setIsTokenPayModalOpen(false);
-    const merak = initMerakClient();
+    if (!merak) return;
     const connectedTokens = await merak.getConnectedTokens(token.id);
     console.log(connectedTokens, 'connectedTokens');
     setAvailableTokenReceives(connectedTokens);
@@ -250,7 +244,7 @@ export default function AddLiquidity() {
       return;
     }
 
-    const merak = initMerakClient();
+    if (!merak) return;
     let tx = new Transaction();
 
     const baseDesired = BigInt(Math.floor(parseFloat(amountPay) * Math.pow(10, tokenPay.decimals)));
@@ -324,7 +318,7 @@ export default function AddLiquidity() {
     }
 
     try {
-      const merak = initMerakClient();
+      if (!merak) return;
       const poolInfo = await merak.getPoolListWithId({
         asset1Id: tokenPay.id,
         asset2Id: tokenReceive.id
@@ -335,8 +329,8 @@ export default function AddLiquidity() {
         return;
       }
 
-      const lpAssetId = poolInfo.lp_asset_id;
-      const lpMetadata = await getAssetMetadata(Number(lpAssetId));
+      const lpAssetId = poolInfo.lpAsset;
+      const lpMetadata = await getAssetMetadata(String(lpAssetId));
       console.log(lpAssetId);
       console.log(lpMetadata, 'lpMetadata');
       if (!lpMetadata) {
@@ -345,9 +339,18 @@ export default function AddLiquidity() {
         return;
       }
 
+      // Get supply from merak.supplyOf instead of metadata
+      const lpSupply = await merak.supplyOf(String(lpAssetId));
+      console.log(lpSupply, 'lpSupply');
+      if (!lpSupply) {
+        console.error('Failed to get LP token supply');
+        setExpectedLPTokens('');
+        return;
+      }
+
       const reserveA = parseFloat(poolInfo.reserve0);
       const reserveB = parseFloat(poolInfo.reserve1);
-      const totalSupply = parseFloat(lpMetadata.supply);
+      const totalSupply = parseFloat(lpSupply.supply);
 
       console.log(poolInfo, 'poolInfo');
       console.log(totalSupply, 'totalSupply');
@@ -391,8 +394,8 @@ export default function AddLiquidity() {
       }
 
       try {
-        const asset1Id = Number(asset1Param);
-        const asset2Id = Number(asset2Param);
+        const asset1Id = String(asset1Param);
+        const asset2Id = String(asset2Param);
 
         // Get token metadata
         const token1Info = assetsState.assetInfos.find((asset) => asset.assetId === asset1Id);
@@ -408,8 +411,10 @@ export default function AddLiquidity() {
           name: token1Info.metadata.name || searchParams.get('token1Name') || 'Unknown',
           symbol: token1Info.metadata.symbol || 'Unknown',
           decimals: token1Info.metadata.decimals || 9,
-          icon_url:
-            searchParams.get('token1Image') || token1Info.metadata.icon_url || '/sui-logo.svg',
+          iconUrl:
+            searchParams.get('token1Image') ||
+            token1Info.metadata.iconUrl ||
+            '/registry/sui/images/sui.svg',
           balance: (
             Number(token1Info.balance) / Math.pow(10, token1Info.metadata.decimals || 9)
           ).toFixed(4)
@@ -422,8 +427,10 @@ export default function AddLiquidity() {
           name: token2Info.metadata.name || searchParams.get('token2Name') || 'Unknown',
           symbol: token2Info.metadata.symbol || 'Unknown',
           decimals: token2Info.metadata.decimals || 9,
-          icon_url:
-            searchParams.get('token2Image') || token2Info.metadata.icon_url || '/sui-logo.svg',
+          iconUrl:
+            searchParams.get('token2Image') ||
+            token2Info.metadata.iconUrl ||
+            '/registry/sui/images/sui.svg',
           balance: (
             Number(token2Info.balance) / Math.pow(10, token2Info.metadata.decimals || 9)
           ).toFixed(4)
@@ -431,7 +438,7 @@ export default function AddLiquidity() {
         setTokenReceive(token2);
 
         // Get available token list
-        const merak = initMerakClient();
+        if (!merak) return;
         const connectedTokens = await merak.getConnectedTokens(token1.id);
         setAvailableTokenReceives(connectedTokens);
       } catch (error) {
@@ -472,12 +479,12 @@ export default function AddLiquidity() {
               {tokenPay ? (
                 <>
                   <img
-                    src={tokenPay.icon_url}
+                    src={tokenPay.iconUrl}
                     alt={tokenPay.symbol}
                     className="w-6 h-6 mr-2"
                     loading="lazy"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                      (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
                     }}
                   />
                   {tokenPay.symbol}
@@ -496,12 +503,12 @@ export default function AddLiquidity() {
               {tokenReceive ? (
                 <>
                   <img
-                    src={tokenReceive.icon_url}
+                    src={tokenReceive.iconUrl}
                     alt={tokenReceive.symbol}
                     className="w-6 h-6 mr-2"
                     loading="lazy"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                      (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
                     }}
                   />
                   {tokenReceive.symbol}

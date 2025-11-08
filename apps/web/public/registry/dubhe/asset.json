@@ -1,0 +1,50 @@
+{
+  "$schema": "../../asset.schema.json",
+  "name": "dubhe",
+  "status": "live",
+  "asset": {
+    "description": "The native token of the Dubhe Protocol.",
+    "coinType": "8c7013745af0eb1ab211cde05b40ee6e2130276664d7e3e3741a36f11fa9f20b::dubhe::DUBHE",
+    "denom_units": [
+      {
+        "denom": "dubhe",
+        "exponent": 0
+      },
+      {
+        "denom": "DUBHE",
+        "exponent": 7
+      }
+    ],
+    "base": "dubhe",
+    "name": "Dubhe Protocol",
+    "display": "DUBHE",
+    "symbol": "DUBHE",
+    "logo_URIs": {
+      "jpg": "/registry/dubhe/images/dubhe.jpg"
+    },
+    "images": [
+      {
+        "jpg": "/registry/dubhe/images/dubhe.jpg"
+      }
+    ]
+  },
+  "metadata": {
+    "assetId": "0x357cb71d44a3fe292623a589e44f6a4f704d39d64a916bde9f81b78ce7ffac5c",
+    "assetType": "Wrapped",
+    "createdAtTimestampMs": "1759918947817",
+    "decimals": 7,
+    "description": "Wrapped DUBHE",
+    "iconUrl": "https://raw.githubusercontent.com/0xobelisk/dubhe/main/assets/logo.jpg",
+    "isBurnable": false,
+    "isDeleted": false,
+    "isFreezable": true,
+    "isMintable": false,
+    "lastUpdateDigest": "ELdo1iYiyFjagsAaQRerH1AhhzKQcdskAeokWg1r1w1L",
+    "name": "Wrapped DUBHE",
+    "nodeId": "WyJzdG9yZV9hc3NldF9tZXRhZGF0YSIsIjB4MzU3Y2I3MWQ0NGEzZmUyOTI2MjNhNTg5ZTQ0ZjZhNGY3MDRkMzlkNjRhOTE2YmRlOWY4MWI3OGNlN2ZmYWM1YyJd",
+    "owner": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "status": "Liquid",
+    "symbol": "wDUBHE",
+    "updatedAtTimestampMs": "1762014933865"
+  }
+}

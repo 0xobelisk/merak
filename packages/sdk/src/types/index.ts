@@ -2,10 +2,10 @@ import { Dubhe, DubheParams, NetworkType } from '@0xobelisk/sui-client';
 import { DubheGraphqlClient } from '@0xobelisk/graphql-client';
 
 export type MerakParams = {
-  network: NetworkType;
   dubhe: Dubhe;
   graphql: DubheGraphqlClient;
   schemaId: string;
+  apiBaseUrl?: string;
 };
 
 export type MerakConfig = {
@@ -23,34 +23,46 @@ export type PageInfo = {
 export type AssetType = 'Lp' | 'Wrapped' | 'Private' | 'Package';
 
 export type AssetMetadataType = {
+  assetId: string;
+  assetType: string;
   name: string;
   symbol: string;
   description: string;
   decimals: number;
-  icon_url: string;
-  extra_info: string;
+  iconUrl: string;
   owner: string;
-  supply: string;
-  accounts: string;
   status: string;
-  is_mintable: boolean;
-  is_burnable: boolean;
-  is_freezable: boolean;
-  asset_type: {
-    [key in AssetType]: {};
-  };
+  isMintable: boolean;
+  isBurnable: boolean;
+  isFreezable: boolean;
+  isDeleted: boolean;
+  createdAtTimestampMs: string;
+  updatedAtTimestampMs: string;
+  lastUpdateDigest: string;
+  nodeId: string;
 };
 
 export type AssetInfo = {
-  assetId: number;
+  assetId: string;
   metadata: AssetMetadataType;
   balance?: string;
+  status?: string;
 };
 
 export type AssetInfoResponse = {
   data: AssetInfo[];
   pageInfo: PageInfo;
   totalCount: number;
+};
+
+export type AssetSupplyType = {
+  assetId: string;
+  supply: string;
+  createdAtTimestampMs: string;
+  updatedAtTimestampMs: string;
+  isDeleted: boolean;
+  lastUpdateDigest: string;
+  __typename?: string;
 };
 
 export type AccountInfo = {

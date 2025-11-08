@@ -1,0 +1,53 @@
+{
+  "$schema": "../../asset.schema.json",
+  "name": "sui",
+  "status": "live",
+  "asset": {
+    "description": "The native token of the Sui Network.",
+    "coinType": "0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
+    "denom_units": [
+      {
+        "denom": "sui",
+        "exponent": 0
+      },
+      {
+        "denom": "SUI",
+        "exponent": 9
+      }
+    ],
+    "base": "sui",
+    "name": "Sui Network",
+    "display": "SUI",
+    "symbol": "SUI",
+    "logo_URIs": {
+      "svg": "/registry/sui/images/sui.svg"
+    },
+    "images": [
+      {
+        "svg": "/registry/sui/images/sui.svg"
+      },
+      {
+        "png": "/registry/sui/images/sui.png"
+      }
+    ]
+  },
+  "metadata": {
+    "assetId": "0xa5481ac67797056f2997fe815b0aef4d70b83ae52157570fb38bc1197e0274d6",
+    "assetType": "Wrapped",
+    "createdAtTimestampMs": "1759899981595",
+    "decimals": 9,
+    "description": "Wrapped SUI",
+    "iconUrl": "https://cryptologos.cc/logos/sui-sui-logo.png?v=040",
+    "isBurnable": false,
+    "isDeleted": false,
+    "isFreezable": true,
+    "isMintable": false,
+    "lastUpdateDigest": "6SMuqhNdCCtnS311uMYkJGCoYH3MPwENus611WfStdcy",
+    "name": "Wrapped SUI",
+    "nodeId": "WyJzdG9yZV9hc3NldF9tZXRhZGF0YSIsIjB4YTU0ODFhYzY3Nzk3MDU2ZjI5OTdmZTgxNWIwYWVmNGQ3MGI4M2FlNTIxNTc1NzBmYjM4YmMxMTk3ZTAyNzRkNiJd",
+    "owner": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "status": "Liquid",
+    "symbol": "wSUI",
+    "updatedAtTimestampMs": "1759899981595"
+  }
+}

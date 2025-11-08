@@ -1,15 +1,12 @@
 'use client';
 
 import { Search, ChevronDown, RefreshCw, Grid, List, Info } from 'lucide-react';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
-import TokenCreate from '@/app/components/pool/create/token-create';
-import LiquidityPoolSetup from '@/app/components/pool/create/liquidity-pool-setup';
-import { Dialog, DialogContent } from '@repo/ui/components/ui/dialog';
-import { SelectedPoolTokens } from '@/app/jotai/pool/pool';
-import { useAtom } from 'jotai';
 import { useMerak } from '@/app/jotai/merak';
 import { useRouter } from 'next/navigation';
+import { useEnrichedAssets } from '@/app/hooks/useRegistryAssets';
+import { getLogoUrl } from '@/app/types/registry';
 
 export default function LiquidityPools() {
   const merak = useMerak();
@@ -20,10 +17,21 @@ export default function LiquidityPools() {
   const [category, setCategory] = useState('All');
   const [sortBy, setSortBy] = useState('Default');
   const [viewMode, setViewMode] = useState('card'); // 'card' or 'table'
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentStep, setCurrentStep] = useState<'select' | 'setup'>('select');
-  const [selectedTokens, setSelectedTokens] = useAtom(SelectedPoolTokens);
   const router = useRouter();
+
+  // Get registry assets for local logos
+  const { data: enrichedAssets } = useEnrichedAssets({ status: 'live' });
+
+  // Helper function to get logo from registry or fallback to provided URL
+  const getTokenLogo = useCallback(
+    (assetId: number, fallbackUrl: string) => {
+      const registryAsset = enrichedAssets.find(
+        (asset) => asset.metadata.assetId === String(assetId)
+      );
+      return registryAsset ? getLogoUrl(registryAsset) : fallbackUrl;
+    },
+    [enrichedAssets]
+  );
 
   const categories = [
     'All',
@@ -93,25 +101,6 @@ export default function LiquidityPools() {
     setViewMode((prevMode) => (prevMode === 'card' ? 'table' : 'card'));
   };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-    setCurrentStep('select');
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setCurrentStep('select');
-  };
-
-  const handleSelectTokens = (base: any, quote: any) => {
-    setSelectedTokens({ base, quote });
-    setCurrentStep('setup');
-  };
-
-  const handleBackToSelect = () => {
-    setCurrentStep('select');
-  };
-
   // Helper function to format numbers
   const formatLiquidity = (value: string) => {
     // Check if contains "/"
@@ -154,25 +143,25 @@ export default function LiquidityPools() {
           {/* Token Pair Header */}
           <div className="flex items-center space-x-2 mb-4">
             <img
-              src={pool.token1Image}
+              src={getTokenLogo(pool.asset1Id, pool.token1Image)}
               alt={pool.name.split(' / ')[0]}
               width={24}
               height={24}
               className="rounded-full"
               loading="lazy"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
               }}
             />
             <img
-              src={pool.token2Image}
+              src={getTokenLogo(pool.asset2Id, pool.token2Image)}
               alt={pool.name.split(' / ')[1]}
               width={24}
               height={24}
               className="rounded-full"
               loading="lazy"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
               }}
             />
             <span className="font-medium text-gray-900">{pool.name}</span>
@@ -230,25 +219,25 @@ export default function LiquidityPools() {
               <td className="py-4 px-4">
                 <div className="flex items-center space-x-2">
                   <img
-                    src={pool.token1Image}
+                    src={getTokenLogo(pool.asset1Id, pool.token1Image)}
                     alt={pool.name.split(' / ')[0]}
                     width={20}
                     height={20}
                     className="rounded-full"
                     loading="lazy"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                      (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
                     }}
                   />
                   <img
-                    src={pool.token2Image}
+                    src={getTokenLogo(pool.asset2Id, pool.token2Image)}
                     alt={pool.name.split(' / ')[1]}
                     width={20}
                     height={20}
                     className="rounded-full"
                     loading="lazy"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
+                      (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
                     }}
                   />
                   <span className="font-medium text-gray-900">{pool.name}</span>
@@ -313,9 +302,6 @@ export default function LiquidityPools() {
           <h1 className="text-2xl font-bold text-gray-800">
             Earn Fees and Rewards by Providing Liquidity
           </h1>
-          <button className="bg-indigo-600 text-white px-4 py-2 rounded" onClick={handleOpenModal}>
-            + Create a Pool
-          </button>
         </div>
 
         <div className="flex space-x-4 mb-8 overflow-x-auto">
@@ -399,15 +385,6 @@ export default function LiquidityPools() {
           </>
         )}
       </div>
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          {currentStep === 'select' ? (
-            <TokenCreate onClose={handleCloseModal} onSelectTokens={handleSelectTokens} />
-          ) : (
-            <LiquidityPoolSetup selectedTokens={selectedTokens} onClose={handleBackToSelect} />
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

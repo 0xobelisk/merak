@@ -3,6 +3,7 @@ import { DubheGraphqlClient, OrderBy } from '@0xobelisk/graphql-client';
 
 import {
   AssetMetadataType,
+  AssetSupplyType,
   MerakParams,
   AssetInfo,
   AssetInfoResponse,
@@ -32,16 +33,18 @@ export class Merak {
   public packageId: string;
   public network: NetworkType;
   public schemaId: string;
+  public apiBaseUrl?: string;
   // public treasuryCap: string;
 
   /**
    * @argument params - The parameters for the Merak instance.
    */
-  constructor({ network, dubhe, graphql, schemaId }: MerakParams) {
+  constructor({ dubhe, graphql, schemaId, apiBaseUrl }: MerakParams) {
     this.dubhe = dubhe;
     this.graphql = graphql;
-    this.network = network;
+    this.network = dubhe.getNetwork() as NetworkType;
     this.schemaId = schemaId;
+    this.apiBaseUrl = apiBaseUrl;
     this.packageId = dubhe.getPackageId();
     this.assets = new Assets(this.dubhe, schemaId);
     this.dex = new Dex(this.dubhe, schemaId);
@@ -135,10 +138,6 @@ export class Merak {
       assetId: asset_id
     });
     return account;
-  }
-
-  async supplyOf(asset_id: string) {
-    return this.assets.supplyOf(asset_id);
   }
 
   async metadataOf(asset_id: string) {
@@ -317,19 +316,14 @@ export class Merak {
     return pool.edges.map((edge: any) => edge.node);
   }
 
-  // TODO: change to `or` filter
-  async allPoolListWithId(assetId: string) {
-    const allAsset0List = await this.allPoolList({
-      asset1Id: assetId
+  async allPoolListWithId(assetId: string, pageSize?: number) {
+    pageSize = pageSize ?? 3;
+    const pool = await this.storage.list.assetPool({
+      first: pageSize,
+      assetId
     });
 
-    const allAsset1List = await this.allPoolList({
-      asset2Id: assetId
-    });
-
-    const allAssetList = [...allAsset0List, ...allAsset1List];
-
-    return allAssetList;
+    return pool.edges.map((edge: any) => edge.node);
   }
 
   // Wrapper Functions
@@ -384,28 +378,31 @@ export class Merak {
     coinType?: string;
     first?: number;
     after?: string;
-    orderBy?: string[];
+    orderBy?: OrderBy[];
   } = {}) {
     return this.storage.list.assetWrapper({
       coinType,
       first,
       after,
-      orderBy: orderBy as unknown as OrderBy[]
+      orderBy
     });
   }
 
-  async querySwapPaths(start: string, end: string): Promise<number[][]> {
-    const pairListResult1 = await this.allPoolListWithId(start);
-    const pairListResult2 = await this.allPoolListWithId(end);
-    const pairListResult = [...pairListResult1, ...pairListResult2];
+  async querySwapPaths(start: string, end: string): Promise<string[][]> {
+    // Optimized: fetch all pools for both assets in a single query
+    const pool = await this.storage.list.assetPool({
+      assetIds: [start, end],
+      first: 1000 // Increased limit for path finding
+    });
+    const pairListResult = pool.edges.map((edge: any) => edge.node);
 
     if (!pairListResult) throw new Error('Failed to fetch pair list');
     const pairList = pairListResult;
     // Build adjacency list
-    const graph = new Map<number, number[]>();
+    const graph = new Map<string, string[]>();
     pairList.forEach((item) => {
-      const token0 = Number(item.asset0);
-      const token1 = Number(item.asset1);
+      const token0 = item.asset0;
+      const token1 = item.asset1;
       if (!graph.has(token0)) graph.set(token0, []);
       if (!graph.has(token1)) graph.set(token1, []);
       graph.get(token0)!.push(token1);
@@ -413,22 +410,19 @@ export class Merak {
     });
 
     // Store all found paths
-    const allPaths: number[][] = [];
+    const allPaths: string[][] = [];
 
     // BFS to find all paths
     function bfs() {
-      const queue: { path: number[]; node: number }[] = [
-        { path: [Number(start)], node: Number(start) }
-      ];
+      const queue: { path: string[]; node: string }[] = [{ path: [start], node: start }];
       const maxLength = MAX_PATH_LENGTH; // Limit max path length to prevent overly long paths
       const visited = new Set<string>();
-      const endNum = Number(end);
 
       while (queue.length > 0) {
         const { path, node } = queue.shift()!;
 
         // If target node is found
-        if (node === endNum) {
+        if (node === end) {
           allPaths.push([...path]);
           continue;
         }
@@ -505,20 +499,16 @@ export class Merak {
     };
   }
 
-  async getAllSwappableTokens({
-    startTokenId
-  }: {
-    startTokenId: bigint | number | string;
-  }): Promise<number[]> {
+  async getAllSwappableTokens({ startTokenId }: { startTokenId: string }): Promise<string[]> {
     // Get all trading pairs
     const allPools = await this.allPoolList();
     if (!allPools) throw new Error('Failed to fetch pool list');
 
     // Build adjacency list
-    const graph = new Map<number, number[]>();
+    const graph = new Map<string, string[]>();
     allPools.forEach((item) => {
-      const token0 = Number(item.asset0);
-      const token1 = Number(item.asset1);
+      const token0 = item.asset0;
+      const token1 = item.asset1;
       if (!graph.has(token0)) graph.set(token0, []);
       if (!graph.has(token1)) graph.set(token1, []);
       graph.get(token0)!.push(token1);
@@ -526,11 +516,11 @@ export class Merak {
     });
 
     // Store all reachable tokens
-    const swappableTokens = new Set<number>();
-    const visited = new Set<number>();
+    const swappableTokens = new Set<string>();
+    const visited = new Set<string>();
     const maxLength = MAX_PATH_LENGTH;
-    const queue: { token: number; depth: number }[] = [{ token: Number(startTokenId), depth: 1 }];
-    visited.add(Number(startTokenId));
+    const queue: { token: string; depth: number }[] = [{ token: startTokenId, depth: 1 }];
+    visited.add(startTokenId);
 
     // Use BFS to find all reachable tokens
     while (queue.length > 0) {
@@ -551,7 +541,7 @@ export class Merak {
     }
 
     // Convert to array and sort
-    return Array.from(swappableTokens).sort((a, b) => a - b);
+    return Array.from(swappableTokens).sort();
   }
 
   // TODO: fix
@@ -592,104 +582,109 @@ export class Merak {
   //   return swappableTokensWithMetadata;
   // }
 
-  async listAssetsInfo({
-    assetType,
-    first,
-    after,
-    orderBy
-  }: {
-    assetType?: AssetType;
-    first?: number;
-    after?: string;
-    orderBy?: OrderBy[];
-  } = {}): Promise<AssetInfoResponse> {
-    const assetsMetadata = await this.storage.list.assetMetadata({
-      first: first ?? 6,
-      after: after,
-      orderBy: orderBy ?? [{ field: 'CREATED_AT_TIMESTAMP_MS', direction: 'ASC' }]
-    });
+  // async listAssetsInfo({
+  //   assetType,
+  //   first,
+  //   after,
+  //   orderBy
+  // }: {
+  //   assetType?: AssetType;
+  //   first?: number;
+  //   after?: string;
+  //   orderBy?: OrderBy[];
+  // } = {}): Promise<AssetInfoResponse> {
+  //   const assetsMetadata = await this.storage.list.assetMetadata({
+  //     first: first ?? 6,
+  //     after: after,
+  //     orderBy: orderBy ?? [{ field: 'CREATED_AT_TIMESTAMP_MS', direction: 'ASC' }]
+  //   });
 
-    let assetsMetadataResults: AssetInfo[] = await Promise.all(
-      assetsMetadata.edges.map(async (item) => {
-        const metadata: AssetMetadataType = {
-          name: item.node.name || '',
-          symbol: item.node.symbol || '',
-          description: item.node.description || '',
-          decimals: item.node.decimals || 0,
-          icon_url: item.node.iconUrl || '',
-          extra_info: '',
-          owner: item.node.owner || '',
-          supply: '0',
-          accounts: '0',
-          status: item.node.status || '',
-          is_mintable: item.node.isMintable || false,
-          is_burnable: item.node.isBurnable || false,
-          is_freezable: item.node.isFreezable || false,
-          asset_type: (() => {
-            if (!item.node.assetType) return {};
+  //   let assetsMetadataResults: AssetInfo[] = await Promise.all(
+  //     assetsMetadata.edges.map(async (item) => {
+  //       const metadata: AssetMetadataType = {
+  //         name: item.node.name || '',
+  //         symbol: item.node.symbol || '',
+  //         description: item.node.description || '',
+  //         decimals: item.node.decimals || 0,
+  //         iconUrl: item.node.iconUrl || '',
+  //         extra_info: '',
+  //         owner: item.node.owner || '',
+  //         supply: '0',
+  //         accounts: '0',
+  //         status: item.node.status || '',
+  //         is_mintable: item.node.isMintable || false,
+  //         is_burnable: item.node.isBurnable || false,
+  //         is_freezable: item.node.isFreezable || false,
+  //         asset_type: (() => {
+  //           if (!item.node.assetType) return {};
 
-            if (typeof item.node.assetType === 'string') {
-              // Try to parse as JSON first
-              try {
-                return JSON.parse(item.node.assetType);
-              } catch {
-                // If parsing fails, it's a simple enum value like "Wrapped", "Lp", "Native"
-                // Convert to object format: "Wrapped" -> { "Wrapped": {} }
-                return { [item.node.assetType]: {} };
-              }
-            }
+  //           if (typeof item.node.assetType === 'string') {
+  //             // Try to parse as JSON first
+  //             try {
+  //               return JSON.parse(item.node.assetType);
+  //             } catch {
+  //               // If parsing fails, it's a simple enum value like "Wrapped", "Lp", "Native"
+  //               // Convert to object format: "Wrapped" -> { "Wrapped": {} }
+  //               return { [item.node.assetType]: {} };
+  //             }
+  //           }
 
-            return item.node.assetType;
-          })()
-        };
-        return {
-          assetId: Number(item.node.assetId),
-          metadata
-        };
-      })
-    );
-    if (assetType) {
-      assetsMetadataResults = assetsMetadataResults.filter((item) => {
-        return item.metadata.asset_type[assetType] !== undefined;
-      });
-    }
+  //           return item.node.assetType;
+  //         })()
+  //       };
+  //       return {
+  //         assetId: Number(item.node.assetId),
+  //         metadata
+  //       };
+  //     })
+  //   );
+  //   if (assetType) {
+  //     assetsMetadataResults = assetsMetadataResults.filter((item) => {
+  //       return item.metadata.assetType !== undefined;
+  //     });
+  //   }
 
-    assetsMetadataResults.sort((a, b) => Number(a.assetId) - Number(b.assetId));
+  //   assetsMetadataResults.sort((a, b) => Number(a.assetId) - Number(b.assetId));
 
-    return {
-      data: assetsMetadataResults,
-      pageInfo: assetsMetadata.pageInfo,
-      totalCount: assetsMetadataResults.length
-    };
-  }
+  //   return {
+  //     data: assetsMetadataResults,
+  //     pageInfo: assetsMetadata.pageInfo,
+  //     totalCount: assetsMetadataResults.length
+  //   };
+  // }
 
   async getMetadata(assetId: bigint | number | string) {
+    // If apiBaseUrl is configured, use API endpoint with caching
+    if (this.apiBaseUrl) {
+      try {
+        console.log('============== this.apiBaseUrl ==============', this.apiBaseUrl);
+        console.log('============== assetId ==============', assetId.toString());
+        const response = await fetch(
+          `${this.apiBaseUrl}/api/assets/metadata/${assetId.toString()}`
+        );
+        console.log('============== response ==============', response);
+
+        if (!response.ok) {
+          // If API fails, fall back to storage query
+          console.warn(`API request failed (${response.status}), falling back to storage query`);
+        } else {
+          const result = await response.json();
+
+          if (result.success && result.data) {
+            return result.data as AssetMetadataType;
+          }
+        }
+      } catch (error) {
+        console.warn('API request error, falling back to storage query:', error);
+      }
+    }
+
+    // Fallback to storage query (original implementation)
     const result = await this.storage.get.assetMetadata({
       assetId
     });
-
-    if (!result?.value) return undefined;
-
-    const node = result.value;
-    return {
-      name: node.name || '',
-      symbol: node.symbol || '',
-      description: node.description || '',
-      decimals: node.decimals || 0,
-      icon_url: node.iconUrl || node.icon_url || '',
-      extra_info: '',
-      owner: node.owner || '',
-      supply: '0',
-      accounts: '0',
-      status: node.status || '',
-      is_mintable: node.isMintable !== undefined ? node.isMintable : node.is_mintable || false,
-      is_burnable: node.isBurnable !== undefined ? node.isBurnable : node.is_burnable || false,
-      is_freezable: node.isFreezable !== undefined ? node.isFreezable : node.is_freezable || false,
-      asset_type:
-        typeof node.assetType === 'string'
-          ? JSON.parse(node.assetType)
-          : node.assetType || node.asset_type || {}
-    } as AssetMetadataType;
+    if (!result) return null;
+    return result as AssetMetadataType;
   }
 
   async getLatestMetadata(assetId: bigint | number | string) {
@@ -697,83 +692,85 @@ export class Merak {
       assetId
     });
 
-    if (!result?.value) return null;
-
-    const node = result.value;
-    return {
-      name: node.name || '',
-      symbol: node.symbol || '',
-      description: node.description || '',
-      decimals: node.decimals || 0,
-      icon_url: node.iconUrl || node.icon_url || '',
-      extra_info: '',
-      owner: node.owner || '',
-      supply: '0',
-      accounts: '0',
-      status: node.status || '',
-      is_mintable: node.isMintable !== undefined ? node.isMintable : node.is_mintable || false,
-      is_burnable: node.isBurnable !== undefined ? node.isBurnable : node.is_burnable || false,
-      is_freezable: node.isFreezable !== undefined ? node.isFreezable : node.is_freezable || false,
-      asset_type:
-        typeof node.assetType === 'string'
-          ? JSON.parse(node.assetType)
-          : node.assetType || node.asset_type || {}
-    } as AssetMetadataType;
+    if (!result) return null;
+    return result as AssetMetadataType;
   }
 
   async listAccountLpAssets({
     account,
-    assetType
+    assetType,
+    first,
+    after,
+    orderBy
   }: {
     account: string;
     assetType?: AssetType;
+    first?: number;
+    after?: string;
+    orderBy?: OrderBy[];
   }): Promise<AssetInfoResponse> {
-    // const assetIds = [2, 4, 5]; // 0: wSUI, 1: wDUBHE, 3: wSTARS
-
     const assetsData = await this.storage.list.assetAccount({
       account,
-      first: 6,
-      orderBy: [{ field: 'CREATED_AT_TIMESTAMP_MS', direction: 'ASC' }]
+      first: first ?? 20,
+      after,
+      orderBy: orderBy ?? [{ field: 'CREATED_AT_TIMESTAMP_MS', direction: 'ASC' }]
     });
 
-    let metadataResults: AssetInfo[] = await Promise.all(
+    const allResults = await Promise.all(
       assetsData.edges.map(async (item) => {
         const metadata = await this.getMetadata(item.node.assetId);
 
+        // Skip if metadata is not found
+        if (!metadata) {
+          return null;
+        }
+
         return {
           balance: item.node.balance,
-          metadata: metadata!,
-          assetId: Number(item.node.assetId),
+          metadata: metadata,
+          assetId: item.node.assetId,
           status: item.node.status
         };
       })
     );
+
+    let metadataResults: AssetInfo[] = allResults.filter(
+      (item): item is NonNullable<typeof item> => item !== null
+    );
+
     if (assetType) {
       metadataResults = metadataResults.filter((item) => {
-        return item.metadata.asset_type[assetType] !== undefined;
+        return item.metadata?.assetType !== undefined;
       });
     }
 
-    const sortedMetadataResults = metadataResults.sort((a, b) => a.assetId - b.assetId);
+    const sortedMetadataResults = metadataResults.sort((a, b) => {
+      const balanceA = BigInt(a.balance || '0');
+      const balanceB = BigInt(b.balance || '0');
+      return balanceA > balanceB ? -1 : balanceA < balanceB ? 1 : 0;
+    });
 
     return {
       data: sortedMetadataResults,
-      pageInfo: { hasNextPage: false, endCursor: '' },
+      pageInfo: assetsData.pageInfo,
       totalCount: sortedMetadataResults.length
     };
   }
 
   async listOwnedAssetsInfo({
     account,
-    assetType
+    assetType,
+    first,
+    after,
+    orderBy
   }: {
     account: string;
     assetType?: AssetType;
+    first?: number;
+    after?: string;
+    orderBy?: OrderBy[];
   }): Promise<AssetInfoResponse> {
-    let data: AssetInfoResponse;
-    data = await this.listAccountLpAssets({ account, assetType });
-
-    return data;
+    return this.listAccountLpAssets({ account, assetType, first, after, orderBy });
   }
 
   async listPoolsInfo({
@@ -818,8 +815,8 @@ export class Merak {
           liquidity: `${poolAsset1AmountNum} ${asset1Metadata.symbol} / ${poolAsset2AmountNum} ${asset2Metadata.symbol}`,
           volume: `${poolAsset1AmountNum + poolAsset2AmountNum}`,
           feeTier: '1%',
-          token1Image: asset1Metadata.icon_url,
-          token2Image: asset2Metadata.icon_url
+          token1Image: asset1Metadata.iconUrl,
+          token2Image: asset2Metadata.iconUrl
         };
         savedPools.push(poolInfo);
       }
@@ -828,9 +825,19 @@ export class Merak {
     return savedPools;
   }
 
-  // async listOwnedWrapperAssets({ account }: { account: string }): Promise<AssetInfoResponse> {
-  //   return this.listOwnedAssetsInfo({ account, assetType: 'Wrapped' });
-  // }
+  async listOwnedWrapperAssets({
+    account,
+    first,
+    after,
+    orderBy
+  }: {
+    account: string;
+    first?: number;
+    after?: string;
+    orderBy?: OrderBy[];
+  }): Promise<AssetInfoResponse> {
+    return this.listOwnedAssetsInfo({ account, assetType: 'Wrapped', first, after, orderBy });
+  }
 
   async calRemoveLpAmount({
     address,
@@ -869,10 +876,11 @@ export class Merak {
     const shareAmount = amountNum / Number(poolSupply);
 
     const poolsInfo = await this.storage.list.assetPool({
-      asset0: poolAssetId.toString()
+      poolAssetId: poolAssetId.toString(),
+      first: 1
     });
 
-    if (!poolsInfo) {
+    if (!poolsInfo || poolsInfo.edges.length === 0) {
       throw new Error(`Pool info not found: ${poolAssetId}`);
     }
 
@@ -909,5 +917,12 @@ export class Merak {
       // formattedAmountA: amountA / Math.pow(10, asset1Metadata.decimals),
       // formattedAmountB: amountB / Math.pow(10, asset2Metadata.decimals)
     };
+  }
+
+  async supplyOf(assetId: string): Promise<AssetSupplyType | null> {
+    const supply = await this.storage.get.assetSupply({
+      assetId
+    });
+    return supply as AssetSupplyType | null;
   }
 }

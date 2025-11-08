@@ -9,17 +9,15 @@ import debounce from 'lodash.debounce';
 import { AssetsStateAtom } from '@/app/jotai/assets';
 import { AssetInfo } from '@0xobelisk/merak-sdk';
 import { useCurrentAccount } from '@mysten/dapp-kit';
+import { useRegistryAsAssetInfo } from '@/app/hooks/useRegistryAssets';
 
 // Set default icon to SUI icon
-const DEFAULT_ICON = '/sui-logo.svg';
+const DEFAULT_ICON = '/registry/sui/images/sui.svg';
 
-// Popular tokens to show in quick select area
+// Popular tokens to show in quick select area (now using local registry paths)
 const POPULAR_TOKENS = [
-  { symbol: 'SUI', icon_url: '/sui-logo.svg' },
-  {
-    symbol: 'DUBHE',
-    icon_url: 'https://pbs.twimg.com/profile_images/1904156933516668928/W9y4Vor__400x400.jpg'
-  }
+  { symbol: 'SUI', iconUrl: '/registry/sui/images/sui.svg' },
+  { symbol: 'DUBHE', iconUrl: '/registry/dubhe/images/dubhe.jpg' }
 ];
 
 // Helper function to safely format token balances
@@ -57,7 +55,7 @@ function TokenSelectionModalOpen({
   selectionType: 'from' | 'to';
   availableFromTokens?: AssetInfo[];
   availableToTokens?: AssetInfo[];
-  availableTokenIds?: number[];
+  availableTokenIds?: string[];
   isLoading?: boolean;
 }) {
   const account = useCurrentAccount();
@@ -66,32 +64,50 @@ function TokenSelectionModalOpen({
   const [assetsState] = useAtom(AssetsStateAtom);
   const [filteredAssets, setFilteredAssets] = useState<any[]>([]);
 
-  // Get available token list
+  // Get registry assets (whitelist of live assets)
+  const { data: registryAssetInfos, isLoading: isRegistryLoading } = useRegistryAsAssetInfo({
+    status: 'live'
+  });
+
+  // Get available token list - prioritize registry whitelist
   const getAvailableAssets = useCallback(() => {
+    // Use registry assets if available, fallback to on-chain data
+    const baseAssets = registryAssetInfos.length > 0 ? registryAssetInfos : assetsState.assetInfos;
+
     if (selectionType === 'from') {
-      return assetsState.assetInfos;
+      return baseAssets;
     }
-    if (availableToTokens) {
-      console.log('Available to tokens:', availableToTokens);
+    if (availableToTokens && availableToTokens.length > 0) {
       return availableToTokens;
     }
 
-    if (availableTokenIds) {
-      console.log('Available token IDs:', availableTokenIds);
-      return assetsState.assetInfos.filter((asset) =>
-        availableTokenIds.includes(Number(asset.assetId))
+    if (availableTokenIds && availableTokenIds.length > 0) {
+      return baseAssets.filter((asset) =>
+        availableTokenIds.map(String).includes(String(asset.assetId))
       );
     }
 
-    return assetsState.assetInfos;
-  }, [assetsState.assetInfos, availableToTokens, availableTokenIds, selectionType]);
+    return baseAssets;
+  }, [
+    registryAssetInfos,
+    assetsState.assetInfos,
+    availableToTokens,
+    availableTokenIds,
+    selectionType
+  ]);
 
+  // Initialize filtered assets
   useEffect(() => {
     const initialFiltered = getAvailableAssets();
-    console.log('Initial filtered assets:', initialFiltered);
     setFilteredAssets(initialFiltered);
     setIsLoading(false);
-  }, [getAvailableAssets]);
+  }, [
+    selectionType,
+    registryAssetInfos.length,
+    assetsState.assetInfos.length,
+    availableToTokens?.length,
+    availableTokenIds?.length
+  ]);
 
   const filterTokens = useCallback(
     (term: string) => {
@@ -129,7 +145,7 @@ function TokenSelectionModalOpen({
     onSelectToken({
       symbol: asset.metadata?.symbol || 'Unknown',
       name: asset.metadata?.name || 'Unknown Token',
-      icon_url: asset.metadata?.icon_url || DEFAULT_ICON,
+      iconUrl: asset.metadata?.iconUrl || DEFAULT_ICON,
       balance: formattedBalance,
       id: asset.assetId,
       decimals: asset.metadata?.decimals || 18
@@ -139,10 +155,9 @@ function TokenSelectionModalOpen({
 
   // Handle popular token selection
   const handlePopularTokenSelect = (token: any) => {
-    // Find matching asset by symbol
-    const matchedAsset = assetsState.assetInfos.find(
-      (asset) => asset.metadata?.symbol === token.symbol
-    );
+    // Find matching asset by symbol - prioritize registry assets
+    const baseAssets = registryAssetInfos.length > 0 ? registryAssetInfos : assetsState.assetInfos;
+    const matchedAsset = baseAssets.find((asset) => asset.metadata?.symbol === token.symbol);
 
     if (matchedAsset) {
       handleSelectToken(matchedAsset);
@@ -185,7 +200,7 @@ function TokenSelectionModalOpen({
                 onClick={() => handlePopularTokenSelect(token)}
               >
                 <img
-                  src={token.icon_url}
+                  src={token.iconUrl}
                   alt={token.symbol}
                   className="w-5 h-5"
                   loading="lazy"
@@ -220,7 +235,7 @@ function TokenSelectionModalOpen({
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 flex-shrink-0">
                         <img
-                          src={asset.metadata?.icon_url || DEFAULT_ICON}
+                          src={asset.metadata?.iconUrl || DEFAULT_ICON}
                           alt={asset.metadata?.symbol}
                           className="w-full h-full rounded-full"
                           loading="lazy"
@@ -268,7 +283,7 @@ interface TokenSelectionModalProps {
   selectionType: 'from' | 'to';
   availableFromTokens?: AssetInfo[];
   availableToTokens?: AssetInfo[];
-  availableTokenIds?: number[];
+  availableTokenIds?: string[];
   isLoading?: boolean;
 }
 
