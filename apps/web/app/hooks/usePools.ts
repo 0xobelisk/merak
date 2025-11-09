@@ -60,7 +60,7 @@ export function usePools(options: UsePoolsOptions = {}) {
   );
 
   // Finally, get full pool info with cached metadata
-  return useQuery<PoolInfo[]>({
+  const poolsQuery = useQuery<PoolInfo[]>({
     queryKey: ['pools', pageSize, metadataMap],
     queryFn: async () => {
       if (!merak) {
@@ -82,6 +82,12 @@ export function usePools(options: UsePoolsOptions = {}) {
     // Don't refetch on window focus for pool data
     refetchOnWindowFocus: false
   });
+
+  // Return combined loading state to handle multi-stage loading
+  return {
+    ...poolsQuery,
+    isLoading: isLoadingBasicPools || isLoadingMetadata || poolsQuery.isLoading
+  };
 }
 
 /**

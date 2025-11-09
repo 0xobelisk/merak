@@ -1,6 +1,6 @@
 'use client';
 
-import { RefreshCw, ArrowRight } from 'lucide-react';
+import { RefreshCw, ArrowRight, Wallet, TrendingUp, Droplets } from 'lucide-react';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import { Button } from '@repo/ui/components/ui/button';
@@ -12,11 +12,18 @@ import { getLogoUrl } from '@/app/types/registry';
 import { useUserLpAssets } from '@/app/hooks/useUserAssets';
 import { useBatchAssetMetadata } from '@/app/hooks/useAssetMetadata';
 import { useQuery } from '@tanstack/react-query';
+import RemoveLiquidityModal from '@/app/components/pool/remove-liquidity-modal';
 
 export default function PositionsList() {
   const merak = useMerak();
   const account = useCurrentAccount();
   const router = useRouter();
+  const [isRemoveLiquidityModalOpen, setIsRemoveLiquidityModalOpen] = useState(false);
+  const [selectedPosition, setSelectedPosition] = useState<{
+    asset1Id: string;
+    asset2Id: string;
+    lpTokenId: string;
+  } | null>(null);
 
   // Use React Query hook for LP assets
   const { data: lpAssetsData, isLoading: isLoadingLpAssets } = useUserLpAssets({ first: 50 });
@@ -34,7 +41,7 @@ export default function PositionsList() {
   );
 
   // Fetch pool info for all LP assets to extract asset IDs
-  const { data: poolInfoList = [] } = useQuery({
+  const { data: poolInfoList = [], isLoading: isLoadingPoolInfo } = useQuery({
     queryKey: ['lpPoolsInfo', lpAssetsData?.data],
     queryFn: async () => {
       if (!merak || !lpAssetsData?.data || lpAssetsData.data.length === 0) {
@@ -83,7 +90,10 @@ export default function PositionsList() {
   }, [poolInfoList]);
 
   // Batch fetch metadata with React Query caching
-  const { data: metadataMap } = useBatchAssetMetadata(assetIds, assetIds.length > 0);
+  const { data: metadataMap, isLoading: isLoadingMetadata } = useBatchAssetMetadata(
+    assetIds,
+    assetIds.length > 0
+  );
 
   type PositionType = {
     lpAssetId: string;
@@ -102,7 +112,11 @@ export default function PositionsList() {
   };
 
   // Build positions using cached metadata
-  const { data: positions = [], refetch: refetchPositions } = useQuery({
+  const {
+    data: positions = [],
+    refetch: refetchPositions,
+    isLoading: isLoadingPositions
+  } = useQuery({
     queryKey: ['positions', poolInfoList, metadataMap],
     queryFn: async () => {
       if (!merak || !metadataMap || poolInfoList.length === 0) {
@@ -179,40 +193,55 @@ export default function PositionsList() {
   });
 
   const handleRemoveLiquidity = (position: PositionType) => {
-    const queryParams = new URLSearchParams();
-    queryParams.append('asset1', position.asset1Id);
-    queryParams.append('asset2', position.asset2Id);
-    queryParams.append('lpTokenId', position.lpAssetId);
-    router.push(`/pool/remove?${queryParams.toString()}`);
+    setSelectedPosition({
+      asset1Id: position.asset1Id,
+      asset2Id: position.asset2Id,
+      lpTokenId: position.lpAssetId
+    });
+    setIsRemoveLiquidityModalOpen(true);
   };
 
   if (!account?.address) {
     return (
       <div className="max-w-6xl mx-auto p-6">
-        <div className="text-center py-12">
-          <p className="text-gray-500">Please connect your wallet to view your positions</p>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
+          <div className="flex justify-center mb-4">
+            <div className="bg-sui-blue-50 rounded-full p-4">
+              <Wallet className="h-12 w-12 text-sui-blue-600" />
+            </div>
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Connect Your Wallet</h3>
+          <p className="text-gray-500">
+            Please connect your wallet to view your liquidity positions
+          </p>
         </div>
       </div>
     );
   }
 
-  // Determine if we're still loading
-  const isProcessing = isLoadingLpAssets || (!metadataMap && poolInfoList.length > 0);
+  // Determine if we're still loading - include all loading states
+  // If LP assets are loaded and empty, we know user has no positions
+  const hasNoLpAssets = !isLoadingLpAssets && lpAssetsData?.data?.length === 0;
+  const isProcessing =
+    isLoadingLpAssets || isLoadingPoolInfo || isLoadingMetadata || isLoadingPositions;
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">My Positions</h1>
-          <p className="text-gray-500 mt-2">Manage your liquidity positions</p>
+          <h1 className="text-3xl font-bold text-gray-900">My Positions</h1>
+          <p className="text-gray-500 mt-2 flex items-center gap-2">
+            <Droplets className="h-4 w-4" />
+            Manage your liquidity positions
+          </p>
         </div>
         <Button
           variant="outline"
           size="sm"
           onClick={() => refetchPositions()}
           disabled={isProcessing}
-          className="flex items-center space-x-2"
+          className="flex items-center space-x-2 hover:bg-gray-50 transition-all"
         >
           <RefreshCw className={`h-4 w-4 ${isProcessing ? 'animate-spin' : ''}`} />
           <span>Refresh</span>
@@ -220,85 +249,143 @@ export default function PositionsList() {
       </div>
 
       {/* Loading State */}
-      {isProcessing && (
+      {isProcessing && !hasNoLpAssets && (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-white p-6 rounded-lg shadow">
-              <Skeleton className="h-20 w-full" />
+            <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+              <div className="flex items-center justify-between gap-6">
+                <div className="flex items-center space-x-4 flex-1">
+                  <div className="flex items-center -space-x-3">
+                    <Skeleton className="h-12 w-12 rounded-full" />
+                    <Skeleton className="h-12 w-12 rounded-full" />
+                  </div>
+                  <div className="space-y-2">
+                    <Skeleton className="h-5 w-32" />
+                    <Skeleton className="h-4 w-40" />
+                  </div>
+                </div>
+                <div className="flex gap-8 flex-1 justify-center">
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-4 w-28" />
+                  </div>
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-4 w-16" />
+                  </div>
+                </div>
+                <Skeleton className="h-10 w-40 rounded-xl" />
+              </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Empty State */}
-      {!isProcessing && positions.length === 0 && (
-        <div className="bg-white p-12 rounded-lg shadow text-center">
-          <p className="text-gray-500 mb-4">You don't have any liquidity positions yet</p>
-          <Button onClick={() => router.push('/pool')}>Browse Pools</Button>
+      {/* Empty State with Better Design */}
+      {!isProcessing && (hasNoLpAssets || positions.length === 0) && (
+        <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-sm border border-gray-200 p-16 text-center">
+          <div className="flex justify-center mb-6">
+            <div className="bg-white rounded-full p-6 shadow-md">
+              <TrendingUp className="h-16 w-16 text-gray-400" />
+            </div>
+          </div>
+          <h3 className="text-2xl font-semibold text-gray-900 mb-3">No Positions Yet</h3>
+          <p className="text-gray-600 mb-6 max-w-md mx-auto">
+            You don't have any liquidity positions. Start providing liquidity to earn trading fees!
+          </p>
+          <Button
+            onClick={() => router.push('/pool')}
+            className="bg-gradient-to-r from-sui-blue-600 to-sui-blue-700 hover:from-sui-blue-700 hover:to-sui-blue-800 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all"
+          >
+            Browse Pools
+            <ArrowRight className="h-5 w-5 ml-2" />
+          </Button>
         </div>
       )}
 
-      {/* Positions List */}
+      {/* Positions List with Enhanced Design */}
       {!isProcessing && positions.length > 0 && (
         <div className="space-y-4">
+          {/* <div className="bg-gradient-to-r from-sui-blue-50 to-sui-blue-100 rounded-xl p-4 border border-sui-blue-200">
+            <div className="flex items-center gap-2 text-sm text-sui-blue-800">
+              <TrendingUp className="h-4 w-4" />
+              <span className="font-medium">
+                You have {positions.length} active position{positions.length > 1 ? 's' : ''}
+              </span>
+            </div>
+          </div> */}
+
           {positions.map((position, index) => (
             <div
               key={index}
-              className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow"
+              className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md hover:border-gray-200 transition-all duration-200"
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-6">
                 {/* Left: Token Pair Info */}
-                <div className="flex items-center space-x-4 flex-1">
-                  {/* Token Icons */}
-                  <div className="flex items-center -space-x-2">
-                    <img
-                      src={getTokenLogo(position.asset1Id, position.asset1Image)}
-                      alt={position.asset1Symbol}
-                      className="w-10 h-10 rounded-full border-2 border-white"
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
-                      }}
-                    />
-                    <img
-                      src={getTokenLogo(position.asset2Id, position.asset2Image)}
-                      alt={position.asset2Symbol}
-                      className="w-10 h-10 rounded-full border-2 border-white"
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
-                      }}
-                    />
+                <div className="flex items-center space-x-4 flex-1 min-w-0">
+                  {/* Token Icons with Enhanced Style */}
+                  <div className="flex items-center -space-x-3">
+                    <div className="relative">
+                      <img
+                        src={getTokenLogo(position.asset1Id, position.asset1Image)}
+                        alt={position.asset1Symbol}
+                        className="w-12 h-12 rounded-full border-3 border-white shadow-md"
+                        loading="lazy"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
+                        }}
+                      />
+                    </div>
+                    <div className="relative">
+                      <img
+                        src={getTokenLogo(position.asset2Id, position.asset2Image)}
+                        alt={position.asset2Symbol}
+                        className="w-12 h-12 rounded-full border-3 border-white shadow-md"
+                        loading="lazy"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
+                        }}
+                      />
+                    </div>
                   </div>
 
-                  {/* Token Names */}
-                  <div>
-                    <h3 className="text-lg font-semibold">
+                  {/* Token Names and Balance */}
+                  <div className="min-w-0">
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">
                       {position.asset1Symbol} / {position.asset2Symbol}
                     </h3>
-                    <p className="text-sm text-gray-500">LP Balance: {position.lpBalance}</p>
+                    <p className="text-sm text-gray-600 flex items-center gap-1">
+                      <span className="font-medium">LP Balance:</span>
+                      <span className="text-gray-900">{position.lpBalance}</span>
+                    </p>
                   </div>
                 </div>
 
-                {/* Middle: Pool Stats */}
-                <div className="flex space-x-8 flex-1 justify-center">
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Pool Liquidity</p>
-                    <p className="text-sm font-medium">{position.poolLiquidity}</p>
+                {/* Middle: Pool Stats with Better Layout */}
+                <div className="flex gap-8 flex-1 justify-center">
+                  <div className="bg-gray-50 rounded-xl px-4 py-3 min-w-[140px]">
+                    <p className="text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide">
+                      Pool Liquidity
+                    </p>
+                    <p className="text-sm font-semibold text-gray-900">{position.poolLiquidity}</p>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Your Share</p>
-                    <p className="text-sm font-medium">{position.sharePercentage}%</p>
+                  <div className="bg-sui-blue-50 rounded-xl px-4 py-3 min-w-[100px]">
+                    <p className="text-xs font-medium text-sui-blue-600 mb-1 uppercase tracking-wide">
+                      Your Share
+                    </p>
+                    <p className="text-sm font-semibold text-sui-blue-700">
+                      {position.sharePercentage}%
+                    </p>
                   </div>
                 </div>
 
-                {/* Right: Action Button */}
+                {/* Right: Action Button with Sui Blue Color */}
                 <div className="flex items-center space-x-2">
                   <Button
                     onClick={() => handleRemoveLiquidity(position)}
-                    className="bg-red-600 hover:bg-red-700 text-white"
+                    className="bg-gradient-to-r from-sui-blue-600 to-sui-blue-700 hover:from-sui-blue-700 hover:to-sui-blue-800 text-white shadow-md hover:shadow-lg transition-all duration-200 px-6 py-2.5 rounded-xl"
                   >
-                    Remove Liquidity
+                    <span className="font-medium">Manage Position</span>
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 </div>
@@ -307,6 +394,19 @@ export default function PositionsList() {
           ))}
         </div>
       )}
+
+      {/* Remove Liquidity Modal */}
+      <RemoveLiquidityModal
+        isOpen={isRemoveLiquidityModalOpen}
+        onClose={() => {
+          setIsRemoveLiquidityModalOpen(false);
+          setSelectedPosition(null);
+          refetchPositions();
+        }}
+        asset1Id={selectedPosition?.asset1Id}
+        asset2Id={selectedPosition?.asset2Id}
+        lpTokenId={selectedPosition?.lpTokenId}
+      />
     </div>
   );
 }

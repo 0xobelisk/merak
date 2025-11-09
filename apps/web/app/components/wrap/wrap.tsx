@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import Image from 'next/image';
 import { Button } from '@repo/ui/components/ui/button';
 import { Card, CardContent } from '@repo/ui/components/ui/card';
 import { Input } from '@repo/ui/components/ui/input';
 import { Label } from '@repo/ui/components/ui/label';
+import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import {
   Select,
   SelectContent,
@@ -37,7 +39,7 @@ interface TokenInfo {
   value: string; // coinType for wrap, assetId for unwrap
   symbol: string;
   balance: string;
-  logo: JSX.Element;
+  logoUrl: string; // Changed from JSX.Element to string URL
   rawBalance: string;
   decimals: number;
   coinType?: string; // Only for unwrap mode
@@ -94,6 +96,7 @@ export default function TokenWrapper() {
 
   // Data states
   const [nativeTokenBalances, setNativeTokenBalances] = useState<Map<string, string>>(new Map());
+  const [isBalancesLoading, setIsBalancesLoading] = useState(true);
 
   // Get enriched assets from registry (whitelist with local logos)
   const { data: enrichedAssets = [], isLoading: isRegistryLoading } = useEnrichedAssets({
@@ -101,7 +104,7 @@ export default function TokenWrapper() {
   });
 
   // Fetch wrapper assets list using React Query
-  const { data: wrapperAssetsRaw = [] } = useQuery({
+  const { data: wrapperAssetsRaw = [], isLoading: isWrapperAssetsLoading } = useQuery({
     queryKey: ['wrapperAssetsList'],
     queryFn: async () => {
       if (!merak) return [];
@@ -120,7 +123,7 @@ export default function TokenWrapper() {
   );
 
   // Batch fetch metadata with caching and auto-refresh
-  const { data: wrapperMetadataMap } = useBatchAssetMetadata(
+  const { data: wrapperMetadataMap, isLoading: isMetadataLoading } = useBatchAssetMetadata(
     wrapperAssetIds,
     wrapperAssetIds.length > 0
   );
@@ -154,7 +157,12 @@ export default function TokenWrapper() {
 
   // Fetch user's native token balances for wrapping
   const fetchNativeTokenBalances = useCallback(async () => {
-    if (!account?.address || !dubheContract || wrapperAssets.length === 0) return;
+    if (!account?.address || !dubheContract || wrapperAssets.length === 0) {
+      setIsBalancesLoading(false);
+      return;
+    }
+
+    setIsBalancesLoading(true);
     try {
       const balancesMap = new Map<string, string>();
 
@@ -177,16 +185,21 @@ export default function TokenWrapper() {
       setNativeTokenBalances(balancesMap);
     } catch (error) {
       console.error('Error fetching native token balances:', error);
+    } finally {
+      setIsBalancesLoading(false);
     }
   }, [account?.address, dubheContract, wrapperAssets]);
 
   // Fetch user's owned wrapper tokens using React Query with cached metadata
   const { data: ownedWrapperTokens = [] } = useQuery({
-    queryKey: ['ownedWrapperTokens', account?.address, wrapperMetadataMap],
+    queryKey: ['ownedWrapperTokens', account?.address, wrapperMetadataMap, wrapperAssets],
     queryFn: async () => {
       if (!account?.address || !merak || !wrapperMetadataMap) return [];
 
       try {
+        // Create a set of valid wrapper assetIds for quick lookup
+        const validWrapperAssetIds = new Set(wrapperAssets.map((wa) => wa.assetId));
+
         // Pass cached metadata map to SDK
         const ownedAssets = await merak.listOwnedWrapperAssets({
           account: account.address,
@@ -200,7 +213,17 @@ export default function TokenWrapper() {
         }
 
         return ownedAssets.data
-          .filter((asset) => asset && asset.balance && BigInt(asset.balance) > 0)
+          .filter((asset) => {
+            // Only include assets that:
+            // 1. Have valid data and balance > 0
+            // 2. Are in the wrapperAssets list (i.e., are valid wrapper tokens)
+            return (
+              asset &&
+              asset.balance &&
+              BigInt(asset.balance) > 0 &&
+              validWrapperAssetIds.has(asset.assetId)
+            );
+          })
           .map((asset) => {
             // Find matching registry asset for better metadata and local logo
             const registryAsset = enrichedAssets.find(
@@ -233,19 +256,7 @@ export default function TokenWrapper() {
               rawBalance: asset.balance,
               decimals: metadata.decimals,
               coinType: wrapperAsset?.coinType,
-              logo: (
-                <img
-                  src={metadata.iconUrl}
-                  alt={metadata.symbol}
-                  width="20"
-                  height="20"
-                  style={{ marginRight: '8px' }}
-                  loading="lazy"
-                  onError={(e) => {
-                    e.currentTarget.src = '/registry/sui/images/sui.svg';
-                  }}
-                />
-              )
+              logoUrl: metadata.iconUrl
             };
           });
       } catch (error) {
@@ -284,19 +295,7 @@ export default function TokenWrapper() {
           balance: balanceNum.toFixed(4),
           rawBalance: balance,
           decimals: asset.decimals,
-          logo: (
-            <img
-              src={asset.iconUrl}
-              alt={asset.symbol}
-              width="20"
-              height="20"
-              style={{ marginRight: '8px' }}
-              loading="lazy"
-              onError={(e) => {
-                e.currentTarget.src = '/registry/sui/images/sui.svg';
-              }}
-            />
-          )
+          logoUrl: asset.iconUrl
         };
       })
       .filter((token): token is TokenInfo => token !== null);
@@ -307,6 +306,49 @@ export default function TokenWrapper() {
     () => (isWrap ? wrapTokenList : ownedWrapperTokens),
     [isWrap, wrapTokenList, ownedWrapperTokens]
   );
+
+  // Auto-select SUI token as default when data is loaded or mode changes
+  useEffect(() => {
+    // Only auto-select if sourceToken is empty and we have tokens available
+    if (sourceToken || currentSourceTokens.length === 0) return;
+
+    // Try to find SUI token (case-insensitive)
+    const suiToken = currentSourceTokens.find((token) => token.symbol.toLowerCase() === 'sui');
+
+    if (suiToken) {
+      setSourceToken(suiToken.value);
+    } else if (currentSourceTokens.length > 0) {
+      // Fallback to first token if SUI not found
+      setSourceToken(currentSourceTokens[0].value);
+    }
+  }, [currentSourceTokens, sourceToken, isWrap]);
+
+  // Compute comprehensive loading state
+  const isDataLoading = useMemo(() => {
+    // Initial data loading
+    if (isRegistryLoading || isWrapperAssetsLoading || isMetadataLoading) {
+      return true;
+    }
+
+    // Balance loading for wrap mode
+    if (isWrap && isBalancesLoading) {
+      return true;
+    }
+
+    // No wrapper assets loaded yet
+    if (wrapperAssets.length === 0) {
+      return true;
+    }
+
+    return false;
+  }, [
+    isRegistryLoading,
+    isWrapperAssetsLoading,
+    isMetadataLoading,
+    isWrap,
+    isBalancesLoading,
+    wrapperAssets.length
+  ]);
 
   // Handle amount change
   const handleAmountChange = useCallback(
@@ -478,6 +520,48 @@ export default function TokenWrapper() {
     fetchNativeTokenBalances
   ]);
 
+  // Show loading state while fetching initial data
+  if (isDataLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center flex-1 bg-[#F7F8FA] py-4">
+        <Card className="w-[400px] border-gray-200 shadow-sm">
+          <CardContent className="pt-6">
+            <div className="space-y-6">
+              {/* Switch skeleton */}
+              <div className="flex items-center justify-between">
+                <Skeleton className="h-5 w-16" />
+                <Skeleton className="h-6 w-11 rounded-full" />
+              </div>
+
+              {/* Source Token skeleton */}
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-10 w-full rounded-md" />
+              </div>
+
+              {/* Amount skeleton */}
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-4 w-32" />
+                </div>
+                <Skeleton className="h-10 w-full rounded-md" />
+              </div>
+
+              {/* Button skeleton */}
+              <Skeleton className="h-10 w-full rounded-md" />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Loading text */}
+        <p className="mt-4 text-center text-gray-500 text-sm animate-pulse">
+          Loading wrap interface...
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center justify-center flex-1 bg-[#F7F8FA] py-4">
       <Card className="w-[400px] border-gray-200 shadow-sm">
@@ -596,15 +680,62 @@ function TokenSelect({ label, value, onChange, options, isWrap }) {
   return (
     <div className="space-y-2">
       <Label htmlFor={label}>{label}</Label>
+      {/* Preload all images using hidden img tags - browser will cache them */}
+      <div style={{ display: 'none' }} aria-hidden="true">
+        {options.map((token) => (
+          <img key={token.value} src={token.logoUrl} alt="" />
+        ))}
+      </div>
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder={`Select ${label.toLowerCase()}`} />
+        <SelectTrigger className="w-full focus:ring-[#C0E6FF] focus:border-[#C0E6FF]">
+          <SelectValue placeholder={`Select ${label.toLowerCase()}`}>
+            {value &&
+              (() => {
+                const selectedToken = options.find((t) => t.value === value);
+                return selectedToken ? (
+                  <div className="flex items-center">
+                    <div
+                      style={{
+                        width: '20px',
+                        height: '20px',
+                        marginRight: '8px',
+                        backgroundImage: `url(${selectedToken.logoUrl})`,
+                        backgroundSize: 'contain',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        flexShrink: 0
+                      }}
+                      role="img"
+                      aria-label={selectedToken.symbol}
+                    />
+                    <span>{selectedToken.symbol}</span>
+                  </div>
+                ) : null;
+              })()}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           {options.map((token) => (
-            <SelectItem key={token.value} value={token.value}>
+            <SelectItem
+              key={token.value}
+              value={token.value}
+              className="focus:bg-[#C0E6FF] data-[state=checked]:bg-[#C0E6FF] hover:bg-[#C0E6FF]/80"
+            >
               <div className="flex items-center">
-                {token.logo}
+                <div
+                  style={{
+                    width: '20px',
+                    height: '20px',
+                    marginRight: '8px',
+                    backgroundImage: `url(${token.logoUrl})`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    flexShrink: 0
+                  }}
+                  role="img"
+                  aria-label={token.symbol}
+                />
                 <span>{isWrap ? token.symbol : `${token.symbol}`}</span>
               </div>
             </SelectItem>

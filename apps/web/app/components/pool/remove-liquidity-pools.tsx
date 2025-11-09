@@ -426,175 +426,291 @@ export default function RemoveLiquidity() {
   }, [estimatedAmountA, estimatedAmountB, tokenA, tokenB, slippage]);
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-8">
-      <div className="flex items-center space-x-4">
-        <Button variant="ghost" size="icon" onClick={handleBack}>
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <h1 className="text-2xl font-bold">Remove Liquidity</h1>
-      </div>
-      <p className="text-sm text-gray-500">Remove liquidity from a pool and receive tokens back.</p>
-
-      <div className="space-y-6">
-        <div>
-          <Label>Token Pair</Label>
-          <p className="text-sm text-gray-500 mb-2">
-            {searchParams.get('asset1') && searchParams.get('asset2')
-              ? 'Selected token pair for removing liquidity.'
-              : "Select token pair from which you'd like to remove liquidity."}
-          </p>
-          <div className="flex space-x-2">
-            <Button
-              onClick={() => setIsTokenAModalOpen(true)}
-              className="w-full justify-between"
-              variant="outline"
-              disabled={!!searchParams.get('asset1')} // If URL has token parameter, disable selection button
-            >
-              {tokenA ? (
-                <>
-                  <img
-                    src={tokenA.iconUrl}
-                    alt={tokenA.symbol}
-                    className="w-6 h-6 mr-2"
-                    loading="lazy"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
-                    }}
-                  />
-                  {tokenA.symbol}
-                </>
-              ) : (
-                'Select token'
-              )}
-              {!searchParams.get('asset1') && <ChevronDown className="h-4 w-4 ml-2" />}
-            </Button>
-            <Button
-              onClick={() => setIsTokenBModalOpen(true)}
-              className="w-full justify-between"
-              variant="outline"
-              disabled={!tokenA || !!searchParams.get('asset2')} // If URL has token parameter, disable selection button
-            >
-              {tokenB ? (
-                <>
-                  <img
-                    src={tokenB.iconUrl}
-                    alt={tokenB.symbol}
-                    className="w-6 h-6 mr-2"
-                    loading="lazy"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
-                    }}
-                  />
-                  {tokenB.symbol}
-                </>
-              ) : tokenA ? (
-                'Select token'
-              ) : (
-                'Select first token'
-              )}
-              {!searchParams.get('asset2') && <ChevronDown className="h-4 w-4 ml-2" />}
-            </Button>
+    <div className="min-h-screen bg-gradient-to-br from-sui-blue-50 via-white to-sui-blue-100 py-8 px-4">
+      <div className="max-w-2xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="flex items-center space-x-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleBack}
+            className="hover:bg-white/80 transition-colors"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold text-sui-blue-800">Remove Liquidity</h1>
+            <p className="text-sm text-gray-500 mt-1">
+              Withdraw your liquidity and receive tokens back
+            </p>
           </div>
         </div>
 
-        <div>
-          <Label>Liquidity Amount</Label>
-          <p className="text-sm text-gray-500 mb-2">
-            Enter the amount of liquidity tokens you wish to remove.
-          </p>
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <Input
-                type="text"
-                value={liquidityAmount}
-                onChange={(e) => setLiquidityAmount(e.target.value)}
-                placeholder="Enter amount"
-                className="flex-grow"
-              />
-              <Button variant="outline" size="sm" onClick={handleMaxLiquidity}>
-                MAX
-              </Button>
+        {/* Main Card */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          <div className="p-6 space-y-6">
+            {/* Token Pair Display */}
+            <div className="space-y-3">
+              <Label className="text-base font-semibold text-gray-900">Token Pair</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <Button
+                  onClick={() => setIsTokenAModalOpen(true)}
+                  className="h-auto py-4 px-4 justify-start bg-gradient-to-br from-gray-50 to-gray-100 hover:from-sui-blue-100 hover:to-sui-blue-200 border-2 border-gray-200 hover:border-sui-blue-400 transition-all duration-200"
+                  variant="outline"
+                  disabled={!!searchParams.get('asset1')}
+                >
+                  <div className="flex items-center space-x-3 w-full">
+                    {tokenA ? (
+                      <>
+                        <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center border-2 border-gray-200">
+                          <img
+                            src={tokenA.iconUrl}
+                            alt={tokenA.symbol}
+                            className="w-7 h-7 rounded-full"
+                            loading="lazy"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
+                            }}
+                          />
+                        </div>
+                        <div className="flex-1 text-left">
+                          <div className="font-semibold text-gray-900">{tokenA.symbol}</div>
+                          <div className="text-xs text-gray-500">{tokenA.name}</div>
+                        </div>
+                        {!searchParams.get('asset1') && (
+                          <ChevronDown className="h-4 w-4 text-gray-400" />
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                          <span className="text-gray-400 text-lg">?</span>
+                        </div>
+                        <span className="text-gray-500 flex-1 text-left">Select token</span>
+                        <ChevronDown className="h-4 w-4 text-gray-400" />
+                      </>
+                    )}
+                  </div>
+                </Button>
+                <Button
+                  onClick={() => setIsTokenBModalOpen(true)}
+                  className="h-auto py-4 px-4 justify-start bg-gradient-to-br from-gray-50 to-gray-100 hover:from-sui-blue-100 hover:to-sui-blue-200 border-2 border-gray-200 hover:border-sui-blue-400 transition-all duration-200"
+                  variant="outline"
+                  disabled={!tokenA || !!searchParams.get('asset2')}
+                >
+                  <div className="flex items-center space-x-3 w-full">
+                    {tokenB ? (
+                      <>
+                        <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center border-2 border-gray-200">
+                          <img
+                            src={tokenB.iconUrl}
+                            alt={tokenB.symbol}
+                            className="w-7 h-7 rounded-full"
+                            loading="lazy"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
+                            }}
+                          />
+                        </div>
+                        <div className="flex-1 text-left">
+                          <div className="font-semibold text-gray-900">{tokenB.symbol}</div>
+                          <div className="text-xs text-gray-500">{tokenB.name}</div>
+                        </div>
+                        {!searchParams.get('asset2') && (
+                          <ChevronDown className="h-4 w-4 text-gray-400" />
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                          <span className="text-gray-400 text-lg">?</span>
+                        </div>
+                        <span className="text-gray-500 flex-1 text-left">
+                          {tokenA ? 'Select token' : 'Select first token'}
+                        </span>
+                        {tokenA && <ChevronDown className="h-4 w-4 text-gray-400" />}
+                      </>
+                    )}
+                  </div>
+                </Button>
+              </div>
             </div>
-            {tokenA && tokenB && (
-              <p className="text-sm text-gray-500">LP Token Balance: {lpTokenBalance}</p>
+
+            {/* LP Token Amount Input */}
+            <div className="space-y-3">
+              <Label className="text-base font-semibold text-gray-900">Liquidity to Remove</Label>
+              <div className="bg-gradient-to-br from-sui-blue-100/50 to-white border-2 border-sui-blue-300 rounded-xl p-4 transition-all duration-200 hover:shadow-md">
+                <div className="flex justify-between items-center mb-2">
+                  <Label className="text-sm font-medium text-gray-700">LP Token Amount</Label>
+                  {tokenA && tokenB && (
+                    <span className="text-xs text-gray-500">
+                      Balance: <span className="font-medium text-gray-700">{lpTokenBalance}</span>
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Input
+                    type="text"
+                    value={liquidityAmount}
+                    onChange={(e) => setLiquidityAmount(e.target.value)}
+                    placeholder="0.00"
+                    className="text-2xl font-semibold border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto"
+                  />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleMaxLiquidity}
+                    className="bg-red-100 hover:bg-red-200 text-red-700 border-red-300 font-semibold"
+                  >
+                    MAX
+                  </Button>
+                </div>
+              </div>
+
+              {/* Percentage Buttons */}
+              {tokenA && tokenB && lpTokenBalance !== '0' && (
+                <div className="flex gap-2">
+                  {[25, 50, 75, 100].map((percentage) => (
+                    <Button
+                      key={percentage}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const amount = (parseFloat(lpTokenBalance) * percentage) / 100;
+                        setLiquidityAmount(amount.toFixed(9));
+                      }}
+                      className="flex-1 !bg-white hover:!bg-[#C0E6FF] hover:!border-[#4DA2FF] !border-gray-300 !text-gray-700 hover:!text-[#011829] transition-all duration-200"
+                    >
+                      {percentage}%
+                    </Button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Expected Output Section */}
+            {(estimatedAmountA || estimatedAmountB) && (
+              <div className="space-y-3">
+                <Label className="text-base font-semibold text-gray-900">You Will Receive</Label>
+
+                {/* Token A Output */}
+                {estimatedAmountA && tokenA && (
+                  <div className="bg-gradient-to-br from-sui-blue-50/50 to-white border-2 border-sui-blue-200 rounded-xl p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center border-2 border-gray-200">
+                          <img
+                            src={tokenA.iconUrl}
+                            alt={tokenA.symbol}
+                            className="w-7 h-7 rounded-full"
+                            loading="lazy"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-gray-600">{tokenA.symbol}</div>
+                          <div className="text-xs text-gray-500">Expected</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xl font-bold text-gray-900">{estimatedAmountA}</div>
+                        <div className="text-xs text-gray-500">Min: {minAmountA}</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Token B Output */}
+                {estimatedAmountB && tokenB && (
+                  <div className="bg-gradient-to-br from-sui-blue-50/50 to-white border-2 border-sui-blue-200 rounded-xl p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center border-2 border-gray-200">
+                          <img
+                            src={tokenB.iconUrl}
+                            alt={tokenB.symbol}
+                            className="w-7 h-7 rounded-full"
+                            loading="lazy"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-gray-600">{tokenB.symbol}</div>
+                          <div className="text-xs text-gray-500">Expected</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xl font-bold text-gray-900">{estimatedAmountB}</div>
+                        <div className="text-xs text-gray-500">Min: {minAmountB}</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
-          </div>
-        </div>
 
-        <div>
-          <Label>Minimum Receive Amounts</Label>
-          <p className="text-sm text-gray-500 mb-2">
-            Set the minimum amount of tokens you're willing to receive when removing liquidity.
-          </p>
-          <div className="space-y-4">
-            <div>
-              <Label>Minimum {tokenA ? tokenA.symbol : ''} Amount</Label>
+            {/* Slippage Section */}
+            <div className="space-y-3">
+              <Label className="text-base font-semibold text-gray-900">Slippage Tolerance</Label>
               <div className="flex items-center space-x-2">
-                <Input type="text" value={minAmountA} disabled placeholder="0.0" />
-                <span className="text-sm font-medium">{tokenA ? tokenA.symbol : ''}</span>
+                {[0.1, 0.5, 1].map((val) => (
+                  <Button
+                    key={val}
+                    type="button"
+                    variant={slippage === val ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => {
+                      setSlippage(val);
+                      setCustomSlippage('');
+                    }}
+                    className={
+                      slippage === val
+                        ? 'bg-gradient-to-r from-sui-blue-700 to-sui-blue-800 hover:from-sui-blue-800 hover:to-sui-blue-900 shadow-md'
+                        : 'hover:bg-gray-100 border-2'
+                    }
+                  >
+                    {val}%
+                  </Button>
+                ))}
+                <div className="flex items-center space-x-1 flex-1">
+                  <Input
+                    type="number"
+                    min={0}
+                    step={0.01}
+                    placeholder="Custom"
+                    value={customSlippage}
+                    onChange={(e) => {
+                      setCustomSlippage(e.target.value);
+                      setSlippage(Number(e.target.value) || 0);
+                    }}
+                    className="h-9 text-sm border-2 focus-visible:ring-2 focus-visible:ring-red-500"
+                  />
+                  <span className="text-sm text-gray-500 font-medium">%</span>
+                </div>
               </div>
-              {estimatedAmountA && (
-                <p className="text-sm text-gray-500 mt-1">
-                  Expected output: {estimatedAmountA} {tokenA?.symbol}
-                </p>
-              )}
-            </div>
-            <div>
-              <Label>Minimum {tokenB ? tokenB.symbol : ''} Amount</Label>
-              <div className="flex items-center space-x-2">
-                <Input type="text" value={minAmountB} disabled placeholder="0.0" />
-                <span className="text-sm font-medium">{tokenB ? tokenB.symbol : ''}</span>
-              </div>
-              {estimatedAmountB && (
-                <p className="text-sm text-gray-500 mt-1">
-                  Expected output: {estimatedAmountB} {tokenB?.symbol}
-                </p>
-              )}
             </div>
           </div>
-        </div>
-        {/* Slippage selection */}
-        <div>
-          <Label>Slippage</Label>
-          <div className="flex items-center space-x-2 mt-2">
-            {[0.1, 0.5, 1].map((val) => (
-              <Button
-                key={val}
-                type="button"
-                variant={slippage === val ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => {
-                  setSlippage(val);
-                  setCustomSlippage('');
-                }}
-              >
-                {val}%
-              </Button>
-            ))}
-            <Input
-              type="number"
-              min={0}
-              step={0.01}
-              placeholder="Custom"
-              value={customSlippage}
-              onChange={(e) => {
-                setCustomSlippage(e.target.value);
-                setSlippage(Number(e.target.value) || 0);
-              }}
-              className="w-20"
-            />
-            <span className="text-xs text-gray-500">%</span>
+
+          {/* Action Button */}
+          <div className="p-6 pt-0">
+            <Button
+              onClick={handleRemoveLiquidity}
+              className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-sui-blue-700 to-sui-blue-800 hover:from-sui-blue-800 hover:to-sui-blue-900 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!tokenA || !tokenB || !liquidityAmount || parseFloat(liquidityAmount) <= 0}
+            >
+              {!tokenA || !tokenB
+                ? 'Select Token Pair'
+                : !liquidityAmount || parseFloat(liquidityAmount) <= 0
+                ? 'Enter Amount'
+                : 'Remove Liquidity'}
+            </Button>
           </div>
         </div>
       </div>
-
-      <Button
-        onClick={handleRemoveLiquidity}
-        className="w-full"
-        disabled={!tokenA || !tokenB || !liquidityAmount || parseFloat(liquidityAmount) <= 0}
-      >
-        Remove Liquidity
-      </Button>
 
       <TokenSelectionModal
         isOpen={isTokenAModalOpen}

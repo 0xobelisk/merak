@@ -62,6 +62,13 @@ async function testQueryMetadata() {
     '0xa5481ac67797056f2997fe815b0aef4d70b83ae52157570fb38bc1197e0274d6'
   );
   console.log('supply:', supply);
+
+  const ownedAssets = await merak.listOwnedWrapperAssets({
+    account: '0x95a99e27a30c993dc82c78cc8285643ab81a12a73a46882afb35bd2d5d5c47ed',
+    first: 50,
+    orderBy: [{ field: 'CREATED_AT_TIMESTAMP_MS', direction: 'ASC' }]
+  });
+  console.log('ownedAssets:', JSON.stringify(ownedAssets, null, 2));
 }
 
 testQueryMetadata();

@@ -73,6 +73,28 @@ const config = {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
+        },
+        // Sui Color System
+        sui: {
+          sea: '#4DA2FF',      // Main blue
+          ocean: '#011829',    // Deep blue-black
+          aqua: '#C0E6FF',     // Light blue
+          'deep-ocean': '#030F1C', // Deepest blue-black
+          cloud: '#FFFFFF'     // White
+        },
+        // Extended Sui-based color palette for UI components
+        'sui-blue': {
+          50: '#F0F7FF',   // Lightest - backgrounds
+          100: '#E0F0FF',  // Very light - hover states
+          200: '#C0E6FF',  // Aqua - light accents
+          300: '#99D6FF',  // Light blue
+          400: '#6DBEFF',  // Medium light
+          500: '#4DA2FF',  // Sea - primary brand color
+          600: '#2E8FEE',  // Medium
+          700: '#1A75CC',  // Medium dark
+          800: '#0D5AA6',  // Dark
+          900: '#063D73',  // Darker
+          950: '#011829'   // Ocean - darkest
         }
       },
       borderRadius: {

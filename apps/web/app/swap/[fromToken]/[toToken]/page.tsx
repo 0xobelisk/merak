@@ -6,6 +6,7 @@ import { useAtom } from 'jotai';
 import { TokenSelectionOpen } from '@/app/jotai/swap/swap';
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
+import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import { ChevronDown, ArrowUpDown, Loader2, Info } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import TokenSelectionModal from '@/app/components/swap/token-selection-modal';
@@ -659,10 +660,64 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   // Loading state
   if (isAssetsLoading) {
     return (
-      <div className="flex items-center justify-center flex-1 bg-[#F5F7FA]">
-        <div className="flex flex-col items-center">
-          <Loader2 className="h-12 w-12 animate-spin text-blue-500 mb-4" />
-          <p className="text-gray-500 font-medium">Loading assets...</p>
+      <div className="bg-[#F8F9FA] flex-1 flex items-center justify-center overflow-y-auto">
+        <div className="w-full max-w-md px-4 py-6 space-y-4">
+          {/* Skeleton Swap Card */}
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+            {/* Header Skeleton */}
+            <div className="px-6 py-5 border-b border-gray-50">
+              <Skeleton className="h-8 w-24" />
+            </div>
+
+            {/* Content Skeleton */}
+            <div className="p-6 space-y-4">
+              {/* From Token Skeleton */}
+              <div className="bg-[#F8F9FA] rounded-2xl border border-gray-100 p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-4 w-12" />
+                  <Skeleton className="h-4 w-24" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-10 w-32" />
+                  <Skeleton className="h-10 w-28 rounded-xl" />
+                </div>
+                <Skeleton className="h-4 w-16" />
+              </div>
+
+              {/* Swap Arrow Skeleton */}
+              <div className="flex justify-center relative">
+                <Skeleton className="h-10 w-10 rounded-full" />
+              </div>
+
+              {/* To Token Skeleton */}
+              <div className="bg-[#F8F9FA] rounded-2xl border border-gray-100 p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-4 w-12" />
+                  <Skeleton className="h-4 w-24" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-10 w-32" />
+                  <Skeleton className="h-10 w-28 rounded-xl" />
+                </div>
+                <Skeleton className="h-4 w-16" />
+              </div>
+
+              {/* Slippage Skeleton */}
+              <div className="bg-[#F8F9FA] rounded-2xl border border-gray-100 p-4">
+                <Skeleton className="h-7 w-full" />
+              </div>
+            </div>
+
+            {/* Button Skeleton */}
+            <div className="px-6 pb-6 pt-2">
+              <Skeleton className="h-12 w-full rounded-xl" />
+            </div>
+          </div>
+
+          {/* Loading Text */}
+          <p className="text-center text-gray-500 text-sm animate-pulse">
+            Loading swap interface...
+          </p>
         </div>
       </div>
     );
@@ -711,6 +766,12 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
   return (
     <div className="bg-[#F8F9FA] flex-1 flex items-center justify-center overflow-y-auto">
       <main className="w-full max-w-md px-4 py-6">
+        {/* Preload token images using hidden img tags - browser will cache them */}
+        <div style={{ display: 'none' }} aria-hidden="true">
+          {fromToken?.iconUrl && <img src={fromToken.iconUrl} alt="" />}
+          {toToken?.iconUrl && <img src={toToken.iconUrl} alt="" />}
+        </div>
+
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-6 py-5 border-b border-gray-50">
             <h1 className="text-xl font-semibold text-gray-800">Swap</h1>

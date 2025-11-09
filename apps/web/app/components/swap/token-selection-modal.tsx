@@ -168,6 +168,20 @@ function TokenSelectionModalOpen({
     <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4 z-[1000]">
       <div className="bg-white rounded-3xl w-full max-w-[480px] relative">
         <div className="p-6">
+          {/* Preload all token images using hidden img tags - browser will cache them */}
+          <div style={{ display: 'none' }} aria-hidden="true">
+            {POPULAR_TOKENS.map((token) => (
+              <img key={`preload-popular-${token.symbol}`} src={token.iconUrl} alt="" />
+            ))}
+            {filteredAssets.map((asset) => (
+              <img
+                key={`preload-${asset.assetId}`}
+                src={asset.metadata?.iconUrl || DEFAULT_ICON}
+                alt=""
+              />
+            ))}
+          </div>
+
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-xl font-semibold text-gray-900">Select a token</h2>
             <Button variant="ghost" size="icon" className="rounded-full h-8 w-8" onClick={onClose}>
@@ -202,8 +216,7 @@ function TokenSelectionModalOpen({
                 <img
                   src={token.iconUrl}
                   alt={token.symbol}
-                  className="w-5 h-5"
-                  loading="lazy"
+                  className="w-5 h-5 flex-shrink-0"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = DEFAULT_ICON;
                   }}
@@ -233,12 +246,11 @@ function TokenSelectionModalOpen({
                     onClick={() => handleSelectToken(asset)}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 flex-shrink-0">
+                      <div className="w-10 h-10 flex-shrink-0 rounded-full overflow-hidden bg-white flex items-center justify-center">
                         <img
                           src={asset.metadata?.iconUrl || DEFAULT_ICON}
                           alt={asset.metadata?.symbol}
-                          className="w-full h-full rounded-full"
-                          loading="lazy"
+                          className="w-full h-full object-contain"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = DEFAULT_ICON;
                           }}
