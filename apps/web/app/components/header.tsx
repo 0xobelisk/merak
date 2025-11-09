@@ -32,10 +32,11 @@ export default function Header() {
         <Link href="/positions" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Positions
         </Link>
+        <Link href="/assets" className="text-sm font-medium text-gray-600 hover:text-blue-500">
+          Assets
+        </Link>
         <Link
           href="https://merak-docs.obelisk.build/"
-          target="_blank"
-          rel="noopener noreferrer"
           className="text-sm font-medium text-gray-600 hover:text-blue-500"
         >
           Docs
