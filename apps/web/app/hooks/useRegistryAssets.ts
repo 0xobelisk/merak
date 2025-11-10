@@ -2,8 +2,6 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { useAtom } from 'jotai';
-import { AssetsStateAtom } from '@/app/jotai/assets';
 import type {
   RegistryAsset,
   RegistryAssetsResponse,
@@ -11,6 +9,7 @@ import type {
   EnrichedAsset
 } from '@/app/types/registry';
 import { AssetInfo } from '@0xobelisk/merak-sdk';
+import { useUserAssets } from './useUserAssets';
 
 interface UseRegistryAssetsOptions {
   status?: 'live' | 'deprecated' | 'testing';
@@ -96,8 +95,10 @@ export function useEnrichedAssets(options: UseRegistryAssetsOptions = {}) {
     enabled
   });
 
-  // Get on-chain asset data
-  const [assetsState] = useAtom(AssetsStateAtom);
+  // Get user's on-chain asset data with balances
+  const { data: userAssetsData, isLoading: isUserAssetsLoading } = useUserAssets({
+    enabled
+  });
 
   // Merge registry and on-chain data
   const enrichedAssets = useMemo<EnrichedAsset[]>(() => {
@@ -105,9 +106,11 @@ export function useEnrichedAssets(options: UseRegistryAssetsOptions = {}) {
       return [];
     }
 
+    const userAssets = userAssetsData?.data || [];
+
     return registryData.data.map((registryAsset) => {
       // Find matching on-chain data by assetId
-      const onChainAsset = assetsState.assetInfos.find(
+      const onChainAsset = userAssets.find(
         (asset) => asset.assetId.toString() === registryAsset.metadata.assetId
       );
 
@@ -144,11 +147,11 @@ export function useEnrichedAssets(options: UseRegistryAssetsOptions = {}) {
 
       return enriched;
     });
-  }, [registryData, assetsState.assetInfos]);
+  }, [registryData, userAssetsData?.data]);
 
   return {
     data: enrichedAssets,
-    isLoading: isRegistryLoading,
+    isLoading: isRegistryLoading || isUserAssetsLoading,
     registryAssets: registryData?.data || [],
     totalCount: enrichedAssets.length
   };

@@ -14,6 +14,8 @@ import { useSignAndExecuteTransaction, useCurrentAccount } from '@mysten/dapp-ki
 import { WALLETCHAIN } from '@/app/constants';
 import { useUserAssets } from '@/app/hooks/useUserAssets';
 import { useAssetMetadata } from '@/app/hooks/useAssetMetadata';
+import { useEnrichedAssets } from '@/app/hooks/useRegistryAssets';
+import { getLogoUrl } from '@/app/types/registry';
 
 interface TokenData {
   symbol: string;
@@ -65,6 +67,9 @@ export default function AddLiquidityModal({
     }),
     [userAssetsData]
   );
+
+  // Get enriched assets from registry for local logos
+  const { data: enrichedAssets = [] } = useEnrichedAssets({ status: 'live' });
 
   const [slippage, setSlippage] = useState('0.50');
   const [customSlippage, setCustomSlippage] = useState('');
@@ -381,12 +386,20 @@ export default function AddLiquidityModal({
           return;
         }
 
+        // Find matching registry assets for local logos
+        const registryAsset1 = enrichedAssets.find(
+          (asset) => asset.metadata.assetId === token1Info.assetId
+        );
+        const registryAsset2 = enrichedAssets.find(
+          (asset) => asset.metadata.assetId === token2Info.assetId
+        );
+
         const token1: TokenData = {
           id: token1Info.assetId,
           name: token1Info.metadata.name || 'Unknown',
           symbol: token1Info.metadata.symbol || 'Unknown',
           decimals: token1Info.metadata.decimals || 9,
-          iconUrl: token1Info.metadata.iconUrl || '/registry/sui/images/sui.svg',
+          iconUrl: registryAsset1 ? getLogoUrl(registryAsset1) : '/registry/sui/images/sui.svg',
           balance: (
             Number(token1Info.balance) / Math.pow(10, token1Info.metadata.decimals || 9)
           ).toFixed(4)
@@ -398,7 +411,7 @@ export default function AddLiquidityModal({
           name: token2Info.metadata.name || 'Unknown',
           symbol: token2Info.metadata.symbol || 'Unknown',
           decimals: token2Info.metadata.decimals || 9,
-          iconUrl: token2Info.metadata.iconUrl || '/registry/sui/images/sui.svg',
+          iconUrl: registryAsset2 ? getLogoUrl(registryAsset2) : '/registry/sui/images/sui.svg',
           balance: (
             Number(token2Info.balance) / Math.pow(10, token2Info.metadata.decimals || 9)
           ).toFixed(4)
@@ -417,7 +430,15 @@ export default function AddLiquidityModal({
     if (isOpen) {
       loadTokensFromParams();
     }
-  }, [account?.address, assetsState.assetInfos, initialAsset1, initialAsset2, isOpen, merak]);
+  }, [
+    account?.address,
+    assetsState.assetInfos,
+    initialAsset1,
+    initialAsset2,
+    isOpen,
+    merak,
+    enrichedAssets
+  ]);
 
   if (!isOpen || !mounted) return null;
 

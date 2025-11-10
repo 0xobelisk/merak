@@ -792,7 +792,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="ml-1 h-6 px-2 text-xs text-blue-500 hover:bg-blue-50"
+                    className="ml-1 h-6 px-2 text-xs text-blue-500 hover:bg-blue-50 hover:text-blue-600"
                     onClick={() => {
                       if (fromToken?.balance) {
                         setPayAmount(fromToken.balance);
@@ -814,7 +814,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                 />
                 <Button
                   variant="outline"
-                  className="ml-2 rounded-full border border-gray-200 hover:bg-gray-50 shadow-sm transition-all duration-200 hover:shadow-md px-3 py-2 h-auto flex items-center"
+                  className="ml-2 rounded-full border border-gray-200 bg-white hover:bg-gray-50 hover:opacity-100 shadow-sm transition-all duration-200 hover:shadow-md px-3 py-2 h-auto flex items-center text-gray-900 hover:text-gray-900"
                   onClick={() => {
                     setCurrentSelection('from');
                     setTokenSelectionOpen(true);
@@ -892,7 +892,7 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                 )}
                 <Button
                   variant="outline"
-                  className="ml-2 rounded-full border border-gray-200 hover:bg-gray-50 shadow-sm transition-all duration-200 hover:shadow-md px-3 py-2 h-auto flex items-center"
+                  className="ml-2 rounded-full border border-gray-200 bg-white hover:bg-gray-50 hover:opacity-100 shadow-sm transition-all duration-200 hover:shadow-md px-3 py-2 h-auto flex items-center text-gray-900 hover:text-gray-900"
                   onClick={() => {
                     setCurrentSelection('to');
                     setTokenSelectionOpen(true);
@@ -948,8 +948,8 @@ export default function SwapPage({ params }: { params: { fromToken: string; toTo
                       variant="ghost"
                       className={`h-7 px-3 rounded-full text-xs transition-all duration-200 ${
                         slippage === val
-                          ? 'bg-white text-blue-600 font-medium shadow-sm'
-                          : 'bg-transparent text-gray-600 hover:bg-gray-200'
+                          ? 'bg-white text-blue-600 font-medium shadow-sm hover:bg-white hover:text-blue-600'
+                          : 'bg-transparent text-gray-600 hover:bg-gray-200 hover:text-gray-700'
                       }`}
                       onClick={() => {
                         setSlippage(val);

@@ -12,6 +12,8 @@ import { useSignAndExecuteTransaction, useCurrentAccount } from '@mysten/dapp-ki
 import { useRouter, useSearchParams } from 'next/navigation';
 import { WALLETCHAIN } from '@/app/constants';
 import { useUserAssets } from '@/app/hooks/useUserAssets';
+import { useEnrichedAssets } from '@/app/hooks/useRegistryAssets';
+import { getLogoUrl } from '@/app/types/registry';
 
 interface TokenData {
   symbol: string;
@@ -53,6 +55,9 @@ export default function RemoveLiquidity() {
     }),
     [userAssetsData]
   );
+
+  // Get enriched assets from registry for local logos
+  const { data: enrichedAssets = [] } = useEnrichedAssets({ status: 'live' });
 
   const [slippage, setSlippage] = useState(0.5); // Slippage, percentage
   const [customSlippage, setCustomSlippage] = useState('');
@@ -96,13 +101,22 @@ export default function RemoveLiquidity() {
         if (!token1Info || !token2Info) {
           return;
         }
+
+        // Find matching registry assets for local logos
+        const registryAsset1 = enrichedAssets.find(
+          (asset) => asset.metadata.assetId === token1Info.assetId
+        );
+        const registryAsset2 = enrichedAssets.find(
+          (asset) => asset.metadata.assetId === token2Info.assetId
+        );
+
         // Set first token
         const token1: TokenData = {
           id: token1Info.assetId,
           name: token1Info.metadata.name || 'Unknown',
           symbol: token1Info.metadata.symbol || 'Unknown',
           decimals: token1Info.metadata.decimals || 9,
-          iconUrl: token1Info.metadata.iconUrl || '/registry/sui/images/sui.svg',
+          iconUrl: registryAsset1 ? getLogoUrl(registryAsset1) : '/registry/sui/images/sui.svg',
           balance: (
             Number(token1Info.balance) / Math.pow(10, token1Info.metadata.decimals || 9)
           ).toFixed(4)
@@ -115,7 +129,7 @@ export default function RemoveLiquidity() {
           name: token2Info.metadata.name || 'Unknown',
           symbol: token2Info.metadata.symbol || 'Unknown',
           decimals: token2Info.metadata.decimals || 9,
-          iconUrl: token2Info.metadata.iconUrl || '/registry/sui/images/sui.svg',
+          iconUrl: registryAsset2 ? getLogoUrl(registryAsset2) : '/registry/sui/images/sui.svg',
           balance: (
             Number(token2Info.balance) / Math.pow(10, token2Info.metadata.decimals || 9)
           ).toFixed(4)
@@ -137,7 +151,7 @@ export default function RemoveLiquidity() {
     };
 
     loadTokensFromParams();
-  }, [account?.address, allAssetsState.assetInfos, searchParams, router, merak]);
+  }, [account?.address, allAssetsState.assetInfos, searchParams, router, merak, enrichedAssets]);
 
   // Query LP token balance when tokens are selected
   useEffect(() => {
