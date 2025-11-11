@@ -79,17 +79,17 @@ async function main() {
   const allBridgeConfig = await merak.listBridgeConfig();
   console.log('allBridgeConfig', allBridgeConfig);
 
-  const data = await merak.querySwapPaths(2, 1);
+  const data = await merak.querySwapPaths('2', '1');
   console.log('data', data);
 
   const getAllSwappableTokens = await merak.getAllSwappableTokens({
-    startTokenId: 2,
+    startTokenId: '2',
   });
   console.log('getAllSwappableTokens', getAllSwappableTokens);
-  // const connectedTokens = await merak.getConnectedTokens(4);
+  // const connectedTokens = await merak.getConnectedTokens('4');
   // console.log('connectedTokens', connectedTokens);
 
-  // const swapPaths = await merak.querySwapPaths(4, 5);
+  // const swapPaths = await merak.querySwapPaths('4', '5');
   // console.log('swapPaths', swapPaths);
 
   // const poolList = await merak.listPoolsInfo();

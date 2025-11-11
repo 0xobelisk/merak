@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import Image from 'next/image';
 import { Button } from '@repo/ui/components/ui/button';
 import { Card, CardContent } from '@repo/ui/components/ui/card';
 import { Input } from '@repo/ui/components/ui/input';
 import { Label } from '@repo/ui/components/ui/label';
+import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import {
   Select,
   SelectContent,
@@ -13,10 +15,9 @@ import {
   SelectValue
 } from '@repo/ui/components/ui/select';
 import { Switch } from '@repo/ui/components/ui/switch';
-import { initDubheClient } from '@/app/jotai/dubhe';
-import { initMerakClient } from '@/app/jotai/merak';
+import { useMerak } from '@/app/jotai/merak';
 import { useCurrentAccount, useSignAndExecuteTransaction } from '@mysten/dapp-kit';
-import type { CoinBalance, CoinMetadata } from '@0xobelisk/sui-client';
+import { useDubhe } from '@0xobelisk/react/sui';
 import { Transaction } from '@0xobelisk/sui-client';
 import { toast } from 'sonner';
 import { WALLETCHAIN } from '@/app/constants';
@@ -28,333 +29,326 @@ import {
   DialogHeader,
   DialogTitle
 } from '@repo/ui/components/ui/dialog';
+import { useEnrichedAssets } from '@/app/hooks/useRegistryAssets';
+import { getLogoUrl } from '@/app/types/registry';
+import { useBatchAssetMetadata } from '@/app/hooks/useAssetMetadata';
+import { useQuery } from '@tanstack/react-query';
 
 // Type definitions
 interface TokenInfo {
-  value: string;
+  value: string; // coinType for wrap, assetId for unwrap
   symbol: string;
   balance: string;
-  logo: JSX.Element;
-  rawBalance?: string;
-  decimals?: number;
+  logoUrl: string; // Changed from JSX.Element to string URL
+  rawBalance: string;
+  decimals: number;
+  coinType?: string; // Only for unwrap mode
 }
 
-interface AssetInfo {
-  id: number;
-  metadata: any;
-  balance: string;
+interface WrapperAssetInfo {
+  assetId: string;
+  coinType: string;
   decimals: number;
   symbol: string;
-  url: string;
-  name: string;
+  iconUrl: string;
 }
 
-const formatCoinType = (coinType: string): string => {
-  if (coinType.startsWith('0x')) {
-    coinType = coinType.substring(2);
+// Utility functions
+const formatCoinTypeToQuery = (coinType: string): string => {
+  let formatted = coinType;
+  if (formatted.startsWith('0x')) {
+    formatted = formatted.substring(2);
   }
-
-  if (coinType === '2::sui::SUI') {
+  if (formatted === '2::sui::SUI') {
     return '0000000000000000000000000000000000000000000000000000000000000002::sui::SUI';
   }
-
-  const parts = coinType.split('::');
-  if (parts.length === 3) {
-    const [module, pkg, type] = parts;
-    if (module.length < 64) {
-      return `${module.padStart(64, '0')}::${pkg}::${type}`;
-    }
+  const parts = formatted.split('::');
+  if (parts.length === 3 && parts[0].length < 64) {
+    return `${parts[0].padStart(64, '0')}::${parts[1]}::${parts[2]}`;
   }
-
-  return coinType;
+  return formatted;
 };
 
-const getCoinMetadata = (coinType: string) => {
-  const metadatas = {
-    '0x2::sui::SUI': {
-      decimals: 9,
-      name: 'Sui',
-      symbol: 'SUI',
-      description: '',
-      iconUrl: null,
-      id: '0x587c29de216efd4219573e08a1f6964d4fa7cb714518c2c8a0f29abfa264327d'
-    },
-    '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::dubhe::DUBHE': {
-      decimals: 7,
-      description: 'Dubhe engine token',
-      iconUrl: null,
-      id: '0x107334aa54e072a4c595f07b215a1a0370a1281962ba4a83876cc6611a6f6771',
-      name: 'DUBHE Token',
-      symbol: 'DUBHE'
-    },
-    '0xaaddbe04ba595ae9d6c33fba5b415bccb1f1dd93877fbb34701666f995a208ca::stars::STARS': {
-      decimals: 7,
-      name: 'STARS Token',
-      symbol: 'STARS',
-      description: 'Stars point',
-      iconUrl: 'https://raw.githubusercontent.com/0xobelisk/dubhe/main/assets/stars.gif',
-      id: '0xc2cc68354f96ff4c483e9085285ce5ea4ce9d28b944f469fe6d9463b3c5a2c52'
-    }
-  };
-  return metadatas[coinType];
+const formatCoinTypeToDisplay = (coinType: string): string => {
+  if (
+    coinType.includes('0000000000000000000000000000000000000000000000000000000000000002::sui::SUI')
+  ) {
+    return '0x2::sui::SUI';
+  }
+  if (!coinType.startsWith('0x')) {
+    return '0x' + coinType.replace(/^0+/, '');
+  }
+  return coinType;
 };
 export default function TokenWrapper() {
   const account = useCurrentAccount();
-  const [balances, setBalances] = useState<(CoinBalance & { metadata: CoinMetadata })[]>([]);
-  const [assetMetadata, setAssetMetadata] = useState<AssetInfo[]>([]);
-  const [wrapperAssetsMap, setWrapperAssetsMap] = useState<Map<string, any>>(new Map());
-  // 创建资产ID到币种类型的缓存
-  const [assetIdToCoinTypeMap, setAssetIdToCoinTypeMap] = useState<Map<string, string>>(new Map());
+  const { contract: dubheContract } = useDubhe();
+  const merak = useMerak();
+  const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [isTokensLoading, setIsTokensLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  // States
+  const [isWrap, setIsWrap] = useState(true);
   const [amount, setAmount] = useState('');
   const [sourceToken, setSourceToken] = useState('');
-  const [isWrap, setIsWrap] = useState(true);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Fetch token data
-  const fetchTokenData = useCallback(async () => {
-    if (!account?.address) return;
-    setIsTokensLoading(true);
+  // Data states
+  const [nativeTokenBalances, setNativeTokenBalances] = useState<Map<string, string>>(new Map());
+  const [isBalancesLoading, setIsBalancesLoading] = useState(true);
+
+  // Get enriched assets from registry (whitelist with local logos)
+  const { data: enrichedAssets = [], isLoading: isRegistryLoading } = useEnrichedAssets({
+    status: 'live'
+  });
+
+  // Fetch wrapper assets list using React Query
+  const { data: wrapperAssetsRaw = [], isLoading: isWrapperAssetsLoading } = useQuery({
+    queryKey: ['wrapperAssetsList'],
+    queryFn: async () => {
+      if (!merak) return [];
+      const result = await merak.storage.list.assetWrapper({ first: 100 });
+      return result?.edges?.map((edge) => edge.node) || [];
+    },
+    enabled: !!merak,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000
+  });
+
+  // Extract assetIds for batch metadata fetching
+  const wrapperAssetIds = useMemo(
+    () => wrapperAssetsRaw.map((asset) => asset.assetId),
+    [wrapperAssetsRaw]
+  );
+
+  // Batch fetch metadata with caching and auto-refresh
+  const { data: wrapperMetadataMap, isLoading: isMetadataLoading } = useBatchAssetMetadata(
+    wrapperAssetIds,
+    wrapperAssetIds.length > 0
+  );
+
+  // Build wrapper assets with metadata
+  const wrapperAssets = useMemo<WrapperAssetInfo[]>(() => {
+    if (!wrapperMetadataMap || wrapperAssetsRaw.length === 0) return [];
+
+    return wrapperAssetsRaw.map((node) => {
+      // Find matching registry asset for better metadata and local logo
+      const registryAsset = enrichedAssets.find((asset) => asset.metadata.assetId === node.assetId);
+
+      // Use registry data or cached metadata
+      const metadata = {
+        decimals:
+          registryAsset?.metadata.decimals || wrapperMetadataMap.get(node.assetId)?.decimals || 9,
+        symbol:
+          registryAsset?.metadata.symbol ||
+          wrapperMetadataMap.get(node.assetId)?.symbol ||
+          'Unknown',
+        iconUrl: registryAsset ? getLogoUrl(registryAsset) : '/registry/sui/images/sui.svg'
+      };
+
+      return {
+        assetId: node.assetId,
+        coinType: node.coinType,
+        ...metadata
+      };
+    });
+  }, [wrapperAssetsRaw, wrapperMetadataMap, enrichedAssets]);
+
+  // Fetch user's native token balances for wrapping
+  const fetchNativeTokenBalances = useCallback(async () => {
+    if (!account?.address || !dubheContract || wrapperAssets.length === 0) {
+      setIsBalancesLoading(false);
+      return;
+    }
+
+    setIsBalancesLoading(true);
     try {
-      const dubhe = initDubheClient();
-      const allBalances = await dubhe.suiInteractor.currentClient.getAllBalances({
-        owner: account.address
-      });
-      const updatedBalances = await Promise.all(
-        allBalances.map(async (coinBalance) => {
-          const metadata = getCoinMetadata(coinBalance.coinType);
-          return {
-            ...coinBalance,
-            metadata
-          };
+      const balancesMap = new Map<string, string>();
+
+      await Promise.all(
+        wrapperAssets.map(async (asset) => {
+          try {
+            const coinTypeForQuery = formatCoinTypeToDisplay(asset.coinType);
+            const balance = await dubheContract.suiInteractor.currentClient.getBalance({
+              owner: account.address,
+              coinType: coinTypeForQuery
+            });
+            balancesMap.set(asset.coinType, balance.totalBalance);
+          } catch (err) {
+            console.error(`Failed to fetch balance for ${asset.coinType}:`, err);
+            balancesMap.set(asset.coinType, '0');
+          }
         })
       );
-      setBalances(updatedBalances);
+
+      setNativeTokenBalances(balancesMap);
     } catch (error) {
-      console.error('Error fetching coins data:', error);
-      toast.error('Failed to fetch token data');
+      console.error('Error fetching native token balances:', error);
     } finally {
-      setIsTokensLoading(false);
+      setIsBalancesLoading(false);
     }
-  }, [account?.address]);
+  }, [account?.address, dubheContract, wrapperAssets]);
 
-  // Fetch wrapped token data
-  const fetchWrappedTokens = useCallback(async () => {
-    if (!account?.address) return;
+  // Fetch user's owned wrapper tokens using React Query with cached metadata
+  const { data: ownedWrapperTokens = [] } = useQuery({
+    queryKey: ['ownedWrapperTokens', account?.address, wrapperMetadataMap, wrapperAssets],
+    queryFn: async () => {
+      if (!account?.address || !merak || !wrapperMetadataMap) return [];
 
-    try {
-      const merak = initMerakClient();
+      try {
+        // Create a set of valid wrapper assetIds for quick lookup
+        const validWrapperAssetIds = new Set(wrapperAssets.map((wa) => wa.assetId));
 
-      const ownedAssets = await merak.listOwnedWrapperAssets({
-        address: account.address
-      });
-
-      if (ownedAssets && ownedAssets.data && Array.isArray(ownedAssets.data)) {
-        const userWrappedAssets = await Promise.all(
-          ownedAssets.data
-            .filter((asset) => asset && asset.balance && BigInt(asset.balance) > 0)
-            .map(async (asset) => {
-              let metadata = asset.metadata || {};
-
-              if (!metadata.symbol || !metadata.decimals || !metadata.iconUrl) {
-                try {
-                  const assetMetadata = await merak.storage.get.assetMetadata({
-                    assetId: asset.assetId
-                  });
-
-                  if (assetMetadata && assetMetadata.data) {
-                    metadata = {
-                      ...metadata,
-                      ...assetMetadata.data
-                    };
-                  }
-                } catch (err) {
-                  console.error(`Failed to fetch metadata for asset ${asset.assetId}:`, err);
-                }
-              }
-
-              // 获取资产ID对应的币种类型并存入缓存
-              try {
-                const wrapperAssets = await merak.storage.get.wrapperAssets({
-                  assetId: asset.assetId
-                });
-                if (wrapperAssets && wrapperAssets.data && wrapperAssets.data.key1) {
-                  setAssetIdToCoinTypeMap((prevMap) => {
-                    const newMap = new Map(prevMap);
-                    newMap.set(asset.assetId.toString(), wrapperAssets.data.key1);
-                    return newMap;
-                  });
-                }
-              } catch (err) {
-                console.error(`Failed to fetch coin type for asset ${asset.assetId}:`, err);
-              }
-
-              return {
-                id: asset.assetId,
-                metadata: metadata,
-                balance: asset.balance || '0',
-                decimals: metadata.decimals || 9,
-                symbol: metadata.symbol || 'Unknown',
-                url: metadata.iconUrl || '/sui-logo.svg',
-                name: metadata.name || 'Wrapped Token'
-              };
-            })
-        );
-
-        setAssetMetadata(userWrappedAssets);
-      } else {
-        setAssetMetadata([]);
-      }
-    } catch (error) {
-      console.error('Error fetching wrapped tokens:', error);
-      toast.error('Failed to fetch wrapped tokens');
-      setAssetMetadata([]);
-    }
-  }, [account?.address]);
-
-  // Calculate target token list
-  const targetTokens = useMemo(
-    () =>
-      assetMetadata
-        .filter((asset) => asset && asset.id !== undefined)
-        .map((asset) => {
-          // Calculate balance using correct decimal places
-          const decimals = asset.decimals || 9;
-          const balance = asset.balance
-            ? (Number(BigInt(asset.balance)) / Math.pow(10, decimals)).toFixed(4)
-            : '0';
-
-          return {
-            value: asset.id.toString(),
-            symbol: asset.symbol || 'Unknown',
-            balance: balance,
-            logo: (
-              <img
-                src={asset.url || '/sui-logo.svg'}
-                alt={asset.name || 'Token'}
-                width="20"
-                height="20"
-                style={{ marginRight: '8px' }}
-                loading="lazy"
-                onError={(e) => {
-                  // Use default icon if image fails to load
-                  e.currentTarget.src = '/sui-logo.svg';
-                }}
-              />
-            ),
-            decimals: decimals
-          };
-        }),
-    [assetMetadata]
-  );
-
-  // Initialize data - 只在组件挂载时调用一次
-  useEffect(() => {
-    const initData = async () => {
-      await fetchTokenData();
-      if (account?.address) {
-        await fetchWrappedTokens();
-      }
-    };
-
-    initData();
-  }, [fetchTokenData, fetchWrappedTokens, account?.address]);
-
-  // 移除了 sourceToken 变化时重复调用 fetchWrappedTokens 的 useEffect
-
-  // 优化 wrapperAssets 查询逻辑
-  useEffect(() => {
-    const merak = initMerakClient();
-    const queryWrapperAssets = async () => {
-      if (balances.length === 0) return;
-
-      const newWrapperAssetsMap = new Map<string, any>();
-      const promises = balances.map(async (coinBalance) => {
-        try {
-          const formattedCoinType = formatCoinType(coinBalance.coinType);
-          const wrapperAssets = await merak.storage.get.wrapperAssets({
-            coinType: formattedCoinType
-          });
-
-          if (wrapperAssets && wrapperAssets.data) {
-            newWrapperAssetsMap.set(coinBalance.coinType, wrapperAssets.data);
-          }
-        } catch (err) {
-          console.error('Failed to fetch wrapperAssets:', err);
-        }
-      });
-
-      // 等待所有请求完成
-      await Promise.all(promises);
-      setWrapperAssetsMap(newWrapperAssetsMap);
-    };
-
-    queryWrapperAssets();
-  }, [balances]);
-
-  // Calculate token list
-  const sourceTokens = useMemo(() => {
-    const tokenMap = new Map<string, TokenInfo>();
-    if (balances.length === 0) {
-      return Array.from(tokenMap.values());
-    }
-
-    balances.forEach((coinBalance) => {
-      // 只处理在 wrapperAssets 中的代币
-      if (!wrapperAssetsMap.has(coinBalance.coinType)) {
-        return;
-      }
-
-      const symbol =
-        coinBalance.metadata.symbol || coinBalance.coinType.split('::').pop() || 'Unknown';
-      const currentBalance = BigInt(coinBalance.totalBalance);
-      const existingToken = tokenMap.get(symbol);
-
-      if (!existingToken || currentBalance > BigInt(existingToken.rawBalance || '0')) {
-        const decimals = coinBalance.metadata.decimals || 9;
-        const balance = Number(currentBalance) / Math.pow(10, decimals);
-
-        tokenMap.set(symbol, {
-          value: coinBalance.coinType,
-          symbol,
-          balance: balance.toFixed(4),
-          logo: (
-            <img
-              src={
-                symbol === 'SUI'
-                  ? '/sui-logo.svg'
-                  : symbol === 'DUBHE'
-                  ? '/dubhe-logo.png'
-                  : coinBalance.metadata?.iconUrl || '/sui-logo.svg'
-              }
-              alt={symbol}
-              width="20"
-              height="20"
-              style={{ marginRight: '8px' }}
-              loading="lazy"
-              onError={(e) => {
-                // Fallback if image fails to load
-                e.currentTarget.src = '/sui-logo.svg';
-              }}
-            />
-          ),
-          rawBalance: coinBalance.totalBalance,
-          decimals
+        // Pass cached metadata map to SDK
+        const ownedAssets = await merak.listOwnedWrapperAssets({
+          account: account.address,
+          first: 50,
+          orderBy: [{ field: 'CREATED_AT_TIMESTAMP_MS', direction: 'ASC' }],
+          metadataMap: wrapperMetadataMap // Use React Query cached metadata
         });
+
+        if (!ownedAssets?.data || !Array.isArray(ownedAssets.data)) {
+          return [];
+        }
+
+        return ownedAssets.data
+          .filter((asset) => {
+            // Only include assets that:
+            // 1. Have valid data and balance > 0
+            // 2. Are in the wrapperAssets list (i.e., are valid wrapper tokens)
+            return (
+              asset &&
+              asset.balance &&
+              BigInt(asset.balance) > 0 &&
+              validWrapperAssetIds.has(asset.assetId)
+            );
+          })
+          .map((asset) => {
+            // Find matching registry asset for better metadata and local logo
+            const registryAsset = enrichedAssets.find(
+              (regAsset) => regAsset.metadata.assetId === asset.assetId
+            );
+
+            // Use registry data or cached metadata (from wrapperMetadataMap)
+            const cachedMetadata = wrapperMetadataMap.get(asset.assetId);
+            const metadata = {
+              decimals:
+                registryAsset?.metadata.decimals ||
+                cachedMetadata?.decimals ||
+                asset.metadata?.decimals ||
+                9,
+              symbol:
+                registryAsset?.metadata.symbol ||
+                cachedMetadata?.symbol ||
+                asset.metadata?.symbol ||
+                'Unknown',
+              iconUrl: registryAsset ? getLogoUrl(registryAsset) : '/registry/sui/images/sui.svg'
+            };
+
+            // Find coinType from wrapperAssets
+            const wrapperAsset = wrapperAssets.find((wa) => wa.assetId === asset.assetId);
+
+            return {
+              value: asset.assetId,
+              symbol: metadata.symbol,
+              balance: (Number(asset.balance) / Math.pow(10, metadata.decimals)).toFixed(4),
+              rawBalance: asset.balance,
+              decimals: metadata.decimals,
+              coinType: wrapperAsset?.coinType,
+              logoUrl: metadata.iconUrl
+            };
+          });
+      } catch (error) {
+        console.error('Error fetching owned wrapper tokens:', error);
+        toast.error('Failed to fetch owned wrapper tokens');
+        return [];
       }
-    });
+    },
+    enabled: !!account?.address && !!merak && !!wrapperMetadataMap && wrapperAssets.length > 0,
+    staleTime: 30 * 1000, // 30 seconds (balances change frequently)
+    gcTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: true, // Auto-refresh when user returns to tab
+    refetchInterval: 30 * 1000 // Auto-refresh every 30 seconds
+  });
 
-    return Array.from(tokenMap.values());
-  }, [balances, wrapperAssetsMap]);
+  // Fetch native token balances when wrapperAssets change
+  useEffect(() => {
+    if (wrapperAssets.length > 0) {
+      fetchNativeTokenBalances();
+    }
+  }, [wrapperAssets, fetchNativeTokenBalances]);
 
-  // Source token list for wrap/unwrap
+  // Build token list for wrap mode
+  const wrapTokenList = useMemo<TokenInfo[]>(() => {
+    return wrapperAssets
+      .map((asset) => {
+        const balance = nativeTokenBalances.get(asset.coinType) || '0';
+        const balanceNum = Number(balance) / Math.pow(10, asset.decimals);
+
+        // Only show tokens with balance > 0
+        if (balanceNum === 0) return null;
+
+        return {
+          value: asset.coinType,
+          symbol: asset.symbol,
+          balance: balanceNum.toFixed(4),
+          rawBalance: balance,
+          decimals: asset.decimals,
+          logoUrl: asset.iconUrl
+        };
+      })
+      .filter((token): token is TokenInfo => token !== null);
+  }, [wrapperAssets, nativeTokenBalances]);
+
+  // Current token list based on mode
   const currentSourceTokens = useMemo<TokenInfo[]>(
-    () => (isWrap ? sourceTokens : targetTokens),
-    [isWrap, sourceTokens, targetTokens]
+    () => (isWrap ? wrapTokenList : ownedWrapperTokens),
+    [isWrap, wrapTokenList, ownedWrapperTokens]
   );
+
+  // Auto-select SUI token as default when data is loaded or mode changes
+  useEffect(() => {
+    // Only auto-select if sourceToken is empty and we have tokens available
+    if (sourceToken || currentSourceTokens.length === 0) return;
+
+    // Try to find SUI token (case-insensitive)
+    const suiToken = currentSourceTokens.find((token) => token.symbol.toLowerCase() === 'sui');
+
+    if (suiToken) {
+      setSourceToken(suiToken.value);
+    } else if (currentSourceTokens.length > 0) {
+      // Fallback to first token if SUI not found
+      setSourceToken(currentSourceTokens[0].value);
+    }
+  }, [currentSourceTokens, sourceToken, isWrap]);
+
+  // Compute comprehensive loading state
+  const isDataLoading = useMemo(() => {
+    // Initial data loading
+    if (isRegistryLoading || isWrapperAssetsLoading || isMetadataLoading) {
+      return true;
+    }
+
+    // Balance loading for wrap mode
+    if (isWrap && isBalancesLoading) {
+      return true;
+    }
+
+    // No wrapper assets loaded yet
+    if (wrapperAssets.length === 0) {
+      return true;
+    }
+
+    return false;
+  }, [
+    isRegistryLoading,
+    isWrapperAssetsLoading,
+    isMetadataLoading,
+    isWrap,
+    isBalancesLoading,
+    wrapperAssets.length
+  ]);
 
   // Handle amount change
   const handleAmountChange = useCallback(
@@ -374,10 +368,11 @@ export default function TokenWrapper() {
   );
 
   // Handle wrap operation
-  const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
-
   const handleWrap = useCallback(async () => {
-    if (!account?.address) return;
+    if (!account?.address || !dubheContract || !merak) {
+      toast.error('Client not initialized');
+      return;
+    }
 
     try {
       const amountToWrap = parseFloat(amount);
@@ -385,40 +380,25 @@ export default function TokenWrapper() {
         throw new Error('Invalid amount');
       }
 
-      const selectedSource = currentSourceTokens.find((token) => token.value === sourceToken);
-
-      if (!selectedSource) {
+      const selectedToken = currentSourceTokens.find((token) => token.value === sourceToken);
+      console.log('============== selectedToken ==============', selectedToken);
+      console.log('============== selectedToken ==============', sourceToken);
+      if (!selectedToken) {
         throw new Error('Please select a token');
       }
 
-      if (parseFloat(selectedSource.balance) < amountToWrap) {
+      if (parseFloat(selectedToken.balance) < amountToWrap) {
         throw new Error('Insufficient balance');
       }
 
-      const dubhe = initDubheClient();
-      const merak = initMerakClient();
-      // const metadata = await dubhe.suiInteractor.currentClient.getCoinMetadata({
-      //   coinType: sourceToken
-      // });
-      const metadata = getCoinMetadata(sourceToken);
-
-      // Process sourceToken format
-      let formattedToken = sourceToken;
-      if (sourceToken.includes('0x2::sui::SUI')) {
-        formattedToken =
-          '0000000000000000000000000000000000000000000000000000000000000002::sui::SUI';
-      } else if (sourceToken.startsWith('0x')) {
-        formattedToken = sourceToken.substring(2);
-      }
-
       const tx = new Transaction();
+      const amountInSmallestUnit = Math.floor(amountToWrap * Math.pow(10, selectedToken.decimals));
 
-      const amountInSmallestUnit = Math.floor(amountToWrap * 10 ** metadata.decimals);
-
-      // Ensure sufficient tokens are selected
-      const selectCoins = await dubhe.selectCoinsWithAmount(
+      // Select coins
+      const coinTypeForQuery = formatCoinTypeToDisplay(sourceToken);
+      const selectCoins = await dubheContract.selectCoinsWithAmount(
         amountInSmallestUnit,
-        selectedSource.value,
+        coinTypeForQuery,
         account.address
       );
 
@@ -426,13 +406,14 @@ export default function TokenWrapper() {
         throw new Error('Unable to select sufficient tokens');
       }
 
-      // Use tx.gas for SUI tokens, otherwise use selected tokens
-      const [coin] = sourceToken.includes('0x2::sui::SUI')
-        ? tx.splitCoins(tx.gas, [tx.pure.u64(amountInSmallestUnit)])
-        : tx.splitCoins(tx.object(selectCoins[0]), [tx.pure.u64(amountInSmallestUnit)]);
+      // Split coins
+      const [coin] =
+        sourceToken === '0000000000000000000000000000000000000000000000000000000000000002::sui::SUI'
+          ? tx.splitCoins(tx.gas, [tx.pure.u64(amountInSmallestUnit)])
+          : tx.splitCoins(tx.object(selectCoins[0]), [tx.pure.u64(amountInSmallestUnit)]);
 
-      // Use processed token format
-      await merak.wrap(tx, coin, account.address, sourceToken, true);
+      // Wrap
+      await merak.wrap(tx, coin, account.address, coinTypeForQuery, true);
 
       await signAndExecuteTransaction(
         {
@@ -441,9 +422,9 @@ export default function TokenWrapper() {
         },
         {
           onSuccess: async (result) => {
-            // 添加短暂延迟确保链上数据更新
-            await dubhe.waitForTransaction(result.digest);
-            await Promise.all([fetchTokenData(), fetchWrappedTokens()]);
+            await dubheContract.waitForTransaction(result.digest);
+            await fetchNativeTokenBalances();
+            // React Query will auto-refresh ownedWrapperTokens
             toast.success('Wrap successful');
             setAmount('');
           },
@@ -462,14 +443,18 @@ export default function TokenWrapper() {
     amount,
     sourceToken,
     currentSourceTokens,
+    dubheContract,
+    merak,
     signAndExecuteTransaction,
-    fetchTokenData,
-    fetchWrappedTokens
+    fetchNativeTokenBalances
   ]);
 
   // Handle unwrap operation
   const handleUnwrap = useCallback(async () => {
-    if (!account?.address) return;
+    if (!account?.address || !dubheContract || !merak) {
+      toast.error('Client not initialized');
+      return;
+    }
 
     try {
       const amountToUnwrap = parseFloat(amount);
@@ -477,58 +462,30 @@ export default function TokenWrapper() {
         throw new Error('Invalid amount');
       }
 
-      const selectedSource = currentSourceTokens.find((token) => token.value === sourceToken);
-      if (!selectedSource || parseFloat(selectedSource.balance) < amountToUnwrap) {
+      const selectedToken = currentSourceTokens.find((token) => token.value === sourceToken);
+      if (!selectedToken) {
+        throw new Error('Please select a token');
+      }
+
+      if (parseFloat(selectedToken.balance) < amountToUnwrap) {
         throw new Error('Insufficient balance');
       }
 
-      const merak = initMerakClient();
-
-      // Get selected asset details
-      const selectedAsset = assetMetadata.find((asset) => asset.id.toString() === sourceToken);
-      if (!selectedAsset) {
-        throw new Error('Unable to get selected token information');
+      if (!selectedToken.coinType) {
+        throw new Error('Unable to find coin type for this token');
       }
 
       const tx = new Transaction();
+      const amountInSmallestUnit = BigInt(
+        Math.floor(amountToUnwrap * Math.pow(10, selectedToken.decimals))
+      );
 
-      // Use selectedAsset decimals
-      const decimals = selectedAsset.decimals || 9;
+      // Format coin type for unwrap
+      const coinTypeForUnwrap = formatCoinTypeToDisplay(selectedToken.coinType);
 
-      // Ensure amount is an integer using Math.floor
-      const amountInSmallestUnit = BigInt(Math.floor(amountToUnwrap * Math.pow(10, decimals)));
+      // Unwrap
+      await merak.unwrap(tx, amountInSmallestUnit, account.address, coinTypeForUnwrap, true);
 
-      // 优先从缓存中获取 coin_type
-      let coin_type;
-      if (assetIdToCoinTypeMap.has(sourceToken)) {
-        coin_type = assetIdToCoinTypeMap.get(sourceToken);
-      } else {
-        const result = await merak.storage.get.wrapperAssets({ assetId: sourceToken });
-        coin_type = result.data.key1;
-        // 更新缓存
-        setAssetIdToCoinTypeMap((prevMap) => {
-          const newMap = new Map(prevMap);
-          newMap.set(sourceToken, coin_type);
-          return newMap;
-        });
-      }
-
-      // Process sourceToken format
-      let formattedToken = coin_type;
-      if (
-        coin_type.includes(
-          '0000000000000000000000000000000000000000000000000000000000000002::sui::SUI'
-        )
-      ) {
-        formattedToken = '0x2::sui::SUI';
-      } else {
-        // Remove leading zeros and add 0x prefix
-        formattedToken = '0x' + coin_type.replace(/^0+/, '');
-      }
-
-      // Use processed token format
-      await merak.unwrap(tx, amountInSmallestUnit, account.address, formattedToken, true);
-      const dubhe = initDubheClient();
       await signAndExecuteTransaction(
         {
           transaction: tx.serialize(),
@@ -536,9 +493,9 @@ export default function TokenWrapper() {
         },
         {
           onSuccess: async (result) => {
-            // 添加短暂延迟确保链上数据更新
-            await dubhe.waitForTransaction(result.digest);
-            await Promise.all([fetchTokenData(), fetchWrappedTokens()]);
+            await dubheContract.waitForTransaction(result.digest);
+            await fetchNativeTokenBalances();
+            // React Query will auto-refresh ownedWrapperTokens
             toast.success('Unwrap successful');
             setAmount('');
           },
@@ -557,15 +514,56 @@ export default function TokenWrapper() {
     amount,
     sourceToken,
     currentSourceTokens,
-    assetMetadata,
-    assetIdToCoinTypeMap,
+    dubheContract,
+    merak,
     signAndExecuteTransaction,
-    fetchTokenData,
-    fetchWrappedTokens
+    fetchNativeTokenBalances
   ]);
 
+  // Show loading state while fetching initial data
+  if (isDataLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center flex-1 bg-[#F7F8FA] py-4">
+        <Card className="w-[400px] border-gray-200 shadow-sm">
+          <CardContent className="pt-6">
+            <div className="space-y-6">
+              {/* Switch skeleton */}
+              <div className="flex items-center justify-between">
+                <Skeleton className="h-5 w-16" />
+                <Skeleton className="h-6 w-11 rounded-full" />
+              </div>
+
+              {/* Source Token skeleton */}
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-10 w-full rounded-md" />
+              </div>
+
+              {/* Amount skeleton */}
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-4 w-32" />
+                </div>
+                <Skeleton className="h-10 w-full rounded-md" />
+              </div>
+
+              {/* Button skeleton */}
+              <Skeleton className="h-10 w-full rounded-md" />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Loading text */}
+        <p className="mt-4 text-center text-gray-500 text-sm animate-pulse">
+          Loading wrap interface...
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#F7F8FA] p-4">
+    <div className="flex flex-col items-center justify-center flex-1 bg-[#F7F8FA] py-4">
       <Card className="w-[400px] border-gray-200 shadow-sm">
         <CardContent className="pt-6">
           <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
@@ -578,10 +576,7 @@ export default function TokenWrapper() {
                   setIsWrap(checked);
                   setSourceToken('');
                   setAmount('');
-                  if (!checked) {
-                    // When switching to unwrap mode, re-fetch wrapped token data:
-                    fetchWrappedTokens();
-                  }
+                  setError(null);
                 }}
               />
             </div>
@@ -685,15 +680,62 @@ function TokenSelect({ label, value, onChange, options, isWrap }) {
   return (
     <div className="space-y-2">
       <Label htmlFor={label}>{label}</Label>
+      {/* Preload all images using hidden img tags - browser will cache them */}
+      <div style={{ display: 'none' }} aria-hidden="true">
+        {options.map((token) => (
+          <img key={token.value} src={token.logoUrl} alt="" />
+        ))}
+      </div>
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder={`Select ${label.toLowerCase()}`} />
+        <SelectTrigger className="w-full focus:ring-[#C0E6FF] focus:border-[#C0E6FF]">
+          <SelectValue placeholder={`Select ${label.toLowerCase()}`}>
+            {value &&
+              (() => {
+                const selectedToken = options.find((t) => t.value === value);
+                return selectedToken ? (
+                  <div className="flex items-center">
+                    <div
+                      style={{
+                        width: '20px',
+                        height: '20px',
+                        marginRight: '8px',
+                        backgroundImage: `url(${selectedToken.logoUrl})`,
+                        backgroundSize: 'contain',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        flexShrink: 0
+                      }}
+                      role="img"
+                      aria-label={selectedToken.symbol}
+                    />
+                    <span>{selectedToken.symbol}</span>
+                  </div>
+                ) : null;
+              })()}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           {options.map((token) => (
-            <SelectItem key={token.value} value={token.value}>
+            <SelectItem
+              key={token.value}
+              value={token.value}
+              className="focus:bg-[#C0E6FF] data-[state=checked]:bg-[#C0E6FF] hover:bg-[#C0E6FF]/80"
+            >
               <div className="flex items-center">
-                {token.logo}
+                <div
+                  style={{
+                    width: '20px',
+                    height: '20px',
+                    marginRight: '8px',
+                    backgroundImage: `url(${token.logoUrl})`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    flexShrink: 0
+                  }}
+                  role="img"
+                  aria-label={token.symbol}
+                />
                 <span>{isWrap ? token.symbol : `${token.symbol}`}</span>
               </div>
             </SelectItem>

@@ -1,139 +1,110 @@
-import { Dubhe } from '@0xobelisk/sui-client';
+import { DubheGraphqlClient } from '@0xobelisk/graphql-client';
 
 export class GetStorage {
-  private readonly dubhe: Dubhe;
+  private readonly graphql: DubheGraphqlClient;
 
-  constructor(dubhe: Dubhe) {
-    this.dubhe = dubhe;
+  constructor(graphql: DubheGraphqlClient) {
+    this.graphql = graphql;
   }
 
   // StorageValue queries
-  async nextAssetId() {
-    const item = await this.dubhe.getStorageItem({
-      name: 'next_asset_id',
+  async dubheAssetId() {
+    const item = await this.graphql.getTableByCondition('dubhe_asset_id', {
+      uniqueResourceId: 1
     });
     return item;
   }
 
-  async swapFee() {
-    const item = await this.dubhe.getStorageItem({
-      name: 'swap_fee',
+  async suiAssetId() {
+    const item = await this.graphql.getTableByCondition('sui_asset_id', {
+      uniqueResourceId: 1
     });
     return item;
   }
 
-  async lpFee() {
-    const item = await this.dubhe.getStorageItem({
-      name: 'lp_fee',
+  async dubheConfig() {
+    const item = await this.graphql.getTableByCondition('dubhe_config', {
+      uniqueResourceId: 1
     });
     return item;
   }
 
-  async feeTo() {
-    const item = await this.dubhe.getStorageItem({
-      name: 'fee_to',
-    });
-    return item;
-  }
-
-  async maxSwapPathLen() {
-    const item = await this.dubhe.getStorageItem({
-      name: 'max_swap_path_len',
-    });
-    return item;
-  }
-
-  async minLiquidity() {
-    const item = await this.dubhe.getStorageItem({
-      name: 'min_liquidity',
+  async dappFeeConfig() {
+    const item = await this.graphql.getTableByCondition('dapp_fee_config', {
+      uniqueResourceId: 1
     });
     return item;
   }
 
   // StorageMap queries
   async assetMetadata({ assetId }: { assetId: bigint | number | string }) {
-    const item = await this.dubhe.getStorageItem({
-      name: 'asset_metadata',
-      key1: assetId.toString(),
+    const item = await this.graphql.getTableByCondition('asset_metadata', {
+      assetId: assetId.toString()
     });
     return item;
   }
 
-  async assetDetails({ assetId }: { assetId: bigint | number | string }) {
-    const item = await this.dubhe.getStorageItem({
-      name: 'asset_details',
-      key1: assetId.toString(),
+  async assetSupply({ assetId }: { assetId: bigint | number | string }) {
+    const item = await this.graphql.getTableByCondition('asset_supply', {
+      assetId: assetId.toString()
     });
     return item;
   }
 
-  async wrapperPools({ coinType }: { coinType: string }) {
-    const item = await this.dubhe.getStorageItem({
-      name: 'wrapper_pools',
-      key1: coinType,
+  async assetHolder({ assetId }: { assetId: bigint | number | string }) {
+    const item = await this.graphql.getTableByCondition('asset_holder', {
+      assetId: assetId.toString()
     });
     return item;
   }
 
-  async wrapperAssets({
-    coinType,
-    assetId,
-  }: {
-    coinType?: string;
-    assetId?: bigint | number | string;
-  }) {
-    if (coinType) {
-      const item = await this.dubhe.getStorageItem({
-        name: 'wrapper_assets',
-        key1: coinType,
-      });
-      return item;
-    }
-
-    if (assetId) {
-      const item = await this.dubhe.getStorageItem({
-        name: 'wrapper_assets',
-        value: assetId.toString(),
-      });
-      return item;
-    }
+  async assetWrapper({ coinType }: { coinType: string }) {
+    const item = await this.graphql.getTableByCondition('asset_wrapper', {
+      coinType: coinType
+    });
+    return item;
   }
 
-  async bridge({ chainName }: { chainName: string }) {
-    const item = await this.dubhe.getStorageItem({
-      name: 'bridge',
-      key1: chainName,
+  async dappMetadata({ dappKey }: { dappKey: string }) {
+    const item = await this.graphql.getTableByCondition('dapp_metadata', {
+      dappKey: dappKey
+    });
+    return item;
+  }
+
+  async dappFeeState({ dappKey }: { dappKey: string }) {
+    const item = await this.graphql.getTableByCondition('dapp_fee_state', {
+      dappKey: dappKey
+    });
+    return item;
+  }
+
+  async dappProxy({ dappKey }: { dappKey: string }) {
+    const item = await this.graphql.getTableByCondition('dapp_proxy', {
+      dappKey: dappKey
     });
     return item;
   }
 
   // StorageDoubleMap queries
-  async account({
-    assetId,
-    address,
-  }: {
-    assetId: bigint | number | string;
-    address: string;
-  }) {
-    const item = await this.dubhe.getStorageItem({
-      name: 'account',
-      key1: assetId.toString(),
-      key2: address,
+  async assetAccount({ assetId, account }: { assetId: bigint | number | string; account: string }) {
+    const item = await this.graphql.getTableByCondition('asset_account', {
+      assetId: assetId.toString(),
+      account: account
     });
     return item;
   }
 
-  async pool({
-    assetAId,
-    assetBId,
+  async assetPool({
+    asset0,
+    asset1
   }: {
-    assetAId: bigint | number | string;
-    assetBId: bigint | number | string;
+    asset0: bigint | number | string;
+    asset1: bigint | number | string;
   }) {
-    const item = await this.dubhe.getStorageItem({
-      name: 'pools',
-      key1: assetAId.toString(),
-      key2: assetBId.toString(),
+    const item = await this.graphql.getTableByCondition('asset_pool', {
+      asset0: asset0.toString(),
+      asset1: asset1.toString()
     });
     return item;
   }

@@ -1,20 +1,16 @@
-import { Dubhe, Transaction, TransactionArgument } from '@0xobelisk/sui-client';
+import { Dubhe, NetworkType, Transaction, TransactionArgument } from '@0xobelisk/sui-client';
+import { DubheGraphqlClient, OrderBy } from '@0xobelisk/graphql-client';
+
 import {
   AssetMetadataType,
+  AssetSupplyType,
   MerakParams,
   AssetInfo,
   AssetInfoResponse,
   PoolInfo,
-  EventInfoResponse,
-  EventInfo,
-  BridgeChainName,
-  AssetType,
-  TransactionInfoResponse,
-  TransactionInfo,
-  TransactionHistoryInfoResponse,
-  TransactionHistoryInfo,
+  AssetType
 } from 'src/types';
-import { Assets, Dex, Wrapper, Bridge } from './system';
+import { Assets, Dex, Wrapper } from './system';
 import { Storage } from './storage';
 import { getMerakConfig } from './utils';
 
@@ -25,43 +21,35 @@ const MAX_PATH_LENGTH = 5;
  * @description This class is used to aggregate the tools that used to interact with SUI network.
  */
 export class Merak {
-  public params: MerakParams;
   public dubhe: Dubhe;
+  public graphql: DubheGraphqlClient;
+
   public assets: Assets;
   public dex: Dex;
   public wrapper: Wrapper;
-  public bridge: Bridge;
 
   public storage: Storage;
 
   public packageId: string;
+  public network: NetworkType;
   public schemaId: string;
-  public treasuryCap: string;
+  public apiBaseUrl?: string;
+  // public treasuryCap: string;
 
   /**
    * @argument params - The parameters for the Merak instance.
    */
-  constructor(params: MerakParams) {
-    const config = getMerakConfig(params.networkType ?? 'testnet');
-    const packageId = params.packageId ?? config.packageId;
-    const schemaId = params.schemaId ?? config.schemaId;
-    const metadata = params.metadata ?? config.metadata;
-    const treasuryCap = params.treasuryCap ?? config.treasuryCap;
-
-    this.params = params;
-    this.packageId = packageId;
+  constructor({ dubhe, graphql, schemaId, apiBaseUrl }: MerakParams) {
+    this.dubhe = dubhe;
+    this.graphql = graphql;
+    this.network = dubhe.getNetwork() as NetworkType;
     this.schemaId = schemaId;
-    this.treasuryCap = treasuryCap;
-    this.dubhe = new Dubhe({
-      ...params,
-      packageId,
-      metadata,
-    });
+    this.apiBaseUrl = apiBaseUrl;
+    this.packageId = dubhe.getPackageId();
     this.assets = new Assets(this.dubhe, schemaId);
     this.dex = new Dex(this.dubhe, schemaId);
     this.wrapper = new Wrapper(this.dubhe, schemaId);
-    this.bridge = new Bridge(this.dubhe, schemaId);
-    this.storage = new Storage(this.dubhe);
+    this.storage = new Storage(this.graphql);
   }
 
   get coinType() {
@@ -69,43 +57,21 @@ export class Merak {
   }
 
   // Assets Functions
-  async create(
+  async setMetadata(
     tx: Transaction,
+    asset_id: string,
     name: string,
     symbol: string,
     description: string,
-    decimals: number,
     icon_url: string,
-    extra_info: string,
-    initial_supply: bigint | number | string,
-    send_to: string,
-    owner: string,
-    is_mintable: boolean,
-    is_burnable: boolean,
-    is_freezable: boolean,
     isRaw?: boolean
   ) {
-    return this.assets.create(
-      tx,
-      name,
-      symbol,
-      description,
-      decimals,
-      icon_url,
-      extra_info,
-      initial_supply,
-      send_to,
-      owner,
-      is_mintable,
-      is_burnable,
-      is_freezable,
-      isRaw
-    );
+    return this.assets.setMetadata(tx, asset_id, name, symbol, description, icon_url, isRaw);
   }
 
   async mint(
     tx: Transaction,
-    asset_id: bigint | number | string,
+    asset_id: string,
     to: string,
     amount: bigint | number | string,
     isRaw?: boolean
@@ -115,7 +81,7 @@ export class Merak {
 
   async burn(
     tx: Transaction,
-    asset_id: bigint | number | string,
+    asset_id: string,
     from: string,
     amount: bigint | number | string,
     isRaw?: boolean
@@ -125,7 +91,7 @@ export class Merak {
 
   async transfer(
     tx: Transaction,
-    asset_id: bigint | number | string,
+    asset_id: string,
     to: string,
     amount: bigint | number | string,
     isRaw?: boolean
@@ -133,98 +99,64 @@ export class Merak {
     return this.assets.transfer(tx, asset_id, to, amount, isRaw);
   }
 
-  async transferAll(
-    tx: Transaction,
-    asset_id: bigint | number | string,
-    to: string,
-    isRaw?: boolean
-  ) {
+  async transferAll(tx: Transaction, asset_id: string, to: string, isRaw?: boolean) {
     return this.assets.transferAll(tx, asset_id, to, isRaw);
   }
 
-  async freezeAddress(
-    tx: Transaction,
-    asset_id: bigint | number | string,
-    address: string,
-    isRaw?: boolean
-  ) {
+  async freezeAddress(tx: Transaction, asset_id: string, address: string, isRaw?: boolean) {
     return this.assets.freezeAddress(tx, asset_id, address, isRaw);
   }
 
-  async blockAddress(
-    tx: Transaction,
-    asset_id: bigint | number | string,
-    address: string,
-    isRaw?: boolean
-  ) {
+  async blockAddress(tx: Transaction, asset_id: string, address: string, isRaw?: boolean) {
     return this.assets.blockAddress(tx, asset_id, address, isRaw);
   }
 
-  async thawAddress(
-    tx: Transaction,
-    asset_id: bigint | number | string,
-    address: string,
-    isRaw?: boolean
-  ) {
+  async thawAddress(tx: Transaction, asset_id: string, address: string, isRaw?: boolean) {
     return this.assets.thawAddress(tx, asset_id, address, isRaw);
   }
 
-  async freezeAsset(
-    tx: Transaction,
-    asset_id: bigint | number | string,
-    isRaw?: boolean
-  ) {
+  async freezeAsset(tx: Transaction, asset_id: string, isRaw?: boolean) {
     return this.assets.freezeAsset(tx, asset_id, isRaw);
   }
 
-  async thawAsset(
-    tx: Transaction,
-    asset_id: bigint | number | string,
-    isRaw?: boolean
-  ) {
+  async thawAsset(tx: Transaction, asset_id: string, isRaw?: boolean) {
     return this.assets.thawAsset(tx, asset_id, isRaw);
   }
 
-  async transferOwnership(
-    tx: Transaction,
-    asset_id: bigint | number | string,
-    to: string,
-    isRaw?: boolean
-  ) {
+  async transferOwnership(tx: Transaction, asset_id: string, to: string, isRaw?: boolean) {
     return this.assets.transferOwnership(tx, asset_id, to, isRaw);
   }
 
-  async balanceOf(asset_id: bigint | number | string, accountAddress: string) {
+  async balanceOf(asset_id: string, accountAddress?: string) {
+    if (!accountAddress) {
+      accountAddress = this.dubhe.accountManager.getAddress();
+    }
+
     // return this.assets.balanceOf(asset_id, accountAddress);
     const account = await this.queryAccount({
       address: accountAddress,
-      assetId: asset_id,
+      assetId: asset_id
     });
-    return account.value.balance;
+    return account;
   }
 
-  async supplyOf(asset_id: bigint | number | string) {
-    return this.assets.supplyOf(asset_id);
-  }
-
-  async metadataOf(asset_id: bigint | number | string) {
+  async metadataOf(asset_id: string) {
     return this.assets.metadataOf(asset_id);
   }
 
+  async ownerOf(asset_id: string) {
+    return this.assets.ownerOf(asset_id);
+  }
+
   // Dex Functions
-  async createPool(
-    tx: Transaction,
-    assetA: bigint | number | string,
-    assetB: bigint | number | string,
-    isRaw?: boolean
-  ) {
+  async createPool(tx: Transaction, assetA: string, assetB: string, isRaw?: boolean) {
     return this.dex.createPool(tx, assetA, assetB, isRaw);
   }
 
   async addLiquidity(
     tx: Transaction,
-    assetA: bigint | number | string,
-    assetB: bigint | number | string,
+    assetA: string,
+    assetB: string,
     amountADesired: bigint | number | string,
     amountBDesired: bigint | number | string,
     amountAMin: bigint | number | string,
@@ -247,8 +179,8 @@ export class Merak {
 
   async removeLiquidity(
     tx: Transaction,
-    assetA: bigint | number | string,
-    assetB: bigint | number | string,
+    assetA: string,
+    assetB: string,
     liquidity: bigint | number | string,
     amountAMinReceive: bigint | number | string,
     amountBMinReceive: bigint | number | string,
@@ -271,36 +203,22 @@ export class Merak {
     tx: Transaction,
     amountIn: bigint | number | string,
     amountOutMin: bigint | number | string,
-    path: bigint[] | number[] | string[],
+    path: string[],
     to: string,
     isRaw?: boolean
   ) {
-    return this.dex.swapExactTokensForTokens(
-      tx,
-      amountIn,
-      amountOutMin,
-      path,
-      to,
-      isRaw
-    );
+    return this.dex.swapExactTokensForTokens(tx, amountIn, amountOutMin, path, to, isRaw);
   }
 
   async swapTokensForExactTokens(
     tx: Transaction,
     amountOut: bigint | number | string,
     amountInMax: bigint | number | string,
-    path: bigint[] | number[] | string[],
+    path: string[],
     to: string,
     isRaw?: boolean
   ) {
-    return this.dex.swapTokensForExactTokens(
-      tx,
-      amountOut,
-      amountInMax,
-      path,
-      to,
-      isRaw
-    );
+    return this.dex.swapTokensForExactTokens(tx, amountOut, amountInMax, path, to, isRaw);
   }
 
   // async swapExactCoinForTokens(
@@ -323,17 +241,11 @@ export class Merak {
   //   );
   // }
 
-  async getAmountsOut(
-    amountIn: bigint | number | string,
-    path: bigint[] | number[] | string[]
-  ) {
+  async getAmountsOut(amountIn: bigint | number | string, path: string[]) {
     return this.dex.getAmountsOut(amountIn, path);
   }
 
-  async getAmountsIn(
-    amountOut: bigint | number | string,
-    path: bigint[] | number[] | string[]
-  ) {
+  async getAmountsIn(amountOut: bigint | number | string, path: string[]) {
     return this.dex.getAmountsIn(amountOut, path);
   }
 
@@ -341,106 +253,77 @@ export class Merak {
     asset1Id,
     asset2Id,
     poolAddress,
-    poolAssetId,
     first,
     after,
-    orderBy,
+    orderBy
   }: {
-    asset1Id?: bigint | number | string;
-    asset2Id?: bigint | number | string;
+    asset1Id?: string;
+    asset2Id?: string;
     poolAddress?: string;
-    poolAssetId?: bigint | number | string;
     first?: number;
     after?: string;
-    orderBy?: string[];
+    orderBy?: OrderBy[];
   } = {}) {
-    return this.storage.list.pool({
-      asset1Id,
-      asset2Id,
+    return this.storage.list.assetPool({
+      asset0: asset1Id,
+      asset1: asset2Id,
       poolAddress,
-      poolAssetId,
       first: first ?? 3,
       after,
-      orderBy,
+      orderBy
     });
   }
 
-  async getPoolListWithId({
-    asset1Id,
-    asset2Id,
-  }: {
-    asset1Id: bigint | number | string;
-    asset2Id: bigint | number | string;
-  }): Promise<{
-    k_last: string;
-    lp_asset_id: string;
+  async getPoolListWithId({ asset1Id, asset2Id }: { asset1Id: string; asset2Id: string }): Promise<{
+    kLast: string;
+    lpAsset: string;
     reserve0: string;
     reserve1: string;
   } | null> {
-    const parentObjectId =
-      '0xfb2c58b849d6e4de90a2032dacf42ab9ae11130ebc2d1f0fecfffa9df5aeed0b';
-
-    const fieldDetail = await this.dubhe.client().getDynamicFieldObject({
-      parentId: parentObjectId,
-      name: {
-        type: '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_double_map_internal::Entry<u256, u256>',
-        value: {
-          key1: asset1Id.toString(),
-          key2: asset2Id.toString(),
-        },
-      },
+    const pool = await this.storage.get.assetPool({
+      asset0: asset1Id,
+      asset1: asset2Id
     });
 
-    if (
-      fieldDetail.data &&
-      fieldDetail.data.content &&
-      typeof fieldDetail.data.content === 'object' &&
-      'fields' in fieldDetail.data.content
-    ) {
-      const content = fieldDetail.data.content as any;
-      if (
-        content.fields &&
-        content.fields.value &&
-        content.fields.value.fields
-      ) {
-        return content.fields.value.fields;
-      }
+    if (!pool) {
+      return null;
     }
 
-    return null;
+    return {
+      kLast: pool.kLast,
+      lpAsset: pool.lpAsset,
+      reserve0: pool.reserve0,
+      reserve1: pool.reserve1
+    };
   }
 
   async allPoolList({
     asset1Id,
     asset2Id,
-    pageSize,
+    pageSize
   }: {
-    asset1Id?: bigint | number | string;
-    asset2Id?: bigint | number | string;
+    asset1Id?: string;
+    asset2Id?: string;
     pageSize?: number;
   } = {}) {
     pageSize = pageSize ?? 3;
-    let pool = await this.storage.list.pool({
+    let pool = await this.storage.list.assetPool({
       first: pageSize,
-      asset1Id: asset1Id?.toString(),
-      asset2Id: asset2Id?.toString(),
+      asset0: asset1Id,
+      asset1: asset2Id
     });
 
-    return pool.data;
+    return pool.edges.map((edge: any) => edge.node);
   }
 
-  async allPoolListWithId(assetId: bigint | number | string) {
-    const allAsset1List = await this.allPoolList({
-      asset1Id: assetId,
+  async allPoolListWithId(assetId: string, pageSize?: number) {
+    pageSize = pageSize ?? 3;
+    const pool = await this.storage.list.assetPool({
+      first: pageSize,
+      assetId
     });
 
-    const allAsset2List = await this.allPoolList({
-      asset2Id: assetId,
-    });
-
-    const allAssetList = [...allAsset1List, ...allAsset2List];
-
-    return allAssetList;
+    return pool.edges.map((edge: any) => edge.node);
   }
 
   // Wrapper Functions
@@ -450,8 +333,7 @@ export class Merak {
     symbol: string,
     description: string,
     decimals: number,
-    url: string,
-    info: string,
+    icon_url: string,
     coinType?: string,
     isRaw?: boolean
   ) {
@@ -461,8 +343,7 @@ export class Merak {
       symbol,
       description,
       decimals,
-      url,
-      info,
+      icon_url,
       coinType,
       isRaw
     );
@@ -492,69 +373,36 @@ export class Merak {
     coinType,
     first,
     after,
-    orderBy,
+    orderBy
   }: {
     coinType?: string;
     first?: number;
     after?: string;
-    orderBy?: string[];
+    orderBy?: OrderBy[];
   } = {}) {
-    return this.storage.list.wrapperAssets({
+    return this.storage.list.assetWrapper({
       coinType,
       first,
       after,
-      orderBy,
+      orderBy
     });
   }
 
-  // Bridge Functions
-  async withdraw(
-    tx: Transaction,
-    asset_id: bigint | number | string,
-    to: string,
-    to_chain: string,
-    amount: bigint | number | string,
-    isRaw?: boolean
-  ) {
-    return this.bridge.withdraw(tx, asset_id, to, to_chain, amount, isRaw);
-  }
-
-  async deposit(
-    tx: Transaction,
-    asset_id: bigint | number | string,
-    from: string,
-    to: string,
-    from_chain: string,
-    amount: bigint | number | string,
-    isRaw?: boolean
-  ) {
-    return this.bridge.deposit(
-      tx,
-      this.treasuryCap,
-      asset_id,
-      from,
-      to,
-      from_chain,
-      amount,
-      isRaw
-    );
-  }
-
-  async querySwapPaths(
-    start: bigint | number | string,
-    end: bigint | number | string
-  ): Promise<number[][]> {
-    const pairListResult1 = await this.allPoolListWithId(start);
-    const pairListResult2 = await this.allPoolListWithId(end);
-    const pairListResult = [...pairListResult1, ...pairListResult2];
+  async querySwapPaths(start: string, end: string): Promise<string[][]> {
+    // Optimized: fetch all pools for both assets in a single query
+    const pool = await this.storage.list.assetPool({
+      assetIds: [start, end],
+      first: 1000 // Increased limit for path finding
+    });
+    const pairListResult = pool.edges.map((edge: any) => edge.node);
 
     if (!pairListResult) throw new Error('Failed to fetch pair list');
     const pairList = pairListResult;
     // Build adjacency list
-    const graph = new Map<number, number[]>();
+    const graph = new Map<string, string[]>();
     pairList.forEach((item) => {
-      const token0 = item.key1;
-      const token1 = item.key2;
+      const token0 = item.asset0;
+      const token1 = item.asset1;
       if (!graph.has(token0)) graph.set(token0, []);
       if (!graph.has(token1)) graph.set(token1, []);
       graph.get(token0)!.push(token1);
@@ -562,13 +410,11 @@ export class Merak {
     });
 
     // Store all found paths
-    const allPaths: number[][] = [];
+    const allPaths: string[][] = [];
 
     // BFS to find all paths
     function bfs() {
-      const queue: { path: number[]; node: number }[] = [
-        { path: [Number(start)], node: Number(start) },
-      ];
+      const queue: { path: string[]; node: string }[] = [{ path: [start], node: start }];
       const maxLength = MAX_PATH_LENGTH; // Limit max path length to prevent overly long paths
       const visited = new Set<string>();
 
@@ -592,7 +438,7 @@ export class Merak {
             visited.add(pathKey);
             queue.push({
               path: [...path, next],
-              node: next,
+              node: next
             });
           }
         }
@@ -605,109 +451,64 @@ export class Merak {
     return allPaths.sort((a, b) => a.length - b.length);
   }
 
-  async getConnectedTokens(
-    tokenId: bigint | number | string
-  ): Promise<number[]> {
+  async getConnectedTokens(tokenId: string): Promise<string[]> {
     const pairListResult = await this.allPoolListWithId(tokenId);
     if (!pairListResult) throw new Error('Failed to fetch pair list');
 
-    const connectedTokens = new Set<number>();
+    const connectedTokens = new Set<string>();
 
     // Traverse all pairs
     pairListResult.forEach((item) => {
-      const token0 = item.key1;
-      const token1 = item.key2;
+      const token0 = item.asset0;
+      const token1 = item.asset1;
 
-      if (Number(token0) === Number(tokenId)) {
+      if (token0 === tokenId) {
         connectedTokens.add(token1);
       }
-      if (Number(token1) === Number(tokenId)) {
+      if (token1 === tokenId) {
         connectedTokens.add(token0);
       }
     });
 
     // Convert to array and sort
-    return Array.from(connectedTokens).sort((a, b) => a - b);
+    return Array.from(connectedTokens).sort((a, b) => Number(a) - Number(b));
   }
 
-  async queryAccount({
-    address,
-    assetId,
-  }: {
+  async queryAccount({ address, assetId }: { address: string; assetId: string }): Promise<{
+    assetId: string;
     address: string;
-    assetId: bigint | number | string;
-  }): Promise<{
-    key1: string;
-    key2: string;
-    value: {
-      balance: string;
-    };
+    balance: string;
   }> {
-    const allFields = await this.dubhe.client().getDynamicFieldObject({
-      parentId:
-        '0xa676f00193c93b812da927baf1e51bd408c2a32b14104df6c1af2b0e874f33ad',
-      name: {
-        type: '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_double_map_internal::Entry<u256, address>',
-        value: {
-          key1: assetId.toString(),
-          key2: address,
-        },
-      },
+    const account = await this.storage.get.assetAccount({
+      assetId: assetId,
+      account: address
     });
 
-    if (!allFields.data) {
+    if (!account) {
       return {
-        key1: assetId.toString(),
-        key2: address,
-        value: {
-          balance: '0',
-        },
+        assetId,
+        address,
+        balance: '0'
       };
     }
 
-    try {
-      const content = allFields.data.content as any;
-      if (
-        content &&
-        content.fields &&
-        content.fields.value &&
-        content.fields.value.fields
-      ) {
-        return {
-          key1: assetId.toString(),
-          key2: address,
-          value: {
-            balance: content.fields.value.fields.balance || '0',
-          },
-        };
-      }
-    } catch (error) {
-      console.error('Error in queryAccount:', error);
-    }
-
     return {
-      key1: assetId.toString(),
-      key2: address,
-      value: {
-        balance: '0',
-      },
+      assetId,
+      address,
+      balance: account.balance
     };
   }
 
-  async getAllSwappableTokens({
-    startTokenId,
-  }: {
-    startTokenId: bigint | number | string;
-  }): Promise<number[]> {
+  async getAllSwappableTokens({ startTokenId }: { startTokenId: string }): Promise<string[]> {
     // Get all trading pairs
     const allPools = await this.allPoolList();
     if (!allPools) throw new Error('Failed to fetch pool list');
 
     // Build adjacency list
-    const graph = new Map<number, number[]>();
+    const graph = new Map<string, string[]>();
     allPools.forEach((item) => {
-      const token0 = item.key1;
-      const token1 = item.key2;
+      const token0 = item.asset0;
+      const token1 = item.asset1;
       if (!graph.has(token0)) graph.set(token0, []);
       if (!graph.has(token1)) graph.set(token1, []);
       graph.get(token0)!.push(token1);
@@ -715,13 +516,11 @@ export class Merak {
     });
 
     // Store all reachable tokens
-    const swappableTokens = new Set<number>();
-    const visited = new Set<number>();
+    const swappableTokens = new Set<string>();
+    const visited = new Set<string>();
     const maxLength = MAX_PATH_LENGTH;
-    const queue: { token: number; depth: number }[] = [
-      { token: Number(startTokenId), depth: 1 },
-    ];
-    visited.add(Number(startTokenId));
+    const queue: { token: string; depth: number }[] = [{ token: startTokenId, depth: 1 }];
+    visited.add(startTokenId);
 
     // Use BFS to find all reachable tokens
     while (queue.length > 0) {
@@ -742,763 +541,452 @@ export class Merak {
     }
 
     // Convert to array and sort
-    return Array.from(swappableTokens).sort((a, b) => a - b);
+    return Array.from(swappableTokens).sort();
   }
 
-  async getAllSwappableTokensWithMetadata({
-    startTokenId,
-    address,
-  }: {
-    startTokenId: bigint | number | string;
-    address?: string;
-  }): Promise<AssetInfo[]> {
-    const swappableTokens = await this.getAllSwappableTokens({
-      startTokenId,
+  // TODO: fix
+  // async getAllSwappableTokensWithMetadata({
+  //   startTokenId,
+  //   address
+  // }: {
+  //   startTokenId: string;
+  //   address?: string;
+  // }): Promise<AssetInfo[]> {
+  //   const swappableTokens = await this.getAllSwappableTokens({
+  //     startTokenId
+  //   });
+
+  //   const swappableTokensWithMetadata: AssetInfo[] = await Promise.all(
+  //     swappableTokens.map(async (assetId) => {
+  //       const metadata = await this.getMetadata(assetId);
+
+  //       let balanceNum = '0';
+  //       let creator = undefined;
+  //       if (address) {
+  //         const balance = await this.queryAccount({
+  //           address,
+  //           assetId
+  //         });
+  //         balanceNum = balance?.value.balance ?? '0';
+  //         creator = balance?.key2;
+  //       }
+
+  //       return {
+  //         balance: balanceNum,
+  //         metadata: metadata!,
+  //         assetId,
+  //         creator
+  //       };
+  //     })
+  //   );
+  //   return swappableTokensWithMetadata;
+  // }
+
+  // async listAssetsInfo({
+  //   assetType,
+  //   first,
+  //   after,
+  //   orderBy
+  // }: {
+  //   assetType?: AssetType;
+  //   first?: number;
+  //   after?: string;
+  //   orderBy?: OrderBy[];
+  // } = {}): Promise<AssetInfoResponse> {
+  //   const assetsMetadata = await this.storage.list.assetMetadata({
+  //     first: first ?? 6,
+  //     after: after,
+  //     orderBy: orderBy ?? [{ field: 'CREATED_AT_TIMESTAMP_MS', direction: 'ASC' }]
+  //   });
+
+  //   let assetsMetadataResults: AssetInfo[] = await Promise.all(
+  //     assetsMetadata.edges.map(async (item) => {
+  //       const metadata: AssetMetadataType = {
+  //         name: item.node.name || '',
+  //         symbol: item.node.symbol || '',
+  //         description: item.node.description || '',
+  //         decimals: item.node.decimals || 0,
+  //         iconUrl: item.node.iconUrl || '',
+  //         extra_info: '',
+  //         owner: item.node.owner || '',
+  //         supply: '0',
+  //         accounts: '0',
+  //         status: item.node.status || '',
+  //         is_mintable: item.node.isMintable || false,
+  //         is_burnable: item.node.isBurnable || false,
+  //         is_freezable: item.node.isFreezable || false,
+  //         asset_type: (() => {
+  //           if (!item.node.assetType) return {};
+
+  //           if (typeof item.node.assetType === 'string') {
+  //             // Try to parse as JSON first
+  //             try {
+  //               return JSON.parse(item.node.assetType);
+  //             } catch {
+  //               // If parsing fails, it's a simple enum value like "Wrapped", "Lp", "Native"
+  //               // Convert to object format: "Wrapped" -> { "Wrapped": {} }
+  //               return { [item.node.assetType]: {} };
+  //             }
+  //           }
+
+  //           return item.node.assetType;
+  //         })()
+  //       };
+  //       return {
+  //         assetId: Number(item.node.assetId),
+  //         metadata
+  //       };
+  //     })
+  //   );
+  //   if (assetType) {
+  //     assetsMetadataResults = assetsMetadataResults.filter((item) => {
+  //       return item.metadata.assetType !== undefined;
+  //     });
+  //   }
+
+  //   assetsMetadataResults.sort((a, b) => Number(a.assetId) - Number(b.assetId));
+
+  //   return {
+  //     data: assetsMetadataResults,
+  //     pageInfo: assetsMetadata.pageInfo,
+  //     totalCount: assetsMetadataResults.length
+  //   };
+  // }
+
+  async getMetadata(assetId: bigint | number | string) {
+    // If apiBaseUrl is configured, use API endpoint with caching
+    if (this.apiBaseUrl) {
+      try {
+        console.log('============== this.apiBaseUrl ==============', this.apiBaseUrl);
+        console.log('============== assetId ==============', assetId.toString());
+        const response = await fetch(
+          `${this.apiBaseUrl}/api/assets/metadata/${assetId.toString()}`
+        );
+        console.log('============== response ==============', response);
+
+        if (!response.ok) {
+          // If API fails, fall back to storage query
+          console.warn(`API request failed (${response.status}), falling back to storage query`);
+        } else {
+          const result = await response.json();
+
+          if (result.success && result.data) {
+            return result.data as AssetMetadataType;
+          }
+        }
+      } catch (error) {
+        console.warn('API request error, falling back to storage query:', error);
+      }
+    }
+
+    // Fallback to storage query (original implementation)
+    const result = await this.storage.get.assetMetadata({
+      assetId
+    });
+    if (!result) return null;
+    return result as AssetMetadataType;
+  }
+
+  async getLatestMetadata(assetId: bigint | number | string) {
+    const result = await this.storage.get.assetMetadata({
+      assetId
     });
 
-    const swappableTokensWithMetadata: AssetInfo[] = await Promise.all(
-      swappableTokens.map(async (assetId) => {
-        const metadata = (
-          await this.storage.get.assetMetadata({
-            assetId,
-          })
-        )?.value as AssetMetadataType;
-
-        let balanceNum = '0';
-        let creator = undefined;
-        if (address) {
-          const balance = await this.queryAccount({
-            address: address,
-            assetId,
-          });
-          balanceNum = balance?.value.balance ?? '0';
-          creator = balance?.key2;
-        }
-
-        return {
-          balance: balanceNum,
-          metadata,
-          assetId,
-          creator,
-        };
-      })
-    );
-    return swappableTokensWithMetadata;
+    if (!result) return null;
+    return result as AssetMetadataType;
   }
 
-  async listAssetsInfo({
+  async listAccountLpAssets({
+    account,
     assetType,
     first,
     after,
     orderBy,
+    metadataMap: providedMetadataMap
   }: {
+    account: string;
     assetType?: AssetType;
     first?: number;
     after?: string;
-    orderBy?: string[];
-  } = {}): Promise<AssetInfoResponse> {
-    const assetsMetadata = await this.storage.list.assetMetadata({
-      first: first ?? 6,
-      after: after,
-      orderBy: orderBy ?? ['CREATED_AT_ASC'],
+    orderBy?: OrderBy[];
+    metadataMap?: Map<string, AssetMetadataType>;
+  }): Promise<AssetInfoResponse> {
+    const assetsData = await this.storage.list.assetAccount({
+      account,
+      first: first ?? 20,
+      after,
+      orderBy: orderBy ?? [{ field: 'CREATED_AT_TIMESTAMP_MS', direction: 'ASC' }]
     });
 
-    let assetsMetadataResults: AssetInfo[] = await Promise.all(
-      assetsMetadata.data.map(async (item) => {
+    // If metadata map is provided, use it; otherwise fetch each individually
+    const allResults = await Promise.all(
+      assetsData.edges.map(async (item) => {
+        let metadata: AssetMetadataType | null = null;
+
+        if (providedMetadataMap && providedMetadataMap.has(item.node.assetId)) {
+          // Use provided metadata from cache
+          metadata = providedMetadataMap.get(item.node.assetId) || null;
+        } else {
+          // Fetch metadata if not provided
+          metadata = await this.getMetadata(item.node.assetId);
+        }
+
+        // Skip if metadata is not found
+        if (!metadata) {
+          return null;
+        }
+
         return {
-          assetId: item.key1,
-          metadata: item.value,
+          balance: item.node.balance,
+          metadata: metadata,
+          assetId: item.node.assetId,
+          status: item.node.status
         };
       })
     );
+
+    let metadataResults: AssetInfo[] = allResults.filter(
+      (item): item is NonNullable<typeof item> => item !== null
+    );
+
     if (assetType) {
-      assetsMetadataResults = assetsMetadataResults.filter((item) => {
-        return item.metadata.asset_type[assetType] !== undefined;
+      metadataResults = metadataResults.filter((item) => {
+        return item.metadata?.assetType !== undefined;
       });
     }
 
-    assetsMetadataResults.sort((a, b) => Number(a.assetId) - Number(b.assetId));
-
-    return {
-      data: assetsMetadataResults,
-      pageInfo: assetsMetadata.pageInfo,
-      totalCount: assetsMetadataResults.length,
-    };
-  }
-
-  async getMetadata(assetId: bigint | number | string) {
-    let rawmetadata = undefined;
-    try {
-      rawmetadata = await this.staticMetadataOf(assetId);
-    } catch (error) {}
-
-    if (rawmetadata !== undefined) {
-      return rawmetadata.value as AssetMetadataType;
-    }
-
-    return (
-      await this.storage.get.assetMetadata({
-        assetId,
-      })
-    )?.value as AssetMetadataType;
-  }
-
-  async getMetadataWithGraphql(assetId: bigint | number | string) {
-    const fieldDetails = await this.dubhe.client().getDynamicFieldObject({
-      parentId:
-        '0xe83c2da3f26cedac7ced3652dbfae0df591aeb51818d45fb33e91364d551d0cd',
-      name: {
-        type: 'u256',
-        value: assetId.toString(),
-      },
+    const sortedMetadataResults = metadataResults.sort((a, b) => {
+      const balanceA = BigInt(a.balance || '0');
+      const balanceB = BigInt(b.balance || '0');
+      return balanceA > balanceB ? -1 : balanceA < balanceB ? 1 : 0;
     });
 
-    if (
-      fieldDetails.data?.content &&
-      typeof fieldDetails.data.content === 'object' &&
-      'fields' in fieldDetails.data.content
-    ) {
-      const content = fieldDetails.data.content as any;
-      return content.fields?.value?.fields;
-    }
-
-    return null;
-  }
-
-  async staticMetadataOf(assetId: bigint | number | string) {
-    const metadatas: Record<string, any> = {
-      '0': {
-        name: 'asset_metadata',
-        key1: 0,
-        key2: null,
-        value: {
-          accounts: '57232',
-          asset_type: {
-            Wrapped: {},
-          },
-          decimals: 9,
-          description: 'Wrapped SUI',
-          extra_info: '',
-          icon_url: 'https://cryptologos.cc/logos/sui-sui-logo.png?v=040',
-          is_burnable: false,
-          is_freezable: true,
-          is_mintable: false,
-          name: 'Wrapped SUI',
-          owner:
-            '0x0000000000000000000000000000000000000000000000000000000000000000',
-          status: {
-            Liquid: {},
-          },
-          supply: '60345806821961',
-          symbol: 'wSUI',
-        },
-      },
-      '1': {
-        name: 'asset_metadata',
-        key1: 1,
-        key2: null,
-        value: {
-          accounts: '55993',
-          asset_type: {
-            Wrapped: {},
-          },
-          decimals: 7,
-          description: 'Wrapped DUBHE',
-          extra_info: '',
-          icon_url:
-            'https://raw.githubusercontent.com/0xobelisk/dubhe/refs/heads/main/assets/logo.jpg',
-          is_burnable: false,
-          is_freezable: true,
-          is_mintable: false,
-          name: 'Wrapped DUBHE',
-          owner:
-            '0x0000000000000000000000000000000000000000000000000000000000000000',
-          status: {
-            Liquid: {},
-          },
-          supply: '3173844183554',
-          symbol: 'wDUBHE',
-        },
-      },
-      '2': {
-        name: 'asset_metadata',
-        key1: 2,
-        key2: null,
-        value: {
-          accounts: '49079',
-          asset_type: {
-            Lp: {},
-          },
-          decimals: 9,
-          description: 'Merak LP Asset',
-          extra_info: '',
-          icon_url: '',
-          is_burnable: false,
-          is_freezable: false,
-          is_mintable: false,
-          name: 'Merak LP Asset',
-          owner:
-            '0x0000000000000000000000000000000000000000000000000000000000000000',
-          status: {
-            Liquid: {},
-          },
-          supply: '785526231398',
-          symbol: 'wSUI-wDUBHE',
-        },
-      },
-      '3': {
-        name: 'asset_metadata',
-        key1: 3,
-        key2: null,
-        value: {
-          accounts: '47013',
-          asset_type: {
-            Wrapped: {},
-          },
-          decimals: 7,
-          description: 'Stars point',
-          extra_info: '""',
-          icon_url:
-            'https://raw.githubusercontent.com/0xobelisk/dubhe/main/assets/stars.gif',
-          is_burnable: false,
-          is_freezable: true,
-          is_mintable: false,
-          name: 'Wrapped STARS',
-          owner:
-            '0x0000000000000000000000000000000000000000000000000000000000000000',
-          status: {
-            Liquid: {},
-          },
-          supply: '14988587165891',
-          symbol: 'wSTARS',
-        },
-      },
-      '4': {
-        name: 'asset_metadata',
-        key1: 4,
-        key2: null,
-        value: {
-          accounts: '39332',
-          asset_type: {
-            Lp: {},
-          },
-          decimals: 9,
-          description: 'Merak LP Asset',
-          extra_info: '',
-          icon_url: '',
-          is_burnable: false,
-          is_freezable: false,
-          is_mintable: false,
-          name: 'Merak LP Asset',
-          owner:
-            '0x0000000000000000000000000000000000000000000000000000000000000000',
-          status: {
-            Liquid: {},
-          },
-          supply: '67606965062',
-          symbol: 'wDUBHE-wSTARS',
-        },
-      },
-      '5': {
-        name: 'asset_metadata',
-        key1: 5,
-        key2: null,
-        value: {
-          accounts: '37229',
-          asset_type: {
-            Lp: {},
-          },
-          decimals: 9,
-          description: 'Merak LP Asset',
-          extra_info: '',
-          icon_url: '',
-          is_burnable: false,
-          is_freezable: false,
-          is_mintable: false,
-          name: 'Merak LP Asset',
-          owner:
-            '0x0000000000000000000000000000000000000000000000000000000000000000',
-          status: {
-            Liquid: {},
-          },
-          supply: '234486484400',
-          symbol: 'wSUI-wSTARS',
-        },
-      },
-    };
-    return metadatas[assetId.toString()];
-  }
-
-  async listAccountWrapperAssets({
-    address,
-  }: {
-    address: string;
-  }): Promise<AssetInfoResponse> {
-    const assetIds = [0, 1, 3]; // 0: wSUI, 1: wDUBHE, 3: wSTARS
-    const assetsData = await Promise.all(
-      assetIds.map(async (assetId) => {
-        const parentObjectId =
-          '0xa676f00193c93b812da927baf1e51bd408c2a32b14104df6c1af2b0e874f33ad';
-
-        const fieldDetail = await this.dubhe.client().getDynamicFieldObject({
-          parentId: parentObjectId,
-          name: {
-            type: '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_double_map_internal::Entry<u256, address>',
-            value: {
-              key1: assetId.toString(),
-              key2: address,
-            },
-          },
-        });
-
-        let balance = '0';
-
-        if (
-          fieldDetail.data &&
-          fieldDetail.data.content &&
-          typeof fieldDetail.data.content === 'object' &&
-          'fields' in fieldDetail.data.content
-        ) {
-          const content = fieldDetail.data.content as any;
-          if (
-            content.fields &&
-            content.fields.value &&
-            content.fields.value.fields
-          ) {
-            balance = content.fields.value.fields.balance || '0';
-          }
-        }
-
-        const metadata = (await this.staticMetadataOf(assetId))
-          .value as AssetMetadataType;
-
-        return {
-          assetId,
-          metadata,
-          balance,
-        };
-      })
-    );
-
-    // 按assetId升序排序
-    const sortedAssetsData = assetsData.sort((a, b) => a.assetId - b.assetId);
-
     return {
-      data: sortedAssetsData,
-      pageInfo: { hasNextPage: false, endCursor: '' },
-      totalCount: assetsData.length,
-    };
-  }
-
-  async listAccountLpAssets({
-    address,
-  }: {
-    address: string;
-  }): Promise<AssetInfoResponse> {
-    const assetIds = [2, 4, 5]; // 0: wSUI, 1: wDUBHE, 3: wSTARS
-    const assetsData = await Promise.all(
-      assetIds.map(async (assetId) => {
-        const parentObjectId =
-          '0xa676f00193c93b812da927baf1e51bd408c2a32b14104df6c1af2b0e874f33ad';
-
-        const fieldDetail = await this.dubhe.client().getDynamicFieldObject({
-          parentId: parentObjectId,
-          name: {
-            type: '0xe2a38ae55a486bcaf79658cde76894207cada4d64d3cb1b2b06c6c12c10d5d5b::storage_double_map_internal::Entry<u256, address>',
-            value: {
-              key1: assetId.toString(),
-              key2: address,
-            },
-          },
-        });
-
-        let balance = '0';
-
-        if (
-          fieldDetail.data &&
-          fieldDetail.data.content &&
-          typeof fieldDetail.data.content === 'object' &&
-          'fields' in fieldDetail.data.content
-        ) {
-          const content = fieldDetail.data.content as any;
-          if (
-            content.fields &&
-            content.fields.value &&
-            content.fields.value.fields
-          ) {
-            balance = content.fields.value.fields.balance || '0';
-          }
-        }
-
-        const metadata = (await this.staticMetadataOf(assetId))
-          .value as AssetMetadataType;
-
-        return {
-          assetId,
-          metadata,
-          balance,
-        };
-      })
-    );
-
-    const sortedAssetsData = assetsData.sort((a, b) => a.assetId - b.assetId);
-
-    return {
-      data: sortedAssetsData,
-      pageInfo: { hasNextPage: false, endCursor: '' },
-      totalCount: assetsData.length,
+      data: sortedMetadataResults,
+      pageInfo: assetsData.pageInfo,
+      totalCount: sortedMetadataResults.length
     };
   }
 
   async listOwnedAssetsInfo({
-    address,
+    account,
     assetType,
     first,
     after,
     orderBy,
+    metadataMap
   }: {
-    address: string;
+    account: string;
     assetType?: AssetType;
     first?: number;
     after?: string;
-    orderBy?: string[];
+    orderBy?: OrderBy[];
+    metadataMap?: Map<string, AssetMetadataType>;
   }): Promise<AssetInfoResponse> {
-    // const currentAccountInfo = await this.storage.list.account({
-    //   address: address,
-    //   first: first ?? 9999,
-    //   after: after,
-    //   orderBy: orderBy ?? ['KEY1_ASC'],
-    // });
-    let data: AssetInfoResponse;
-    if (assetType === 'Lp') {
-      data = await this.listAccountLpAssets({ address });
-    } else {
-      data = await this.listAccountWrapperAssets({ address });
-    }
-
-    return data;
+    return this.listAccountLpAssets({ account, assetType, first, after, orderBy, metadataMap });
   }
 
   async listPoolsInfo({
     pageSize,
+    metadataMap: providedMetadataMap
   }: {
     pageSize?: number;
+    metadataMap?: Map<string, AssetMetadataType>;
   } = {}): Promise<PoolInfo[]> {
     const poolList = await this.allPoolList({
-      pageSize,
+      pageSize
     });
-    const savedPools: PoolInfo[] = [];
 
-    if (poolList && poolList.length > 0) {
-      for (const item of poolList) {
-        const asset1Metadata = await this.getMetadata(item.key1);
-        const asset2Metadata = await this.getMetadata(item.key2);
-        const poolAsset1Amount = await this.queryAccount({
-          address: item.value.pool_address,
-          assetId: item.key1,
+    if (!poolList || poolList.length === 0) {
+      return [];
+    }
+
+    // Collect unique asset IDs and pool addresses for batch querying
+    const uniqueAssetIds = new Set<string>();
+    const accountQueries: Array<{
+      address: string;
+      assetId: string;
+      poolIndex: number;
+      assetIndex: number;
+    }> = [];
+
+    poolList.forEach((item, poolIndex) => {
+      uniqueAssetIds.add(item.asset0);
+      uniqueAssetIds.add(item.asset1);
+      accountQueries.push({
+        address: item.poolAddress,
+        assetId: item.asset0,
+        poolIndex,
+        assetIndex: 0
+      });
+      accountQueries.push({
+        address: item.poolAddress,
+        assetId: item.asset1,
+        poolIndex,
+        assetIndex: 1
+      });
+    });
+
+    // Create metadata map: use provided metadata or fetch missing ones
+    let metadataMap: Map<string, AssetMetadataType>;
+
+    if (providedMetadataMap) {
+      // Use provided metadata, only fetch missing ones
+      metadataMap = new Map(providedMetadataMap);
+      const missingAssetIds = Array.from(uniqueAssetIds).filter(
+        (assetId) => !metadataMap.has(assetId)
+      );
+
+      if (missingAssetIds.length > 0) {
+        const missingMetadataPromises = missingAssetIds.map((assetId) =>
+          this.getMetadata(assetId).then((metadata) => ({ assetId, metadata }))
+        );
+        const missingMetadataResults = await Promise.all(missingMetadataPromises);
+        missingMetadataResults.forEach(({ assetId, metadata }) => {
+          if (metadata) {
+            metadataMap.set(assetId, metadata);
+          }
         });
-        const poolAsset2Amount = await this.queryAccount({
-          address: item.value.pool_address,
-          assetId: item.key2,
-        });
-
-        if (!asset1Metadata || !asset2Metadata) {
-          throw new Error(
-            `Failed to fetch pool info, metadata not found: ${item.key1} / ${item.key2}`
-          );
-        }
-
-        const poolAsset1AmountNum =
-          parseFloat(poolAsset1Amount?.value.balance ?? '0') /
-          10 ** asset1Metadata.decimals;
-        const poolAsset2AmountNum =
-          parseFloat(poolAsset2Amount?.value.balance ?? '0') /
-          10 ** asset2Metadata.decimals;
-        const poolInfo = {
-          name: `${asset1Metadata.symbol} / ${asset2Metadata.symbol}`,
-          asset1Id: item.key1,
-          asset2Id: item.key2,
-          lpAssetId: item.value.lp_asset_id,
-          apr: '10%',
-          liquidity: `${poolAsset1AmountNum} ${asset1Metadata.symbol} / ${poolAsset2AmountNum} ${asset2Metadata.symbol}`,
-          volume: `${poolAsset1AmountNum + poolAsset2AmountNum}`,
-          feeTier: '1%',
-          token1Image: asset1Metadata.icon_url,
-          token2Image: asset2Metadata.icon_url,
-        };
-        savedPools.push(poolInfo);
       }
+    } else {
+      // Fetch all metadata if not provided
+      const metadataPromises = Array.from(uniqueAssetIds).map((assetId) =>
+        this.getMetadata(assetId).then((metadata) => ({ assetId, metadata }))
+      );
+      const metadataResults = await Promise.all(metadataPromises);
+      metadataMap = new Map<string, AssetMetadataType>();
+      metadataResults.forEach(({ assetId, metadata }) => {
+        if (metadata) {
+          metadataMap.set(assetId, metadata);
+        }
+      });
+    }
+
+    // Batch fetch all account balances concurrently
+    const balancePromises = accountQueries.map((query) =>
+      this.queryAccount({ address: query.address, assetId: query.assetId }).then((balance) => ({
+        ...query,
+        balance
+      }))
+    );
+    const balanceResults = await Promise.all(balancePromises);
+
+    // Create balance map indexed by poolIndex and assetIndex
+    const balanceMap = new Map<string, string>();
+    balanceResults.forEach(({ poolIndex, assetIndex, balance }) => {
+      balanceMap.set(`${poolIndex}-${assetIndex}`, balance?.balance ?? '0');
+    });
+
+    // Build pool info array
+    const savedPools: PoolInfo[] = [];
+    for (let i = 0; i < poolList.length; i++) {
+      const item = poolList[i];
+      const asset1Metadata = metadataMap.get(item.asset0);
+      const asset2Metadata = metadataMap.get(item.asset1);
+
+      if (!asset1Metadata || !asset2Metadata) {
+        console.warn(`Skipping pool ${i}: metadata not found for ${item.asset0} or ${item.asset1}`);
+        continue;
+      }
+
+      const poolAsset1Balance = balanceMap.get(`${i}-0`) ?? '0';
+      const poolAsset2Balance = balanceMap.get(`${i}-1`) ?? '0';
+
+      const poolAsset1AmountNum = parseFloat(poolAsset1Balance) / 10 ** asset1Metadata.decimals;
+      const poolAsset2AmountNum = parseFloat(poolAsset2Balance) / 10 ** asset2Metadata.decimals;
+
+      const poolInfo = {
+        name: `${asset1Metadata.symbol} / ${asset2Metadata.symbol}`,
+        asset1Id: item.asset0,
+        asset2Id: item.asset1,
+        lpAssetId: item.lpAsset,
+        apr: '10%',
+        liquidity: `${poolAsset1AmountNum} ${asset1Metadata.symbol} / ${poolAsset2AmountNum} ${asset2Metadata.symbol}`,
+        volume: `${poolAsset1AmountNum + poolAsset2AmountNum}`,
+        feeTier: '1%',
+        token1Image: asset1Metadata.iconUrl,
+        token2Image: asset2Metadata.iconUrl
+      };
+      savedPools.push(poolInfo);
     }
 
     return savedPools;
   }
 
   async listOwnedWrapperAssets({
-    address,
+    account,
     first,
     after,
     orderBy,
+    metadataMap
   }: {
-    address: string;
+    account: string;
     first?: number;
     after?: string;
-    orderBy?: string[];
+    orderBy?: OrderBy[];
+    metadataMap?: Map<string, AssetMetadataType>;
   }): Promise<AssetInfoResponse> {
-    return this.listAccountWrapperAssets({ address });
-    // return this.listOwnedAssetsInfo({
-    //   address,
-    //   assetType: 'Wrapped',
-    //   first,
-    //   after,
-    //   orderBy,
-    // });
-  }
-
-  async listEvents({
-    names,
-    sender,
-    checkpoint,
-    digest,
-    first,
-    after,
-    orderBy,
-  }: {
-    names?: string[];
-    sender?: string;
-    checkpoint?: string;
-    digest?: string;
-    first?: number;
-    after?: string;
-    orderBy?: string[];
-  } = {}): Promise<EventInfoResponse> {
-    const defaultEventNames = [
-      'asset_created_event',
-      'asset_transferred_event',
-      'ownership_transferred_event',
-      'pool_created_event',
-      'liquidity_added_event',
-      'liquidity_removed_event',
-      'swap_event',
-      'asset_wrapped_event',
-      'asset_unwrapped_event',
-      'bridge_withdraw_event',
-      'bridge_deposit_event',
-    ];
-
-    const events = await this.storage.list.events({
-      names: names ?? defaultEventNames,
-      sender,
-      checkpoint,
-      digest,
-      first: first ?? 9999,
+    return this.listOwnedAssetsInfo({
+      account,
+      assetType: 'Wrapped',
+      first,
       after,
-      orderBy: orderBy ?? ['ID_DESC'],
+      orderBy,
+      metadataMap
     });
-    const eventsWithMetadata: EventInfo[] = await Promise.all(
-      events.edges.map(async (item) => {
-        return {
-          name: item.node.name,
-          sender: item.node.sender,
-          value: item.node.value,
-          digest: item.node.digest,
-          createdAt: item.node.created_at,
-          checkpoint: item.node.checkpoint,
-        };
-      })
-    );
-    return {
-      data: eventsWithMetadata,
-      pageInfo: events.pageInfo,
-      totalCount: events.totalCount,
-    };
   }
-
-  async listTransactions({
-    functionName,
-    sender,
-    first,
-    after,
-    orderBy,
-  }: {
-    functionName?: string[];
-    sender?: string;
-    first?: number;
-    after?: string;
-    orderBy?: string[];
-  } = {}): Promise<TransactionInfoResponse> {
-    const transactions = await this.storage.list.transactions({
-      functionName,
-      sender,
-      first: first ?? 9999,
-      after,
-      orderBy: orderBy ?? ['ID_DESC'],
-      showEvent: true,
-    });
-    const transactionsWithMetadata: TransactionInfo[] = await Promise.all(
-      transactions.edges.map(async (item) => {
-        return {
-          sender: item.node.sender,
-          createdAt: item.node.created_at,
-          digest: item.node.digest,
-          functionName: item.node.function,
-          events: item.node.events || [],
-        };
-      })
-    );
-    return {
-      data: transactionsWithMetadata,
-      pageInfo: transactions.pageInfo,
-      totalCount: transactions.totalCount,
-    };
-  }
-
-  async listTransactionHistory({
-    functionName,
-    sender,
-    first,
-    after,
-    orderBy,
-  }: {
-    functionName?: string[];
-    sender?: string;
-    first?: number;
-    after?: string;
-    orderBy?: string[];
-  } = {}): Promise<TransactionHistoryInfoResponse> {
-    const transactions = await this.storage.list.transactions({
-      functionName,
-      sender,
-      first: first ?? 9999,
-      after,
-      orderBy: orderBy ?? ['ID_DESC'],
-      showEvent: true,
-    });
-    const transactionHistoryInfo: TransactionHistoryInfo[] = await Promise.all(
-      transactions.edges.map(async (item) => {
-        const event = item.node.events;
-        return {
-          sender: item.node.sender,
-          createdAt: item.node.created_at,
-          digest: item.node.digest,
-          functionName: item.node.function,
-          event: event![0],
-        };
-      })
-    );
-    return {
-      data: transactionHistoryInfo,
-      pageInfo: transactions.pageInfo,
-      totalCount: transactions.totalCount,
-    };
-  }
-
-  async getBridgeConfig({ chainName }: { chainName: BridgeChainName }) {
-    return this.storage.get.bridge({ chainName });
-  }
-
-  async listBridgeConfig({
-    chainName,
-    first,
-    after,
-    orderBy,
-  }: {
-    chainName?: BridgeChainName;
-    first?: number;
-    after?: string;
-    orderBy?: string[];
-  } = {}) {
-    return this.storage.list.bridge({ chainName, first, after, orderBy });
-  }
-
-  // async listOwnedLpAssetsInfo({ address }: { address: string }) {
-  //   const lpAssets = await this.listOwnedAssetsInfo({
-  //     address,
-  //     assetType: 'Lp',
-  //   });
-
-  //   const lpAssetsWithRemoveInfo = await Promise.all(
-  //     lpAssets.data.map(async (lpAsset) => {
-  //       try {
-  //         const liquidityInfo = await this.calRemoveLpAmount({
-  //           address,
-  //           poolAssetId: lpAsset.assetId,
-  //         });
-
-  //         return {
-  //           ...lpAsset,
-  //           liquidityInfo: {
-  //             ...liquidityInfo,
-  //             poolAssetId: lpAsset.assetId,
-  //           },
-  //         };
-  //       } catch (error) {
-  //         console.error(
-  //           `Failed to calculate remove LP amount for asset ${lpAsset.assetId}:`,
-  //           error
-  //         );
-  //         return {
-  //           ...lpAsset,
-  //           liquidityInfo: null,
-  //         };
-  //       }
-  //     })
-  //   );
-
-  //   return {
-  //     data: lpAssetsWithRemoveInfo,
-  //     pageInfo: lpAssets.pageInfo,
-  //     totalCount: lpAssets.totalCount,
-  //   };
-  // }
 
   async calRemoveLpAmount({
     address,
     poolAssetId,
+    poolSupply,
     amount,
+    metadataMap: providedMetadataMap
   }: {
     address: string;
-    poolAssetId: bigint | number | string;
+    poolAssetId: string;
+    poolSupply: number;
     amount?: bigint | number | string;
+    metadataMap?: Map<string, AssetMetadataType>;
   }) {
-    const poolAssetMetadata = await this.getMetadataWithGraphql(poolAssetId);
+    // const poolAssetMetadata = await this.getLatestMetadata(poolAssetId);
 
-    if (!poolAssetMetadata) {
-      throw new Error(`Pool asset metadata not found: ${poolAssetId}`);
-    }
+    // if (!poolAssetMetadata) {
+    // throw new Error(`Pool asset metadata not found: ${poolAssetId}`);
+    // }
 
     const poolAssetAmount = await this.queryAccount({
       address,
-      assetId: poolAssetId,
+      assetId: poolAssetId
     });
 
     if (!poolAssetAmount) {
       throw new Error(`Pool asset amount not found: ${poolAssetId}`);
     }
 
-    const amountNum = Number(amount ?? poolAssetAmount.value.balance);
+    const amountNum = Number(amount ?? poolAssetAmount.balance);
 
-    if (Number(poolAssetAmount.value.balance) < amountNum) {
+    if (Number(poolAssetAmount.balance) < amountNum) {
       throw new Error(
-        `Pool asset amount is less than the amount: ${Number(
-          poolAssetAmount.value.balance
-        )}`
+        `Pool asset amount is less than the amount: ${Number(poolAssetAmount.balance)}`
       );
     }
 
-    const shareAmount = amountNum / Number(poolAssetMetadata.supply);
+    const shareAmount = amountNum / Number(poolSupply);
 
-    const poolsInfo = await this.storage.list.pool({
+    const poolsInfo = await this.storage.list.assetPool({
       poolAssetId: poolAssetId.toString(),
+      first: 1
     });
 
-    if (!poolsInfo) {
+    if (!poolsInfo || poolsInfo.edges.length === 0) {
       throw new Error(`Pool info not found: ${poolAssetId}`);
     }
 
-    const poolInfoData = poolsInfo.data[0];
+    const poolInfoData = poolsInfo.edges[0].node;
     const poolInfoValue = await this.getPoolListWithId({
-      asset1Id: poolInfoData.key1,
-      asset2Id: poolInfoData.key2,
+      asset1Id: poolInfoData.asset0,
+      asset2Id: poolInfoData.asset1
     });
 
     if (!poolInfoValue) {
@@ -1510,8 +998,26 @@ export class Merak {
     const amountB = Number(poolInfoValue.reserve1) * shareAmount;
 
     // Get asset precision information
-    const asset1Metadata = await this.getMetadata(poolInfoData.key1);
-    const asset2Metadata = await this.getMetadata(poolInfoData.key2);
+    let asset1Metadata: AssetMetadataType | null = null;
+    let asset2Metadata: AssetMetadataType | null = null;
+
+    if (providedMetadataMap) {
+      // Use provided metadata if available
+      asset1Metadata = providedMetadataMap.get(poolInfoData.asset0) || null;
+      asset2Metadata = providedMetadataMap.get(poolInfoData.asset1) || null;
+
+      // Fetch missing metadata
+      if (!asset1Metadata) {
+        asset1Metadata = await this.getMetadata(poolInfoData.asset0);
+      }
+      if (!asset2Metadata) {
+        asset2Metadata = await this.getMetadata(poolInfoData.asset1);
+      }
+    } else {
+      // Fetch both if no metadata map provided
+      asset1Metadata = await this.getMetadata(poolInfoData.asset0);
+      asset2Metadata = await this.getMetadata(poolInfoData.asset1);
+    }
 
     if (!asset1Metadata || !asset2Metadata) {
       throw new Error('Asset metadata not found');
@@ -1519,14 +1025,21 @@ export class Merak {
 
     return {
       amountA: Math.floor(amountA), // Round down to ensure it doesn't exceed the actual available amount
-      amountB: Math.floor(amountB),
-      amountASymbol: asset1Metadata.symbol,
-      amountBSymbol: asset2Metadata.symbol,
-      decimalsA: asset1Metadata.decimals,
-      decimalsB: asset2Metadata.decimals,
-      // Add formatted amounts for easy frontend display
-      formattedAmountA: amountA / Math.pow(10, asset1Metadata.decimals),
-      formattedAmountB: amountB / Math.pow(10, asset2Metadata.decimals),
+      amountB: Math.floor(amountB)
+      // amountASymbol: asset1Metadata.symbol,
+      // amountBSymbol: asset2Metadata.symbol,
+      // decimalsA: asset1Metadata.decimals,
+      // decimalsB: asset2Metadata.decimals,
+      // // Add formatted amounts for easy frontend display
+      // formattedAmountA: amountA / Math.pow(10, asset1Metadata.decimals),
+      // formattedAmountB: amountB / Math.pow(10, asset2Metadata.decimals)
     };
+  }
+
+  async supplyOf(assetId: string): Promise<AssetSupplyType | null> {
+    const supply = await this.storage.get.assetSupply({
+      assetId
+    });
+    return supply as AssetSupplyType | null;
   }
 }

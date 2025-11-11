@@ -1,21 +1,38 @@
 'use client';
 
-import { atom } from 'jotai';
+import { useMemo } from 'react';
 import { Merak } from '@0xobelisk/merak-sdk';
-import { NETWORK } from '@/app/chain/config';
+import { useDubhe } from '@0xobelisk/react/sui';
+import { DUBHE_SCHEMA_ID } from 'dubhe-framework/deployment';
 
-const initMerakClient = () => {
-  const merak = new Merak({
-    networkType: NETWORK,
-    // indexerUrl: 'http://127.0.0.1:4002',
-    // indexerWsUrl: 'ws://127.0.0.1:4002'
-    fullnodeUrls: ['https://sui-testnet.blockvision.org/v1/2xPTS0M17DOdeIX7MVSykPktK7d'],
-    indexerUrl: 'https://merak-indexer-testnet-api-1.obelisk.build'
-    // indexerWsUrl: 'wss://merak-indexer-testnet-api.obelisk.build'
-  });
-  return merak;
-};
+/**
+ * Hook to get Merak client instance
+ * Uses the useDubhe hook to get contract and graphql clients
+ *
+ * Automatically configures apiBaseUrl to use the API endpoints with server-side caching:
+ * - In browser: uses window.location.origin to call /api/assets/metadata endpoints
+ * - Benefits from 60-second ISR cache for faster metadata queries
+ * - Falls back to direct storage queries if API is unavailable
+ */
+export function useMerak() {
+  const { contract, graphqlClient } = useDubhe();
 
-const merakClient = atom(initMerakClient);
+  const merakClient = useMemo(() => {
+    if (!contract || !graphqlClient) {
+      return null;
+    }
+    console.log('============== contract1111 ==============', contract.getNetwork());
 
-export { merakClient, initMerakClient };
+    // Get API base URL - use window.location.origin in browser, undefined in SSR
+    const apiBaseUrl = typeof window !== 'undefined' ? window.location.origin : undefined;
+    console.log('============== apiBaseUrl ==============', apiBaseUrl);
+    return new Merak({
+      dubhe: contract,
+      graphql: graphqlClient,
+      schemaId: DUBHE_SCHEMA_ID,
+      apiBaseUrl
+    });
+  }, [contract, graphqlClient]);
+
+  return merakClient;
+}

@@ -7,7 +7,7 @@ export default function Page() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/pre-mainnet');
+    router.push('/wrap');
   }, [router]);
 
   return <main></main>;

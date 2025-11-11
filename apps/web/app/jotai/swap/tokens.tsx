@@ -3,12 +3,12 @@
 import { atom } from 'jotai';
 
 export type Token = {
-  id: number | null;
+  id: string | null;
   name: string;
   symbol: string;
   description: string;
   decimals: number;
-  icon_url: string;
+  iconUrl: string;
   balance: string;
 };
 
@@ -18,7 +18,7 @@ export const fromTokenAtom = atom<Token>({
   symbol: '',
   description: '',
   decimals: 1,
-  icon_url: '',
+  iconUrl: '',
   balance: ''
 });
 export const toTokenAtom = atom<Token>({
@@ -27,6 +27,6 @@ export const toTokenAtom = atom<Token>({
   symbol: '',
   description: '',
   decimals: 1,
-  icon_url: '',
+  iconUrl: '',
   balance: ''
 });

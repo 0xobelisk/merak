@@ -1,28 +1,38 @@
 'use client';
 
-import { Search, ChevronDown, RefreshCw, Grid, List, Info } from 'lucide-react';
-import React, { useState, useEffect, useCallback } from 'react';
+import { Search, RefreshCw, Grid, List, TrendingUp, Droplets } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
-import TokenCreate from '@/app/components/pool/create/token-create';
-import LiquidityPoolSetup from '@/app/components/pool/create/liquidity-pool-setup';
-import { Dialog, DialogContent } from '@repo/ui/components/ui/dialog';
-import { SelectedPoolTokens } from '@/app/jotai/pool/pool';
-import { useAtom } from 'jotai';
-import { initMerakClient } from '@/app/jotai/merak';
-import { useRouter } from 'next/navigation';
+import { Button } from '@repo/ui/components/ui/button';
+import { useEnrichedAssets } from '@/app/hooks/useRegistryAssets';
+import { getLogoUrl } from '@/app/types/registry';
+import { usePools } from '@/app/hooks/usePools';
+import { PoolInfo } from '@0xobelisk/merak-sdk';
+import AddLiquidityModal from '@/app/components/pool/add-liquidity-modal';
 
 export default function LiquidityPools() {
-  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredPools, setFilteredPools] = useState<PoolType[]>([]);
-  const [pools, setPools] = useState<PoolType[]>([]);
+  const [filteredPools, setFilteredPools] = useState<PoolInfo[]>([]);
   const [category, setCategory] = useState('All');
   const [sortBy, setSortBy] = useState('Default');
   const [viewMode, setViewMode] = useState('card'); // 'card' or 'table'
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentStep, setCurrentStep] = useState<'select' | 'setup'>('select');
-  const [selectedTokens, setSelectedTokens] = useAtom(SelectedPoolTokens);
-  const router = useRouter();
+  const [isAddLiquidityModalOpen, setIsAddLiquidityModalOpen] = useState(false);
+  const [selectedPool, setSelectedPool] = useState<{ asset1: string; asset2: string } | null>(null);
+
+  // Use React Query hook for pools data with automatic caching
+  const { data: pools = [], isLoading, refetch: refetchPools } = usePools({ pageSize: 3 });
+
+  // Get registry assets for local logos
+  const { data: enrichedAssets } = useEnrichedAssets({ status: 'live' });
+
+  // Helper function to get logo from registry or fallback to provided URL
+  const getTokenLogo = useCallback(
+    (assetId: string, fallbackUrl: string) => {
+      const registryAsset = enrichedAssets.find((asset) => asset.metadata.assetId === assetId);
+      return registryAsset ? getLogoUrl(registryAsset) : fallbackUrl;
+    },
+    [enrichedAssets]
+  );
 
   const categories = [
     'All',
@@ -46,78 +56,20 @@ export default function LiquidityPools() {
     '24h Change'
   ];
 
-  type PoolType = {
-    name: string;
-    asset1Id: number;
-    asset2Id: number;
-    lpAssetId: number;
-    apr: string;
-    liquidity: string;
-    volume: string;
-    feeTier: string;
-    token1Image: string;
-    token2Image: string;
-  };
-
-  const queryPoolList = async () => {
-    const merak = initMerakClient();
-    try {
-      const poolList = await merak.listPoolsInfo({
-        pageSize: 3
-      });
-
-      setPools(poolList);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const fetchPools = useCallback(async () => {
-    setIsLoading(true);
-
-    try {
-      await queryPoolList();
-    } catch (error) {
-      console.error('Failed to fetch pools:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchPools();
-  }, [fetchPools]);
-
+  // Filter pools based on search term
   useEffect(() => {
     if (pools.length > 0) {
       const filtered = pools.filter((pool) =>
         pool.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredPools(filtered);
+    } else {
+      setFilteredPools([]);
     }
   }, [searchTerm, pools]);
 
   const handleViewModeChange = () => {
     setViewMode((prevMode) => (prevMode === 'card' ? 'table' : 'card'));
-  };
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-    setCurrentStep('select');
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setCurrentStep('select');
-  };
-
-  const handleSelectTokens = (base: any, quote: any) => {
-    setSelectedTokens({ base, quote });
-    setCurrentStep('setup');
-  };
-
-  const handleBackToSelect = () => {
-    setCurrentStep('select');
   };
 
   // Helper function to format numbers
@@ -156,266 +108,338 @@ export default function LiquidityPools() {
   };
 
   const renderCardView = () => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {filteredPools.map((pool, index) => (
-        <div key={index} className="bg-white p-4 rounded-lg shadow">
+        <div
+          key={index}
+          className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-all cursor-pointer border border-gray-100"
+          onClick={() => {
+            setSelectedPool({ asset1: pool.asset1Id, asset2: pool.asset2Id });
+            setIsAddLiquidityModalOpen(true);
+          }}
+        >
           {/* Token Pair Header */}
-          <div className="flex items-center space-x-2 mb-4">
-            <img
-              src={pool.token1Image}
-              alt={pool.name.split(' / ')[0]}
-              width={24}
-              height={24}
-              className="rounded-full"
-              loading="lazy"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = '/sui-logo.svg';
-              }}
-            />
-            <img
-              src={pool.token2Image}
-              alt={pool.name.split(' / ')[1]}
-              width={24}
-              height={24}
-              className="rounded-full"
-              loading="lazy"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = '/sui-logo.svg';
-              }}
-            />
-            <span className="font-medium text-gray-900">{pool.name}</span>
-          </div>
-
-          {/* Pool Details */}
-          <div className="space-y-2 mb-4">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-500">Liquidity</span>
-              <span className="text-gray-900">{formatLiquidity(pool.liquidity)}</span>
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="flex items-center -space-x-2">
+              <img
+                src={getTokenLogo(pool.asset1Id, pool.token1Image)}
+                alt={pool.name.split(' / ')[0]}
+                className="w-10 h-10 rounded-full border-2 border-white"
+                loading="lazy"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
+                }}
+              />
+              <img
+                src={getTokenLogo(pool.asset2Id, pool.token2Image)}
+                alt={pool.name.split(' / ')[1]}
+                className="w-10 h-10 rounded-full border-2 border-white"
+                loading="lazy"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
+                }}
+              />
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-500">24h Volume</span>
-              <span className="text-gray-900">{formatNumber(pool.volume)}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-500">Fee Tier</span>
-              <span className="text-gray-900">{pool.feeTier}</span>
+            <div>
+              <h3 className="font-semibold text-lg text-gray-900">{pool.name}</h3>
+              <p className="text-xs text-gray-500">Fee: {pool.feeTier}</p>
             </div>
           </div>
 
-          {/* Add Liquidity Button */}
-          <button
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded transition-colors"
-            onClick={() => {
-              const queryParams = new URLSearchParams();
-              queryParams.append('asset1', pool.asset1Id.toString());
-              queryParams.append('asset2', pool.asset2Id.toString());
-              queryParams.append('lpAssetId', pool.lpAssetId.toString());
-              router.push(`/pool/liquidity?${queryParams.toString()}`);
-            }}
-          >
-            Add Liquidity
-          </button>
+          {/* Pool Stats */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-500 flex items-center">
+                <Droplets className="w-4 h-4 mr-1" />
+                Liquidity
+              </span>
+              <span className="text-sm font-medium text-gray-900">
+                {formatLiquidity(pool.liquidity)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-500 flex items-center">
+                <TrendingUp className="w-4 h-4 mr-1" />
+                24h Volume
+              </span>
+              <span className="text-sm font-medium text-gray-900">{formatNumber(pool.volume)}</span>
+            </div>
+          </div>
+
+          {/* Add Liquidity Hint */}
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <p className="text-xs text-center text-indigo-600 font-medium">
+              Click to add liquidity
+            </p>
+          </div>
         </div>
       ))}
     </div>
   );
 
   const renderTableView = () => (
-    <div className="overflow-x-auto">
-      <table className="w-full text-left">
-        <thead>
-          <tr className="border-b border-gray-200">
-            <th className="py-3 px-4 text-gray-600 font-medium">Pool</th>
-            <th className="py-3 px-4 text-gray-600 font-medium text-right">Liquidity</th>
-            <th className="py-3 px-4 text-gray-600 font-medium text-right">24h Volume</th>
-            <th className="py-3 px-4 text-gray-600 font-medium text-right">Fee Tier</th>
-            <th className="py-3 px-4 text-gray-600 font-medium text-right">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredPools.map((pool, index) => (
-            <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-              <td className="py-4 px-4">
-                <div className="flex items-center space-x-2">
-                  <img
-                    src={pool.token1Image}
-                    alt={pool.name.split(' / ')[0]}
-                    width={20}
-                    height={20}
-                    className="rounded-full"
-                    loading="lazy"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
-                    }}
-                  />
-                  <img
-                    src={pool.token2Image}
-                    alt={pool.name.split(' / ')[1]}
-                    width={20}
-                    height={20}
-                    className="rounded-full"
-                    loading="lazy"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/sui-logo.svg';
-                    }}
-                  />
-                  <span className="font-medium text-gray-900">{pool.name}</span>
-                </div>
-              </td>
-              <td className="py-4 px-4 text-right text-gray-900">
-                {formatLiquidity(pool.liquidity)}
-              </td>
-              <td className="py-4 px-4 text-right text-gray-900">{formatNumber(pool.volume)}</td>
-              <td className="py-4 px-4 text-right text-gray-900">{pool.feeTier}</td>
-              <td className="py-4 px-4 text-right">
-                <button
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded text-sm transition-colors"
-                  onClick={() => {
-                    const queryParams = new URLSearchParams();
-                    queryParams.append('asset1', pool.asset1Id.toString());
-                    queryParams.append('asset2', pool.asset2Id.toString());
-                    queryParams.append('token1Name', pool.name.split(' / ')[0]);
-                    queryParams.append('token2Name', pool.name.split(' / ')[1]);
-                    queryParams.append('token1Image', pool.token1Image);
-                    queryParams.append('token2Image', pool.token2Image);
-                    router.push(`/pool/liquidity?${queryParams.toString()}`);
-                  }}
-                >
-                  Add Liquidity
-                </button>
-              </td>
+    <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th className="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Pool
+              </th>
+              <th className="py-4 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Liquidity
+              </th>
+              <th className="py-4 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                24h Volume
+              </th>
+              <th className="py-4 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Fee Tier
+              </th>
+              <th className="py-4 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Action
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-100">
+            {filteredPools.map((pool, index) => (
+              <tr key={index} className="hover:bg-gray-50 transition-colors">
+                <td className="py-4 px-6">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex items-center -space-x-2">
+                      <img
+                        src={getTokenLogo(pool.asset1Id, pool.token1Image)}
+                        alt={pool.name.split(' / ')[0]}
+                        className="w-8 h-8 rounded-full border-2 border-white"
+                        loading="lazy"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
+                        }}
+                      />
+                      <img
+                        src={getTokenLogo(pool.asset2Id, pool.token2Image)}
+                        alt={pool.name.split(' / ')[1]}
+                        className="w-8 h-8 rounded-full border-2 border-white"
+                        loading="lazy"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/registry/sui/images/sui.svg';
+                        }}
+                      />
+                    </div>
+                    <span className="font-medium text-gray-900">{pool.name}</span>
+                  </div>
+                </td>
+                <td className="py-4 px-6 text-right text-sm text-gray-900">
+                  {formatLiquidity(pool.liquidity)}
+                </td>
+                <td className="py-4 px-6 text-right text-sm text-gray-900">
+                  {formatNumber(pool.volume)}
+                </td>
+                <td className="py-4 px-6 text-right text-sm text-gray-900">{pool.feeTier}</td>
+                <td className="py-4 px-6 text-right">
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setSelectedPool({ asset1: pool.asset1Id, asset2: pool.asset2Id });
+                      setIsAddLiquidityModalOpen(true);
+                    }}
+                    className="bg-indigo-600 hover:bg-indigo-700"
+                  >
+                    Add Liquidity
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 
   const renderSkeleton = () => (
-    <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        <Skeleton className="h-24 w-full" />
-        <Skeleton className="h-24 w-full" />
-      </div>
-      <div className="flex flex-wrap gap-4 mb-8">
-        <Skeleton className="h-10 w-48" />
-        <Skeleton className="h-10 w-32" />
-        <Skeleton className="h-10 w-32" />
-        <Skeleton className="h-10 w-10" />
-        <Skeleton className="h-10 w-10" />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {Array(8)
-          .fill(0)
-          .map((_, index) => (
-            <Skeleton key={index} className="h-64 w-full" />
-          ))}
-      </div>
-    </>
+    <div className="space-y-4">
+      {[1, 2, 3, 4, 5, 6].map((i) => (
+        <div
+          key={i}
+          className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-6"
+        >
+          <div className="flex items-center justify-between mb-4">
+            {/* Token pair skeleton */}
+            <div className="flex items-center space-x-3">
+              <div className="flex items-center">
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <Skeleton className="h-10 w-10 rounded-full -ml-2" />
+              </div>
+              <div className="space-y-2">
+                <Skeleton className="h-6 w-32" />
+                <Skeleton className="h-4 w-24" />
+              </div>
+            </div>
+            {/* APR skeleton */}
+            <div className="text-right space-y-2">
+              <Skeleton className="h-4 w-16 ml-auto" />
+              <Skeleton className="h-6 w-20 ml-auto" />
+            </div>
+          </div>
+
+          {/* Stats skeleton */}
+          <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-100">
+            <div className="space-y-2">
+              <Skeleton className="h-3 w-16" />
+              <Skeleton className="h-5 w-24" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-3 w-16" />
+              <Skeleton className="h-5 w-24" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-3 w-20" />
+              <Skeleton className="h-5 w-24" />
+            </div>
+          </div>
+
+          {/* Button skeleton */}
+          <div className="mt-4">
+            <Skeleton className="h-10 w-full rounded-lg" />
+          </div>
+        </div>
+      ))}
+    </div>
   );
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br  via-pink-100 to-purple-100 p-4">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-800">
-            Earn Fees and Rewards by Providing Liquidity
-          </h1>
-          <button className="bg-indigo-600 text-white px-4 py-2 rounded" onClick={handleOpenModal}>
-            + Create a Pool
-          </button>
+    <div className="max-w-6xl mx-auto p-6 space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Liquidity Pools</h1>
+          <p className="text-gray-500 mt-2">Earn fees and rewards by providing liquidity</p>
         </div>
-
-        <div className="flex space-x-4 mb-8 overflow-x-auto">
-          <button className="text-indigo-600 border-b-2 border-indigo-600 pb-2 whitespace-nowrap">
-            Concentrated Liquidity Pools
-          </button>
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleViewModeChange}
+            className="flex items-center space-x-2"
+          >
+            {viewMode === 'card' ? (
+              <>
+                <List className="h-4 w-4" />
+                <span>Table View</span>
+              </>
+            ) : (
+              <>
+                <Grid className="h-4 w-4" />
+                <span>Card View</span>
+              </>
+            )}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => refetchPools()}
+            disabled={isLoading}
+            className="flex items-center space-x-2"
+          >
+            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            <span>Refresh</span>
+          </Button>
         </div>
+      </div>
 
-        {isLoading ? (
-          renderSkeleton()
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-              <div className="bg-white p-4 rounded shadow">
-                <div className="text-gray-600 mb-2">Total Value Locked</div>
-                <div className="text-2xl font-bold text-gray-800">$ 13,482,691</div>
-              </div>
-              <div className="bg-white p-4 rounded shadow">
-                <div className="text-gray-600 mb-2">Volume (24H)</div>
-                <div className="text-2xl font-bold text-gray-800">$ 9,488,068</div>
-              </div>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-gradient-to-br from-[#4DA2FF] to-sui-blue-700 p-6 rounded-lg shadow">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[#C0E6FF] text-sm mb-1 font-medium">Total Value Locked</p>
+              <p className="text-3xl font-bold text-white">$13.48M</p>
             </div>
+            <Droplets className="h-12 w-12 text-[#C0E6FF] opacity-60" />
+          </div>
+        </div>
+        <div className="bg-gradient-to-br from-[#4DA2FF] to-sui-blue-600 p-6 rounded-lg shadow">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[#C0E6FF] text-sm mb-1 font-medium">24h Volume</p>
+              <p className="text-3xl font-bold text-white">$9.49M</p>
+            </div>
+            <TrendingUp className="h-12 w-12 text-[#C0E6FF] opacity-60" />
+          </div>
+        </div>
+      </div>
 
-            <div className="flex flex-wrap gap-4 mb-8">
+      {/* Filters */}
+      <div className="bg-white p-4 rounded-lg shadow">
+        <div className="flex flex-wrap gap-3">
+          <div className="flex-1 min-w-[200px]">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Input coin symbol"
-                className="bg-white p-2 rounded border border-gray-300"
+                placeholder="Search pools by token name..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <select
-                className="bg-white p-2 rounded border border-gray-300"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
-              <select
-                className="bg-white p-2 rounded border border-gray-300"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                {sortOptions.map((sort) => (
-                  <option key={sort} value={sort}>
-                    {sort}
-                  </option>
-                ))}
-              </select>
-              <button
-                className={`bg-white p-2 rounded border border-gray-300 transition-all duration-200 ${
-                  isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
-                }`}
-                onClick={fetchPools}
-                disabled={isLoading}
-              >
-                <RefreshCw
-                  size={20}
-                  className={`text-gray-600 ${isLoading ? 'animate-spin' : ''}`}
-                />
-              </button>
-              <button
-                className="bg-white p-2 rounded border border-gray-300"
-                onClick={handleViewModeChange}
-              >
-                {viewMode === 'card' ? (
-                  <List size={20} className="text-gray-600" />
-                ) : (
-                  <Grid size={20} className="text-gray-600" />
-                )}
-              </button>
             </div>
-
-            <div className="h-[calc(100vh-300px)] overflow-y-auto">
-              {viewMode === 'card' ? renderCardView() : renderTableView()}
-            </div>
-          </>
-        )}
+          </div>
+          <select
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+          <select
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+          >
+            {sortOptions.map((sort) => (
+              <option key={sort} value={sort}>
+                Sort: {sort}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          {currentStep === 'select' ? (
-            <TokenCreate onClose={handleCloseModal} onSelectTokens={handleSelectTokens} />
-          ) : (
-            <LiquidityPoolSetup selectedTokens={selectedTokens} onClose={handleBackToSelect} />
-          )}
-        </DialogContent>
-      </Dialog>
+
+      {/* Loading State */}
+      {isLoading && renderSkeleton()}
+
+      {/* Empty State */}
+      {!isLoading && filteredPools.length === 0 && (
+        <div className="bg-white p-12 rounded-lg shadow text-center">
+          <Droplets className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+          <p className="text-gray-500 text-lg mb-2">No pools found</p>
+          <p className="text-gray-400 text-sm">
+            {searchTerm
+              ? 'Try adjusting your search terms'
+              : 'Check back later for available pools'}
+          </p>
+        </div>
+      )}
+
+      {/* Pools List */}
+      {!isLoading && filteredPools.length > 0 && (
+        <div>{viewMode === 'card' ? renderCardView() : renderTableView()}</div>
+      )}
+
+      {/* Add Liquidity Modal */}
+      <AddLiquidityModal
+        isOpen={isAddLiquidityModalOpen}
+        onClose={() => {
+          setIsAddLiquidityModalOpen(false);
+          setSelectedPool(null);
+          refetchPools();
+        }}
+        initialAsset1={selectedPool?.asset1}
+        initialAsset2={selectedPool?.asset2}
+      />
     </div>
   );
 }

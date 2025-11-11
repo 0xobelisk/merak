@@ -8,10 +8,8 @@ import {
 } from '@repo/ui/components/ui/dropdown-menu';
 import { Settings } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { useAtom } from 'jotai';
-import { merakClient } from '@/app/jotai/merak';
 import { Merak } from '@0xobelisk/merak-sdk';
-import { NETWORK } from '@/app/chain/config';
+import { NETWORK } from 'dubhe-framework/deployment';
 
 interface IndexerEndpoint {
   name: string;
@@ -32,8 +30,8 @@ interface IndexerEndpoint {
 const DUBHE_ENDPOINTS: IndexerEndpoint[] = [
   {
     name: 'DubheOS Node',
-    url: 'wss://dubheos-node-devnet-wss.obelisk.build/wss', // 修改为正确的 WebSocket URL
-    wsUrl: 'wss://dubheos-node-devnet-wss.obelisk.build/wss', // 保持和 url 一致
+    url: 'http://dubhe-framework-testnet-api.obelisk.build/graphql', // 修改为正确的 WebSocket URL
+    wsUrl: 'wss://dubhe-framework-testnet-api.obelisk.build/graphql', // 保持和 url 一致
     latency: null
   }
 ];
@@ -42,7 +40,6 @@ export function IndexerSettings() {
   // const [endpoints, setEndpoints] = useState(INDEXER_ENDPOINTS);
   const [dubheEndpoints, setDubheEndpoints] = useState(DUBHE_ENDPOINTS);
   const [selectedEndpoint, setSelectedEndpoint] = useState('Merak Official');
-  const [client, setClient] = useAtom(merakClient);
 
   // 添加 renderLatency 函数
   const renderLatency = (latency: number | null) => {

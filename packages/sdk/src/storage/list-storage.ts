@@ -1,10 +1,10 @@
-import { Dubhe } from '@0xobelisk/sui-client';
+import { DubheGraphqlClient, OrderBy } from '@0xobelisk/graphql-client';
 
 export class ListStorage {
-  private readonly dubhe: Dubhe;
+  private readonly graphql: DubheGraphqlClient;
 
-  constructor(dubhe: Dubhe) {
-    this.dubhe = dubhe;
+  constructor(graphql: DubheGraphqlClient) {
+    this.graphql = graphql;
   }
 
   // StorageMap queries
@@ -12,240 +12,351 @@ export class ListStorage {
     assetId,
     first,
     after,
-    orderBy,
+    orderBy
   }: {
-    assetId?: bigint | number | string;
+    assetId?: string;
     first?: number;
     after?: string;
-    orderBy?: string[];
+    orderBy?: OrderBy[];
   } = {}) {
-    const item = await this.dubhe.getStorage({
-      name: 'asset_metadata',
-      key1: assetId?.toString(),
+    const filter = assetId ? { asset_id: { equalTo: assetId } } : undefined;
+    const item = await this.graphql.getAllTables('asset_metadata', {
+      filter,
       first,
       after,
-      orderBy,
+      orderBy
     });
     return item;
   }
 
-  async assetDetails({
+  async assetSupply({
     assetId,
     first,
     after,
-    orderBy,
+    orderBy
   }: {
-    assetId?: bigint | number | string;
+    assetId?: string;
     first?: number;
     after?: string;
-    orderBy?: string[];
+    orderBy?: OrderBy[];
   } = {}) {
-    const item = await this.dubhe.getStorage({
-      name: 'asset_details',
-      key1: assetId?.toString(),
+    const filter = assetId ? { assetId: { equalTo: assetId } } : undefined;
+    const item = await this.graphql.getAllTables('asset_supply', {
+      filter,
       first,
       after,
-      orderBy,
+      orderBy
     });
     return item;
   }
 
-  async wrapperPools({
-    coinType,
+  async assetHolder({
+    assetId,
     first,
     after,
-    orderBy,
+    orderBy
+  }: {
+    assetId?: string;
+    first?: number;
+    after?: string;
+    orderBy?: OrderBy[];
+  } = {}) {
+    const filter = assetId ? { assetId: { equalTo: assetId } } : undefined;
+    const item = await this.graphql.getAllTables('asset_holder', {
+      filter,
+      first,
+      after,
+      orderBy
+    });
+    return item;
+  }
+
+  async assetWrapper({
+    coinType,
+    assetId,
+    first,
+    after,
+    orderBy
   }: {
     coinType?: string;
+    assetId?: string;
     first?: number;
     after?: string;
-    orderBy?: string[];
+    orderBy?: OrderBy[];
   } = {}) {
-    const item = await this.dubhe.getStorage({
-      name: 'wrapper_pools',
-      key1: coinType,
+    const filter: any = {};
+    if (coinType) filter.coinType = { equalTo: coinType };
+    if (assetId) filter.assetId = { equalTo: assetId };
+    const item = await this.graphql.getAllTables('asset_wrapper', {
+      filter,
       first,
       after,
-      orderBy,
+      orderBy
     });
     return item;
   }
 
-  async wrapperAssets({
-    coinType,
+  async dappMetadata({
+    dappKey,
     first,
     after,
-    orderBy,
+    orderBy
   }: {
-    coinType?: string;
+    dappKey?: string;
     first?: number;
     after?: string;
-    orderBy?: string[];
+    orderBy?: OrderBy[];
   } = {}) {
-    const item = await this.dubhe.getStorage({
-      name: 'wrapper_assets',
-      key1: coinType,
+    const filter = dappKey ? { dappKey: { equalTo: dappKey } } : undefined;
+    const item = await this.graphql.getAllTables('dapp_metadata', {
+      filter,
       first,
       after,
-      orderBy,
+      orderBy
     });
     return item;
   }
 
-  async bridge({
-    chainName,
+  async dappFeeState({
+    dappKey,
     first,
     after,
-    orderBy,
+    orderBy
   }: {
-    chainName?: string;
+    dappKey?: string;
     first?: number;
     after?: string;
-    orderBy?: string[];
+    orderBy?: OrderBy[];
   } = {}) {
-    const item = await this.dubhe.getStorage({
-      name: 'bridge',
-      key1: chainName,
+    const filter = dappKey ? { dappKey: { equalTo: dappKey } } : undefined;
+    const item = await this.graphql.getAllTables('dapp_fee_state', {
+      filter,
       first,
       after,
-      orderBy,
+      orderBy
+    });
+    return item;
+  }
+
+  async dappProxy({
+    dappKey,
+    first,
+    after,
+    orderBy
+  }: {
+    dappKey?: string;
+    first?: number;
+    after?: string;
+    orderBy?: OrderBy[];
+  } = {}) {
+    const filter = dappKey ? { dappKey: { equalTo: dappKey } } : undefined;
+    const item = await this.graphql.getAllTables('dapp_proxy', {
+      filter,
+      first,
+      after,
+      orderBy
     });
     return item;
   }
 
   // StorageDoubleMap queries
-  async account({
+  async assetAccount({
     assetId,
-    address,
+    account,
     first,
     after,
-    orderBy,
+    orderBy
   }: {
-    assetId?: bigint | number | string;
-    address?: string;
+    assetId?: string;
+    account?: string;
     first?: number;
     after?: string;
-    orderBy?: string[];
+    orderBy?: OrderBy[];
   } = {}) {
-    const item = await this.dubhe.getStorage({
-      name: 'account',
-      key1: assetId?.toString(),
-      key2: address,
+    const filter: any = {};
+    if (assetId) filter.assetId = { equalTo: assetId };
+    if (account) filter.account = { equalTo: account };
+
+    const item = await this.graphql.getAllTables('asset_account', {
+      filter: Object.keys(filter).length > 0 ? filter : undefined,
       first,
       after,
-      orderBy,
+      orderBy
     });
     return item;
   }
 
-  async pool({
-    asset1Id,
-    asset2Id,
+  async assetPool({
+    asset0,
+    asset1,
     poolAddress,
     poolAssetId,
+    assetId,
+    assetIds,
     first,
     after,
-    orderBy,
+    orderBy
   }: {
-    asset1Id?: bigint | number | string;
-    asset2Id?: bigint | number | string;
+    asset0?: string;
+    asset1?: string;
     poolAddress?: string;
-    poolAssetId?: bigint | number | string;
+    poolAssetId?: string;
+    assetId?: string;
+    assetIds?: string[];
     first?: number;
     after?: string;
-    orderBy?: string[];
+    orderBy?: OrderBy[];
   } = {}) {
-    let value = undefined;
-    if (poolAddress) {
-      value = {
-        pool_address: poolAddress,
-      };
+    const filter: any = {};
+
+    // If assetIds array is provided, search for pools where either asset0 or asset1 is in the array
+    if (assetIds && assetIds.length > 0) {
+      filter.or = [{ asset0: { in: assetIds } }, { asset1: { in: assetIds } }];
     }
-    if (poolAssetId) {
-      value = {
-        lp_asset_id: poolAssetId,
-      };
+    // If single assetId is provided, search for pools where asset is either asset0 or asset1
+    else if (assetId) {
+      filter.or = [{ asset0: { equalTo: assetId } }, { asset1: { equalTo: assetId } }];
+    }
+    // Otherwise use individual asset0/asset1 filters
+    else {
+      if (asset0) filter.asset0 = { equalTo: asset0 };
+      if (asset1) filter.asset1 = { equalTo: asset1 };
     }
 
-    if (poolAssetId && poolAddress) {
-      value = {
-        lp_asset_id: poolAssetId,
-        pool_address: poolAddress,
-      };
-    }
+    if (poolAddress) filter.pool_address = { equalTo: poolAddress };
+    if (poolAssetId) filter.lpAsset = { equalTo: poolAssetId };
 
-    const item = await this.dubhe.getStorage({
-      name: 'pools',
-      key1: asset1Id?.toString(),
-      key2: asset2Id?.toString(),
-      value,
+    const item = await this.graphql.getAllTables('asset_pool', {
+      filter: Object.keys(filter).length > 0 ? filter : undefined,
       first,
       after,
-      orderBy,
-      is_removed: false,
-      jsonOrderBy: [
-        {
-          path: 'lp_asset_id',
-          direction: 'ASC',
-          type: 'INTEGER',
-        },
-      ],
+      orderBy
     });
     return item;
   }
 
   // Event queries
-  async events({
-    names,
-    sender,
-    checkpoint,
-    digest,
+  async assetTransfer({
+    from,
+    to,
+    assetId,
     first,
     after,
-    orderBy,
+    orderBy
   }: {
-    names?: string[];
-    sender?: string;
-    checkpoint?: string;
-    digest?: string;
+    from?: string;
+    to?: string;
+    assetId?: string;
     first?: number;
     after?: string;
-    orderBy?: string[];
+    orderBy?: OrderBy[];
   } = {}) {
-    const item = await this.dubhe.getEvents({
-      names,
-      sender,
-      checkpoint,
-      digest,
+    const filter: any = {};
+    if (from) filter.from = { equalTo: from };
+    if (to) filter.to = { equalTo: to };
+    if (assetId) filter.assetId = { equalTo: assetId };
+
+    const item = await this.graphql.getAllTables('asset_transfer', {
+      filter: Object.keys(filter).length > 0 ? filter : undefined,
       first,
       after,
-      orderBy,
+      orderBy
     });
     return item;
   }
 
-  async transactions({
-    functionName,
-    sender,
+  async assetWrap({
+    from,
+    to,
+    coinType,
+    assetId,
     first,
     after,
-    orderBy,
-    showEvent,
+    orderBy
   }: {
-    functionName?: string[];
-    sender?: string;
+    from?: string;
+    to?: string;
+    coinType?: string;
+    assetId?: string;
     first?: number;
     after?: string;
-    orderBy?: string[];
-    showEvent?: boolean;
+    orderBy?: OrderBy[];
   } = {}) {
-    const item = await this.dubhe.getTransactions({
-      functionName,
-      sender,
+    const filter: any = {};
+    if (from) filter.from = { equalTo: from };
+    if (to) filter.to = { equalTo: to };
+    if (coinType) filter.coinType = { equalTo: coinType };
+    if (assetId) filter.asset_id = { equalTo: assetId };
+
+    const item = await this.graphql.getAllTables('asset_wrap', {
+      filter: Object.keys(filter).length > 0 ? filter : undefined,
       first,
       after,
-      orderBy,
-      showEvent,
+      orderBy
+    });
+    return item;
+  }
+
+  async assetUnwrap({
+    from,
+    to,
+    coinType,
+    assetId,
+    first,
+    after,
+    orderBy
+  }: {
+    from?: string;
+    to?: string;
+    coinType?: string;
+    assetId?: string;
+    first?: number;
+    after?: string;
+    orderBy?: OrderBy[];
+  } = {}) {
+    const filter: any = {};
+    if (from) filter.from = { equalTo: from };
+    if (to) filter.to = { equalTo: to };
+    if (coinType) filter.coinType = { equalTo: coinType };
+    if (assetId) filter.assetId = { equalTo: assetId };
+
+    const item = await this.graphql.getAllTables('asset_unwrap', {
+      filter: Object.keys(filter).length > 0 ? filter : undefined,
+      first,
+      after,
+      orderBy
+    });
+    return item;
+  }
+
+  async assetSwap({
+    from,
+    to,
+    asset0,
+    asset1,
+    first,
+    after,
+    orderBy
+  }: {
+    from?: string;
+    to?: string;
+    asset0?: string;
+    asset1?: string;
+    first?: number;
+    after?: string;
+    orderBy?: OrderBy[];
+  } = {}) {
+    const filter: any = {};
+    if (from) filter.from = { equalTo: from };
+    if (to) filter.to = { equalTo: to };
+    if (asset0) filter.asset0 = { equalTo: asset0 };
+    if (asset1) filter.asset1 = { equalTo: asset1 };
+
+    const item = await this.graphql.getAllTables('asset_swap', {
+      filter: Object.keys(filter).length > 0 ? filter : undefined,
+      first,
+      after,
+      orderBy
     });
     return item;
   }

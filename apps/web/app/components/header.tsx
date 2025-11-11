@@ -9,7 +9,7 @@ export default function Header() {
   const { currentWallet, connectionStatus } = useCurrentWallet();
 
   return (
-    <header className="flex items-center justify-between px-4 py-3 bg-transparent border-b border-gray-200">
+    <header className="flex items-center justify-between px-4 h-14 bg-transparent border-b border-gray-200 flex-shrink-0">
       <div className="flex items-center space-x-4">
         <div className="flex items-center space-x-2">
           <Image src="/merak-logo.svg" alt="Merak Logo" width={120} height={30} priority />
@@ -20,7 +20,10 @@ export default function Header() {
         <Link href="/wrap" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Wrap
         </Link>
-        <Link href="/swap/0/1" className="text-sm font-medium text-gray-600 hover:text-blue-500">
+        <Link
+          href="/swap/0000000000000000000000000000000000000000000000000000000000000002::sui::SUI/8c7013745af0eb1ab211cde05b40ee6e2130276664d7e3e3741a36f11fa9f20b::dubhe::DUBHE"
+          className="text-sm font-medium text-gray-600 hover:text-blue-500"
+        >
           Swap
         </Link>
         <Link href="/pool" className="text-sm font-medium text-gray-600 hover:text-blue-500">
@@ -29,24 +32,14 @@ export default function Header() {
         <Link href="/positions" className="text-sm font-medium text-gray-600 hover:text-blue-500">
           Positions
         </Link>
-        <Link href="/assets" className="text-sm font-medium text-gray-600 hover:text-blue-500">
-          Assets
-        </Link>
-        <Link href="/portfolio" className="text-sm font-medium text-gray-600 hover:text-blue-500">
-          Portfolio
-        </Link>
-        <Link href="/bridge" className="text-sm font-medium text-gray-600 hover:text-blue-500">
-          Bridge
-        </Link>
         <Link
           href="https://merak-docs.obelisk.build/"
+          target="_blank"
+          rel="noopener noreferrer"
           className="text-sm font-medium text-gray-600 hover:text-blue-500"
         >
           Docs
         </Link>
-        {/* <Link href="/create" className="text-sm font-medium text-gray-600 hover:text-blue-500">
-          Create Token
-        </Link> */}
       </nav>
       <div className="flex items-center space-x-4">
         {currentWallet ? (

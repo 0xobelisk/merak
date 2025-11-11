@@ -1,0 +1,215 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Asset Registry Schema",
+  "description": "Schema for asset registry configuration in Merak",
+  "type": "object",
+  "required": ["name", "status", "asset", "metadata"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The unique identifier name of the asset"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["live", "deprecated", "testing"],
+      "description": "The current status of the asset"
+    },
+    "asset": {
+      "type": "object",
+      "description": "Asset configuration and display information",
+      "required": ["description", "coinType", "denom_units", "base", "name", "display", "symbol"],
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "A brief description of the asset"
+        },
+        "coinType": {
+          "type": "string",
+          "description": "The fully qualified coin type identifier"
+        },
+        "denom_units": {
+          "type": "array",
+          "description": "Denomination units for the asset",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["denom", "exponent"],
+            "properties": {
+              "denom": {
+                "type": "string",
+                "description": "The denomination name"
+              },
+              "exponent": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "The exponent for this denomination"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "base": {
+          "type": "string",
+          "description": "The base denomination unit"
+        },
+        "name": {
+          "type": "string",
+          "description": "The full name of the asset"
+        },
+        "display": {
+          "type": "string",
+          "description": "The display denomination unit"
+        },
+        "symbol": {
+          "type": "string",
+          "description": "The symbol or ticker of the asset"
+        },
+        "logo_URIs": {
+          "type": "object",
+          "description": "URLs for logo images in different formats",
+          "properties": {
+            "svg": {
+              "type": "string",
+              "format": "uri"
+            },
+            "png": {
+              "type": "string",
+              "format": "uri"
+            },
+            "jpg": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "additionalProperties": false
+        },
+        "images": {
+          "type": "array",
+          "description": "Array of image URLs in different formats",
+          "items": {
+            "type": "object",
+            "properties": {
+              "svg": {
+                "type": "string",
+                "format": "uri"
+              },
+              "png": {
+                "type": "string",
+                "format": "uri"
+              },
+              "jpg": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "additionalProperties": false,
+            "minProperties": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "object",
+      "description": "On-chain metadata for the asset",
+      "required": [
+        "assetId",
+        "assetType",
+        "createdAtTimestampMs",
+        "decimals",
+        "description",
+        "iconUrl",
+        "isBurnable",
+        "isDeleted",
+        "isFreezable",
+        "isMintable",
+        "lastUpdateDigest",
+        "name",
+        "nodeId",
+        "owner",
+        "status",
+        "symbol",
+        "updatedAtTimestampMs"
+      ],
+      "properties": {
+        "assetId": {
+          "type": "string",
+          "description": "The unique identifier of the asset on-chain"
+        },
+        "assetType": {
+          "type": "string",
+          "enum": ["Wrapped", "Native", "Synthetic"],
+          "description": "The type of the asset"
+        },
+        "createdAtTimestampMs": {
+          "type": "string",
+          "pattern": "^[0-9]+$",
+          "description": "Creation timestamp in milliseconds"
+        },
+        "decimals": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18,
+          "description": "Number of decimal places for the asset"
+        },
+        "description": {
+          "type": "string",
+          "description": "Asset description from on-chain metadata"
+        },
+        "iconUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the asset icon"
+        },
+        "isBurnable": {
+          "type": "boolean",
+          "description": "Whether the asset can be burned"
+        },
+        "isDeleted": {
+          "type": "boolean",
+          "description": "Whether the asset has been deleted"
+        },
+        "isFreezable": {
+          "type": "boolean",
+          "description": "Whether the asset can be frozen"
+        },
+        "isMintable": {
+          "type": "boolean",
+          "description": "Whether new tokens can be minted"
+        },
+        "lastUpdateDigest": {
+          "type": "string",
+          "description": "The digest hash of the last update transaction"
+        },
+        "name": {
+          "type": "string",
+          "description": "Asset name from on-chain metadata"
+        },
+        "nodeId": {
+          "type": "string",
+          "description": "The GraphQL node identifier"
+        },
+        "owner": {
+          "type": "string",
+          "description": "The address of the asset owner"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Liquid", "Frozen", "Locked"],
+          "description": "The current status of the asset on-chain"
+        },
+        "symbol": {
+          "type": "string",
+          "description": "Asset symbol from on-chain metadata"
+        },
+        "updatedAtTimestampMs": {
+          "type": "string",
+          "pattern": "^[0-9]+$",
+          "description": "Last update timestamp in milliseconds"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
